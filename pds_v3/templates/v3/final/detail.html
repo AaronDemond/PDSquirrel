@@ -1,0 +1,208 @@
+{% extends "v3/final/base/base.html" %}
+{% load staticfiles %}
+{% block body %}
+{% load pds_extras %}
+<style>
+.btn-lg {
+	margin-top:20px;
+	margin-bottom:20px;
+}
+</style>
+<div id="main-content" class="container"  >
+<div class="row">
+<div class="col-lg-10 col-lg-offset-1">
+
+   {% if msg %}
+   <div class="row">
+      <div class="col-sm-12">
+         <div class="alert alert-{{msgType}}">
+            <p>{{msg}}</p>
+         </div>
+      </div>
+   </div>
+   {% endif %}
+{% comment %}
+
+No best soltuion:
+1) Store previous results in client side cache
+	- Data changes, making cache incorrect/inconsistent
+	- access perm on all browsers?
+   This is tom complex, when the user can (and should) just hit the back button.
+
+2) Resubmit query to servers
+	-Extra load. Nice to have UI feature. Giving the feel of a working back button on a website 
+	 is nice though.
+
+4) Nothing
+	-User can press back on browser or hit Browse link or Go back home. This seems
+	 the most logical (and easiest)
+
+{% if previous_search_query %}
+
+                            <form action ="{% url 'browse' %}" method ="POST" />
+                                <input type="hidden" name="search_type" value="search">
+                                <div class="col-xs-12">
+                                    <br />
+                                    <div class="input-group">
+                                        {% csrf_token %}
+					<input type="hidden" class="form-control" name = "query" id = "search_string" value="{{previous_search_query}}" placeholder="Search for..">
+                                        <span class="input-group-btn">
+                                        <button class="btn btn-success browse-btn-fix" type="submit">Back to Search</button>
+                                        </span>
+                            </form>
+{% endif %}
+{% endcomment %}
+<!-- <a href="{% url 'browse' %}?_q={{ previous_search_query }}">Back to Search</a> -->
+   <div class="row">
+      <div class="col-xs-12">
+         <h3>{{pd}}</h3>
+	 By
+            {% for x in pd.presenters.all %}
+	 <a href="{% url 'presenter-detail' x.id %}">
+	     {{x}}{% if x.credentials %}, {{x.credentials}} <br>{%endif%}
+            {% endfor %}
+         </a>
+      </div>
+   </div>
+   <div class="row">
+      <div class="col-xs-12">
+         {% if user.is_authenticated %}
+         {% if own == 1 %}
+         <div class="">
+            <a class="btn btn-success btn-lg" href="{% url 'watch' pd.id %}" >Listen Now</a>
+         </div>
+         {% else %}
+         {% if user.profile.remaining_pd = 0 %}
+         <form id="pform" action="{% url 'payment-process' %}" method="POST">
+            <input type="hidden" name="pd_id" value="{{pd.id}}" />
+            {% csrf_token %}
+            <div class= "hidden">
+               <script
+                  src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                  data-key="pk_test_URIzgmhYoVYuzDm9Q98RHkIQ"
+		  data-amount="{{pd.price|fix_price}}"
+                  data-name="{{pd}}"
+                  data-description='{{ pd.presenters.all|join:", "}}'
+                  data-image=""></script>
+            </div>
+            <div class="text-centered">
+               <button type="submit" class= "btn btn-success btn-lg" id="purchase" >Purchase Now</button>
+               <div class="checkbox">
+                  <label>
+                  <input type="checkbox"> Inform me via email when this presenter releases content.
+                  </label>
+               </div>
+            </div>
+         </form>
+         {% else %}
+         <form action="{% url 'payment-process' %}" method ="POST">
+            {% csrf_token %}
+            <input class = "form-control" type="hidden" name="pd_id" value="{{pd.id}}" />
+            <div class="text-center">
+               <input class="btn btn-success btn-lg" type="submit" value="Use Credit">
+            </div>
+         </form>
+         {% endif %}
+         {% endif %}
+         {% else %}
+         <a class="btn btn-success btn-lg" disabled="disabled">Sign in to Listen</a>
+         <div class="checkbox">
+            <label>
+            <input type="checkbox"> Inform me via email when this presenter releases content.
+            </label>
+         </div>
+         {% endif %}
+      </div>
+   </div>
+   <div class="row">
+      <div class="col-sm-12 col-md-6 col-lg-6">
+         <h4>Session Description</h4>
+         <p>{{ pd.description}}</p>
+      </div>
+      <div class="col-sm-12 col-md-6 col-lg-6">
+         <h4>Session Details</h4>
+         <table class = "table table-striped">
+            <tr>
+               <td>Release date</td>
+               <td>{{ pd.release_date|remove_time}}</td>
+            </tr>
+            <tr>
+               <td>Subject area(s)</td>
+               <td>				
+                  {% for a in pd.subject.all %}
+                  {{a}}<br />
+                  {% endfor %}
+               </td>
+            </tr>
+            <tr>
+               <td>Language</td>
+               <td>English</td>
+            </tr>
+            <tr>
+               <td>Duration (minutes)</td>
+               <td>{{pd.duration}}</td>
+            </tr>
+            <tr>
+               <td>Price (GST/HST included)</td>
+	       <td>${{ pd.price|show_cents }}</td>
+            </tr>
+	    <tr>
+	    	<td>Unique number</td>
+		<td>
+
+         100{{ pd.id }}15
+		</td>
+	    </tr>
+            <tr>
+            </tr>
+         </table>
+	<table class="table">
+		      <tr>
+		      	<td>
+
+			    <a href = "/pd{% url 'accred' pd.id %}{{request.user.profile.society.all.0.id}}/">Click here for CPD eligibility for your law society.</a></td>
+			</td>
+		      </tr>
+	      </table>
+      </div>
+      
+   </div>
+
+</div>
+</div>
+</div>
+<script>
+   $(document).ready(function(){
+   
+   
+   function search(){
+   	    $('#browse-options').addClass('hidden');
+           $('#search-options').removeClass('hidden');
+           $('#search-toggle').addClass('active');
+   	    $('#browse-toggle').removeClass('active');
+   }
+   function browse(){
+           $('#search-options').addClass('hidden');
+           $('#browse-options').removeClass('hidden');
+           $('#browse-toggle').addClass('active');
+   	    $('#search-toggle').removeClass('active');
+   //alert(subject);
+   }
+   
+   
+   
+   //	    alert('{{type}}');
+       $("#search-toggle").click(function(){
+   search();
+       });
+       $("#browse-toggle").click(function(){
+   browse();
+       });
+   
+   });
+</script>
+<script></script>
+{% endblock %}
+{% block bottom-scripts %}
+{% debug %}
+{% endblock %}

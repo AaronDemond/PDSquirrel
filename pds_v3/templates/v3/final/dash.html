@@ -1,0 +1,103 @@
+
+{% extends "v3/final/base/base.html" %}
+{% load staticfiles %}
+{% block body %}
+
+<div id="main-content" class="container main-container" >
+<div class="row">
+<div class="col-lg-10 col-lg-offset-1">
+    <div class="row">
+        <div class="col-lg-9">
+	    <h3 class="my-page-header">My PD Library</h3>
+	    <hr>
+	    
+            <div id = "user_pd">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <p>{{msg}}</p>
+                    </div>
+                </div>
+                
+                {% if pd_list %}
+                    {% for pd in pd_list %}
+                    <div id="pd-listing" class="row pdlisting">
+                        
+                        <div class="col-xs-12">
+                            <h3><a href="{% url 'watch' pd.id %}">{{pd.name}}</a></h3>
+                            <p>
+                                {% for b in pd.presenters.all %}
+				<a class="presenter-a" href = "{% url 'presenter-detail' b.id %}">{{ b }}, {{b.credentials}}</a>
+                                {% endfor %}
+				<br>
+				{{pd.description|truncatechars:155}}
+                            <span class="pd-list-small-info">
+				<br>
+                                <b>Subject area(s):</b> 
+                                {{pd.subject.all|join:", "}}
+                                <!--	<b>Duration: </b> {{ pd.duration }} -->
+                                <b> Release Date: </b> {{pd.release_date }}
+                                <b> Duration: </b> 12:00
+                            </span>
+                            </p>
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                    {% if pd_list %}
+
+                    {% if pd_list.paginator.num_pages > 1 %}
+<nav>
+  <ul class="pagination">
+
+    {% if pd_list.has_previous %}
+    <li>
+      <a href="?page={{ pd_list.previous_page_number }}" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+    {% else %}
+	<li class="disabled">
+
+      <a href="" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+    {% endif %}
+    {% if range %}
+	    {% for x in range %}
+	    <li {% if x == pd_list.number %} class="active" {% endif %}><a href="?page={{x}}">{{x}}</a></li>
+	    {% endfor %}
+    {% endif %}
+				{% if pd_list.has_next %}
+    <li>
+
+      <a href="?page={{ pd_list.next_page_number }}" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+    {% else %}
+<li>
+
+      <a href="" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+				{% endif %}
+  </ul>
+</nav>
+{% endif %} 
+{% endif %} 
+                {% else %}
+                <p>You have no PD. Click "Browse PD" in the links above to get started!</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+
+
+{% endblock %}
+
+

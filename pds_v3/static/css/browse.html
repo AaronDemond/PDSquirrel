@@ -1,0 +1,183 @@
+{% extends "v3/final/base/base.html" %}
+{% load staticfiles %}
+{% block body %}
+<link rel="stylesheet" href="/static/fixes.css">
+<link rel="stylesheet" href="{% static 'css/fixes.css' %}">
+<div id="main-content" class="container" style="height:1100px; margin-top: 0px">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="row">
+                <div class="col-lg-8 col-md-12">
+                    <ul class="nav nav-tabs">
+                        <li role="presentation" {% if type == 'browse' %}class="active"{% endif %} id="browse-toggle"><a href="#">Browse</a></li>
+                        <li role="presentation" {% if type == 'search' %}class="active"{% endif %} id = "search-toggle"><a href="#">Search</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row {% if type == 'browse' %}hidden{% endif %}" id = "search-options">
+                <div class="col-lg-8 col-md-12">
+                    <div id = "search-container">
+                        <div class="row">
+                            <form action ="{% url 'browse' %}" method ="POST" />
+                                <input type="hidden" name="search_type" value="search">
+                                <div class="col-xs-12">
+                                    <br />
+                                    <div class="input-group">
+                                        {% csrf_token %}
+                                        <input type="text" class="form-control" name = "query" id = "search_string" placeholder="{% if type == 'search' %}{{search_string}}{% else %}Search for...{% endif %}">
+                                        <span class="input-group-btn">
+                                        <button class="btn btn-default browse-btn-fix" type="submit">Go!</button>
+                                        </span>
+                            </form>
+                            </div>
+                            <br />
+                            </div>
+                            <div class="col-xs-1"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- search options/ -->
+            <div id="browse-options" class="row {% if type == 'search' %}hidden{% endif %}">
+                <div class="col-lg-8 col-md-12">
+                    <div id = "browse-container">
+                        <div class="row">
+                            <form action="{% url 'browse' %}" method ="POST">
+                            <input type="hidden" name="search_type" value="browse">
+                            <div class="col-xs-12">
+                                <br />
+                                <div class="input-group">
+                                    {% csrf_token %}
+                                    <select class="form-control" name="subject">
+                                        {% if subject.id > 0 %}
+                                        <option value = "{{subject.id}}"selected>{{subject.name}}</option>
+                                        {% else %}
+                                        <option value = "0" selected>All Subjects</option>
+                                        {% endif %}
+                                        {% for sub in subjects %}
+                                        <option value = "{{sub.id}}" {% if sub.id == subject %}selected{% endif %}>{{sub}}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <span class="input-group-btn">
+                                    <button class="btn btn-default browse-btn-fix" type="submit">Go!</button>
+                                    </span>
+                                </div>
+                                <br />
+                            </div>
+                            <div class="col-xs-1"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    {% if pd_list %}
+                    <p>{{pd_list.paginator.count}} Title(s) found</p>
+                    {% endif %}
+                    {% if pd_list %}
+                    <hr />
+                    {% for pd in pd_list %}
+                    <div id="pd-listing" class="row">
+                        <div class="col-sm-1 hidden-xs">
+                            <img class="hidden-xs" src="" height = "100px" width = "80px" alt="">
+                        </div>
+                        <div class="col-sm-10 col-xs-12">
+                            <h3 class="pd-title"><a href="{% url 'detail' pd.id %}">{{pd.name}}</a></h3>
+                            <p class="pd-description">{{pd.description}}</p>
+                            <h5 class ="pd-presenters">
+                                {% for b in pd.presenters.all %}
+                                <a class="pd-presenters" href = "{% url 'presenter-detail' b.id %}">{{ b }}</a>
+                                {% endfor %}
+                            </h5>
+                            <span class="pd-list-small-info">
+                                <b>Subject area(s):</b> 
+                                {{pd.subject.all|join:", "}}
+                                <!--	<b>Duration: </b> {{ pd.duration }} -->
+                                <b> Release Date: </b> {{pd.release_date }}
+                                <b> Duration: </b> 12:00
+                                <a href="{% url 'detail' pd.id %}"class ="pd-list-more-info">More Info</a>
+                            </span>
+                        </div>
+                    </div>
+                    <hr />
+                    {% endfor %}
+
+
+                    {% if pd_list %}
+                    <p>{{pd_list.paginator.count}} Title(s) found</p>
+                    {% endif %}
+                    {% if pd_list.paginator.num_pages > 1 %}
+                    <nav class="pull-right">
+
+                        <ul class="pagination">
+                            {% if pd_list.has_previous %}
+                            <li>
+                                <a href="?page={{ pd_list.previous_page_number }}&subject={{subject}}&search_string={{query}}" aria-label="Previous">
+                                    {% elif pd_list.has_previous == False %}
+                            <li class = "disabled">
+                            <a href="#" aria-label="Previous">
+                            {% endif %}
+                            <span aria-hidden="true">&laquo;</span>
+                            </a>
+                            </li>
+                            {% for x in page_range %}
+                            <li {% if pd_list.number == x|add:1 %} class="active"{% endif %}> <a href="?page={{x|add:1}}&subject={{subject}}&search_string={{query}}">{{x|add:1}}</a></li>
+                            {% endfor %}
+                            {% if pd_list.has_next %}
+                            <li>
+                                <a href="?page={{ pd_list.next_page_number}}&subject={{subject}}&search_string={{query}}" aria-label="Next">
+                                    {% else %}
+                            <li class="disabled">
+                            <a href="#" aria-label="Next">
+                            {% endif %}
+                            <span aria-hidden="true">&raquo;</span>
+                            </a>
+                            </li>
+                        </ul>
+                    </nav>
+                    {% endif %}
+                    {% else %}
+                    <p>We found no titles. Please try a new search.</p>
+
+
+                    {% endif %}
+                    <br />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function(){
+    
+    
+    function search(){
+    	    $('#browse-options').addClass('hidden');
+            $('#search-options').removeClass('hidden');
+            $('#search-toggle').addClass('active');
+    	    $('#browse-toggle').removeClass('active');
+    }
+    function browse(){
+            $('#search-options').addClass('hidden');
+            $('#browse-options').removeClass('hidden');
+            $('#browse-toggle').addClass('active');
+    	    $('#search-toggle').removeClass('active');
+    //alert(subject);
+    }
+    
+    
+    
+    //	    alert('{{type}}');
+        $("#search-toggle").click(function(){
+    search();
+        });
+        $("#browse-toggle").click(function(){
+    browse();
+        });
+    
+    });
+</script>
+{% endblock %}
+{% block bottom-scripts %}
+{% debug %}
+{% endblock %}

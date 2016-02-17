@@ -1,0 +1,188 @@
+{% extends "v3/final/base/base.html" %}
+{% load staticfiles %}
+{% block body %}
+<style>
+
+.home-search {
+    padding-right: 200px;
+    position:relative;
+    bottom: 180px;
+    left: 110px;
+    width: 450px !important;
+}
+
+.home-search-btn {
+    position: relative;
+    bottom: 180px;
+    width: 100px !important;
+    left: 120px;
+    background-color: rgb(173, 216, 230);
+    background-color:rgb(46, 141, 215); 
+    background-color: rgb(46, 215, 109); 
+    background-color: rgb(72, 165, 107); 
+
+    border: 1px solid #6DBCBF !important;
+    border: 1px solid black !important;
+ -webkit-box-shadow: 0 1px 1px rgba(0,0,0,0.15),-1px 0 0 rgba(0,0,0,0.03),1px 0 0 rgba(0,0,0,0.03),0 1px 0 rgba(0,0,0,0.12) !important;
+
+    color: white;
+    font-size: 1.4em;
+    width: 75px !important;
+}
+.muted {
+    margin-bottom: 10px !important;
+    
+}
+.brand-img {
+    width: 100% !important;
+    margin-top: 30px;
+    border: 5px solid white;
+    -webkit-box-shadow: 0 1px 1px rgba(0,0,0,0.15),-1px 0 0 rgba(0,0,0,0.03),1px 0 0 rgba(0,0,0,0.03),0 1px 0 rgba(0,0,0,0.12) !important;
+
+}
+
+#mobile_search {
+    height: 34px;
+    line-height: 0.8;
+}
+
+</style>
+<div class="container">
+<div class="row">			
+		    <div class="col-lg-12 col-xs-12 hidden-xs" style="">
+			    <img  src="/static/img/brand5.png" class="brand-img hidden-xs" alt="">
+			    <div class="input-group">
+                            <form action ="{% url 'browse' %}" method ="POST" />
+				{% csrf_token %}
+			        <input type="text" name="query" placeholder="Search PDSquirrel. Go nuts on PD!" class="home-search form-control">
+				<!--<input type="submit" value="Search" class="home-search-btn form-control">-->
+				<button class="home-search-btn"><i class="fa fa-search" style="padding-top: 5px; padding-bottom: 5px"></i> </button>
+                                <input type="hidden" name="search_type" value="search">
+			    </form>
+			    </div>
+		    </div>
+		</div>
+</div>
+<div id="main-content" class="container white-tile" style="min-height: auto">
+<div class="row" id="">
+
+<div class="col-lg-12 visible-xs" style="margin-bottom: 100px">
+                            <form action ="{% url 'browse' %}" method ="POST" />
+				{% csrf_token %}
+
+				<div class="input-group">
+				    <input type="text" name="query" placeholder="Search PDSquirrel. Go nuts on PD!" class="form-control">
+				    <span class="input-group-btn">
+				        <button class="btn btn-success" id="mobile_search"><i class="fa fa-search" style="padding-top: 5px; padding-bottom: 5px"></i> </button>
+				    </span>
+				</div>
+
+                                <input type="hidden" name="search_type" value="search">
+			    </form>
+			</div>
+    
+		
+    
+    <div class="col-xs-10 col-xs-offset-1" style="">
+    </div>
+</div>
+    <div class="row">
+        <div class="col-xs-12 btn-container">
+	    <div class="row">
+		<div class="col-xs-12 col-sm-6 col-lg-6">
+		    <div class="box">							
+			<div class="icon">
+			    <div class="image">
+				<i class="fa fa-question"></i>
+			    </div>
+			    <div class="info">
+				<h3 class="title">Learn about PD Squirrel</h3>
+				<p class="muted">At PD Squirrel we provide continuing professional development to Canadian lawyers.  Our sessions are concise, topical audio presentations, created by Canadian professionals among the best in their field.
+				
+				<div class="more">
+				    <a href="{% url 'learn' %}" title="Title Link">More <i class="fa fa-angle-double-right"></i></a>
+				</div>
+			    </div>
+			</div>
+			<div class="space">
+			</div>
+		    </div> 
+		</div>
+		<div class="col-xs-12 col-sm-6 col-lg-6">
+		    <div class="box">							
+			<div class="icon">
+			    <div class="image"><i class="fa fa-check"></i></div>
+			    <div class="info">
+				<h3 class="title">Get Started</h3>
+				<!-- <p class="muted">Join today and receive three free sessions. Pay per session or take advantage of our premium plan. Looking to share your expertise? Become a speaker and get paid. As a Standard member you only pay for the individual sessions you take. For more value, upgrade to Premium membership and get multiple sessions for a monthly fee. </p> -->
+
+				<p class="muted">Join today and receive 3 free sessions. Pay per session or take advantage of our premium plan. Looking to share your expertise? Inquire to <a href="{% url 'presenter-info' %}">become a speaker</a>, and get compensated for your sessions.</p>
+				
+				<div class="more">
+				    <a href="{% url 'join' %}" title="Title Link">Join PD Squirrel <i class="fa fa-angle-double-right"></i></a>
+				</div>
+			    </div>
+			</div>
+			<div class="space"></div>
+		    </div>
+		</div>
+		
+		</div>		    
+	    </div>
+	</div>
+    </div>
+</div>
+<style>
+@import "https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css";
+@import "https://fonts.googleapis.com/css?family=Roboto:400,500";
+
+.box > .icon { text-align: center; position: relative; }
+.box > .icon > .image { position: relative; z-index: 2; margin: auto; width: 88px; height: 88px; border: 8px solid white; line-height: 88px; border-radius: 50%; background: lightblue; vertical-align: middle; }
+.box > .icon > .image > i { font-size: 36px !important; color: #fff !important; }
+.box > .icon > .info { margin-top: -24px; background: rgba(0, 0, 0, 0.04); border: 1px solid #e0e0e0; padding: 15px 0 10px 0; }
+.box > .icon > .info > h3.title { font-family: "Roboto",sans-serif !important; font-size: 16px; color: #222; font-weight: 500; }
+.box > .icon > .info > p { font-family: "Roboto",sans-serif !important; font-size: 13px; color: #666; line-height: 1.5em; margin: 20px;}
+.box > .icon > .info > .more a { font-family: "Roboto",sans-serif !important; font-size: 12px; color: #222; line-height: 12px; text-transform: uppercase; text-decoration: none; }
+.box > .icon:hover > .info > .more > a { color: #fff; padding: 6px 8px; background-color: #63B76C; }
+.box > .icon > .info > .more > input:hover { color: #fff; padding: 6px 8px; background-color: #63B76C; }
+.box .space { height: 30px; }
+.hg:hover {  color: #fff; padding: 6px 8px; background-color: #63B76C; }
+
+i {
+    padding-top: 20px;
+}
+.tagline {
+}
+
+.info {
+    height: 250px;
+}
+.my-footer {
+    height: 150px;
+}
+
+</style>
+{% endblock %}
+<div class="row">
+                <div class="col-xs-12 col-sm-12 col-lg-4">
+                    <p class="text-center">
+                    <a class="btn btn-default a-lg home-btn" href="{% url 'browse' %}" style="">
+                        Browse Selection
+                        </a>
+                    </p>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-lg-4">
+                    <p class="text-center">
+                        <a class="btn btn-default a-lg home-btn" href="{% url 'join' %}"  style="">
+                        Join Now
+                        </a>
+                    </p>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-lg-4">
+                        <p class="text-center">
+                        <a class="btn btn-default a-lg home-btn" href="{% url 'learn' %}" style="">
+                        Learn More
+                        </a>
+                    </p>
+                </div>
+            </div>

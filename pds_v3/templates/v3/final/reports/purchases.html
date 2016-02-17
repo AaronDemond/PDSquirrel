@@ -1,0 +1,96 @@
+{% extends "v3/final/base/base.html" %}
+{% load staticfiles %}
+{% load pds_extras %}
+{% block body %}
+<style>
+td { 
+	margin-right: 20px;
+	padding-right: 20px;
+}
+.td-1 {
+	font-weight: bold;
+}
+</style>
+<div class="container" id = "main-content"> 
+	<div class="row">
+		<div class="col-xs-12">
+			<table class="">
+				<tr>
+					<td class="td-1">Name</td>
+					<td>{{request.user.first_name}} {{request.user.last_name}}</td>
+				</tr>
+				<tr>
+					<td class="td-1">Member of</td>
+					<td>{% for x in user.profile.society.all %}{{x}}{% endfor %}
+					</td>
+				</tr>
+				<tr>
+					<td class="td-1">Membership no.</td>
+					<td>110{{request.user.id}}</td>
+				</tr>
+				{% comment %}
+				<tr>
+					<td class="td-1">Year covered in report</td>
+					<td>2015</td>
+				</tr>
+				{% endcomment %}
+				<tr>
+					<td class="td-1">Date report generated</td>
+					<td>
+			{% now "jS F Y H:i" %}
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-12">
+			<hr>
+			
+			<h4>CPD from PD Squirrel Inc.</h4>
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Title</th>
+						<th>Date Purchased</th>
+						<th>Taken</th>
+						<th>Cost</th>
+						<th>HST</th>
+						<th>Net cost</th>
+					</tr>
+				</thead>
+				<tbody>
+				{% for purchase in purchases %}
+					<tr>
+
+						<td>{{purchase.pdsession.name}}</td>
+						<td>{{purchase.date}}</td>
+						<td>{% if purchase.completed %}Yes{%else%}No{%endif%}</td>
+
+						{% if purchase.credit_used %}
+						<td>Credit Used</td>
+						<td>NA</td>
+						<td>NA</td>
+						{% else %}
+						<td>{{purchase.price|show_cents}}</td>
+
+						<td>{{purchase.tax|show_cents}}</td>
+						<td>{{purchase.total|show_cents}}</td>
+						{% endif %}
+					</tr>
+					{% endfor %}
+				</tbody>
+				<thead>
+						<th>All Titles</th>
+						<th></th>
+						<th></th>
+						<th>{{before_tax}}</th>
+						<th>{{total_tax}}</th>
+						<th>{{total}}</th>
+				</thead>
+			</table>
+		</div>
+	</div>
+</div>
+{% endblock %}
+

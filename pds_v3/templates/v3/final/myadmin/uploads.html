@@ -1,0 +1,39 @@
+{% extends "v3/final/base/base.html" %}
+{% load staticfiles %}
+{% load pds_extras %}
+{% block body %}
+<script src="{% static 'js/myscript.js' %}"></script>
+<div id="main-content" class="container">
+    <div class="row">
+	<div class="col-lg-12">
+	    {% for message in messages %}
+	    <div class="alert alert-info">
+		{{message}}
+	    </div>
+	    {% endfor %}
+	</div>
+    </div>
+    <div class="row">
+	<div class="col-lg-4">
+	    <h4>Unapproved PD <small>PD that has not yet been live</small></h4>
+	    <div class="list-group">
+		{% for pd in unapproved_pd %}
+		<a class="list-group-item" onclick="loadXMLDoc('{% url 'upload-admin' pd.id %}','#session-content')">{{pd}} <small>{{pd.presenters.all|join:", "}}</small></a>
+		{% endfor %}
+	    </div>
+	    <h4>Edited PD <small>Live PD that has been changed</small></h4>
+	    <div class="list-group">
+		{% for pd in edited_pd %}
+		<a class="list-group-item" onclick="loadXMLDoc('{% url 'upload-admin' pd.id %}','#session-content')">{{pd}} <small>{{pd.presenters.all|join:", "}}</small></a>
+		{% endfor %}
+	    </div>
+	</div>
+	<div class="col-lg-8" id="session-content">
+
+	</div>
+    </div>
+</div>
+
+
+
+{% endblock %}

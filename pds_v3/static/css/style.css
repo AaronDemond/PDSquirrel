@@ -1,0 +1,90 @@
+body {
+  font-family: "Lato", sans-serif; }
+
+#pd-listing h3 {
+  font-size: 18px !important;
+  margin-bottom: 0 !important; }
+#pd-listing p {
+  margin: 0;
+  padding: 0;
+  color: #545454;
+  line-height: 1.4; }
+
+.my-footer {
+  background-color: #444444; }
+  .my-footer a {
+    color: #a3a3a3 !important; }
+
+#card-cell button {
+  position: relative;
+  display: block;
+  float: left;
+  margin-right: 5px; }
+#card-cell #delete-btn, #card-cell #change-btn {
+  display: block;
+  float: left;
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-top: 15px; }
+#card-cell #delete-btn {
+  margin-left: 0; }
+
+.btn-default {
+  height: 34px !important; }
+
+.pd-list-small-info {
+  color: grey;
+  font-style: italic; }
+
+.padded {
+  margin-bottom: 15px !important; }
+
+.iclose :hover {
+  color: blue; }
+
+.fright {
+  float: right; }
+
+#main-content {
+  min-height: 850px;
+  border-radius: 0px;
+  margin-top: 20px;
+  margin-bottom: 20px; }
+
+.muted {
+  color: grey;
+  
+ }
+
+.removal-bar, .cancel-removal-bar {
+  background-color: aliceblue;
+  padding-top: 10;
+  border-top: 1px solid #DDDDDD;
+  position: relative;
+  top: 10px; }
+
+.pd-upload {
+  padding-bottom: 0px; }
+
+.submit-fix {
+  margin-top: 10px; }
+
+label {
+  color: #717171 !important; }
+
+.msg-container i {
+  position: relative;
+  bottom: 12;
+  left: 10;
+  color: #6B6B6B; }
+
+.my-page-header {
+  margin-top: 0px; }
+
+.white-tile {
+    background-color: white;
+    -webkit-box-shadow: 0 1px 1px rgba(0,0,0,0.15),-1px 0 0 rgba(0,0,0,0.03),1px 0 0 rgba(0,0,0,0.03),0 1px 0 rgba(0,0,0,0.12) !important;
+    border-radius: 0 !important;
+}
+
+/*# sourceMappingURL=style.css.map */

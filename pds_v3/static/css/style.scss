@@ -1,0 +1,146 @@
+$primary-font : 'Lato', sans-serif;
+$footer : #444444;
+
+
+body {
+    font-family: $primary-font;
+
+}
+.navbar-default {
+    //background-image: linear-gradient(to bottom,rgba(63, 178, 116, 0.59) 0,#37B571 100%) !important;
+    .navbar-nav>li>a {
+//	color: black !important;
+    }
+    .navbar-text {
+//	color: black !important;
+    }
+    .navbar-brand {
+//	color: black !important;
+    }
+}
+
+#pd-listing {
+    h3 {
+	font-size: 18px !important;
+	margin-bottom: 0 !important;
+    }
+    p {
+	margin: 0;
+	padding: 0;
+	color: #545454; 
+	line-height: 1.4;
+    }
+}
+.my-footer {
+    background-color: rgb(68,68,68);
+    
+    a {
+	color: rgb(163, 163, 163) !important;
+    }
+}
+
+#card-cell {
+    button {
+	position: relative;
+	display: block;
+	float: left;
+	margin-right: 5px;
+	
+    }
+    #delete-btn, #change-btn {
+	display: block;
+	float: left;
+	margin-left: 5px;
+	margin-right: 5px;
+	margin-top: 15px;
+    }
+    #delete-btn {
+	margin-left: 0;
+    }
+}
+
+.btn-default {
+    height: 34px !important;
+}
+
+#myModal {
+}
+
+.pd-list-small-info {
+    color: grey;
+    font-style: italic;
+}
+
+.padded {
+    margin-bottom: 15px !important;
+}
+
+.iclose {
+    :hover {
+	color: blue;
+    }
+
+}
+
+.navbar-default {
+}
+
+.fright {
+    float: right;
+}
+
+#main-content {
+    min-height: 850px;
+    border-radius: 0px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.muted {
+    color: grey;
+}
+
+//presenter page
+    .removal-bar, .cancel-removal-bar {
+    background-color: aliceblue;
+    padding-top: 10;
+    border-top: 1px solid #DDDDDD;
+    position: relative;
+    top: 10px;
+
+    p {
+    }
+    .btn {
+    }
+}
+
+.pd-upload {
+    padding-bottom: 0px;
+
+}
+.submit-fix {
+    margin-top: 10px;
+}
+
+label {
+    //color:#478857 !important;
+   // color: #6F829C !important;
+    //font-weight: normal !important;
+
+    color: #717171 !important; 
+}
+.msg-container {
+i {
+    position: relative;
+    bottom: 12;
+    left: 10;
+    color: #6B6B6B;
+}
+}
+
+.my-page-header {
+    margin-top: 0px;
+}
+
+
+

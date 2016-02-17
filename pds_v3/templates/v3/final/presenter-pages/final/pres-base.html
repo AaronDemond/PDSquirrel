@@ -1,0 +1,108 @@
+<div class="row my-sessions-row">
+            <div class="col-lg-12">
+                <div class="list-group">
+                    {% for sesh in pd %}
+                    <div class="list-group-item pd-upload" >
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <h2>{{sesh}}<small> </small></h2>
+                                <p class="muted">Uploaded {{sesh.upload_date}}<br>
+                                    {% if sesh.last_edited %}
+                                    Edited {{sesh.last_edited}}
+                                </p>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-4">
+                                <h3 class="muted">Status</h3>
+                                <p>
+                                    {% if sesh.suspend_request %}
+                                    <span class="session-status session-pending-removal">Pending removal</span>
+                                    {% else %}
+                                    {% if sesh.presenter_approved == False %}
+                                    <span class="session-status session-pending-presenter">Awaiting your approval</span>
+                                    {% else %}
+                                    {% if sesh.approved %}
+                                    <span class="session-status session-live">Approved</span>
+                                    {% elif sesh.suspended %}
+                                    <span class="session-status session-suspended">Suspended</span>
+                                    {% else %}
+                                    <span class="session-status session-pending">Pending quality approval</span>
+                                    {% endif %}
+                                    {% endif %}
+                                    {% endif %}
+                                </p>
+                            </div>
+                            <div class="col-xs-4">
+                                <h3 class="muted">Actions</h3>
+                                <a href="{% url 'preview-session' sesh.id %}">Preview</a>
+                                <a href="{% url 'edit' sesh.id %}" class="disabled">Edit</a>
+                                <a onclick="showRemove({{sesh.id}}, this)" class="suspend-link">Remove ▾</a>
+                            </div>
+                            {% if sesh.presenter_approved %}
+                            <div class="col-xs-4">
+                                <h3 class="muted">Edit History</h3>
+                                {% if sesh.edits.all.count == 0 %}
+                                <p>None</p>
+                                {% endif %}
+                                {% for edit in sesh.edits.all %}
+                                <a href="{% url 'edit' sesh.id %}?edit_={{edit.id}}">{{edit.date}}</a><br>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                            {% if sesh.presenter_approved == False %}
+                            <div class="col-xs-4">
+                                <h3 class="muted">Submit For Approval</h3>
+                                <form action="{% url 'presenter-dash' %}" method="POST">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="session_id" value="{{sesh.id}}">
+                                    <input type="hidden" name="p-approved" value="44">
+                                    <input type="submit" class="btn btn-success" value="Submit for Approval">
+                                </form>
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div class="row hidden removal-bar" id="remove-{{sesh.id}}">
+                            <div class="col-xs-4">
+                                <p>Do you wish to {% if sesh.presenter_approved %}request removal of{% else %} remove{%endif%}<br><b>{{sesh}}</b>?</p>
+                            </div>
+                            <div class="col-xs-8">
+                                <form action="{% url 'presenter-dash' %}" method="POST">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="suspend-request" value="1">
+                                    <input type="hidden" name="session_id" value="{{sesh.id}}">
+                                    <div class="control-group">
+                                        <input type="text" name="reason" class="form-control" placeholder="You may optionally provide a reason">
+                                    </div>
+                                    <div class="control-group">
+                                        <input type="submit" class="btn btn-success" value="Yes">
+                                        <a class="btn btn-default" onclick="hideSuspend()">Cancel</a>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <script>
+                            function hideSuspend() {
+                                $('.removal-bar').addClass('hidden');
+                                $('.suspend-link').text('Remove ▾'); 
+                            }
+                            
+                            function showRemove(id, suslink) {
+                                row_id = "#remove-" + id;
+                            
+                                if ($(suslink).text() == 'Remove ▴'){
+                            	$(suslink).text('Remove ▾');
+                                } else {
+                            	$(suslink).text('Remove ▴'); 
+                                }
+                                $(row_id).toggleClass("hidden");
+                            }
+                            
+                               
+                        </script>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>

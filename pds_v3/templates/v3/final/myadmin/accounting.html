@@ -1,0 +1,104 @@
+{% extends "v3/final/base/base.html" %}
+{% load staticfiles %}
+{% load pds_extras %}
+{% block body %}
+<script src="{% static 'js/myscript.js' %}"></script>
+<div id="main-content" class="container">
+    <h3 class="my-page-header">Accounting</h3>
+
+    <table class="table">
+	<tr>
+	    <td class="table-header">PD Squirrel entitlements</td>
+	    <td></td>
+	</tr>
+	<tr>
+	    <td>Percentage take of monthly premium</td>
+	    <td><input type="Text"></td>
+	</tr>
+	<tr>
+	    <td>Dollar take of monthly premium</td>
+	    <td><input type="Text"></td>
+	</tr>
+	<tr>
+	    <td>Percentage take of Individual purchases</td>
+	    <td><input type="Text"></td>
+	</tr>
+	<tr>
+	    <td>Dollar take of Individual purchases</td>
+	    <td><input type="Text"></td>
+	</tr>
+	<tr>
+	    <td class="table-header">Pricing and entitlements for Premium members</td>
+	    <td></td>
+	</tr>
+	<tr>
+	    <td>Effective Date</td>
+	    <td><input type="date"></td>
+	</tr>
+	<tr>
+	    <td>Premium member monthly fee</td>
+	    <td><input type="text"></td>
+	</tr>
+	<tr>
+	    <td>No. of monthly Session Credits</td>
+	    <td><input type="number"></td>
+	</tr>
+	<tr>
+	    <td class="table-header">Pricing of individual PD Session</td>
+	    <td></td>
+	</tr>
+	<tr>
+	    <td>Default price of each PD Session</td>
+	    <td><input type="number"></td>
+	</tr>
+    </table>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+
+$(document).ready(function() {
+$("tr:has(.table-header)").addClass("table-header-spacing");
+});
+
+</script>
+
+<style>
+
+.mychk {
+    padding: 0px !important;
+    margin: 0px !important;
+    width: 20px;
+}
+
+input {
+    width: 40%;
+}
+td {
+    padding-left: 20px !important;
+}
+.table-header {
+    font-weight: bold;
+    padding-left: 0px !important;
+    padding-top: 35px !important;
+}
+.table-header-spacing {
+    margin-top: 200px !important;
+    padding-top: 200px !important;
+    color: brown;
+}
+
+
+</style>
+{% endblock %}

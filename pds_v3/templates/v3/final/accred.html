@@ -1,0 +1,98 @@
+{% extends "v3/final/base/base.html" %}
+{% load staticfiles %}
+{% block body %}
+<div id="main-content" class="container">
+    <div class="row">
+        <div class="col-lg-9 col-lg-offset-1">
+    <div class="row">
+        <div class="col-xs-12 ">
+
+	<a href="{% url 'detail' pd.id %}">Back to session details</a>
+            <h2>{{pd.name}}</h2>
+            <hr>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <input type="hidden" value ="{{pd.id}}" id="pd_id">
+            <input type="hidden" value ="{{society.id}}" id="society_id">
+            <label for="">Select your law society to check the CPD eligibility of this session  </label>
+            <select id="society-select" class ="form-control" name="society-select" onchange="myfunction();">
+            {% for entry in societies %}
+            <option value="{{entry.id}}" onclick="myfunction();" {% if entry.id == society_chosen.id %}selected{% endif %}>{{entry.name}}</option>
+            {% endfor %}
+            </select>
+            <br>
+        </div>
+    </div>
+    <br>
+    <br>
+    <div class="row">
+        <div class="header">{{society}}</div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12" style = "min-height: auto">
+                    <h3> Eligibility of this PD Squirrel session.</h3>
+                    <p>
+                    	{{eligibility}}
+                    </p>
+        </div>
+        <div class="col-lg-12" style = "min-height: auto">
+		<h3> Overview of the CPD requirements of the {{society_chosen}} </h3>
+                    <p>
+                    	{{overview}}
+                    </p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+		<p>
+		The above is summary information which was prepared by PD Squirrel as a courtesy for quick reference.  It may be subject to further details and may change at any time without notice.  For complete details concerning your CPD obligations to the {{society_chosen}}, go to <a href="http://{{society_chosen.website}}" target="_blank">{{society_chosen.website}}</a> and review the relevant webpages.
+		</p>
+        </div>
+    </div>
+
+	</div>
+    </div>
+    <script src="{% static 'pd/js/jquery.min.js' %}"></script>
+    <script>
+        function myfunction() {
+        	var selected = $("#society-select option:selected").val();
+        	var pd_id = $('#pd_id').val();
+        	var url = "/pd/accred/" + pd_id + "/" + selected + "/";
+        	window.location.href = url;
+        }
+    </script>
+    <script src="{% static 'pd/js/jquery.min.js' %}"></script>
+    <script>
+        $(document).ready(function(){
+        
+        
+        function search(){
+        	    $('#browse-options').addClass('hidden');
+                $('#search-options').removeClass('hidden');
+                $('#search-toggle').addClass('active');
+        	    $('#browse-toggle').removeClass('active');
+        }
+        function browse(){
+                $('#search-options').addClass('hidden');
+                $('#browse-options').removeClass('hidden');
+                $('#browse-toggle').addClass('active');
+        	    $('#search-toggle').removeClass('active');
+        //alert(subject);
+        }
+        
+        
+        
+        //	    alert('{{type}}');
+            $("#").click(function(){
+        search();
+            });
+            $("#browse-toggle").click(function(){
+        browse();
+            });
+        
+        });
+    </script>
+</div>
+{% endblock body %}

@@ -1,0 +1,370 @@
+<script>
+    $('a').click(function() {
+        $('.msg-container').empty();
+    });
+</script>
+<script>
+function hideStatus() {
+    $('.status-bar').addClass('hidden');
+    $('.status-link').text('(info ▾)');
+}
+
+
+function showStatus(id, infolink) {
+    hideStatus();
+    row_id = "#status-" + id;
+    $(row_id).toggleClass("hidden");
+
+    if ($(infolink).text() == '(info ▾)') {
+
+        $(infolink).text('(info ▴)');
+    } else {
+
+    hideStatus();
+        $(infolink).text('(info ▾)');
+    }
+}
+
+function hideSuspend() {
+    $('.removal-bar').addClass('hidden');
+    $('.suspend-link').text('Remove ▾');
+
+}
+
+function hideCancelBar() {
+    $('.cancel-removal-bar').addClass('hidden');
+    $('.cancel-removal-link').text('Cancel removal ▾');
+}
+
+function showRemove(id, suslink) {
+    hideCancelBar();
+    hideSuspend();
+    row_id = "#remove-" + id;
+
+    if ($(suslink).text() == 'Remove ▴') {
+        $(suslink).text('Remove ▾');
+    } else {
+        $(suslink).text('Remove ▴');
+    }
+    $(row_id).toggleClass("hidden");
+}
+
+function showSuspendCancel(id, suslink) {
+    hideCancelBar();
+    hideSuspend();
+    row_id = "#remove-cancel-" + id;
+
+    if ($(suslink).text() == 'Cancel removal ▴') {
+        $(suslink).text('Cancel removal ▾');
+    } else {
+        $(suslink).text('Cancel removal ▴');
+    }
+    $(row_id).toggleClass("hidden");
+}  
+                                        
+                                 
+</script>
+<style>
+    .actions button, .actions a {
+    float: left;
+    margin-right: 5px;
+    margin-top:15px;
+    background-color: lightblue;
+    background-color: #EFEFEF;
+    color: #797979;
+    float: left;
+    margin-right: 5px;
+    margin-top: 15px;
+    background-color: lightblue;
+    background-color: #FFFFFF;
+    color: #000000;
+    background-image: linear-gradient(to bottom,#FFFFFF 0,#B7B7B7 100%);
+    border: aliceblue;
+    border-radius: 2px;
+    border: 1px solid grey;
+    padding: 0 5;
+    float: left;
+    margin-right: 5px;
+    margin-top: 15px;
+    background-color: lightblue;
+    background-color: #EFEFEF;
+    color: #797979;
+    float: left;
+    margin-right: 5px;
+    margin-top: 10px;
+    background-color: lightblue;
+    background-color: #FFFFFF;
+    color: #000000;
+    background-image: linear-gradient(to bottom,#FFFFFF 0,#F5F5F5 100%);
+    border: aliceblue;
+    border-radius: 2px;
+    border: 1px solid grey;
+    padding: 0 5;
+    }
+    .release {
+    background-color: green;
+    }
+    .actions input {
+    margin-left: 50px;
+    }
+    .status p {
+    margin-left: 10px;
+    }
+    #approve-btn {
+    padding: 0 5;
+    position: relative;
+    top: 10;
+    right: 50;
+    border: 1px solid black;
+    }
+    .pd-upload h4 {
+    margin-top: 10px;
+    margin-bottom: 0; 
+    }
+    .status-brown {
+    color: brown;
+    }
+</style>
+<div class="row">
+		<div class="col-lg-9 col-lg-offset-1">
+			<div class="msg-container">
+			    {% if messages %}
+			    {% for msg in messages %}
+			    <div class="alert alert-{{msg.tags}} msg" role="alert">{{msg}} <a href="#"><i class="fa fa-times pull-right iclose"></i></a> </div>
+			    {% endfor %}
+			    {% endif %}
+			</div>
+		</div>
+</div>
+<div class="row my-sessions-row">
+    <div class="col-lg-9 col-lg-offset-1">
+        <div class="list-group">
+            {% for sesh in pd %}
+            <div class="list-group-item pd-upload" >
+                <div class="row">
+                    <div class="col-lg-12">
+                        {% if sesh.edited %}
+                        <h4>{{sesh.edits.latest}}</h4>
+                        {% else %}
+                        <h4>{{sesh}}</h4>
+                        {% endif %}
+                    </div>
+                    <div class="col-lg-6">
+                        <p class="muted">Uploaded {{sesh.upload_date}}
+                            {% if sesh.last_edited %}
+                            <br>Edited {{sesh.last_edited}}
+                            {% endif %}
+                        </p>
+                        <div class="status">
+                            <p><b>Status:</b>
+                                {% if sesh.suspend_request %}
+                                Accepted & listed<br>
+                                <span class="status-brown">
+                                (Pending removal request)
+                                </span>
+                                {% elif sesh.presenter_approved == False %}
+                                {% if sesh.approved %}
+                                Accepted & listed<br>
+                                <span class="status-brown">
+                                (Edited version is awaiting your release)
+                                </span>
+                                {% else %}
+                                Awaiting your release
+                                {% endif %}		
+                                {% elif sesh.edited %}
+                                {% if sesh.approved %}
+                                Accepted & listed<br>
+                                <span class="status-brown">
+                                (Edited version awaiting acceptance)
+                                </span>
+                                {% else %}
+                                Awaiting our acceptance
+                                {%endif %}
+                                {% elif sesh.approved == False %}
+                                Awaiting our acceptance
+                                {% else %}
+                                Accepted & listed
+                                {% endif %}
+                                <a class="status-link" onclick="showStatus({{sesh.id}}, this)">(info ▾)</a>
+                            </p>
+                            <div class="progress" style="height: 10px">
+
+                                {% if sesh.presenter_approved == False %}
+                                <div class="progress-bar" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width: 33%;">
+                                    <span class="sr-only">1/3 Complete</span>
+                                </div>
+                                {% elif sesh.approved == False %}
+                                <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 67%;">
+                                    <span class="sr-only">2/3 Complete</span>
+                                </div>
+                                {% elif sesh.approved %}
+                                <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 100%;">
+                                    <span class="sr-only">Complete</span>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 actions">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                &nbsp;
+                            </div>
+                        </div>
+                        {% if sesh.suspend_request %}
+                        <a class=""  onclick="loadXMLDoc('{% url 'preview-session' sesh.id %}?l=true', '#page-content')">Listen</a>
+                        <a class="cancel-removal-link" onclick="showSuspendCancel({{sesh.id}}, this)" >Cancel removal ▾</a>
+                        {% else %}
+                        {% if sesh.approved %}
+                        {% if sesh.edited %}
+                        <a class=""  onclick="loadXMLDoc('{% url 'preview-session' sesh.id %}?l=true', '#page-content')">Listen to existing</a>
+                        <a class=""  onclick="loadXMLDoc('{% url 'preview-session' sesh.id %}', '#page-content')">Preview edited</a>
+                        {% else %}
+                        <a class=""  onclick="loadXMLDoc('{% url 'preview-session' sesh.id %}?l=true', '#page-content')">Listen</a>
+                        {% endif %}
+                        {% else %}
+                        <a class=""  onclick="loadXMLDoc('{% url 'preview-session' sesh.id %}', '#page-content')">Preview</a>
+                        {% endif %}
+                        <a class="" onclick="loadXMLDoc('{% url 'edit' sesh.id %}', '#page-content')">Edit</a>
+                        <a class="suspend-link" onclick="showRemove({{sesh.id}}, this)" >Remove ▾</a>
+                        {% if sesh.presenter_approved == False %}
+                        <form action="{% url 'presenter-dash' %}" method="POST" style="float: left; margin-right: 5px;">
+                            {% csrf_token %}
+                            <input type="hidden" name="session_id" value="{{sesh.id}}">
+                            <input type="hidden" name="p-approved" value="44">
+                            {% if sesh.edited and sesh.approved %}
+                            <input type="submit" id="approve-btn" class="btn btn-success" value="Release edited Session">
+                            {% else %}
+                            <input type="submit" id="approve-btn" class="btn btn-success" value="Release Session">
+                            {% endif %}
+                        </form>
+                        {% endif %}
+                        {% endif %}
+                    </div>
+                </div>
+                {% if sesh.suspend_request %}
+                <div class="row cancel-removal-bar hidden" id="remove-cancel-{{sesh.id}}">
+                    <div class="col-lg-3">
+                        <p>Do you wish to cancel the request for removal of this session?</p>
+                    </div>
+                    <div class="col-lg-8">
+                        <form action="{% url 'presenter-dash' %}" method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="suspend-cancel" value="1">
+                            <input type="hidden" name="session_id" value="{{sesh.id}}">
+                            <div class="control-group" style="margin-top:10px;">
+                                <input type="submit" class="btn btn-success" value="Yes">
+                                <a class="btn btn-default" onclick="hideCancelBar()">Cancel</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                {% endif %}
+                <div class="row hidden removal-bar" id="remove-{{sesh.id}}">
+                    <div class="col-lg-3">
+                        <p>Do you wish to request removal of this session?</p>
+                    </div>
+                    <div class="col-lg-8">
+                        <form action="{% url 'presenter-dash' %}" method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="suspend-request" value="1">
+                            <input type="hidden" name="session_id" value="{{sesh.id}}">
+                            <div class="control-group">
+                                <label for="">Reason</label>
+                                <input type="text" name="reason" class="form-control" placeholder="You may optionally provide a reason">
+                            </div>
+                            <div class="control-group" style="margin-top:10px;">
+                                <input type="submit" class="btn btn-success" value="Yes">
+                                <a class="btn btn-default" onclick="hideSuspend()">Cancel</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="row hidden status-bar" id="status-{{sesh.id}}" style="margin-top: 20px;">
+                    <div class="col-lg-12">
+                        <div class="alert alert-info">
+
+			    {% if sesh.edited and sesh.approved and sesh.presenter_approved %}
+<p>
+    The original of this PD Session has been released by you and accepted by us (it is listed on the Site 
+    
+    and offered to all PD Squirrel members).  You have subsequently requested changes to its title or 
+    
+    description, and/or you have requested that the audio file of this PD Session be replaced with 
+    
+    another audio file that you have uploaded and released to us. Once reviewed and accepted by us, 
+    
+    we will make the changes and/or replace the audio file of this PD Session as reasonably necessary.
+</p>
+
+
+			    {% elif sesh.approved and sesh.edited and sesh.presenter_approved == False %}
+<p>
+    The original of this PD Session has been released by you and accepted by us (it is listed on the Site 
+    
+    and offered to all PD Squirrel members).  Subsequently, you have saved requested changes to the 
+    
+    title or description of this Session, and/or uploaded a possible replacement audio file.  These have 
+    
+    not yet been released by you.  When you click the green button titled ‘Release edited Session’, you 
+    
+    will be deemed to release to us your requested changes and your most recently uploaded audio file 
+    
+    of this PD Session for our review and acceptance in accordance with our Presenter terms and 
+    
+    conditions.  Once reviewed and accepted by us, we will make the changes and/or replace the audio 
+    
+    file of this PD Session as reasonably necessary.
+</p>
+
+                            {% elif sesh.suspend_request %}
+<p>
+    You have requested the removal of this PD Session, which has been previously released by you and 
+    
+    accepted by us. We are processing your removal request in accordance with our Presenter terms 
+    
+    and conditions.
+</p>
+                            {% elif sesh.presenter_approved == False %}
+
+<p>
+    We are awaiting your release of this PD Session to us. When you click the green button titled 
+    
+    ‘Release Session’, you will be deemed to release it to us for our review and acceptance in 
+    
+    accordance with our Presenter terms and conditions. Immediately upon our acceptance of this PD 
+    
+    Session, it will be listed on the Site and offered to PD Squirrel members. Before you click to release 
+    
+    it, you may preview, edit or remove this PD Session as you wish. After we accept and list this PD 
+    
+    Session, we reserve the right to approve any request from you to remove it, in accordance with our 
+    
+    Presenter terms and conditions.
+</p>
+
+                            {% elif sesh.approved == False %}
+                            <p>Thank you for releasing this PD Session to us. Once reviewed and accepted by us, in accordance with our Presenter terms and conditions, it will be listed on the Site and offered to all PD Squirrel members.</p>
+                            {% else %}
+<p>
+    This PD Session has been released by you and accepted by us. It is now listed on the Site and 
+    
+    offered to all PD Squirrel members.
+</p>
+                            {% endif %}
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <button class="btn btn-default pull-right" onclick="hideStatus()">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            
+        </div>
+    </div>
+    <div class="col-lg-3">
+    </div>
+</div>

@@ -1,0 +1,63 @@
+{% load pds_extras %}
+<div class="analytics-container">
+    <div class="row" id="analytics-date">
+        <div class="col-lg-9 col-lg-offset-1">
+    
+    	    <h4 style="margin-bottom: 0">Analytics</h4>
+    	    <hr style="margin-top: 10px">
+    	    
+    	    <form id="analytics-form" action="{% url 'analytics-report' %}" method="POST">
+    	        {% csrf_token %}
+    	        <div class="row" style="margin-bottom:20px">
+    	            <div class="col-lg-3">
+    	                <label for="">Start (dd/mm/yyyy)</label>
+    	                <input type="date" name="start" class="form-control" value="{{start.year}}-{% if start.month < 10 %}0{% endif %}{{start.month}}-{% if start.day < 10%}0{%endif%}{{start.day}}">
+    	            </div>
+    	            <div class="col-lg-3">
+    	                <label for="">End (dd/mm/yyyy)</label>
+    	                <input type="date" name="end" class="form-control" value="{{end.year}}-{% if end.month < 10 %}0{% endif %}{{end.month}}-{% if end.day < 10%}0{%endif%}{{end.day}}">
+    	            </div>
+    	            <div class="col-lg-2">
+    	                <input type="hidden" name="date-rng">
+    	                <input type="submit" style="margin-top: 25px" class="btn btn-success" onclick="$('#analytics-report').removeClass('hidden')" value="Generate report">
+    	            </div>
+    	    	
+    	        </div>
+    	    </form>
+    	
+        
+    
+        </div>
+    </div>
+    
+    
+        
+</div>
+    
+    <div id="result">
+
+    </div>
+    
+    <script>
+    $("#analytics-form").submit(function(event) {
+
+	event.preventDefault();
+	var $form = $(this),
+	start_val = $form.find("input[name='start']").val(),
+	end_val = $form.find("input[name='end']").val(),
+	csrf = $form.find("input[name='csrfmiddlewaretoken']").val(),
+	url = $form.attr("action");
+	console.log(csrf);
+
+	var posting = $.post(url, { start: start_val, end: end_val, csrfmiddlewaretoken : csrf } );
+	posting.done(function(data) {
+	    $("#result").empty();
+	    $("#result").append(data);
+	});
+    });
+
+
+
+    </script>
+
+

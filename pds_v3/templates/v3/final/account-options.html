@@ -1,0 +1,578 @@
+{% extends "v3/final/base/base.html" %}
+{% load staticfiles %}
+{% block body %}
+{% load pds_extras %}
+<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+<script>
+    Stripe.setPublishableKey('pk_test_URIzgmhYoVYuzDm9Q98RHkIQ');
+    jQuery(function($) {
+      $('#payment-form').submit(function(event) {
+        var $form = $(this);
+    
+        // Disable the submit button to prevent repeated clicks
+        $form.find('button').prop('disabled', true);
+    
+        Stripe.card.createToken($form, stripeResponseHandler);
+    
+        // Prevent the form from Sessiange pn with the default action
+        return false;
+      });
+    });
+    
+    function stripeResponseHandler(status, response) {
+      var $form = $('#payment-form');
+    
+      if (response.error) {
+        // Show the errors on the form
+        $form.find('.payment-errors').text(response.error.message);
+        $form.find('button').prop('disabled', false);
+      } else {
+        // response contains id and card, which contains additional card details
+        var token = response.id;
+        // Insert the token into the form so it gets submitted to the server
+        $form.append($('<input type="hidden" name="stripeToken" />').val(token));
+          
+          
+        // and submit
+        $form.get(0).submit();
+      }
+    };
+</script>
+<style>
+    td {
+    font-size: 14px;
+    height: 20px;
+    padding: 0px;
+    }
+    b {
+    font-size: 14px;
+    line-height: auto;
+    }
+    .low-space td {
+    padding: 0px;
+    }
+    tr {
+    }
+    td {
+	width: 200px !important;
+    }
+    h3 {
+	margin-bottom: 20px;
+    }
+
+    #account_options {
+	margin-top: 20px;
+	background-color: white;
+    }
+</style>
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            <div id = "account_options">
+                <div id="myModal" class="modal" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <form action="{% url 'newcard' %}" method="POST" id="payment-form">
+                                <div class="row">
+                                    <div class="col-xs-12">
+					<h3>Payment Details</h3>
+                                        <hr>
+                                    </div>
+                                    <div class="col-sm-5">
+                                        <span class="payment-errors"></span>
+                                        <div class="input-group">
+                                            <label>Card Number</label>
+                                            <input type="text" class="form-control" size="20" data-stripe="number"/>
+                                        </div>
+                                        <div class="input-group">
+                                            <label>CVC</label>
+                                            <input type="text" class="form-control" size="4" data-stripe="cvc"/>
+                                        </div>
+                                        <div class="input-group">
+                                            <label> Expiration Month (MM)</label>
+                                            <input type="text" size="2" class="form-control"  data-stripe="exp-month"/>
+                                        </div>
+                                        <div class="input-group">
+                                            <label for="">Expiration Year (YYYY)</label>
+                                            <input type="text" size="4" class="form-control" data-stripe="exp-year"/>
+                                        </div>
+                                        {% csrf_token %}
+                                    </div>
+                                    <div class="col-sm-7">
+                                        <p>
+We use the services of Stripe, with which we have a merchant agreement, to receive and process 
+					payments from our PD Squirrel members. None of your sensitive information is stored on our servers, instead it is encrypted and stored by entirely Stripe. This helps ensure your privacy. </p>
+
+                                    </div>
+                                    <div class="col-xs-3 col-xs-offset-9">
+                                        <button type="submit" class="btn btn-success">Submit</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <script>
+                    function makeEmailVisible(){
+                    $('#email-confirm-td').removeClass("hidden");
+                    $('#email').removeAttr("disabled");
+                    $('#email-box-2').removeAttr("disabled");
+                        $('#type').val("email");
+                    }
+                    
+                    function makePassVisible(){
+                    $('#pass-box-1').removeAttr("disabled");
+                    $('#pass-box-2').removeAttr("disabled");
+                    $('#pass-box-3').removeAttr("disabled");
+                    $('#pass-confirm-td').removeClass("hidden");
+                    $('#pass-auth-tr').removeClass("hidden");
+                        $('#type').val("password");
+                    }
+                    
+                    function makeVisible(id){
+                    $('#save-btn').removeAttr("");
+                    $('#save-btn').removeClass("hidden");
+                    
+                    if (id == first_name)
+                    $('#first_name').removeAttr("");
+                    if (id == last_name)
+                    $('#last_name').removeAttr("");
+                    if (id == email) { 
+                    
+                    $('#email-confirm-td').removeClass("hidden");
+                    $('#email-box-2').removeAttr("disabled");
+                    $('#email-box-2').removeAttr("");
+                    $('#email-box-2').addClass("hidden");
+                    
+                    }
+                    if (id == 4) { 
+                    $('#pass-box-1').removeAttr("disabled");
+                    $('#pass-box-2').removeAttr("disabled");
+                    $('#pass-box-3').removeAttr("disabled");
+                    $('#pass-confirm-td').removeClass("hidden");
+                    $('#pass-auth-tr').removeClass("hidden");
+                    }
+                    if (id == 5)
+                    $('#society').removeAttr("");
+                    
+                    }
+                </script>
+                {% csrf_token %}
+		<style>
+		    .col1 {
+			color: grey;
+		    }
+
+
+		</style>
+                <div class="container">
+                    <div class="row">
+			
+			
+                        <div class="col-lg-9 col-lg-offset-1" style="padding-left: 0;margin-top:20px">
+                            {% if messages %}
+                            {% for msg in messages %}
+                            <div class="alert alert-{{msg.tags}} msg" role="alert">{{msg}} <a href="#"><i class="fa fa-times pull-right iclose"></i></a> </div>
+                            {% endfor %}
+                            {% endif %}
+                            {% if msgs %}
+                            {% for msg in msgs %}
+                            <div class="alert alert-{{msg.0}} msg" role="alert">{{msg.1}} <a href="#"><i class="fa fa-times pull-right iclose"></i></a> </div>
+                            {% endfor %}
+                            {% endif %}
+                            <p class="bg-info">{{msg}}</p>
+                            <h3>My Account<small></small></h3>
+                            <table class="table">
+                                <tr>
+                                    <td class='col1'>Name</td>
+                                    <td>{{user.first_name}} {{user.last_name}}</td>
+                                </tr>
+                                <tr>
+                                    <td class='col1'>Email</td>
+                                    <td>{{user.email}}</td>
+                                </tr>
+                                <tr>
+                                    <td class='col1'>Law society</td>
+                                    <td>
+                                            {% for x in user.profile.society.all %}
+                                            <p style="margin: 0;">{{x}}</p>
+                                            {% endfor %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class='col1'>Date joined PDS</td>
+                                    <td>{{user.profile.date_joined|remove_time}}</td>
+                                </tr>
+                                <tr>
+                                    <td class='col1'>My card <a onclick="showPaymentInfo()">(more information)</a></td>
+                                    <td id="card-cell">
+                                        {% if customer.sources.total_count < 1 %}
+                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Add Card</button> 
+                                        {% else %}
+                                        {% for x in customer.sources.data %}
+                                        {{x.brand}} **** **** **** {{ x.last4 }} 
+                                        <form action = "{% url 'delcard' %}" id="delform" method="POST">
+                                            {% csrf_token %}
+                                            <input type="hidden" value="{{x.id}}" name="cardid">
+                                            <input type="submit" class="btn btn-default" id="delete-btn" value="Remove Card">
+                                        </form>
+                                        {% endfor %}
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            </table>
+                            <script>
+                                $(document).ready(function(){
+                                    $('[data-toggle="tooltip"]').tooltip();   
+                                });
+                            </script> 
+                            <div class="alert alert-info hidden" id="payment-info">
+				<p>
+				We use the services of Stripe Payments Canada, Ltd., with which we have a merchant agreement, to receive and process payments from our PD Squirrel members. None of your credit card information is stored on our servers, except only the four last digits for your reference purposes only. Instead we receive from Stripe only an electronic token which we use to charge the appropriate payment to your card. Learn more about Stripe by clicking <a target="_blank" href="https://stripe.com/ca">here.</a></p>
+				<p>Click the 'Add Card' button to add a credit card to your account. The linked card can then be used to easily become a Premium member, or purchase individual PD sessions. You can remove or change a card at any point, by clicking the 'Remove Card' button that appears once a card has been added.</p>
+
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <p class="pull-right">
+                                            <button class="btn btn-default" onclick="showPaymentInfo()" style="margin-top: 10px;">Close</button>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <script>
+                                $("#delform").submit(function() {
+                                var c = confirm("Are you sure you want to remove this card?");
+                                return c;
+                                });
+                                function showPaymentInfo() {
+
+				  $("#btnholder").empty();
+                                  $('#credit-info').addClass('hidden');
+                                  $('#change-membership').addClass('hidden');
+				  $('#membership-type-info').addClass('hidden');
+                                  $('#payment-info').toggleClass('hidden');
+                                }	    
+                                function showCreditInfo() {
+				  $("#btnholder").empty();
+                                  $('#change-membership').addClass('hidden');
+				  $('#membership-type-info').addClass('hidden');
+                                  $('#payment-info').addClass('hidden');
+                                  $('#credit-info').toggleClass('hidden');
+                                }	    
+                                function showChangeMembership() {
+				  $("#btnholder").empty();
+                                  $('#payment-info').addClass('hidden');
+				  $('#membership-type-info').addClass('hidden');
+                                  $('#credit-info').addClass('hidden');
+                                  $('#change-membership').toggleClass('hidden');
+                                }	    
+				function showMembershipTypeInfo() {
+				  $("#btnholder").empty();
+                                  $('#payment-info').addClass('hidden');
+                                  $('#credit-info').addClass('hidden');
+                                  $('#change-membership').addClass('hidden');
+				  $('#membership-type-info').toggleClass('hidden');
+
+				}
+                                  
+                            </script>
+			    <style>
+			    .alert-info {
+				margin-top:10px;
+			    }
+			    </style>
+                            <h3>My Membership<small></small></h3>
+                            <table class="table">
+                                <tr>
+                                    <td class="col1">Membership type <a onclick="showMembershipTypeInfo()">(more)</a>
+
+				    </td>
+                                    <td><b>{% if user.profile.is_premium %}Premium{% else %}Standard{% endif %}</b></td>
+
+                                </tr>
+				<tr id="membership-type-info" class="hidden">
+				    <td colspan="2">
+<div class="col-xs-12" id="">
+                                    <div class="alert alert-info" >
+					<p>
+<b>Premium PD Squirrel membership</b> – For a monthly fee of $29.99 (GST/HST included), you are entitled to 
+
+take any 8 PD sessions during the month – you choose the sessions.  The monthly fee is billed directly to 
+
+your credit card on the first day of each monthly cycle.  A cycle starts on the day you become a Premium 
+
+member and ends on the same day of the following month, or the last day of the following month if 
+
+there are fewer days in that month.  If you do not take all 8 PD sessions in a monthly cycle, the unused 
+
+entitlement is not carried over to the next month.  You may purchase additional sessions, beyond the 8 
+
+included in your Premium membership, at the listed price.
+					</p>
+<p>
+<b>Standard PD Squirrel membership</b> – You purchase each PD session individually for the listed price.  You
+
+pay no monthly fee.
+</p>
+<p>
+    Your PD is always available to you for at least 2 years – Every PD session taken by you (whether as a 
+    
+    Premium member or a Standard member) is automatically saved for you in your PD Library.  You can access 
+    
+    these sessions at any time, whether you are a Premium member or Standard member.
+</p>
+
+<p>
+    Our HST no. is 123456789.
+</p>
+
+                                        <div class="row">
+<div class="col-xs-12">
+<p class="pull-right">
+                                            <button onclick="showMembershipTypeInfo()" class="btn btn-default">Close</button>
+                                        </p></div>
+				    </div>
+                                    </div>
+                                </div>
+				    </td>
+				</tr>
+                                {% if user.profile.is_premium %}
+                                {% if customer.subscriptions.total_count > 0 %}
+                                <tr>
+                                    <td class="col1">Current monthly cycle ends </td>
+                                    <td>{{ customer.subscriptions.data.0.current_period_end|unix_time_convert}}</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td class="col1">Next billing date</td>
+                                    <td>
+                                        ${{ customer.subscriptions.data.0.plan.amount|format_cents }} will be billed on 
+                                        {{ customer.subscriptions.data.0.current_period_end|add_day}} for the next monthly cycle.
+                                    </td>
+                                </tr>
+				<tr>
+                                    <td class="col1">Session credits remaining <a onclick="showCreditInfo()">(more)</a></td>
+                                    <td>{{ user.profile.remaining_pd }}</td>
+                                </tr>
+                                {% endif %}
+                                {% else %}
+                                <tr>
+                                    <td class="col1">Session credits remaining <a onclick="showCreditInfo()">(more)</a>
+
+					
+				    </td>
+                                    <td>{{ user.profile.remaining_pd }}</td>
+                                </tr>
+				
+                                {% endif %}
+				<tr>
+				    <td colspan="2" class="hidden" id="credit-info">
+					<div class="alert alert-info">
+					    <p>
+						<b>Session credits</b> - means the number of PD sessions you may take from the PD Squirrel site at this time, 
+						without any further payment.  Every PD Squirrel members gets one free credit upon joining.  Standard 
+						members don’t receive any further credits, as they pay per session.  Premium members are entitled to 
+						take 8 sessions during each monthly cycle (we refer to these as PD session credits).  As sessions are 
+						taken, the number of credits drops correspondingly.
+					    </p> 
+					    <div class="row">
+						<div class="col-xs-12">
+						    <p class="pull-right">
+							<button class="btn btn-default" onclick="showCreditInfo()" style="margin-top: 10px;">Close</button>
+						    </p>
+						</div>
+					    </div>
+					</div>
+				    </td>
+				</tr>
+                                <tr>
+                                    <td class="col1">{% if user.profile.is_premium %}Downgrade membership {% else %}
+                                        Upgrade membership to Premium {% endif %}<a onclick="showChangeMembership()">(more)</a>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-primary" onclick="showChangeMembership()">Change Membership</button>
+                                    </td>
+                                </tr>
+                            </table>
+                            
+                            <div class="row">
+                                <div class="col-xs-12">
+                                </div>
+                            </div>
+<div class="row hidden">
+                                
+                            </div>
+                            <div class="row hidden" id="change-membership">
+                                <div class="col-xs-12">
+                                    <div class="alert alert-info">
+					{% if user.profile.is_premium %}
+<p>
+You may downgrade from Premium to Standard membership at any time.  If you do, you will not be
+
+entitled to any additional monthly PD session credits and we will stop billing your credit card for the 
+
+monthly Premium membership fee.  As a PD Squirrel Standard member, you may continue to purchase 
+
+individual PD sessions at any time for the listed price.  You will still be entitled to take your remaining 
+
+unused PD session credits until the end of the monthly cycle in which your membership changed, however, 
+
+we will not refund any portion of your monthly Premium membership fee applicable to that monthly 
+
+cycle.</p>
+{% else %}
+					<p>
+<b>Upgrade to Premium membership today</b> – just $29.99 (taxes incl.) per month for 8 PD sessions per 
+
+month. </p><p>
+
+When you click below, you authorize us to charge your credit card now for the first $29.99 monthly fee, 
+
+and at the beginning of each monthly cycle for the same monthly fee.  By clicking below, you also 
+
+confirm your continued agreement to the terms and conditions of Site use.</p><p>
+
+We will never change the monthly fee without notifying you well in advance in accordance with our 
+
+terms and conditions.  You may change your membership from Premium to Standard at any time, on 
+
+this Account options page, and we will stop our automatic monthly billing to your credit card.  If you do, 
+
+you will still be entitled to take your remaining unused PD session credits until the end of the monthly 
+
+cycle in which your member changed, however, we will not refund any portion of your monthly 
+
+membership fee applicable to that monthly cycle.
+					</p>
+					<p>
+
+By clicking below, you agree to change your membership from Standard to Premium and you confirm 
+
+your continued agreement to the terms and conditions of Site use.
+					</p>
+
+					{% endif %}
+                                        <form action="{% url 'change-membership' %}" method="POST" id="memform">
+                                            {% csrf_token %}
+                                        </form>
+                                        {% if user.profile.is_premium %}
+                                        <button class="btn btn-primary memsubmit">Downgrade to Standard</button>
+                                        {% else %}
+                                        <button class="btn btn-primary memsubmit">Upgrade to Premium</button>
+                                        {% endif %}
+                                        <p class="pull-right">
+                                            <button onclick="showChangeMembership()" class="btn btn-default">Close</button>
+                                        </p>
+
+					<div id="btnholder" style="margin-top: 10px;">
+					</div>
+                                    </div>
+                                </div>
+                            </div>
+			    
+                            <!-- If you're using Stripe for payments -->
+                            <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+                            <script>
+                                $(".memsubmit").click(function() {
+					$("#btnholder").empty();
+					$("#btnholder").append("<button id='memsubform' onclick='memsubform()' class='btn btn-success'>Confirm</button>");
+                                    //$("#memform").submit();
+                                });
+				function memsubform() {
+                                    $("#memform").submit();
+				}
+
+                                $(".iclose").click(function() {
+                                    $(".msg").toggleClass('hidden');
+                                });
+                                    
+                            </script>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <h3>Make Changes <small> Click on the pencil icon to edit</small></h3>
+                        </div>
+                    </div>
+                        <table class="table no-border" >
+                            <form action="{% url 'change-email' %}" method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" id="type" name ="type">
+                                <tr>
+                                    <td class="col1">Change email</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="input-group">
+                                            <input class="form-control" placeholder = "Type your new email" type="email" id ="email" name="email" disabled>
+                                            <span class="input-group-btn">
+                                            <button onclick="makeEmailVisible()" class="btn btn-default" type="button">
+                                            <span class="glyphicon glyphicon-pencil pencil-icon-fix" aria-hidden="true">
+                                            </button>
+                                            </span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr id="auth-tr">
+                                    <td id ="email-confirm-td">
+                                        <div class="input-group">
+                                            <input class="form-control"  type="email" placeholder = "Retype your new email" id ="email-box-2" name="email_confirm" disabled>
+                                            <span class="input-group-btn">
+                                            <input class="btn btn-success" value="Submit" type="submit">
+                                            </span>
+                                        </div>
+                                    </td>
+                                </tr>
+                    <div class="col-lg-8 col-xs-12">
+                    <tr>
+                    <td class="col1">Change password</td>
+                    </tr>
+                    </form>
+                    <form action="{% url 'change-pass' %}" method = "POST" >	
+                    {% csrf_token %}
+                    <tr>
+                    <td>
+                    <div class="input-group">
+                    <input class="form-control" value = "" placeholder = "Current Password" type="password" id ="pass-box-1" name="pass_old" disabled>
+                    <span class="input-group-btn">
+                    <button onclick="makePassVisible()" class="btn btn-default" type="button">
+                    <span class="glyphicon glyphicon-pencil pencil-icon-fix" aria-hidden="true">
+                    </button>
+                    </span>
+                    </div>
+                    </td>
+                    </tr>
+                    <tr>
+                    <td id ="pass-confirm-td">
+                    <input class="form-control"  type="password" placeholder = "Type your new password" id ="pass-box-2" name="password_new" disabled>
+                    <span class="input-group-btn">
+                    </span>
+                    </td>
+                    </tr>
+                    <tr>
+                    <td id ="pass-confirm-td">
+                    <div class="input-group">
+                    <input class="form-control"  type="password" placeholder = "Retype your new password" id ="pass-box-3" name="vpass" disabled>
+                    <span class="input-group-btn">
+                    <input class="btn btn-success" value="Submit" type="submit">
+                    </span>
+                    </div>
+                    </td>
+                    </tr>
+                    </table>
+
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                <div class="row">
+                <div class="col-xs-12">
+                <input type="submit" id = "save-btn" value="Save Changes" class="btn btn-success hidden" >
+                </div>
+                </div>
+                </form>
+                <br />
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock body %}

@@ -1,0 +1,113 @@
+{% load pds_extras %}
+{% load staticfiles %}
+{% include "v3/final/base/scripts.html" %}
+
+{% if type == 'pdf' %}
+<div class="row">
+    <div class="col-lg-9 col-lg-offset-1">
+	<h3>Sessions Analytics</h3>
+	<h4>{{request.user.presenter}}</h4>
+	<p class="muted">Report covering the period from {{start}} to {{end}}</p>
+    </div>
+</div>
+{% endif %}
+<div class="row analytics-report">
+            <div class="col-lg-9 col-lg-offset-1">
+		{% if type == 'standard' %}
+		<p class="muted">Report covering the period from {{start}} to {{end}}</p>
+    	    <h4>Sessions taken by members for this period</h4>
+	    {% endif %}
+	    <style>
+	    .no-b  th {
+		border: 0;
+	    }
+	    </style>
+    	    <table class="table">
+    		<tr class="no-b">
+    		    <th style="border: 0"></th>
+    		    <th style="border: 0">Takes</th>
+    		    <th style="border: 0">Earnings ($)</th>
+    		</tr>
+    		    {% for pd in ppd %}
+    		<tr>
+    		    <td>{{pd}}</td>
+    		    <td>{{ pd.takes }}</td>
+		    <td><span class="right-j">{{ pd.earnings|show_cents}}</span></td>
+    		</tr>
+    		    {% endfor %}
+		
+    
+    		<tr>
+    
+    		    <td style="padding-left: 15px"><b>Total</b></td>
+    		    <td><b>{{total_takes}}</b></td>
+		    <td><b><span class="right-j">${{total_earnings|show_cents}}</span></b></td>
+    		</tr>
+    	    </table>
+	    
+    	</div>
+        </div>
+        <div class="row analytics-report">
+            <div class="col-lg-9 col-lg-offset-1">
+    	    <h4>Your account activity during this period</h4>
+    	    <table class="table">
+    		
+		<tr>
+		<th style="border: 0"></th>
+		<th style="border: 0">Amounts ($)</th>
+		</tr>
+    	        <tr>
+    		    <td>Opening balance</td>
+		    <td><span class="right-j">{{open|show_cents}}</span></td>
+    	        </tr>
+    		
+    		<tr>
+    		    <td>Earnings</td>
+		    <td><span class="right-j">{{total_earnings|show_cents}}</span></td>
+    		</tr>
+    		
+    		<tr>
+    		    <td>Paid Out</td>
+		    <td><span class="right-j">0.00</span></td>
+    		</tr>
+		 <tr>
+    		    <td>Closing balance</td>
+		    <td><span class="right-j">${{close|show_cents}}</span></td>
+    		</tr>
+    		
+    	    </table>
+    	    
+    
+    	</div>
+        </div>
+	{% if report_type == 'html' %}
+<style>
+	    .right-j {
+		float: right;
+		margin-right: 80%;
+	    }
+	    </style>
+	    {% else %}
+	    <style>
+table {
+
+}
+.analytics-report {
+
+}
+
+	    td, th {
+		text-align: right;
+	    }
+	    td:first-child {
+		text-align:left;
+	       }
+	       td {
+	           margin-right:20px;
+	       }
+	    </style>
+	    <title>Sessions Analytics</title>
+	    {% endif %}
+	<style>
+
+	</style>

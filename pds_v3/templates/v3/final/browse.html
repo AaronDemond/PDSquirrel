@@ -1,0 +1,233 @@
+{% extends "v3/final/base/base.html" %}
+{% load staticfiles %}
+{% load pds_extras %}
+{% block body %}
+<style>
+.page-title {
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+</style>
+<div id="main-content" class="container" style="height: auto">
+    <div class="row">
+        <div class="col-xs-12 col-lg-offset-1">
+		<div class="row">
+		    <div class="col-lg-9">
+				<div class="msg-container">
+				    {% if messages %}
+				    {% for msg in messages %}
+				    <div class="alert alert-{{msg.tags}} msg" role="alert">{{msg}} <a href="#"><i class="fa fa-times pull-right iclose"></i></a> </div>
+				    {% endfor %}
+				    {% endif %}
+				</div>
+			    </div>
+		    </div>
+		    <!--
+	 	    <div class="row hidden-xs">
+	        <div class="col-lg-9">
+	            <h3 class="page-title">Browse and choose a PD session</h3>
+		    
+	        </div>
+	    </div>
+		    -->
+	              <div class="row">
+                <div class="col-xs-12 col-md-9">
+                    <ul class="nav nav-tabs">
+                        <li role="presentation" {% if type == 'search' %}class="active"{% endif %} id = "search-toggle"><a href="#">Search</a></li>
+                        <li role="presentation" {% if type == 'browse' %}class="active"{% endif %} id="browse-toggle">
+			<a href="#">Browse by Subject</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row {% if type == 'browse' %}hidden{% endif %}" id = "search-options">
+                <div class="col-xs-12 col-md-9">
+                    <div id = "search-container" style="height: auto";>
+                        <div class="row">
+                            <form action ="{% url 'browse' %}" method ="POST" />
+                                <input type="hidden" name="search_type" value="search">
+                                <div class="col-xs-12">
+                                    <br />
+                                    <div class="input-group">
+                                        {% csrf_token %}
+					<input type="text" class="form-control" name = "query" id = "search_string" value="{% if type == 'search' %}{{query}}{% endif %}" placeholder="Search for..">
+                                        <span class="input-group-btn">
+                                        <button class="btn btn-success browse-btn-fix" type="submit">Go!</button>
+                                        </span>
+                            </form>
+                            </div>
+                            <br />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="browse-options" class="row {% if type == 'search' %}hidden{% endif %}" style="height: auto;">
+                <div class="col-xs-12 col-md-9">
+                    <div id = "browse-container" style="height: auto;">
+                        <div class="row">
+                            <form action="{% url 'browse' %}" method ="POST">
+                            <input type="hidden" name="search_type" value="browse">
+                            <div class="col-xs-12">
+                                <br />
+                                <div class="input-group">
+                                    {% csrf_token %}
+                                    <select class="form-control" name="subject">
+                                        {% if subject.id > 0 %}
+                                        <option value = "{{subject.id}}"selected>{{subject.name}}</option>
+                                        {% else %}
+                                        <option value = "0" selected>All Subjects</option>
+                                        {% endif %}
+                                        {% for sub in subjects %}
+                                        <option value = "{{sub.id}}" {% if sub.id == subject %}selected{% endif %}>{{sub}}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <span class="input-group-btn">
+                                    <button class="btn btn-success browse-btn-fix" type="submit">Go!</button>
+                                    </span>
+                                </div>
+                                <br />
+                            </div>
+                            <div class="col-xs-1"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+	    <style>
+	    #resultrow {
+
+	    }
+	    </style>
+            <div class="row" id="resultrow">
+                <div class="col-lg-6 col-md-12 col-xs-12">
+
+
+			
+                    {% if pd_list %}
+		    <p id="titles-found" style="color: grey; font-weight: 200">{% if type == 'browse' %}Browsing <b>{{subject}}</b>{% else %}Searching for <b> {% if query %}{{query}}{% else %} recent {%endif %} </b>{% endif %} > {{pd_list.paginator.count}} Session(s) found</p>
+                    {% endif %}
+
+                    {% if pd_list %}
+                    <hr />
+                    {% for pd in pd_list %}
+                    <div id="pd-listing" class="row pdlisting">
+                        
+                        <div class="col-xs-12">
+			    <h3><a href="{% url 'detail' pd.id %}{% if query %}?_q={{query}}{% endif %}">{{pd.name}}</a></h3>
+                            <p>
+                                {% for b in pd.presenters.all %}
+				<a class="presenter-a" href = "{% url 'presenter-detail' b.id %}">{{ b }}{% if b.credentials and b.credentials.strip %}, {{b.credentials}}{% endif %}</a>
+                                {% endfor %}
+				<br>
+				{{pd.description|truncatechars:155}}
+                            <span class="pd-list-small-info">
+				<br>
+                                <b>Subject area(s):</b> 
+                                {{pd.subject.all|join:", "}}
+                                <b> Release Date: </b> {{pd.release_date|remove_time }}
+				<b> Duration: </b> {{pd.duration}}
+                            </span>
+                            </p>
+                        </div>
+                    </div>
+                    {% endfor %}
+
+
+                    {% if pd_list %}
+
+                    {% if pd_list.paginator.num_pages > 1 %}
+
+
+                    
+                    {% endif %}
+		    {% endif %}
+                    {% else %}
+                    <p>We found no sessions. Please try a new search.</p>
+
+
+                    {% endif %}
+                    <br />
+                </div>
+            </div>
+
+        </div>
+    </div>
+<div class="container" style="margin-bottom:10px;">
+<div class="row">
+<div class="col-xs-12 col-lg-8 col-lg-offset-1">
+    <hr>
+    
+    <p style="margin: 0;">More results</p>
+<nav>
+  <ul class="pagination">
+
+    {% if pd_list.has_previous %}
+    <li>
+      <a href="?page={{ pd_list.previous_page_number }}" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+    {% else %}
+	<li class="disabled">
+
+      <a href="" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+    {% endif %}
+    {% if range %}
+	    {% for x in range %}
+	    <li {% if x == pd_list.number %} class="active" {% endif %}><a href="?page={{x}}">{{x}}</a></li>
+	    {% endfor %}
+    {% endif %}
+				{% if pd_list.has_next %}
+    <li>
+
+      <a href="?page={{ pd_list.next_page_number }}" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+    {% else %}
+<li>
+
+      <a href="" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+				{% endif %}
+  </ul>
+</nav></div>
+</div></div>
+</div>
+
+<script>
+    $(document).ready(function(){
+    
+    
+    function search(){
+    	    $('#browse-options').addClass('hidden');
+            $('#search-options').removeClass('hidden');
+            $('#search-toggle').addClass('active');
+    	    $('#browse-toggle').removeClass('active');
+    }
+    function browse(){
+            $('#search-options').addClass('hidden');
+            $('#browse-options').removeClass('hidden');
+            $('#browse-toggle').addClass('active');
+    	    $('#search-toggle').removeClass('active');
+    //alert(subject);
+    }
+    
+    
+    
+    //	    alert('{{type}}');
+        $("#search-toggle").click(function(){
+    search();
+        });
+        $("#browse-toggle").click(function(){
+    browse();
+        });
+    
+    });
+</script>
+{% endblock %}

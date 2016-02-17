@@ -1,0 +1,26 @@
+{% extends "v3/final/base/base.html" %}
+
+{% load staticfiles %}
+{% block body %}
+{% for pd in my_uploads %}
+
+<div class="well well-lg">
+<div class="row">
+    <div class="col-xs-12">
+        <h1>{{pd.title}}</h1>
+    </div>
+    <div class="col-xs-12">
+        <ul class="list-inline">
+            <li><a href ="{% url 'presenter:edit-pd' pd.id %}">Edit</a></li>
+            <li><a href ="{% url 'pd:detail' pd.id %}">Information</a></li>
+            <li><a href ="{% url 'pd:watch' pd.id %}">Listen</a></li>
+        </ul>
+        <ul class="list-inline">
+            <li>${{pd.profit}} In Profit</li>
+            <li></li>
+        </ul>
+    </div>
+</div>
+{% endfor %}
+</div>
+{% endblock body %}

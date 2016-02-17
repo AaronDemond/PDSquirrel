@@ -1,0 +1,36 @@
+
+body {
+    background-color: rgb(246,246,246);
+}
+
+#main-content {
+    background-color: white;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px; 
+}
+
+
+.modal-content {
+    padding:10px;
+}
+
+.payment-errors {
+    color: red;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    font-weight: bold;
+}
+#payment-form {
+    width: 100%;
+}
+
+
+
+
+
+
+
+

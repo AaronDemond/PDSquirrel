@@ -1,0 +1,126 @@
+<script>
+	$(document).ready(function() {
+    
+	    $('.iclose').click(function() {
+		$('.msg-container').empty();
+	    });
+	    });
+
+	</script>
+<div class="row">
+
+<div class="col-xs-9 col-lg-offset-1">
+<div class="msg-container">
+    
+                                {% if messages %}
+                                {% for msg in messages %}
+    
+                                <div class="alert alert-{{msg.tags}} msg" role="alert">{{msg}} <a href="#"><i class="fa fa-times pull-right iclose"></i></a> </div>
+                                {% endfor %}
+                                {% endif %}
+</div>
+</div>
+	<script>
+			    function showInfo(infolink){
+				row_id = "#info-row";
+				$(row_id).toggleClass("hidden");
+
+				if ($(infolink).text() == '(info ▾)'){
+
+				    $(infolink).text('(info ▴)');
+				    }
+				    else {
+				    $(infolink).text('(info ▾)');
+				    }
+			    }
+			    function closeInfo() {
+				$('#info-row').addClass('hidden');
+				$('#infoLink').text('(info ▾)');
+			    }
+		</script>
+
+
+<div class="col-lg-9 col-lg-offset-1">
+
+		    <a onclick="loadXMLDoc('/user/presenter/dash/?mysessions', '#page-content')">Back to my sessions</a>
+		    <h4>Use this page to make changes to '{{sesh}}' <small><a class="status-link" id ="infoLink" onclick="showInfo(this)">(info ▾)</a></small></h4>
+<div class="row hidden" id="info-row">
+		    <div class="col-lg-12">
+		        <div class="alert alert-info">
+			    <p>Make changes to your session below. After saving, you have the opportunity to preview your session, via the Sessions tab, before releasing.</p>
+			    <div class="row">
+			        <div class="col-lg-12"><button class="btn btn-default pull-right" onclick="closeInfo()">Close</button></div>
+			    </div>
+			</div>
+		    </div>
+		</div>
+
+        <form class="form-horizontal" action="{% url 'edit' sesh.id %}" method = "POST"  enctype="multipart/form-data" >
+            {% csrf_token %}
+            <fieldset>
+                <!-- Form Name -->
+                <!-- Text input-->
+		<div class="row">
+		    <div class="col-lg-8">
+			<div class="control-group">
+			    <label class="control-label" for="name" >Edit title</label>
+			    <div class="controls">
+				<input id="name" name="name" value="{{sesh.name}}" type="text" placeholder="" class="form-control" required="">
+				<p class="help-block">Enter a descriptive title for your session.</p>
+			    </div>
+			</div>
+		    </div>
+		    <div class="col-lg-4">
+			<div class="control-group">
+			    
+			    <label class="control-label" for="">Subjects</label>
+			    <div class="controls">
+			    <select multiple class="form-control"  name="subjects">
+				{% for subject in subjects %}
+				    {% if subject in sesh.subject.all %}
+				    <option value="{{subject.id}}" selected>{{subject}}</option>
+				    {% else %}
+				    <option value="{{subject.id}}">{{subject}}</option>
+				    {% endif %}
+				{% endfor %}
+			    </select>
+			    </div>
+			</div>
+		    </div>
+		</div>
+                
+		
+                
+                <!-- Textarea -->
+                <div class="control-group">
+                    <label class="control-label" for="textarea">Edit description</label>
+                    <div class="controls">
+                        <textarea id="description" name="description" class="form-control" rows="15">{{sesh.description}}</textarea>
+                    </div>
+                </div>
+                <!-- File Button --> 
+		<div class="control-group">
+
+                    <label for="">Change audio file</label>
+		    <input type="file" class="form-control" name="audio_file">
+		    <p class="help-block">If you wish to request that the audio file of this PD Session be changed, attach the file above.</p>
+		</div>
+                
+		<div class="checkbox">
+		    <label>
+			<input type="checkbox" name="p-terms" value="true" required><p class="muted">I confirm my continued agreement with the <a href="{% url 'presenter-terms' %}" target="_blank">Presenter Terms and Condidtions.</a></p>
+		    </label>
+		</div>
+                <div class="control-group">
+                    <div class="controls">
+                        <input type="submit" value="Save Requested Changes" class="btn btn-success">
+			<a class="btn btn-default" href="{% url 'presenter-dash' %}?direct_to=sessions">Cancel</a>
+                    </div>
+                </div>
+            </fieldset>
+	    <input type="hidden" name="create-edit"value="!">
+        </form>
+    </div>
+
+    
+    </div>

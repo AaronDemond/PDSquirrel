@@ -1,0 +1,311 @@
+{% extends "v3/final/base/base.html" %}
+{% load staticfiles %}
+{% block body %}
+{% load pds_extras %}
+<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+<script>
+   Stripe.setPublishableKey('pk_test_URIzgmhYoVYuzDm9Q98RHkIQ');
+   
+   jQuery(function($) {
+     $('#payment-form').submit(function(event) {
+       var $form = $(this);
+   
+       // Disable the submit button to prevent repeated clicks
+       $form.find('button').prop('disabled', true);
+   
+       Stripe.card.createToken($form, stripeResponseHandler);
+   
+       // Prevent the form from submitting with the default action
+       return false;
+     });
+   });
+   
+   function stripeResponseHandler(status, response) {
+     var $form = $('#payment-form');
+   
+     if (response.error) {
+       // Show the errors on the form
+       $form.find('.payment-errors').text(response.error.message);
+       $form.find('button').prop('disabled', false);
+     } else {
+       // response contains id and card, which contains additional card details
+       var token = response.id;
+       // Insert the token into the form so it gets submitted to the server
+       $form.append($('<input type="hidden" name="stripeToken" />').val(token));
+         
+         
+       // and submit
+       $form.get(0).submit();
+     }
+   };
+</script>
+<style>
+   td {
+   font-size: 14px;
+   height: 20px;
+   padding: 0px;
+   }
+   b {
+   font-size: 14px;
+   line-height: auto;
+   }
+   .low-space td {
+   padding: 0px;
+   }
+   tr {
+   }
+</style>
+<div class="row">
+   <div class="col-xs-12">
+      <div id = "account_options">
+         <script>
+            function makeEmailVisible(){
+		$('#email-confirm-td').removeClass("hidden");
+		$('#email').removeAttr("disabled");
+		$('#email-box-2').removeAttr("disabled");
+                $('#type').val("email");
+            }
+            
+            function makePassVisible(){
+		$('#pass-box-1').removeAttr("disabled");
+		$('#pass-box-2').removeAttr("disabled");
+		$('#pass-box-3').removeAttr("disabled");
+		$('#pass-confirm-td').removeClass("hidden");
+		$('#pass-auth-tr').removeClass("hidden");
+                $('#type').val("password");
+            }
+            
+            function makeVisible(id){
+            $('#save-btn').removeAttr("");
+            $('#save-btn').removeClass("hidden");
+            
+            if (id == first_name)
+            $('#first_name').removeAttr("");
+            if (id == last_name)
+            $('#last_name').removeAttr("");
+            if (id == email) { 
+            
+		$('#email-confirm-td').removeClass("hidden");
+		$('#email-box-2').removeAttr("disabled");
+		$('#email-box-2').removeAttr("");
+		$('#email-box-2').addClass("hidden");
+            
+            }
+            if (id == 4) { 
+		    $('#pass-box-1').removeAttr("disabled");
+		    $('#pass-box-2').removeAttr("disabled");
+		    $('#pass-box-3').removeAttr("disabled");
+		    $('#pass-confirm-td').removeClass("hidden");
+		    $('#pass-auth-tr').removeClass("hidden");
+            }
+            if (id == 5)
+            $('#society').removeAttr("");
+            
+            }
+         </script>
+         {% csrf_token %}
+         <div class="container" id="main-content">
+            <div class="row">
+               <div class="col-lg-8 col-xs-12">
+                  {% if msgs %}
+                  {% for msg in msgs %}
+                  <div class="alert alert-{{msg.0}}" role="alert">{{msg.1}}</div>
+                  {% endfor %}
+                  {% endif %}
+                  <p class="bg-info">{{msg}}</p>
+                  <fieldset>
+                     <h2 style="margin-bottom:30px; font-size: 28px">My account information<small></small></h2>
+                     <table class="table low-space">
+                        <tbody>
+                           <tr>
+                              <td>Name</td>
+                              <td><b>{{user.first_name}} {{user.last_name}}</b></td>
+                           </tr>
+                           <tr>
+                              <td>Email</td>
+                              <td><b>{{user.email}}</b></td>
+                           </tr>
+                           <tr>
+                              <td>Law society</td>
+                              <td>
+                                 <b>
+                                    {% for x in user.profile.society.all %}
+                                    <p style="margin: 0;">{{x}}</p>
+                                    {% endfor %}
+                                 </b>
+                              </td>
+                           </tr>
+                           <tr>
+                              <td>Date joined PDS</td>
+                              <td><b>{{user.profile.date_joined}}</b></td>
+                           </tr>
+                           <tr>
+                              <td>My Cards</td>
+                              <td>
+                                 <ul>
+                                    {% for x in customer.sources.data %}
+                                    <li>
+                                       {{x.brand}} **** **** **** {{ x.last4 }} 
+                                       <form action = "{% url 'delcard' %}" method="POST">
+                                          {% csrf_token %}
+                                          <input type="hidden" value="{{x.id}}" name="cardid">
+                                          <input type="submit" class="btn btn-default" value="Delete">
+                                       </form>
+                                    </li>
+                                    {% endfor %}
+                                 </ul>
+                              </td>
+                           </tr>
+                        </tbody>
+                     </table>
+                     <button type="button" class="btn btn-success pull-right" data-toggle="modal" data-target="#myModal">Add card</button>
+                     <h2 style="margin-bottom:30px; font-size: 28px">My Subscription Information<small></small></h2>
+                     <table class="table low-space">
+                        <tr>
+                           <td>Membership type</td>
+                           <td><b>{% if user.profile.is_premium %}Premium{% else %}Standard{% endif %}</b>
+                              click <a href="{% url 'change-membership' %}">here</a> to change your membership type.
+                           </td>
+                        </tr>
+                        {% if customer.subscriptions.total_count > 0 %}
+                        <tr>
+                           <td>Period end</td>
+                           <td>{{ customer.subscriptions.data.0.current_period_end|unix_time_convert}}</td>
+                        </tr>
+                        {% endif %}
+                        <tr>
+                           <td>Remaining sessions credits</td>
+                           <td>{{ user.profile.remaining_pd }}</td>
+                        </tr>
+                     </table>
+                     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+                     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.13.1/jquery.validate.min.js"></script>
+                     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.payment/1.2.3/jquery.payment.min.js"></script>
+                     <!-- If you're using Stripe for payments -->
+                     <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+                     
+                     <!-- Modal -->
+                     <div id="myModal" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+                           <!-- Modal content-->
+                           <div class="modal-content">
+                              <form action="{% url 'newcard' %}" method="POST" id="payment-form">
+                                 <span class="payment-errors"></span>
+                                 <div class="form-row">
+                                    <label>
+                                    <span>Card Number</span>
+                                    <input type="text" size="20" data-stripe="number"/>
+                                    </label>
+                                 </div>
+                                 <div class="form-row">
+                                    <label>
+                                    <span>CVC</span>
+                                    <input type="text" size="4" data-stripe="cvc"/>
+                                    </label>
+                                 </div>
+                                 <div class="form-row">
+                                    <label>
+                                    <span>Expiration (MM/YYYY)</span>
+                                    <input type="text" size="2" data-stripe="exp-month"/>
+                                    </label>
+                                    <span> / </span>
+                                    <input type="text" size="4" data-stripe="exp-year"/>
+                                 </div>
+                                 <button type="submit">Submit Payment</button>
+                                 {% csrf_token %}
+                              </form>
+                           </div>
+                        </div>
+                     </div>
+               </div>
+            </div>
+            <div class="row">
+            <div class="col-xs-12">
+            <h2 style="margin-bottom:30px; font-size: 28px;">Click pencil to edit<small></small></h2>
+            </div>
+            </div>
+            <div class="col-lg-8 col-xs-12">
+            <table class="table">
+            <form action="{% url 'change-email' %}" method="POST">
+            {% csrf_token %}
+            <input type="hidden" id="type" name ="type">
+            <tr>
+            <td>Change account level</td>
+            </tr>
+            <tr>
+            <td>Change email</td>
+            </tr>
+            <tr>
+            <td>
+            <div class="input-group">
+            <input class="form-control" placeholder = "Type your new email" type="email" id ="email" name="email" disabled>
+            <span class="input-group-btn">
+            <button onclick="makeEmailVisible()" class="btn btn-default" type="button">
+            <span class="glyphicon glyphicon-pencil pencil-icon-fix" aria-hidden="true">
+            </button>
+            </span>
+            </div>
+            </td>
+            </tr>
+            <tr id="auth-tr">
+            <td id ="email-confirm-td">
+            <div class="input-group">
+            <input class="form-control"  type="email" placeholder = "Retype your new email" id ="email-box-2" name="email_confirm" disabled>
+            <span class="input-group-btn">
+            <input class="btn btn-success" type="submit">
+            </span>
+            </div>
+            </td>
+            </tr>
+            </div>
+            <div class="col-lg-8 col-xs-12">
+            <tr>
+            <td>Change password</td>
+            </tr>
+            </form>
+            <form action="{% url 'change-pass' %}" method = "POST" >	
+            {% csrf_token %}
+            <tr>
+            <td>
+            <div class="input-group">
+            <input class="form-control" value = "" placeholder = "Current Password" type="password" id ="pass-box-1" name="pass_old" disabled>
+            <span class="input-group-btn">
+            <button onclick="makePassVisible()" class="btn btn-default" type="button">
+            <span class="glyphicon glyphicon-pencil pencil-icon-fix" aria-hidden="true">
+            </button>
+            </span>
+            </div>
+            </td>
+            </tr>
+            <tr>
+            <td id ="pass-confirm-td">
+            <input class="form-control"  type="password" placeholder = "Type your new password" id ="pass-box-2" name="password_new" disabled>
+            <span class="input-group-btn">
+            </span>
+            </td>
+            </tr>
+            <tr>
+            <td id ="pass-confirm-td">
+            <div class="input-group">
+            <input class="form-control"  type="password" placeholder = "Retype your new password" id ="pass-box-3" name="vpass" disabled>
+            <span class="input-group-btn">
+            <input class="btn btn-success" type="submit">
+            </span>
+            </div>
+            </td>
+            </tr>
+            </table>
+            </div>
+            </fieldset>
+         </div>
+         <div class="row">
+         <div class="col-xs-12">
+         <input type="submit" id = "save-btn" value="Save Changes" class="btn btn-success hidden" >
+         </div>
+         </div>
+         </form>
+         <br />
+      </div>
+   </div>
+</div>
+{% endblock body %}

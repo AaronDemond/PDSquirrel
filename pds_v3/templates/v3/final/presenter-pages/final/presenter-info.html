@@ -1,0 +1,31 @@
+<div class="row">
+    <div class="col-lg-9 col-lg-offset-1">
+	<h4>Private Information <small>This information is not shared publicly</small></h4>
+	<hr>
+	
+<form action="{% url 'presenter-dash' %}" method="POST" >
+	{% csrf_token %}
+	<div class="control-group">
+	    <div class="row">
+	        <div class="col-lg-6">
+	    <label for="">Phone Number</label>
+	    <input type="text" class="form-control" name="number" value="{{presenter.phone}}">
+		</div>
+	        <div class="col-lg-6">
+	    <label for="">Law Firm</label>
+	    <input type="text" class="form-control" name="law_firm" value="{{presenter.law_firm}}">
+		</div>
+	    </div>
+	</div>
+    
+	    <div class="control-group">
+	        <input type="submit" class="btn btn-success submit-fix">
+		<a class="btn btn-default" href="{% url 'presenter-dash' %}" style="margin-top: 10;">Cancel</a>
+	    </div>
+	
+	
+	
+	<input type="hidden" name="edit-pres-private" value="1">
+    </form>
+    </div>
+</div>

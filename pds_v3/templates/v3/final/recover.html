@@ -1,0 +1,33 @@
+{% extends "v3/final/base/base.html" %}
+{% load staticfiles %}
+{% block body %}
+<div id="main-content" class="container">
+	<div class="row">
+		<div class="col-xs-12">
+			<h3>Password Recovery</h3>
+			
+		</div>
+		<div class="col-xs-12">
+			<p>Please enter the email address associated with your account.</p>
+			<hr>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-12">
+			<form class="" action="{% url 'recover' %}" method="post">
+				{% csrf_token %}
+			
+				<div class="form-group">
+				<label for="email">Type your email</label>
+					<input type="text"  class="form-control" name="email">
+				</div>
+				<div class="form-group">
+				<label for="vemail">Retype your email</label>
+					<input type="text" class="form-control" name="vemail">
+				</div>
+				<input class="btn btn-success" type="submit">
+			</form>
+		</div>
+	</div>
+</div>
+{% endblock %}

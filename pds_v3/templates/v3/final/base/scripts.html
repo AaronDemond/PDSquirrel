@@ -1,0 +1,64 @@
+{% load staticfiles %}
+<html>
+    {% block headerscripts %}
+    <head>
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+        <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+        <link href='https://fonts.googleapis.com/css?family=Lato:300,400,700,900' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="{% static 'css/home.css' %}">
+        <link rel="stylesheet" href="{% static 'font-awesome/css/font-awesome.min.css' %}">
+        <link rel="stylesheet" href="{% static 'css/fixes.css' %}">
+        <link rel="stylesheet" href="{% static 'css/mystyle.css' %}">
+        <link rel="stylesheet" href="{% static 'css/style.css' %}">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+        <script>
+$(document).ready(function(){
+	$( "#login-form" ).submit(function() {
+		console.log("login function");
+		$("#login-msg").html("Loading, please wait..");
+		event.stopPropagation();
+		var url = "/user/login/";
+		$.ajax({
+			type: "POST",
+			url: url,
+			data: $("#login-form").serialize(),
+			success: function(data)
+			{
+
+				if (data == 'success') {
+					location.reload(true); // true = query server again, rather than load from (local) cache
+				}
+				else {
+					$("#login-msg").html(data);
+				}
+					
+			}
+			});
+	return false;
+	});
+});
+
+        </script>
+	<script>
+	$(document).ready(function() {
+    
+	    $('.iclose').click(function() {
+		$('.msg-container').empty();
+	    });
+	    });
+
+	</script>
+
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    </head>
+    {% endblock %}
+    <body>
+    {% block main-content %}
+
+    {% endblock %}
+    </body>
+</html>

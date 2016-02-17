@@ -1,0 +1,27 @@
+
+{% extends "v3/final/base/base.html" %}
+{% load staticfiles %}
+{% block body %}
+
+<form action="{% url 'cap' %}" method="POST">
+    {% csrf_token %}
+    <input type="text" name="kek">
+
+<div id="capkek">
+    {{form}}
+</div>
+<input type="submit">
+</form>
+
+<button onclick="ref()" id="refresh">Ref Captcha</button>
+
+<script>
+function ref(){
+    alert("kek");
+$( "#capkek" ).load( "/cap_ref/" );
+}
+</script>
+
+{% endblock %}
+
+
