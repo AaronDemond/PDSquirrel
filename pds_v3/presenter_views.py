@@ -1,4 +1,5 @@
 from django.shortcuts import render, HttpResponse, HttpResponseRedirect, render_to_response
+from django.core.mail import send_mail
 from django.core import serializers
 from django.core.files import File
 import os
@@ -281,19 +282,22 @@ def dash(request, msg=False):
 
                 pd_description = request.POST['description']
                 subjects = request.POST.getlist('subject') 
-                pdaud = request.POST['recording']  #Recorded using recorder
 
-                if pdaud is not None:
-                    pdaud = PdAudio.objects.get(pk=int(pdaud))
-		    pdaud.used = True
-		    pdaud.save();
-                    new_session = PdSession(name=pd_name,description=pd_description, pdaudio=pdaud, approved=False)
+                if 'recording' in request.POST:
+                    pdaud = request.POST['recording']  #Recorded using recorder
+
+                    if pdaud is not None:
+                        pdaud = PdAudio.objects.get(pk=int(pdaud))
+                        pdaud.used = True
+                        pdaud.save();
+                        new_session = PdSession(name=pd_name,description=pd_description, pdaudio=pdaud, approved=False)
                 else:
                     if not request.FILES['audio_file'].name.lower().endswith(('.wav', '.mp3')):
                         messages.add_message(request, messages.ERROR, 'Please upload the correct file type')
                         return HttpResponseRedirect('/user/presenter/dash/?direct_to=upload')
 
                     new_session = PdSession(name=pd_name,description=pd_description, audio_file=request.FILES['audio_file'], approved=False)
+                    new_session.save()
 
                     #get length if it is mp3.. need to convert wav
                     if request.FILES['audio_file'].name.lower().endswith(('.mp3')):
@@ -323,7 +327,9 @@ def dash(request, msg=False):
 
                 new_session.presenters.add(Presenter.objects.get(user=request.user))
 		
-		
+	        	
+                msg = request.user.username + ' has uploaded and released a new session'
+	        send_mail('new upload/release' , msg , 'support@pdsquirrel.ca', ['admin@pdsquirrel.ca'], fail_silently=False)
 
 		messages.add_message(request, messages.INFO, "Thank you for uploading your PD Session, titled '%s'. \
 			Click below to preview and release." % new_session)
