@@ -308,6 +308,7 @@ def download_example(request):
 
 
 from django.core.mail import send_mail
+
 def support_msg(request):
     if request.POST:
         email = request.POST['user_email']
@@ -315,8 +316,9 @@ def support_msg(request):
         message = request.POST['message']
 	subject = request.POST['subject']
 
-
-	send_mail('PDSquirrel support from  ' + name + ' subj: ' + subject , message + '\nreturn email: ' + email , 'support@pdsquirrel.ca', ['demondsoftware@gmail.com', 'cdemond@cwdlaw.ca'], fail_silently=False)
+        #email = EmailMessage('Testing Email instance','body test message', 'support@pdsquirrel.ca',['admin@pdsquirrel.ca'],
+                #['demondsoftware@gmail.com'])
+	send_mail('PDSquirrel support from  ' + name + ' subj: ' + subject , message + '\nreturn email: ' + email , 'support@pdsquirrel.ca', ['admin@pdsquirrel.ca'], fail_silently=False)
 
 
 	messages.success(request, 'Message sent. We will get back to you shortly')	    

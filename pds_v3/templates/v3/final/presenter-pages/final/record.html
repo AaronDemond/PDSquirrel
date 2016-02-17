@@ -95,10 +95,8 @@ settings to always allow this page to use the microphone, but this is not necess
 <div style="float: left; margin-bottom: 20px; margin-top: 5px" id="output" style="font-weight: bold">
 		<p>Click record to begin capturing audio.</p>
 	    </div>
-
-	    
+	   
 	</div>
-
 
 	<div class="col-lg-6 hidden">
 
@@ -121,6 +119,11 @@ settings to always allow this page to use the microphone, but this is not necess
 	    <button  onclick="trimSelection()">Trim</button>
 	    <button onclick="pselection()">Preview Selection</button>
 	</div>
+
+<div class="col-lg-6 hidden" id="loading-alert">
+	<h2 class="alert alert-info">Loading WAV audio...</h2>
+	<p>This may take up some time depending on the length of the recording.</p>
+</div>
     </div>
 	
     <div class="col-lg-12">
@@ -243,6 +246,7 @@ $("a").click(function(e) {
     var aud_name = document.getElementById("name");                           
     var sbox = document.getElementById("start-mark");
     var ebox = document.getElementById("end-mark");
+	var loading_alert = document.getElementById("loading-alert");
     var rec_btn = document.getElementById('record_button');
     var pause_btn = document.getElementById('pause_button');
     var save_btn = document.getElementById('save_button');
@@ -262,6 +266,10 @@ $("a").click(function(e) {
     var outputString;
     var view;
     var channel_offset = null;
+	var leftBuffer = mergeBuffers(leftchannel, 0);
+	var rightBuffer = mergeBuffers(rightchannel, 0);
+	interleaved = interleave(leftBuffer, rightBuffer);
+	buildLocalWav();
     var mode = null;
     var audio_proccess_counter = 0;
     var lastSelectedTime = 0;
@@ -302,6 +310,8 @@ $("a").click(function(e) {
 	    edited_name = audio_clip_name;
 	    editing = true;
 
+		saved = false;
+
 	    //var url = '/audio_files/blob_KIC6c8L';
 	    var req = new XMLHttpRequest();
 	    req.responseType = "arraybuffer";
@@ -309,6 +319,14 @@ $("a").click(function(e) {
 	    var debug = document.getElementById('debug');
 	    req.open('GET', url, true);
 	    req.send();
+
+		// Give loading feedback. TODO: sub in blue wheel
+		audio_player.hidden = true;
+		pause_btn.disabled = true;
+		rec_btn.disabled = true;
+		save_btn.disabled = true;
+		loading_alert.className = '';
+
 	    req.onload = function(e) {
 
 		//fileblob = document.getElementById('file').files[0];      // Works with this <- used to lol
@@ -320,7 +338,6 @@ $("a").click(function(e) {
 	}
 
 	function loaded(evt) { 
-	    // Function called once reader.onload finished. Currently only works when reader is construced from a user uploaded file.
 
 	    var buffer = reader.result; // buffer of raw wav file data
 
@@ -366,13 +383,19 @@ $("a").click(function(e) {
 	    // Flatten and build wav
 	    leftchannel = lcfinal;
 	    rightchannel = rcfinal;
-            var leftBuffer = mergeBuffers(leftchannel, 0);
-            var rightBuffer = mergeBuffers(rightchannel, 0);
-            interleaved = interleave(leftBuffer, rightBuffer);
-            buildLocalWav();
+		var leftBuffer = mergeBuffers(leftchannel, 0);
+		var rightBuffer = mergeBuffers(rightchannel, 0);
+		interleaved = interleave(leftBuffer, rightBuffer);
+		buildLocalWav();
 
 	    // Query duration
 	    gd = setInterval(getDur, 20);
+
+		audio_player.hidden = false;
+		pause_btn.disabled = false;
+		rec_btn.disabled = false;
+		save_btn.disabled = false;
+		loading_alert.className = 'hidden';
 
 	}
 
@@ -450,14 +473,14 @@ $("a").click(function(e) {
   
     // either pauses recording, or pauses audio playback
     function pauseClick() {
-	if (recording == true) {
-	    recordToggle(); 
-	    outputElement.innerHTML = "Recording Paused";
-	} else { 
-	    if (isPlaying(audio_player)) { 
-		audio_player.pause();
-	    } 
-	}
+		if (recording == true) {
+			recordToggle(); 
+			outputElement.innerHTML = "Recording Paused";
+		} else { 
+			if (isPlaying(audio_player)) { 
+			audio_player.pause();
+			} 
+		}
     }
 
     /* Toggle recording. Data is fed to left and right chanels, in the correct position. */
@@ -579,51 +602,51 @@ $("a").click(function(e) {
     function createWavBlob() {
 
 
-	// Creates wav blob from data view
+		// Creates wav blob from data view
         var blob = new Blob ( [ view ], { type : 'audio/wav' } );
     	var fd = new FormData();
         var url = (window.URL || window.webkitURL).createObjectURL(blob);
     	var name = document.getElementById('name').value; // Should check name isnt used or empty
-	var audio_table = document.getElementById('clips_table');
+		var audio_table = document.getElementById('clips_table');
 
-	// Delivers blob url to audio player as src. This is probably where mobile breaks.
+		// Delivers blob url to audio player as src. This is probably where mobile breaks.
     	$('#player').attr("src" , url);
     	$('#dl').attr("href", url);
         outputElement.innerHTML = 'Upload and saving...';
 
-	// Build form data obj with wavblob, upload flag, and name text.
+		// Build form data obj with wavblob, upload flag, and name text.
     	fd.append('data', blob);
-	fd.append('upload', 'true');
+		fd.append('upload', 'true');
     	fd.append('name', name); 
 
-	// Post to server. Alert on failure. 
-	// TODO local file editing.. maybe
+		// Post to server. Alert on failure. 
+		// TODO local file editing.. maybe
 
-	console.log('loading.');
+		console.log('loading.');
 
-	var mc = document.getElementById('main-content');
-	mc.innerHTML = 'Saving, this may take a few moments..';
-	$.ajax({
-    		type: 'POST',
-    		url: '/record/',
-    		data: fd,
-    		processData: false,
-    		contentType: false,
-    		success: function(data) {
-		    // If POST succesfull, return json for that rec. 
-		    var this_audio = JSON.parse(data);
-		    console.log(this_audio[0]); // fields_obj, model_str, pk_id
-		    pda_obj = this_audio[0]
-		    console.log(pda_obj.fields);
-		    alert("Upload Successful");
-		    refresh_link.click();
-		    outputElement.innerHTML = "Upload complete, It will appear below when you revisit this page";
-    		},
-    		error: function(data) {
-		    // Note: debug this by displaying data. It will display django error message.
-    		    alert("Error saving file. We recommend you download this file so it isn't lost.");
-    		}
-    	});
+		var mc = document.getElementById('main-content');
+		mc.innerHTML = 'Saving, this may take a few moments..';
+		$.ajax({
+				type: 'POST',
+				url: '/record/',
+				data: fd,
+				processData: false,
+				contentType: false,
+				success: function(data) {
+				// If POST succesfull, return json for that rec. 
+				var this_audio = JSON.parse(data);
+				console.log(this_audio[0]); // fields_obj, model_str, pk_id
+				pda_obj = this_audio[0]
+				console.log(pda_obj.fields);
+				alert("Upload Successful");
+				refresh_link.click();
+				outputElement.innerHTML = "Upload complete, It will appear below when you revisit this page";
+				},
+				error: function(data) {
+				// Note: debug this by displaying data. It will display django error message.
+					alert("Error saving file. We recommend you download this file so it isn't lost.");
+				}
+			});
     }
 
     

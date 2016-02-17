@@ -60,7 +60,7 @@
 		<h4>Downloads</h4>
 		<div class="list-group">
 		    {% for file in pd.attachments.all %}
-			<a class="list-group-item" href="/{{file.attachment}}">{{file.attachment}}</a>
+			<a class="list-group-item" target="_blank" href="/{{file.attachment}}">{{file.attachment}}</a>
 		    {% endfor %}
 		</div>
 	    </div>
