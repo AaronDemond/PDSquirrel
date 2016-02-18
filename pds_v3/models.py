@@ -38,11 +38,16 @@ class Presenter(models.Model):
     credentials = models.TextField(null=True, blank=True)
     phone = models.CharField(null=True,blank=True,max_length=100)
     image = models.FileField(upload_to='pds_v3/static/presenter_pics', blank=True, null=True)
+    law_firm = models.CharField(null=True,blank=True, max_length=100)
+
+    # Allows user to set their placeholder img. 0=female, 1=male.
+    placeholder_type = models.IntegerField(blank=True, null=True)
+
+    female_placeholder = '/static/presenter_pics/Female-Placeholder1.jpg'
+    male_placeholder = '/static/presenter_pics/speaker-placeholder-male.png'
 
     def image_name(self):
 	return os.path.basename(self.image.name)
-
-    law_firm = models.CharField(null=True,blank=True, max_length=100)
 
     def __str__(self):
         return self.user.first_name + ' ' + self.user.last_name
@@ -54,8 +59,7 @@ class Presenter(models.Model):
 	    return '/static/presenter_pics/Female-Placeholder1.jpg'
 	else:
 	    return '/static/presenter_pics/speaker-placeholder-male.png'
-
-
+    
 
 
 class AppUser(models.Model):
@@ -70,6 +74,7 @@ class AppUser(models.Model):
     remaining_pd = models.IntegerField(default=1)
     stripe_id = models.CharField(max_length = 100, blank=True, null=True)
     date_premium = models.DateTimeField(blank=True, null=True)
+
 
 
 

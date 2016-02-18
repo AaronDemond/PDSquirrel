@@ -194,10 +194,20 @@ def dash(request, msg=False):
 
 
 	    if 'edit-pres-public' in request.POST:
+                from django.core.files import File
 		presenter.credentials = request.POST['credentials']
 		presenter.bio = request.POST['bio']
+                if 'clear_photo' in request.POST:
+                    presenter.image = None
 		if request.FILES:
 		    presenter.image = request.FILES['photo']
+                    presenter.placeholder_type = 2;
+                else:
+                    # 0=female 1=male
+                    if request.POST['placeholder_gender'] == "male":
+                        presenter.placeholder_type = 1;
+                    elif request.POST['placeholder_gender'] == "female":
+                        presenter.placeholder_type = 0;
 		presenter.save()
 		messages.add_message(request, messages.SUCCESS,
 			'Account successfully updated.')
