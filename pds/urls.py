@@ -28,7 +28,6 @@ urlpatterns = [
     url(r'^user/logout/$', user_views.logout_user, name="logout"),
     url(r'^login/$', user_views.login_landing, name="login-landing"),
     url(r'^debug/', views.debug, name="debug"),
-    url(r'^ajax/', include('ajax.urls')),
     url(r'^bootsnip/', bootsnip_views.bootsnip, name="bootsnip"),
     url(r'^payment-example/$', payment_views.payment_process, name="payment-process"),
     url(r'^accred/(?P<pd_id>\d+)/$', views.accred, name="accred"),

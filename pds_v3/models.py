@@ -144,7 +144,7 @@ class Subject(models.Model):
         return self.name
 
 class PdAudio(models.Model):
-    name = models.CharField(max_length='100', blank=True, null=True)
+    name = models.CharField(max_length=100, blank=True, null=True)
     audio = models.FileField(upload_to='audio_files', blank=True, null=True)
     appuser = models.ForeignKey(AppUser, blank=True, null=True)
     hidden = models.BooleanField(default=False, blank=True)
@@ -233,7 +233,7 @@ class PdAudio(models.Model):
 
 
 class PdAttachment(models.Model):
-    name = models.CharField(max_length='100', blank=True, null=True)
+    name = models.CharField(max_length=100, blank=True, null=True)
     attachment = models.FileField(upload_to='attachments', blank=True, null=True)
     upload_date = models.DateTimeField(auto_now_add=True)
 
