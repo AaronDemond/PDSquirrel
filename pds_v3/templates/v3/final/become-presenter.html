@@ -2,7 +2,7 @@
 {% load staticfiles %}
 {% block body %}
 
-
+<link rel="stylesheet" href="{% static 'css/inforow.css' %}">
 <div class="container" id="main-content">
 
     <div class="row">
@@ -78,7 +78,9 @@
 				</div>
 		    </div>
 
-		    <div class="row info-row hidden-xs"> <!-- Create row -->
+			
+
+		    <div class="row info-row hidden-xs info-row-color-1"> <!-- Create row -->
 		        <div class="col-sm-5 col-xs-12">
 			    <p>
 					<b>You create and upload.</b>  As a presenter, you provide an audio recording of your PD session directly to PD 
@@ -91,7 +93,7 @@
 		        </div>
 		    </div>
 
-		    <div class="row info-row hidden-xs"> <!-- Reivew and Release row -->
+		    <div class="row info-row hidden-xs info-row-color-2"> <!-- Reivew and Release row -->
 		        <div class="col-sm-7 col-xs-12" >
         			<img class="plack" src="{% static 'img/learn/presenter/sessions.png' %}" alt="">
 		        </div>
@@ -102,7 +104,7 @@
 		        </div>
 		    </div>
 
-		    <div class="row info-row hidden-xs"> <!-- Accept and release row -->
+		    <div class="row info-row hidden-xs info-row-color-1"> <!-- Accept and release row -->
 		        <div class="col-sm-5 col-xs-12">
 				<p>
 					<b>We accept and list.</b>
@@ -114,7 +116,7 @@
 		        </div>
 		    </div>
 
-		    <div class="row info-row hidden-xs"> <!-- Earn row-->
+		    <div class="row info-row hidden-xs info-row-color-2"> <!-- Earn row-->
 		        <div class="col-sm-7 col-xs-12" >
 					<img class="plack" src="{% static 'img/learn/detail.png' %}" width="100%" alt="">		
 		        </div>

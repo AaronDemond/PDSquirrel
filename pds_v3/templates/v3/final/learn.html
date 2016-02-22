@@ -2,6 +2,9 @@
 {% load staticfiles %}
 {% block body %}
 {% load pds_extras %}
+
+
+<link rel="stylesheet" href="{% static 'css/inforow.css' %}">
 <style>
 
 li {
@@ -110,7 +113,7 @@ li {
 			    <h3>Browse, Choose, Listen. </h3>			    <img src="{% static 'img/learn/on_device.png' %}" width="100%" alt="">
 			</div>
 		    </div>
-		    <div class="row info-row hidden-xs"> <!-- Browse row -->
+		    <div class="row info-row hidden-xs info-row-color-1"> <!-- Browse row -->
 		        <div class="col-sm-5 col-xs-12">
 			    <p><b>Browse</b> our selection of PD sessions.</p>
 		        </div>
@@ -118,7 +121,7 @@ li {
 			    <img class="plack"  style="float: right;"src="{% static 'img/learn/browse.png' %}"  alt="">		
 		        </div>
 		    </div>
-		    <div class="row info-row hidden-xs"> <!-- Choose row -->
+		    <div class="row info-row hidden-xs info-row-color-2"> <!-- Choose row -->
 		        <div class="col-sm-7 col-xs-12" >
 		          <img class="plack" src="{% static 'img/learn/detail.png' %}"  alt="">		
 		        </div>
@@ -129,7 +132,7 @@ li {
 			    </p>
 		        </div>
 		    </div>
-		    <div class="row info-row hidden-xs"> <!-- Listen row -->
+		    <div class="row info-row hidden-xs info-row-color-1"> <!-- Listen row -->
 		        <div class="col-sm-5 col-xs-12">
 		          <p><b>Listen</b> to your PD immediately or later as you wish. 
 			  The sessions you take are kept in your personal library for unlimited future access. </p>
