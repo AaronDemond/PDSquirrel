@@ -32,6 +32,9 @@
     </p>
     <hr>
     <h3>Heres how we do it</h3>
+	<hr>
+	
+	
     
 </div></div>
 <style>
@@ -45,75 +48,91 @@
   top: 50%;
   transform: translateY(-50%);
 }
-
 </style>
-<div class="row">
-    <div class="col-lg-5" style="height: 400px">
-    <p class="vcenter hidden-xs">
-        <b>You create and upload.</b>  As a presenter, you provide an audio recording of your PD session directly to PD 
-        
-        Squirrel.  If needed, we will provide recording hardware and software to assist.
-    </p>
-    <p class="visibile-xs-block hidden-md hidden-lg hidden-sm">
 
-        <b>You create and upload.</b>  As a presenter, you provide an audio recording of your PD session directly to PD 
-        
-        Squirrel.  If needed, we will provide recording hardware and software to assist.
-    </p>
-    </div>
-    <div class="col-lg-7">
-        <img class="plack" src="{% static 'img/learn/presenter/presenter_page.png' %}" style="margin-top: 40px; float: right;"  alt="">
-    </div>
-</div>
-<div class="row">
-    <div class="col-lg-7">
-        <img class="plack" src="{% static 'img/learn/presenter/sessions.png' %}" alt="">
-    </div>
-    <div class="col-lg-5" style="height:300px">
-    <p class="vcenter hidden-xs">
-       <b>You review and release. </b>You have the ability to preview and edit your session, from the <i>Presenter Hub,</i> before releasing it to us.
-    </p>
-    </div>
-</div>
-<div class="row">
-    <div class="col-lg-5" style="height: 300px">
-	<p class="vcenter hidden-xs">
-	    <b>We accept and list.</b>
-	    Once accepted, we list your session on PD Squirrel where it is immediately available to all members for purchase.
-       </p>
 
-	<p class="visibile-xs-block hidden-md hidden-lg hidden-sm">
-	    <b>We accept and list.</b>
-	    Once accepted, we list your session on PD Squirrel where it is immediately available to all members for purchase.
-	</p>
-    </div>
-    <div class="col-lg-7">
-        <img class="plack" style="float:right" src="{% static 'img/learn/presenter/browse_page2.png' %}" alt="">
-    </div>
-</div>
-<div class="row">
-    <div class="col-lg-7">
-	<img class="plack" src="{% static 'img/learn/detail.png' %}" width="100%" alt="">		
-    </div>
-    <div class="col-lg-5" style="height:300px">
-    <p class="vcenter hidden-xs">
-<b>You Earn.</b>
-        You share in the revenue paid by members.  More than half of all revenue is paid to our Presenters in the form of royalties <a onclick="showFormula()">(more)</a>.  You 
-        
-        always have real-time access to your analytics in the Presenter Hub.
 
-    <p>
-<p class="visibile-xs-block hidden-md hidden-lg hidden-sm">
-<b>You Earn.</b>
-        You share in the revenue paid by members.  More than half of all revenue is paid to our Presenters in the form of royalties <a onclick="showFormula()">(more)</a>.  You 
-        
-        always have real-time access to your analytics in the Presenter Hub.
+		    <div class="row hidden-md hidden-sm hidden-lg" id="mobile_learn">
+				<div class="col-xs-12">
+					<h3>Create, Upload, Earn. </h3>
 
-    </p>
-    </div>
+			    <p>
+					<b>You create and upload.</b>  As a presenter, you provide an audio recording of your PD session directly to PD 
+					
+					Squirrel.  If needed, we will provide recording hardware and software to assist.
+				</p>
+<p>
+       					<b>You review and release. </b>You have the ability to preview and edit your session, from the <i>Presenter Hub,</i> before releasing it to us.
+       				</p>
+<p>
+					<b>We accept and list.</b>
+					Once accepted, we list your session on PD Squirrel where it is immediately available to all members for purchase.
+				</p>
+<p>
+					<b>You Earn.</b>
+					You share in the revenue paid by members.  
+					More than half of all revenue is paid to our Presenters in the form of royalties <a onclick="showFormula()">(more)</a>.  You 
+					always have real-time access to your analytics in the Presenter Hub.
+				</p>
+					<img src="{% static 'img/learn/on_device.png' %}" width="100%" alt="">
+				</div>
+		    </div>
 
-    
-</div>
+		    <div class="row info-row hidden-xs"> <!-- Create row -->
+		        <div class="col-sm-5 col-xs-12">
+			    <p>
+					<b>You create and upload.</b>  As a presenter, you provide an audio recording of your PD session directly to PD 
+					
+					Squirrel.  If needed, we will provide recording hardware and software to assist.
+				</p>
+		        </div>
+		        <div class="col-sm-7 col-xs-12">
+        			<img class="plack" src="{% static 'img/learn/presenter/presenter_page.png' %}" style="float: right;"  alt="">
+		        </div>
+		    </div>
+
+		    <div class="row info-row hidden-xs"> <!-- Reivew and Release row -->
+		        <div class="col-sm-7 col-xs-12" >
+        			<img class="plack" src="{% static 'img/learn/presenter/sessions.png' %}" alt="">
+		        </div>
+		        <div class="col-sm-5 col-xs-12">
+       				<p>
+       					<b>You review and release. </b>You have the ability to preview and edit your session, from the <i>Presenter Hub,</i> before releasing it to us.
+       				</p>
+		        </div>
+		    </div>
+
+		    <div class="row info-row hidden-xs"> <!-- Accept and release row -->
+		        <div class="col-sm-5 col-xs-12">
+				<p>
+					<b>We accept and list.</b>
+					Once accepted, we list your session on PD Squirrel where it is immediately available to all members for purchase.
+				</p>
+		        </div>
+		        <div class="col-sm-7 col-xs-12" style="">
+        		  <img class="plack" style="float:right" src="{% static 'img/learn/presenter/browse_page2.png' %}" alt="">
+		        </div>
+		    </div>
+
+		    <div class="row info-row hidden-xs"> <!-- Earn row-->
+		        <div class="col-sm-7 col-xs-12" >
+					<img class="plack" src="{% static 'img/learn/detail.png' %}" width="100%" alt="">		
+		        </div>
+		        <div class="col-sm-5 col-xs-12">
+				<p>
+					<b>You Earn.</b>
+					You share in the revenue paid by members.  
+					More than half of all revenue is paid to our Presenters in the form of royalties <a onclick="showFormula()">(more)</a>.  You 
+					always have real-time access to your analytics in the Presenter Hub.
+				</p>
+		        </div>
+		    </div>
+
+
+
+
+
+
 <div class="row">
 <div class="col-lg-12">
     
