@@ -66,7 +66,7 @@ class AppUser(models.Model):
     user = models.OneToOneField(User, related_name="profile")
     address = models.ForeignKey(Address, blank=True, null=True)
     date_joined = models.DateTimeField(auto_now_add=True)
-    society = models.ManyToManyField(LawSociety,null=True,blank=True)
+    society = models.ManyToManyField(LawSociety,blank=True)
     terms = models.BooleanField(blank=True)
     img = models.ImageField(blank=True)
     is_presenter = models.BooleanField(default=False)
@@ -242,11 +242,10 @@ class PdSessionEdit(models.Model):
     description = models.TextField(null=True, blank=True)
     audio_file = models.FileField(upload_to='audio_files', blank=True, null=True)
     name = models.CharField(max_length=60, null=True, blank=True)
-    subjects = models.ManyToManyField(Subject,null=True, blank=True)
+    subjects = models.ManyToManyField(Subject, blank=True)
     date = models.DateTimeField(auto_now_add=True)
     approved = models.BooleanField(default=False)
     presenter_approved = models.BooleanField(default=False)
-
 
     def __str__(self):
 	return self.name
@@ -260,37 +259,28 @@ class PdSession(models.Model):
     name = models.CharField(max_length=60)
     approved = models.BooleanField(default=True)
     description = models.TextField(null=True, blank=True)
-    subject = models.ManyToManyField(Subject,null=True, blank=True)
-
+    subject = models.ManyToManyField(Subject, blank=True)
     audio_file = models.FileField(upload_to='audio_files')
     pdaudio = models.ForeignKey(PdAudio, null=True, blank=False)
-
     upload_date = models.DateTimeField(auto_now_add=True, null=True)
     release_date = models.DateTimeField(null=True, blank=True)
     price = models.FloatField(null=True, blank=True)
     duration = models.TextField(null=True)
     suspended = models.BooleanField(default=False)
     archived = models.BooleanField(default=False)
-    lawsocietyoverrides = models.ManyToManyField(LawSocietyOverride,
-	    null=True, blank=True)
-    presenters = models.ManyToManyField(Presenter, null=True,
-	    blank=True)
-
+    lawsocietyoverrides = models.ManyToManyField(LawSocietyOverride, blank=True)
+    presenters = models.ManyToManyField(Presenter, blank=True)
     edited = models.BooleanField(default=False)
-    edits = models.ManyToManyField(PdSessionEdit, blank=True, null=True)
+    edits = models.ManyToManyField(PdSessionEdit, blank=True)
     last_edited = models.DateTimeField(blank=True, null=True)
     presenter_approved = models.BooleanField(default=False)
-
     suspend_request = models.BooleanField(default=False)
     suspend_reason = models.CharField(max_length = 255, null=True, blank=True)
-
     objects = PdSessionManager()
-
     total_sales = models.FloatField(default = 0)
     total_credits = models.IntegerField(default = 0)
     locked = models.BooleanField(default = False)
-    attachments = models.ManyToManyField(PdAttachment, blank=True, null=True)
-
+    attachments = models.ManyToManyField(PdAttachment, blank=True)
     total_takes = models.IntegerField(default=0)
 
     def __str__(self):
@@ -359,8 +349,8 @@ class Notice(models.Model):
     date = models.DateField(auto_now_add=True)
     attachment = models.FileField(upload_to='attachments', null=True, blank=True)
     password = models.CharField(max_length = 100, null=True, blank=True)
-    member_recipients = models.ManyToManyField(AppUser, blank=True, null=True)
-    presenter_recipients = models.ManyToManyField(Presenter, blank=True, null=True)
+    member_recipients = models.ManyToManyField(AppUser, blank=True)
+    presenter_recipients = models.ManyToManyField(Presenter, blank=True)
     is_read = models.BooleanField(default=False)
 
 
