@@ -370,7 +370,6 @@ def upload_admin(request, pd_id=False):
 
 def accounting_admin(request):
     return render(request, 'v3/final/myadmin/accounting.html')
-    pass
 
 
 

@@ -29,10 +29,8 @@ margin-bottom: 0px !important;
    <div class="row">
       <div class="col-xs-12">
         <h3>{{pd}}</h3>	
-		By
-		{% for x in pd.presenters.all %}
-		<a href="{% url 'presenter-detail' x.id %}"> {{x}}{% if x.credentials %}, {{x.credentials}} <br>{%endif%}
-		{% endfor %}</a>
+		<hr>
+		
 		<div class="col-sm-5" style="margin-top: 20px">
 			{% for presenter in pd.presenters.all %}
 						<img id ="session_pres_img" class="white-tile-img" 
@@ -50,9 +48,15 @@ margin-bottom: 0px !important;
 						style="-webkit-box-shadow: 0 1px 1px rgba(0,0,0,0.15),-1px 0 0 rgba(0,0,0,0.03),1px 0 0 rgba(0,0,0,0.03),0 1px 0 rgba(0,0,0,0.12)" 
 						alt="" width="90%" />
 			{% endfor %}
+			<br>	
+			<br>	
+			<h4>
+				{% for x in pd.presenters.all %} <a href="{% url 'presenter-detail' x.id %}"> {{x}}{% if x.credentials %}, {{x.credentials}} <br>{%endif%}{% endfor %}</a>
+			</h4>
 		</div> <!-- end presenter image div -->
-         <h4>Session Description</h4>
-		<div class="col-sm-7">{{pd.description}}
+		<div class="col-sm-7">
+         	<h4>Session Description</h4>
+			{{pd.description}}
 			<div class="row"> {# Row within 7 col description section, for button #}
 				  <div class="col-xs-12">
 					 {% if user.is_authenticated %}

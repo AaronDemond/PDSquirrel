@@ -39,6 +39,8 @@ class Presenter(models.Model):
     phone = models.CharField(null=True,blank=True,max_length=100)
     image = models.FileField(upload_to='pds_v3/static/presenter_pics', blank=True, null=True)
     law_firm = models.CharField(null=True,blank=True, max_length=100)
+    public_email = models.CharField(null=True,blank=True,max_length=200)
+    url = models.CharField(null=True,blank=True,max_length=200)
 
     # Allows user to set their placeholder img. 0=female, 1=male.
     placeholder_type = models.IntegerField(blank=True, null=True)
