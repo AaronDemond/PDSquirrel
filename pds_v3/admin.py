@@ -3,7 +3,8 @@ from pds_v3.models import PdSession, AppUser, LawSociety, \
 LawSocietyOverride, Purchase, Subject, PdSessionEdit, Notice, PdAttachment, Address, PdAudio
 from pds_v3 import models
 
-# Register your models here.
+admin.site.site_header = 'PD Squirrel Administration'
+
 
 @admin.register(AppUser)
 class AppUserAdmin(admin.ModelAdmin):
