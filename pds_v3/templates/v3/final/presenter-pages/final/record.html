@@ -1,11 +1,11 @@
 {% load staticfiles %}
 <style>
-.timebox {
-    width: 70px;
-}
-#end-label {
-    margin-left: 45px;
-}
+	.timebox {
+		width: 70px;
+	}
+	#end-label {
+		margin-left: 45px;
+	}
 label {
     color: rgb(113, 113, 113);
 }
@@ -13,121 +13,99 @@ label {
 
 <script>
     function showInfo(infolink){
-	row_id = "#info-row";
-	$(row_id).toggleClass("hidden");
-	if ($(infolink).text() == '(info ▾)'){
-	    $(infolink).text('(info ▴)');
-	}
-	else {
-	    $(infolink).text('(info ▾)');
-	}
+		row_id = "#info-row";
+		$(row_id).toggleClass("hidden");
+		if ($(infolink).text() == '(info ▾)'){
+			$(infolink).text('(info ▴)');
+		}
+		else {
+			$(infolink).text('(info ▾)');
+		}
     }
     function closeInfo() {
-	$('#info-row').addClass('hidden');
-	$('#infoLink').text('(info ▾)');
+		$('#info-row').addClass('hidden');
+		$('#infoLink').text('(info ▾)');
     }
-
 </script>
+{# NOTE: if this page is not working, re dump this script at bottom: #}
+<script src="/static/js/wav.js"></script> {# recorder script #}
 <a class="hidden" href="https://www.pdsquirrel.ca/user/presenter/dash/?direct_to=recorder" id="refresh_link"></a>
-
-
-
-
 <div class="col-lg-9 col-lg-offset-1" id="container">
-
-		<h4>Record a new session <small><a class="status-link" onclick="showInfo(this)" id="infoLink">(info ▾)</a></small></h4>
-		<hr>
-		
-
+	<h4>Record a new session <small><a class="status-link" onclick="showInfo(this)" id="infoLink">(info ▾)</a></small></h4>
+	<hr>
     <div class="row">
-        <div class="col-lg-9 col-lg-offset-1">
+        <div class="col-lg-9 col-lg-offset-1"></div>
 	</div>
-    </div>
     <div class="row hidden" id="info-row">
-<div class="alert alert-info">
-			    <p>
-The PD Squirrel recorder on this page lets you quickly and efficiently record a new session directly from 
-
-your PC or mobile device.  Plug in a USB microphone (we recommend the Snowball Blue microphone as 
-
-a good choice).  Type a name for your recording.  Click Record and start talking.  Click pause when 
-
-finished.  You may add to the recording by moving the triangle on the play bar to any position, clicking 
-
-Record and talk more as needed.  You may delete portions of the recording by using the trim function – 
-
-set a start and end point, then click Trim to delete the chosen portion.  When you are content with your 
-
-recording, click Save to keep it, then go to the Upload tab to create the PD session using this recording 
-
-that you’ve made. </p><p>
-
-When you first arrive at this page, your browser will ask for permission to use the microphone.  Click yes 
-
-to proceed.  This permission is only given for as long as you are on this page.  When you leave this 
-
-Recorder tab and later return, you will need to click yes again.  With most browsers you can modify 
-
-settings to always allow this page to use the microphone, but this is not necessary.
-</p>
-			    <div class="row">
-			        <div class="col-lg-12"><button class="btn btn-default pull-right" onclick="closeInfo()">Close</button></div>
-			    </div>
+		<div class="alert alert-info">
+			<p>
+			The PD Squirrel recorder on this page lets you quickly and efficiently record a new session directly from 
+			your PC or mobile device.  Plug in a USB microphone (we recommend the Snowball Blue microphone as 
+			a good choice).  Type a name for your recording.  Click Record and start talking.  Click pause when 
+			finished.  You may add to the recording by moving the triangle on the play bar to any position, clicking 
+			Record and talk more as needed.  You may delete portions of the recording by using the trim function – 
+			set a start and end point, then click Trim to delete the chosen portion.  When you are content with your 
+			recording, click Save to keep it, then go to the Upload tab to create the PD session using this recording 
+			that you’ve made. 
+			</p>
+			<p>
+			When you first arrive at this page, your browser will ask for permission to use the microphone.  Click yes 
+			to proceed.  This permission is only given for as long as you are on this page.  When you leave this 
+			Recorder tab and later return, you will need to click yes again.  With most browsers you can modify 
+			settings to always allow this page to use the microphone, but this is not necessary.
+			</p>
+			<div class="row">
+				<div class="col-lg-12"><button class="btn btn-default pull-right" onclick="closeInfo()">Close</button></div>
 			</div>
+		</div>
     </div>
     <div class="row">
-	<div class="col-lg-6">
-	    <label for="name">Recording Name</label>
-	    <input type="text" placeholder="Enter a name for your audio clip" class="form-control" id="name">
-	</div>
-	<div class="col-lg-12">
-	    <hr>
-	</div>
+		<div class="col-lg-6">
+			<label for="name">Recording Name</label>
+			<input type="text" placeholder="Enter a name for your audio clip" class="form-control" id="name">
+		</div>
+		<div class="col-lg-12">
+			<hr>
+		</div>
     </div>
     <div class="row">
-	<div class="col-lg-6">
-	    <button onclick="recordToggle()" class="btn btn-danger" id = "record_button">Record</button>
-	    <button onclick = "pauseClick()" class="btn btn-default" id = "pause_button">Pause</button>
-	    <button id = "save_button"  class="btn btn-default" onclick="saveRecording()">Save</button>
-		
-		{# <button id = "save_new_button"  class="hidden btn btn-default" onclick="saveRecording(true)">Save as</button> #}
-	    <br>
-<div style="float: left; margin-bottom: 20px; margin-top: 5px" id="output" style="font-weight: bold">
-		<p>Click record to begin capturing audio.</p>
-	    </div>
-	   
-	</div>
-
-	<div class="col-lg-6 hidden">
-
-	    <h5>Duration: </h5><div id="duration"></div>
-	    <!-- <button onclick="showData()" >Load chosen file</button>
-	    <input type="file" name="file" id="file" style="margin-top:10px"> -->
-	</div>
-
+		<div class="col-lg-6">
+			<button onclick="recordToggle()" class="btn btn-danger" id = "record_button">Record</button>
+			<button onclick = "pauseClick()" class="btn btn-default" id = "pause_button">Pause</button>
+			<button id = "save_button"  class="btn btn-default" onclick="saveRecording()">Save</button>
+			<br>
+			<div style="float: left; margin-bottom: 20px; margin-top: 5px" id="output" style="font-weight: bold">
+				<p>Click record to begin capturing audio.</p>
+			</div>
+		</div>
+		<div class="col-lg-6 hidden">
+			<h5>Duration: </h5><div id="duration"></div>
+			<!-- <button onclick="showData()" >Load chosen file</button>
+			<input type="file" name="file" id="file" style="margin-top:10px"> -->
+		</div>
     </div>
     <div class="row">
-	<div class="col-lg-7">
-	    <input type="hidden" id="pdaudio">
-	    <label>Start Time</label>
-	    <label id="end-label">End Time</label>
-	    <br>
-	    <input class="timebox" type="text" value = '0' id="start-mark">
-	    <button onclick="setStartMark()">Set</button>
-	    <input class="timebox" type="text" value='0' id="end-mark">
-	    <button onclick="setEndMark()">Set</button>
-	    <button  onclick="trimSelection()">Trim</button>
-	    <button onclick="pselection()">Preview Selection</button>
-	</div>
+		<div class="col-lg-7">
+			<input type="hidden" id="pdaudio">
+			<label>Start Time</label>
+			<label id="end-label">End Time</label>
+			<br>
+			<input class="timebox" type="text" value = '0' id="start-mark">
+			<button onclick="setStartMark()">Set</button>
+			<input class="timebox" type="text" value='0' id="end-mark">
+			<button onclick="setEndMark()">Set</button>
+			<button  onclick="trimSelection()">Trim</button>
+			<button onclick="pselection()">Preview Selection</button>
+		</div>
 
-<div class="col-lg-6 hidden" id="loading-alert">
-	<h2 class="alert alert-info">Loading WAV audio...</h2>
-	<p>This may take up some time depending on the length of the recording.</p>
-</div>
+		<div class="col-lg-6 hidden" id="loading-alert">
+			<h2 class="alert alert-info">Loading WAV audio...</h2>
+			<p>This may take up some time depending on the length of the recording.</p>
+		</div>
     </div>
 	
     <div class="col-lg-12">
-	<hr>
+		<hr>
     </div>
 </div>
 <div class="row">
@@ -145,8 +123,7 @@ settings to always allow this page to use the microphone, but this is not necess
     </div>
     <div class="row">
         <div class="col-lg-6 col-lg-offset-2" style="margin-top: 30px">
-<hr>
-
+		<hr>
 	    <h4>My Audio Clips</h4>
 	    {% if audio_recordings %}
 	    <table id="clips_table" class="table table-striped">
@@ -168,562 +145,5 @@ settings to always allow this page to use the microphone, but this is not necess
         </div>
     </div>
 </div>
-<script>
 
-/*   
-
-   Script notes
-   ============
-    
-   [refactor]
-
-	Needs to be refactored. Too intertwined. Need to properly setup git, then fork this and try to refactor? 
-   Script should be broken down into sections. Anything not directly related to the recorder should be moved outside the script tag? 
-   Idk though because some of the things, for example the link click, depend on variables initilied within the script tag. Although I think
-   they stay loaded in memory until the page refreshes? I am not sure.  
-
-
-*/
-
-
-
-function delAudio(id) {
-// Removes Audio on server and removes html listing
-    tr_listing = document.getElementById('rec-'+id);
-    confirmed = confirm("Are you sure you wish to delete this recording? (It will not affect any uploaded sessions)");
-    if (confirmed) {
-	tr_listing.remove();
-	$.ajax({
-	  type: "POST",
-	  url: "https://www.pdsquirrel.ca/record/",
-	  data: {"del" : 1 , "aud_id" : id},
-	  success: function(e) {
-	      alert("success");
-	      outputElement.innerHTML = "Audio succesfully deleted";
-	  },
-	});
-    }
-}
-
-
-$("a").click(function(e) {
- // When a link is clicked, confirm twice if the user wants to Save changes.
-	if (saved == false && page == 'recorder') { 
-	    confirmation = confirm("Save changes first?");
-	    if (confirmation) {
-		    saveRecording();
-	    } else {
-		confirmation = confirm("Are you sure? Press OK to save changes before leaving, otherwise this recording will be lost.");	
-		if (confirmation) {
-		    saveRecording();
-		}
-	    }
-	}
-
-	// Close audio context, otherwise page gets incredibly slow and recordings lag.
-	if (page =='recorder' && this.id != 'refresh_link') { 
-	    try {
-		context.close();
-		page = null;
-	    } catch(er) {
-		console.log(er);
-	    }
-	    console.log(e);
-	}
-});
-
-
- /* 
-   Audio recorder
- */
-
-    // Script global vars
-    var container = document.getElementById('main-content');                 
-    var refresh_link = document.getElementById('refresh_link');              
-    var outputElement = document.getElementById('output');		     
-    var audio_player = document.getElementById("player");                    
-    var page = 'recorder';                                                   
-    var aud_name = document.getElementById("name");                           
-    var sbox = document.getElementById("start-mark");
-    var ebox = document.getElementById("end-mark");
-	var loading_alert = document.getElementById("loading-alert");
-    var rec_btn = document.getElementById('record_button');
-    var pause_btn = document.getElementById('pause_button');
-    var save_btn = document.getElementById('save_button');
-    var indicatior = document.getElementById('ind');
-    var leftchannel = [];
-    var rightchannel = [];
-    var interleaved = [];
-    var recorder = null;
-    var recording = false;
-    var recordingLength = 0;
-    var volume = null;
-    var audioInput = null;
-    var sampleRate = null;
-    var audioContext = null;
-    var context = null;
-    var outputElement = document.getElementById('output');
-    var outputString;
-    var view;
-    var channel_offset = null;
-	var leftBuffer = mergeBuffers(leftchannel, 0);
-	var rightBuffer = mergeBuffers(rightchannel, 0);
-	interleaved = interleave(leftBuffer, rightBuffer);
-	buildLocalWav();
-    var mode = null;
-    var audio_proccess_counter = 0;
-    var lastSelectedTime = 0;
-    var saved = null;
-    var editing = null;
-    var edited_name = null;
-    var allowing_mic = false;
-
-    // remove prefixes
-    if (!navigator.getUserMedia)
-        navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia ||
-                      navigator.mozGetUserMedia || navigator.msGetUserMedia;
-
-    // If webcam available, request permission. Display Error message elsewise.
-    if (navigator.getUserMedia){
-	navigator.getUserMedia({audio:true}, 
-	    success, 
-	    function(e) { 
-	    alert('Error capturing audio.'); 
-	});
-    } else { 
-	alert('getUserMedia not supported in this browser.');
-    }
-
-    function showData(url, audio_clip_name){
-	// This function is called when load chosen file btn clicked. Loads wav url into editor, only tested with our wavs.
-	if (allowing_mic == true ) {
-
-	    if (saved == false) {
-		if(!confirm('Continue? You will lose unsaved work.')) {
-		    return false;
-		}
-
-	    }
-
-	    //what are thOOOOOOOOOOOOOOOOOOOse..
-	    aud_name.value = audio_clip_name;
-	    edited_name = audio_clip_name;
-	    editing = true;
-
-		saved = false;
-
-	    //var url = '/audio_files/blob_KIC6c8L';
-	    var req = new XMLHttpRequest();
-	    req.responseType = "arraybuffer";
-	    var reader = null;
-	    var debug = document.getElementById('debug');
-	    req.open('GET', url, true);
-	    req.send();
-
-		// Give loading feedback. TODO: sub in blue wheel
-		audio_player.hidden = true;
-		pause_btn.disabled = true;
-		rec_btn.disabled = true;
-		save_btn.disabled = true;
-		loading_alert.className = '';
-
-	    req.onload = function(e) {
-
-		//fileblob = document.getElementById('file').files[0];      // Works with this <- used to lol
-		fileblob = new Blob([req.response], {type : "audio/wav"});
-		reader = new FileReader();
-		reader.readAsArrayBuffer(fileblob);
-		reader.onload = loaded;
-	    }
-	}
-
-	function loaded(evt) { 
-
-	    var buffer = reader.result; // buffer of raw wav file data
-
-	    var localview = new DataView(buffer);
-	    var fmt_chunk_size = localview.getUint32(16, true); // size, in bytes, of fmt data chunk. 
-	    var header_chunk_size = 28 + fmt_chunk_size; // in bytes, of the header. Typically 44
-	    var lc = [];
-
-	    // Number of samples. Sample is 32 bits long. (Two 16 bit audio samples)
-	    num_samples = localview.getUint32(40, true); // Number of samples
-
-	    console.log("header_chunk_size: ");
-	    console.log(header_chunk_size);
-	    console.log("buffer byte length");
-	    console.log(buffer.byteLength);
-
-	    // Determin how much to take off of buffer. it must fit perfectly for Int16Array
-	    var adjusted_length;
-	    if (buffer.byteLength % 2 != 0) {
-			adjusted_length = buffer.byteLength - (header_chunk_size + 1);
-	    } else {
-			adjusted_length = buffer.byteLength - header_chunk_size
-	    }
-	    adjusted_length = adjusted_length / 2;
-	    var allSamples = new Int16Array(buffer, header_chunk_size, adjusted_length);
-	    console.log(allSamples);
-
-	    // Gets all sampled data, converts it to a float32
-	    for (var k=0; k < allSamples.length / 2; k++){
-		lc[k] = allSamples[k*2] / 0x7FFF;
-	    }
-
-	    lcfinal = [];
-	    rcfinal = [];
-
-	    // Creates an array of float32arrays, each 2048 bytes (buffer size) in length, this is used because trimming edits the raw left and right channels before flattening.
-	    for (var i=0; i < (allSamples.length / 4096); i++) {
-		f32a = new Float32Array(lc.slice(i*2048, (i+1) * 2048));
-		lcfinal.push(f32a);
-		rcfinal.push(f32a);
-	    }
-
-	    // Flatten and build wav
-	    leftchannel = lcfinal;
-	    rightchannel = rcfinal;
-		var leftBuffer = mergeBuffers(leftchannel, 0);
-		var rightBuffer = mergeBuffers(rightchannel, 0);
-		interleaved = interleave(leftBuffer, rightBuffer);
-		buildLocalWav();
-
-	    // Query duration
-	    gd = setInterval(getDur, 20);
-
-		audio_player.hidden = false;
-		pause_btn.disabled = false;
-		rec_btn.disabled = false;
-		save_btn.disabled = false;
-		loading_alert.className = 'hidden';
-
-	}
-
-    }
-
-    /* set start and end values for selection. */
-    function setStartMark(){
-        sbox.value = audio_player.currentTime.toFixed(2);
-    }
-    function setEndMark(){
-        ebox.value = audio_player.currentTime.toFixed(2);
-    }
-
-    /* Pause and Save recording */
-    function pausePlayer() {
-	audio_player.pause();
-    }
-
-    /* send wav to server */
-    function saveRecording() {	
-	if (edited_name == aud_name.value) {
-	    if(!confirm("Are you sure you wish to save changes to '" + edited_name + "'? You may change the name to save it as a new audio recording")) {
-		return false;
-	    }
-	}
-	try {
-	    if (aud_name.value == "") {
-		alert("Please enter a name for the recording");
-		return false;
-	    }
-	    createWavBlob();
-	    saved = true;
-	} catch (err) {
-	    console.log("error saving");
-	}
-
-    }
-
-    /* Helper functions */
-    // Clear range
-    function clearRange() {
-	ebox.value = 0;
-	sbox.value = 0;
-    }    
-
-    // Ensure its playing
-    function isPlaying(player) { return !audio_player.paused; }
-
-    // Preview range selection
-    function pselection(){
-
-	// Plays audio at start time
-	audio_player.currentTime = sbox.value;
-	audio_player.play();
-
-	// Makes sure player doesnt exceed end time
-	ct = setInterval(checkTime, 50);
-	function checkTime() {
-	    if (audio_player.currentTime > ebox.value) {
-		window.clearInterval(ct);
-		audio_player.pause();
-	    }
-	}
-    }
-
-    // Query and display duration of wav file. 4 means loaded and ready.
-    function getDur() {
-	document.getElementById("duration").innerHTML = audio_player.duration.toFixed(2) ;
-	if (audio_player.readyState == 4) {
-	    document.getElementById("duration").innerHTML = audio_player.duration.toFixed(2) ;
-	    window.clearInterval(gd);
-	}
-    }
-    
-  
-    // either pauses recording, or pauses audio playback
-    function pauseClick() {
-		if (recording == true) {
-			recordToggle(); 
-			outputElement.innerHTML = "Recording Paused";
-		} else { 
-			if (isPlaying(audio_player)) { 
-			audio_player.pause();
-			} 
-		}
-    }
-
-    /* Toggle recording. Data is fed to left and right chanels, in the correct position. */
-    function recordToggle(e) {	
-        if (recording == true) { // Pause clicked
-
-			recording = false;
-			rec_btn.disabled = false;
-			save_btn.disabled = false;
-			var leftBuffer = mergeBuffers(leftchannel, recordingLength);
-			var rightBuffer = mergeBuffers(rightchannel, recordingLength);
-			interleaved = interleave(leftBuffer, rightBuffer);
-			buildLocalWav();
-
-			audio_player.currentTime = lastSelectedTime;
-
-			/* Interval used because wav file takes slight time to build
-			   otherwise NaN is displayed because there is no wav source
-			   getDur is a function to get length of wav file  */
-			gd = setInterval(getDur, 20);
-			outputElement.innerHTML = '';
-
-
-
-		} else { // Record clicked
-			if (allowing_mic == false){
-				getPerm();
-			}
-	    	if (aud_name.value == "") {
-				alert("Please enter a name for your recording first");
-				return false;
-			}
-			saved = false;
-			rec_btn.disabled = true;
-			save_btn.disabled = true;
-
-			// finds offset to be used when inserting recorded audio into an exisiting wav file
-			// Divides by 2048 because channel data is stored in arrays of float32arrays.
-			// float arrays are 2048 in length, as decided by the buffer size. Lower buffer size
-			// is faster but may glitch due to latency issues
-            channel_offset = parseInt((parseFloat(audio_player.currentTime) * sampleRate) / 2048);
-            audio_proccess_counter = 0;
-	    	lastSelectedTime = audio_player.currentTime;
-            recording = true;
-            outputElement.innerHTML = 'Recording now...';
-        }
-    }
-
-
-    // Trims selection by editing the channel data, to neatrest 2048 byte buffer
-    function trimSelection(){
-
-        var start = document.getElementById('start-mark').value;
-        var end = document.getElementById('end-mark').value;
-
-		if (end <= start) {
-			alert("incorrect range");
-			return;
-		}
-
-		// Remove raw data from left and right channels
-        var length = (end - start) * sampleRate;
-        leftchannel.splice(parseInt((start * sampleRate) / 2048),parseInt(length /2048));
-        rightchannel.splice(parseInt((start * sampleRate) / 2048),parseInt(length /2048));
-        recordingLength -= parseInt(length/2);
-
-        // combines data and builds wav
-        var leftBuffer = mergeBuffers(leftchannel, recordingLength);
-        var rightBuffer = mergeBuffers(rightchannel, recordingLength);
-        interleaved = interleave(leftBuffer, rightBuffer); // Should probably edit this instead of channel data, but it gave issues earlier. 
-        buildLocalWav();
-		clearRange();
-		gd = setInterval(getDur, 20);
-    }
-
-    // Adds header information to interleaved data.
-    function buildLocalWav(e) {
-
-        var buffer = new ArrayBuffer(44 + interleaved.length * 2);
-        view = new DataView(buffer);
-
-        // RIFF 
-        writeUTFBytes(view, 0, 'RIFF');
-        view.setUint32(4, 44 + interleaved.length * 2, true);
-        writeUTFBytes(view, 8, 'WAVE');
-
-        // FMT
-        writeUTFBytes(view, 12, 'fmt ');
-        view.setUint32(16, 16, true);
-        view.setUint16(20, 1, true);
-        view.setUint16(22, 2, true);
-        view.setUint32(24, sampleRate, true);
-        view.setUint32(28, sampleRate * 4, true);
-        view.setUint16(32, 4, true);
-        view.setUint16(34, 16, true);
-
-        // data sub-chunk
-        writeUTFBytes(view, 36, 'data');
-        view.setUint32(40, interleaved.length * 2, true);
-
-        var lng = interleaved.length;
-        var index = 44; // Length of file header
-        var volume = 1;
-
-	// Multiplies by volume
-        for (var i = 0; i < lng; i++) {
-            view.setInt16(index, interleaved[i] * (0x7FFF * volume), true);
-            index += 2;
-        }
-
-	// Create wav url & download link
-        var blob = new Blob ( [ view ], { type : 'audio/wav' } );
-        var url = (window.URL || window.webkitURL).createObjectURL(blob);
-        $('#player').attr("src" , url);
-        $('#dl').attr("href", url);
-    }
-
-
-    function createWavBlob() {
-
-
-		// Creates wav blob from data view
-        var blob = new Blob ( [ view ], { type : 'audio/wav' } );
-    	var fd = new FormData();
-        var url = (window.URL || window.webkitURL).createObjectURL(blob);
-    	var name = document.getElementById('name').value; // Should check name isnt used or empty
-		var audio_table = document.getElementById('clips_table');
-
-		// Delivers blob url to audio player as src. This is probably where mobile breaks.
-    	$('#player').attr("src" , url);
-    	$('#dl').attr("href", url);
-        outputElement.innerHTML = 'Upload and saving...';
-
-		// Build form data obj with wavblob, upload flag, and name text.
-    	fd.append('data', blob);
-		fd.append('upload', 'true');
-    	fd.append('name', name); 
-
-		// Post to server. Alert on failure. 
-		// TODO local file editing.. maybe
-
-		console.log('loading.');
-
-		var mc = document.getElementById('main-content');
-		mc.innerHTML = 'Saving, this may take a few moments..';
-		$.ajax({
-				type: 'POST',
-				url: '/record/',
-				data: fd,
-				processData: false,
-				contentType: false,
-				success: function(data) {
-				// If POST succesfull, return json for that rec. 
-				var this_audio = JSON.parse(data);
-				console.log(this_audio[0]); // fields_obj, model_str, pk_id
-				pda_obj = this_audio[0]
-				console.log(pda_obj.fields);
-				alert("Upload Successful");
-				refresh_link.click();
-				outputElement.innerHTML = "Upload complete, It will appear below when you revisit this page";
-				},
-				error: function(data) {
-				// Note: debug this by displaying data. It will display django error message.
-					alert("Error saving file. We recommend you download this file so it isn't lost.");
-				}
-			});
-    }
-
-    
-    
-    function interleave(leftChannel, rightChannel){
-    // Interleave the left and right channels together. Wav file looks like ABABAB for data.
-      var length = leftChannel.length + rightChannel.length;
-      var result = new Float32Array(length);
-      var inputIndex = 0;
-    
-      for (var index = 0; index < length; ){
-        result[index++] = leftChannel[inputIndex];
-        result[index++] = rightChannel[inputIndex];
-        inputIndex++;
-      }
-      return result;
-    }
-    
-    // Flattens array of 32bitarrays
-    function mergeBuffers(channelBuffer, recordingLength){
-      var result = new Float32Array(channelBuffer.length * 2048);
-      var offset = 0;
-      var lng = channelBuffer.length;
-      for (var i = 0; i < lng; i++){
-        var buffer = channelBuffer[i];
-        result.set(buffer, offset);
-        offset += buffer.length;
-      }
-      return result;
-    }
-    
-    function writeUTFBytes(view, offset, string){ 
-      var lng = string.length;
-      for (var i = 0; i < lng; i++){
-        view.setUint8(offset + i, string.charCodeAt(i));
-      }
-    }
-    
-    function success(e){
-	allowing_mic = true; //Only check for microphone if this flag is off. first time rec btn clicked.
-	console.log(allowing_mic);
-
-	/* creates audio context, which provides info such as sample rate and access to the source 
-	   stream */
-        audioContext = window.AudioContext || window.webkitAudioContext;
-        context = new audioContext();
-        sampleRate = context.sampleRate;
-        volume = context.createGain();
-    
-        // creates an audio node from the microphone incoming stream
-        audioInput = context.createMediaStreamSource(e);
-    
-        // connect the stream to the gain node
-        audioInput.connect(volume);
-    
-        /* From the spec: This value controls how frequently the audioprocess event is 
-        dispatched and how many sample-frames need to be processed each call. 
-        Lower values for buffer size will result in a lower (better) latency. 
-        Higher values will be necessary to avoid audio breakup and glitches */
-        var bufferSize = 2048;
-        recorder = context.createScriptProcessor(bufferSize, 2, 2);
-    
-        recorder.onaudioprocess = function(e){
-            if (!recording) return;
-            var left = e.inputBuffer.getChannelData (0);
-            var right = e.inputBuffer.getChannelData (1);
-
-	    // adds data at offset (allows for recording midway through a file) and incriments local index
-            leftchannel.splice(channel_offset + audio_proccess_counter, 0, (new Float32Array(left)));
-            rightchannel.splice(channel_offset + audio_proccess_counter, 0, (new Float32Array(right)));
-            audio_proccess_counter += 1;
-
-            recordingLength += bufferSize; // Probably not needed
-            console.log('recording');
-        }
-        volume.connect (recorder);
-        recorder.connect (context.destination); 
-    }
-</script>
 
