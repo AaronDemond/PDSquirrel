@@ -38,9 +38,7 @@ function hideCancelBar() {
 
 function showRemove(id, suslink) {
     hideCancelBar();
-    hideSuspend();
     row_id = "#remove-" + id;
-
     if ($(suslink).text() == 'Remove ▴') {
         $(suslink).text('Remove ▾');
     } else {
@@ -60,9 +58,9 @@ function showSuspendCancel(id, suslink) {
         $(suslink).text('Cancel removal ▴');
     }
     $(row_id).toggleClass("hidden");
-}  
-                                        
-                                 
+}
+
+
 </script>
 <style>
     .actions button, .actions a {
@@ -119,7 +117,7 @@ function showSuspendCancel(id, suslink) {
     }
     .pd-upload h4 {
     margin-top: 10px;
-    margin-bottom: 0; 
+    margin-bottom: 0;
     }
     .status-brown {
     color: brown;
@@ -170,7 +168,7 @@ function showSuspendCancel(id, suslink) {
                                 </span>
                                 {% else %}
                                 Awaiting your release
-                                {% endif %}		
+                                {% endif %}
                                 {% elif sesh.edited %}
                                 {% if sesh.approved %}
                                 Accepted & listed<br>
@@ -286,60 +284,60 @@ function showSuspendCancel(id, suslink) {
 
 			    {% if sesh.edited and sesh.approved and sesh.presenter_approved %}
 <p>
-    The original of this PD Session has been released by you and accepted by us (it is listed on the Site 
-    
-    and offered to all PD Squirrel members).  You have subsequently requested changes to its title or 
-    
-    description, and/or you have requested that the audio file of this PD Session be replaced with 
-    
-    another audio file that you have uploaded and released to us. Once reviewed and accepted by us, 
-    
+    The original of this PD Session has been released by you and accepted by us (it is listed on the Site
+
+    and offered to all PD Squirrel members).  You have subsequently requested changes to its title or
+
+    description, and/or you have requested that the audio file of this PD Session be replaced with
+
+    another audio file that you have uploaded and released to us. Once reviewed and accepted by us,
+
     we will make the changes and/or replace the audio file of this PD Session as reasonably necessary.
 </p>
 
 
 			    {% elif sesh.approved and sesh.edited and sesh.presenter_approved == False %}
 <p>
-    The original of this PD Session has been released by you and accepted by us (it is listed on the Site 
-    
-    and offered to all PD Squirrel members).  Subsequently, you have saved requested changes to the 
-    
-    title or description of this Session, and/or uploaded a possible replacement audio file.  These have 
-    
-    not yet been released by you.  When you click the green button titled ‘Release edited Session’, you 
-    
-    will be deemed to release to us your requested changes and your most recently uploaded audio file 
-    
-    of this PD Session for our review and acceptance in accordance with our Presenter terms and 
-    
-    conditions.  Once reviewed and accepted by us, we will make the changes and/or replace the audio 
-    
+    The original of this PD Session has been released by you and accepted by us (it is listed on the Site
+
+    and offered to all PD Squirrel members).  Subsequently, you have saved requested changes to the
+
+    title or description of this Session, and/or uploaded a possible replacement audio file.  These have
+
+    not yet been released by you.  When you click the green button titled ‘Release edited Session’, you
+
+    will be deemed to release to us your requested changes and your most recently uploaded audio file
+
+    of this PD Session for our review and acceptance in accordance with our Presenter terms and
+
+    conditions.  Once reviewed and accepted by us, we will make the changes and/or replace the audio
+
     file of this PD Session as reasonably necessary.
 </p>
 
                             {% elif sesh.suspend_request %}
 <p>
-    You have requested the removal of this PD Session, which has been previously released by you and 
-    
-    accepted by us. We are processing your removal request in accordance with our Presenter terms 
-    
+    You have requested the removal of this PD Session, which has been previously released by you and
+
+    accepted by us. We are processing your removal request in accordance with our Presenter terms
+
     and conditions.
 </p>
                             {% elif sesh.presenter_approved == False %}
 
 <p>
-    We are awaiting your release of this PD Session to us. When you click the green button titled 
-    
-    ‘Release Session’, you will be deemed to release it to us for our review and acceptance in 
-    
-    accordance with our Presenter terms and conditions. Immediately upon our acceptance of this PD 
-    
-    Session, it will be listed on the Site and offered to PD Squirrel members. Before you click to release 
-    
-    it, you may preview, edit or remove this PD Session as you wish. After we accept and list this PD 
-    
-    Session, we reserve the right to approve any request from you to remove it, in accordance with our 
-    
+    We are awaiting your release of this PD Session to us. When you click the green button titled
+
+    ‘Release Session’, you will be deemed to release it to us for our review and acceptance in
+
+    accordance with our Presenter terms and conditions. Immediately upon our acceptance of this PD
+
+    Session, it will be listed on the Site and offered to PD Squirrel members. Before you click to release
+
+    it, you may preview, edit or remove this PD Session as you wish. After we accept and list this PD
+
+    Session, we reserve the right to approve any request from you to remove it, in accordance with our
+
     Presenter terms and conditions.
 </p>
 
@@ -347,8 +345,8 @@ function showSuspendCancel(id, suslink) {
                             <p>Thank you for releasing this PD Session to us. Once reviewed and accepted by us, in accordance with our Presenter terms and conditions, it will be listed on the Site and offered to all PD Squirrel members.</p>
                             {% else %}
 <p>
-    This PD Session has been released by you and accepted by us. It is now listed on the Site and 
-    
+    This PD Session has been released by you and accepted by us. It is now listed on the Site and
+
     offered to all PD Squirrel members.
 </p>
                             {% endif %}
@@ -362,7 +360,7 @@ function showSuspendCancel(id, suslink) {
                 </div>
             </div>
             {% endfor %}
-            
+
         </div>
     </div>
     <div class="col-lg-3">
