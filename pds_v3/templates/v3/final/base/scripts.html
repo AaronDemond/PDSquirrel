@@ -15,7 +15,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
         <script>
 $(document).ready(function(){
-	$( "#login-form" ).submit(function() {
+	$( "#login-form" ).submit(function(event) {
 		console.log("login function");
 		$("#login-msg").html("Loading, please wait..");
 		event.stopPropagation();
@@ -33,7 +33,7 @@ $(document).ready(function(){
 				else {
 					$("#login-msg").html(data);
 				}
-					
+
 			}
 			});
 	return false;
@@ -43,7 +43,7 @@ $(document).ready(function(){
         </script>
 	<script>
 	$(document).ready(function() {
-    
+
 	    $('.iclose').click(function() {
 		$('.msg-container').empty();
 	    });
