@@ -1,9 +1,10 @@
 from django.shortcuts import render, HttpResponse, HttpResponseRedirect
+from itertools import chain
 import datetime
 from django.contrib import messages
 from django.core.mail import send_mail
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from pds_v3.models import PdSession, AppUser, LawSociety, LawSocietyOverride, Purchase, Subject 
+from pds_v3.models import PdSession, AppUser, LawSociety, LawSocietyOverride, Purchase, Subject, Presenter
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.models import User
 from django.db import IntegrityError
@@ -22,7 +23,6 @@ def landing(request):
 
 
 
-#any url prefixed with pd/
 def browse(request):
     #pdb.set_trace()
 
@@ -41,10 +41,13 @@ def browse(request):
         search_type = request.POST.get('search_type', None)
 
         if search_type == 'search':
+            users_queried = User.objects.filter(first_name__icontains=query)
+            presenters_queried = Presenter.objects.filter(user__in=users_queried)
+            list_by_presenter = PdSession.objects.filter(presenters__in=presenters_queried, approved=True, suspended=False, archived=False).order_by('-upload_date')
             tmplist = PdSession.objects.filter(description__icontains=query, approved=True, suspended=False, archived=False).order_by('-upload_date')
             tmplist2 = PdSession.objects.filter(name__icontains=query, approved=True, suspended=False, archived=False).order_by('-upload_date')
-            from itertools import chain
-            pdlist = list(chain(tmplist, tmplist2))
+            pdlist = list(set(chain(tmplist, tmplist2, list_by_presenter))) #chain together, get rid of duplicates by constructing a set, convert to list for template
+
         else:
             if subject == '0':
                 pdlist = PdSession.objects.filter(approved=True, suspended=False, archived=False).order_by('-upload_date')
@@ -123,8 +126,8 @@ def fuseEdit(edit,pd):
 
     for subject in edit.subjects.all():
 	pd.subject.add(subject)
-    return pd	
-from pds_v3.models import Presenter
+    return pd
+
 def preview(request,id):
     session = PdSession.objects.get(pk=id)
     presenter = Presenter.objects.filter(user=request.user)[0]
