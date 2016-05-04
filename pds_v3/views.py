@@ -348,7 +348,6 @@ def upload_admin(request, pd_id=False):
 		pd.price = 9.99
 		pd.edited=False
 		pd.approved = True
-		pd.pdaudio.used = True
 		now = datetime.datetime.now()
 		pd.release_date = now
 		pd.save()
