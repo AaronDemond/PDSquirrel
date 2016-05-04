@@ -1,13 +1,14 @@
 from django.shortcuts import render, HttpResponse, HttpResponseRedirect
-import json
 from django.contrib.auth import  hashers
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.models import User
 from pds_v3.models import PdSession, AppUser, LawSociety, LawSocietyOverride, Purchase
 from django.core.mail import send_mail
 from django.contrib import messages
-import uuid
+from .forms import CaptchaForm
+from pds_v3.forms import PdSessionForm
 
+import json, uuid, random, string, stripe, urllib
 
 import stripe
 stripe.api_key = "sk_test_Rxq0kWwzxNPQfOSCEsAjVd7e"
@@ -56,7 +57,7 @@ def logout_user(request):
     logout(request)
     return HttpResponseRedirect("/")
 
-import random, string, stripe
+
 
 def randomword(length):
     return ''.join(random.choice(string.lowercase) for i in range(length))
@@ -75,12 +76,12 @@ def recover(request):
         user.password = password
         user.save()
         msg = "Hello, " + user.first_name + ".\n\nWe have reset your password for you. Your new password for temporary use is:\n" + plainpass + \
-                                                "\n\nPlease sign in and change it (in your My Account page).\n\nThank you,\n\nPD Squirrel admin team." 
+                                                "\n\nPlease sign in and change it (in your My Account page).\n\nThank you,\n\nPD Squirrel admin team."
 	send_mail('PD Squirrel Recovery', msg, 'noreply@pdsquirrel.ca', [user.email,'demondsoftware@gmail.com'], fail_silently=False)
 
 	messages.success(request, 'You have been sent a recovery password to your email')
         return render(request, 'v3/final/login-new.html')
-	
+
     else:
         return render(request, 'v3/final/recover.html')
 
@@ -91,8 +92,8 @@ def clean_join(data):
     password = data.POST["password"]
     return True
 
-import urllib
-from .forms import CaptchaForm
+
+
 def join_success(request):
     return True
 
@@ -114,7 +115,7 @@ def join(request):
 
     if request.POST:
 
-        first_name = request.POST["first_name"] 
+        first_name = request.POST["first_name"]
         last_name = request.POST["last_name"]
         terms = request.POST["terms"]
         email = request.POST["email"]
@@ -198,7 +199,7 @@ def presenter(request):
     pd = PdSession.objects.filter(presenters=request.user)
     return render(request, 'v3/presenter.html', {'pd': pd})
 
-from pds_v3.forms import PdSessionForm
+
 def presenter_edit_pd(request):
     try:
         pd_id = request.GET.get('pd_id', None)
@@ -284,9 +285,9 @@ def change_membership(request):
 
     return HttpResponseRedirect('/user/options/')
 
-	
 
-	
+
+
 
 def change_pass(request):
 
@@ -352,7 +353,7 @@ def del_card(request):
 
 
 
-	else:	
+	else:
 		return HttpResponseRedirect('/user/options/')
 
 def add_card(request):
