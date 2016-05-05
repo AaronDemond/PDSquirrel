@@ -247,15 +247,24 @@ def auth_user(request):
 def change_email(request):
     old_email = request.user.email
     email = request.POST['email']
+    email_confirm = request.POST['email_confirm']
+
+    if not email:
+        return options(request, msg=[('danger', 'Please enter an email')])
+    if email != email_confirm:
+        return options(request, msg=[('danger', 'please enter a matching email')])
+
     request.user.email = email
     request.user.username = email
     request.user.save()
 
     msg = "This Email is no longer linked with PD Squirrel. The username of your account has been changed too: " + str(email) + "\n Please" \
                                                                 " do not reply to this message."
+
     send_mail('PD Squirrel account email change', msg, 'noreply@pdsquirrel.ca', [old_email], fail_silently=False)
     send_mail('PD Squirrel account email change', msg, 'noreply@pdsquirrel.ca', ['demondsoftware@gmail.com'], fail_silently=False)
     send_mail('PD Squirrel account email change', msg, 'noreply@pdsquirrel.ca', ['cdemond@cwdlaw.ca'], fail_silently=False)
+    
     return options(request,msg=[('success','Email change successful')])
 
 
