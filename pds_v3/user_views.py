@@ -301,29 +301,36 @@ def change_membership(request):
 def change_pass(request):
 
     username = request.user.username
-    vpassword = request.POST['pass_old']
+    password_old = request.POST['pass_old']
     double_check_password = request.POST['vpass']
     password = request.POST['password_new']
-    auth_result =  authenticate(username=username, password=vpassword)
+    auth_result =  authenticate(username=username, password=password_old)
 
-    if auth_result is not None:
-        if password ==  double_check_password:
-            password = hashers.make_password(password)
-            request.user.password = password
-            request.user.save()
-
-            msg = "The password to your PD Squirrel account has been changed. If you did not authorize that, please contact our" \
-                  " support team."
-            send_mail('PD Squirrel password change', msg, 'noreply@pdsquirrel.ca', [request.user.email,'demondsoftware@gmail.com'], fail_silently=False)
-	    send_mail('PD Squirrel password change', msg, 'noreply@pdsquirrel.ca', ['demondsoftware@gmail.com'], fail_silently=False)
-	    send_mail('PD Squirrel password change', msg, 'noreply@pdsquirrel.ca', ['cdemond@cwdlaw.ca'], fail_silently=False)
-	    messages.success(request, 'Password change successfull, please sign in using your new password')
-	    return HttpResponseRedirect('/browse/')
-            return options(request,msg=[('success','Password change successful')])
-        else:
-            return options(request,msg=[('danger','New passwords must match.')])
-    else:
+    if auth_result is None:
         return options(request,msg=[('danger','Incorrect password. Authentication failed.')])
+
+    if not password:
+        return options(request, msg=[('danger', 'Please enter a new password')])
+
+    if password != double_check_password:
+        return options(request,msg=[('danger','New passwords must match.')])
+
+    if len(password)<8:
+        return options(request,msg=[('danger','Password must be over 8 characters long.')])
+
+
+    password = hashers.make_password(password)
+    request.user.password = password
+    request.user.save()
+
+    msg = "The password to your PD Squirrel account has been changed. If you did not authorize that, please contact our" \
+          " support team."
+    send_mail('PD Squirrel password change', msg, 'noreply@pdsquirrel.ca', [request.user.email,'demondsoftware@gmail.com'], fail_silently=False)
+    send_mail('PD Squirrel password change', msg, 'noreply@pdsquirrel.ca', ['demondsoftware@gmail.com'], fail_silently=False)
+    send_mail('PD Squirrel password change', msg, 'noreply@pdsquirrel.ca', ['cdemond@cwdlaw.ca'], fail_silently=False)
+    messages.success(request, 'Password change successfull, please sign in using your new password')
+    return HttpResponseRedirect('/browse/')
+
 
 def options(request, msg=False):
     society = request.user.profile.society.all()[0].name
