@@ -8,7 +8,8 @@ from django.contrib import messages
 from .forms import CaptchaForm
 from pds_v3.forms import PdSessionForm
 
-import json, uuid, random, string, stripe, urllib
+
+import json, uuid, random, string, stripe, urllib, re
 
 import stripe
 stripe.api_key = "sk_test_Rxq0kWwzxNPQfOSCEsAjVd7e"
@@ -244,6 +245,7 @@ def auth_user(request):
     else:
         return HttpResponse("request failed")
 
+
 def change_email(request):
     old_email = request.user.email
     email = request.POST['email']
@@ -253,6 +255,8 @@ def change_email(request):
         return options(request, msg=[('danger', 'Please enter an email')])
     if email != email_confirm:
         return options(request, msg=[('danger', 'please enter a matching email')])
+    if re.match('^\S*@\S*\.\S*', email) is None:
+        return options(request, msg=[('danger', 'Your email must be in a valid email form. Example: test@pdsquirrel.ca')])
 
     request.user.email = email
     request.user.username = email
@@ -261,10 +265,11 @@ def change_email(request):
     msg = "This Email is no longer linked with PD Squirrel. The username of your account has been changed too: " + str(email) + "\n Please" \
                                                                 " do not reply to this message."
 
+    """
     send_mail('PD Squirrel account email change', msg, 'noreply@pdsquirrel.ca', [old_email], fail_silently=False)
     send_mail('PD Squirrel account email change', msg, 'noreply@pdsquirrel.ca', ['demondsoftware@gmail.com'], fail_silently=False)
     send_mail('PD Squirrel account email change', msg, 'noreply@pdsquirrel.ca', ['cdemond@cwdlaw.ca'], fail_silently=False)
-    
+    """
     return options(request,msg=[('success','Email change successful')])
 
 
