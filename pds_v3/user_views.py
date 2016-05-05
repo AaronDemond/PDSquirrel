@@ -248,8 +248,8 @@ def auth_user(request):
 
 def change_email(request):
     old_email = request.user.email
-    email = request.POST['email']
-    email_confirm = request.POST['email_confirm']
+    email = request.POST.get('email', False)
+    email_confirm = request.POST.get('email_confirm', False)
 
     if not email:
         return options(request, msg=[('danger', 'Please enter an email')])
@@ -265,11 +265,11 @@ def change_email(request):
     msg = "This Email is no longer linked with PD Squirrel. The username of your account has been changed too: " + str(email) + "\n Please" \
                                                                 " do not reply to this message."
 
-    """
+
     send_mail('PD Squirrel account email change', msg, 'noreply@pdsquirrel.ca', [old_email], fail_silently=False)
     send_mail('PD Squirrel account email change', msg, 'noreply@pdsquirrel.ca', ['demondsoftware@gmail.com'], fail_silently=False)
     send_mail('PD Squirrel account email change', msg, 'noreply@pdsquirrel.ca', ['cdemond@cwdlaw.ca'], fail_silently=False)
-    """
+
     return options(request,msg=[('success','Email change successful')])
 
 
@@ -306,9 +306,9 @@ def change_membership(request):
 def change_pass(request):
 
     username = request.user.username
-    password_old = request.POST['pass_old']
-    double_check_password = request.POST['vpass']
-    password = request.POST['password_new']
+    password_old = request.POST.get('pass_old', False)
+    double_check_password = request.POST.get('vpass', False)
+    password = request.POST.get('password_new', False)
     auth_result =  authenticate(username=username, password=password_old)
 
     if auth_result is None:
