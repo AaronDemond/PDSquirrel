@@ -47,10 +47,8 @@
 			    <li><a href="{% url 'reports' %}">My Reports</a></li>
 			    <li><a href="{% url 'options' %}">My Account Options</a></li>
 			    <li><a href="{% url 'logout' %}" onclick="return confirm('Are you sure?')">Sign Out</a></li>
-			    {% if user.profile.remaining_pd > 0 %}
 			    <hr>
 			    <li><p class="navbar-text">Credits Remaining: {% if user.profile.remaining_pd %}{{ user.profile.remaining_pd }}{% else %}0{% endif %}</p></li>
-			    {% endif %}
 			</ul>
 		    </li>
 			    <li>
