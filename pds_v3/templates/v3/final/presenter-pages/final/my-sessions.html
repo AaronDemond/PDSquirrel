@@ -40,7 +40,8 @@ function showStatus(id, infolink) {
 
 function showRemove(id, suslink) {
     hideCancelBar();
-	hideStatus();
+		hideStatus();
+
     if ($(suslink).text() == 'Remove ▴') {
 		hideSuspend();
 		return;
@@ -183,7 +184,7 @@ function showSuspendCancel(id, suslink) {
 										</span>
 									{% else %}
 										Awaiting your release
-									{% endif %}		
+									{% endif %}
                                 {% elif sesh.edited %}
 									{% if sesh.approved %}
 										Accepted & listed<br>
@@ -261,7 +262,7 @@ function showSuspendCancel(id, suslink) {
                             {% endif %}
                         </form>
 
-						
+
                         {% endif %}
                         {% endif %}
                     </div>

@@ -8,7 +8,8 @@ from django.contrib import messages
 from .forms import CaptchaForm
 from pds_v3.forms import PdSessionForm
 
-import json, uuid, random, string, stripe, urllib
+
+import json, uuid, random, string, stripe, urllib, re
 
 import stripe
 stripe.api_key = "sk_test_Rxq0kWwzxNPQfOSCEsAjVd7e"
@@ -134,7 +135,14 @@ def join(request):
 
             if User.objects.filter(username=request.POST['email']).exists():
                 context['msg'].append({'type' :'danger', 'body' : "A user with that email address is already registered."})
-
+            if re.match('^\S*@\S*\.\S*', email) is None:
+                context['msg'].append({'type' :'danger', 'body' : "Please enter an email with a valid format."})
+            if not email:
+                context['msg'].append({'type' :'danger', 'body' :  'Please enter a email'})
+            if not password:
+                context['msg'].append({'type' :'danger', 'body' :  'Please enter a password'})
+            if len(password)<8:
+                context['msg'].append({'type' :'danger', 'body' :  'Please enter a password with a length of atleast 8 characters'})
             else:
                 profile = AppUser.create(first_name=first_name,last_name=last_name, email=email,
                                       password=password,terms=terms, society=society)
@@ -244,18 +252,31 @@ def auth_user(request):
     else:
         return HttpResponse("request failed")
 
+
 def change_email(request):
     old_email = request.user.email
-    email = request.POST['email']
+    email = request.POST.get('email', False)
+    email_confirm = request.POST.get('email_confirm', False)
+
+    if not email:
+        return options(request, msg=[('danger', 'Please enter an email')])
+    if email != email_confirm:
+        return options(request, msg=[('danger', 'please enter a matching email')])
+    if re.match('^\S*@\S*\.\S*', email) is None:
+        return options(request, msg=[('danger', 'Your email must be in a valid email form. Example: test@pdsquirrel.ca')])
+
     request.user.email = email
     request.user.username = email
     request.user.save()
 
     msg = "This Email is no longer linked with PD Squirrel. The username of your account has been changed too: " + str(email) + "\n Please" \
                                                                 " do not reply to this message."
+
+
     send_mail('PD Squirrel account email change', msg, 'noreply@pdsquirrel.ca', [old_email], fail_silently=False)
     send_mail('PD Squirrel account email change', msg, 'noreply@pdsquirrel.ca', ['demondsoftware@gmail.com'], fail_silently=False)
     send_mail('PD Squirrel account email change', msg, 'noreply@pdsquirrel.ca', ['cdemond@cwdlaw.ca'], fail_silently=False)
+
     return options(request,msg=[('success','Email change successful')])
 
 
@@ -292,29 +313,38 @@ def change_membership(request):
 def change_pass(request):
 
     username = request.user.username
-    vpassword = request.POST['pass_old']
-    double_check_password = request.POST['vpass']
-    password = request.POST['password_new']
-    auth_result =  authenticate(username=username, password=vpassword)
+    password_old = request.POST.get('pass_old', False)
+    double_check_password = request.POST.get('vpass', False)
+    password = request.POST.get('password_new', False)
+    auth_result =  authenticate(username=username, password=password_old)
 
-    if auth_result is not None:
-        if password ==  double_check_password:
-            password = hashers.make_password(password)
-            request.user.password = password
-            request.user.save()
-
-            msg = "The password to your PD Squirrel account has been changed. If you did not authorize that, please contact our" \
-                  " support team."
-            send_mail('PD Squirrel password change', msg, 'noreply@pdsquirrel.ca', [request.user.email,'demondsoftware@gmail.com'], fail_silently=False)
-	    send_mail('PD Squirrel password change', msg, 'noreply@pdsquirrel.ca', ['demondsoftware@gmail.com'], fail_silently=False)
-	    send_mail('PD Squirrel password change', msg, 'noreply@pdsquirrel.ca', ['cdemond@cwdlaw.ca'], fail_silently=False)
-	    messages.success(request, 'Password change successfull, please sign in using your new password')
-	    return HttpResponseRedirect('/browse/')
-            return options(request,msg=[('success','Password change successful')])
-        else:
-            return options(request,msg=[('danger','New passwords must match.')])
-    else:
+    if auth_result is None:
         return options(request,msg=[('danger','Incorrect password. Authentication failed.')])
+
+    if not password:
+        return options(request, msg=[('danger', 'Please enter a new password')])
+
+    if password != double_check_password:
+        return options(request,msg=[('danger','New passwords must match.')])
+
+    if len(password)<8:
+        return options(request,msg=[('danger','Password must be over 8 characters long.')])
+
+
+    password = hashers.make_password(password)
+    request.user.password = password
+    request.user.save()
+
+    msg = "The password to your PD Squirrel account has been changed. If you did not authorize that, please contact our" \
+          " support team."
+
+    send_mail('PD Squirrel password change', msg, 'noreply@pdsquirrel.ca', [request.user.email,'demondsoftware@gmail.com'], fail_silently=False)
+    send_mail('PD Squirrel password change', msg, 'noreply@pdsquirrel.ca', ['demondsoftware@gmail.com'], fail_silently=False)
+    send_mail('PD Squirrel password change', msg, 'noreply@pdsquirrel.ca', ['cdemond@cwdlaw.ca'], fail_silently=False)
+
+    messages.success(request, 'Password change successfull, please sign in using your new password')
+    return HttpResponseRedirect('/browse/')
+
 
 def options(request, msg=False):
     society = request.user.profile.society.all()[0].name

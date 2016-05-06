@@ -8,20 +8,20 @@
     jQuery(function($) {
       $('#payment-form').submit(function(event) {
         var $form = $(this);
-    
+
         // Disable the submit button to prevent repeated clicks
         $form.find('button').prop('disabled', true);
-    
+
         Stripe.card.createToken($form, stripeResponseHandler);
-    
+
         // Prevent the form from Sessiange pn with the default action
         return false;
       });
     });
-    
+
     function stripeResponseHandler(status, response) {
       var $form = $('#payment-form');
-    
+
       if (response.error) {
         // Show the errors on the form
         $form.find('.payment-errors').text(response.error.message);
@@ -31,8 +31,8 @@
         var token = response.id;
         // Insert the token into the form so it gets submitted to the server
         $form.append($('<input type="hidden" name="stripeToken" />').val(token));
-          
-          
+
+
         // and submit
         $form.get(0).submit();
       }
@@ -101,7 +101,7 @@
                                     </div>
                                     <div class="col-sm-7">
                                         <p>
-We use the services of Stripe, with which we have a merchant agreement, to receive and process 
+We use the services of Stripe, with which we have a merchant agreement, to receive and process
 					payments from our PD Squirrel members. None of your sensitive information is stored on our servers, instead it is encrypted and stored by entirely Stripe. This helps ensure your privacy. </p>
 
                                     </div>
@@ -120,7 +120,7 @@ We use the services of Stripe, with which we have a merchant agreement, to recei
                     $('#email-box-2').removeAttr("disabled");
                         $('#type').val("email");
                     }
-                    
+
                     function makePassVisible(){
                     $('#pass-box-1').removeAttr("disabled");
                     $('#pass-box-2').removeAttr("disabled");
@@ -129,24 +129,24 @@ We use the services of Stripe, with which we have a merchant agreement, to recei
                     $('#pass-auth-tr').removeClass("hidden");
                         $('#type').val("password");
                     }
-                    
+
                     function makeVisible(id){
                     $('#save-btn').removeAttr("");
                     $('#save-btn').removeClass("hidden");
-                    
+
                     if (id == first_name)
                     $('#first_name').removeAttr("");
                     if (id == last_name)
                     $('#last_name').removeAttr("");
-                    if (id == email) { 
-                    
+                    if (id == email) {
+
                     $('#email-confirm-td').removeClass("hidden");
                     $('#email-box-2').removeAttr("disabled");
                     $('#email-box-2').removeAttr("");
                     $('#email-box-2').addClass("hidden");
-                    
+
                     }
-                    if (id == 4) { 
+                    if (id == 4) {
                     $('#pass-box-1').removeAttr("disabled");
                     $('#pass-box-2').removeAttr("disabled");
                     $('#pass-box-3').removeAttr("disabled");
@@ -155,7 +155,7 @@ We use the services of Stripe, with which we have a merchant agreement, to recei
                     }
                     if (id == 5)
                     $('#society').removeAttr("");
-                    
+
                     }
                 </script>
                 {% csrf_token %}
@@ -168,8 +168,8 @@ We use the services of Stripe, with which we have a merchant agreement, to recei
 		</style>
                 <div class="container">
                     <div class="row">
-			
-			
+
+
                         <div class="col-lg-9 col-lg-offset-1" style="padding-left: 0;margin-top:20px">
                             {% if messages %}
                             {% for msg in messages %}
@@ -208,10 +208,10 @@ We use the services of Stripe, with which we have a merchant agreement, to recei
                                     <td class='col1'>My card <a onclick="showPaymentInfo()">(more information)</a></td>
                                     <td id="card-cell">
                                         {% if customer.sources.total_count < 1 %}
-                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Add Card</button> 
+                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Add Card</button>
                                         {% else %}
                                         {% for x in customer.sources.data %}
-                                        {{x.brand}} **** **** **** {{ x.last4 }} 
+                                        {{x.brand}} **** **** **** {{ x.last4 }}
                                         <form action = "{% url 'delcard' %}" id="delform" method="POST">
                                             {% csrf_token %}
                                             <input type="hidden" value="{{x.id}}" name="cardid">
@@ -224,9 +224,9 @@ We use the services of Stripe, with which we have a merchant agreement, to recei
                             </table>
                             <script>
                                 $(document).ready(function(){
-                                    $('[data-toggle="tooltip"]').tooltip();   
+                                    $('[data-toggle="tooltip"]').tooltip();
                                 });
-                            </script> 
+                            </script>
                             <div class="alert alert-info hidden" id="payment-info">
 				<p>
 				We use the services of Stripe Payments Canada, Ltd., with which we have a merchant agreement, to receive and process payments from our PD Squirrel members. None of your credit card information is stored on our servers, except only the four last digits for your reference purposes only. Instead we receive from Stripe only an electronic token which we use to charge the appropriate payment to your card. Learn more about Stripe by clicking <a target="_blank" href="https://stripe.com/ca">here.</a></p>
@@ -252,21 +252,21 @@ We use the services of Stripe, with which we have a merchant agreement, to recei
                                   $('#change-membership').addClass('hidden');
 				  $('#membership-type-info').addClass('hidden');
                                   $('#payment-info').toggleClass('hidden');
-                                }	    
+                                }
                                 function showCreditInfo() {
 				  $("#btnholder").empty();
                                   $('#change-membership').addClass('hidden');
 				  $('#membership-type-info').addClass('hidden');
                                   $('#payment-info').addClass('hidden');
                                   $('#credit-info').toggleClass('hidden');
-                                }	    
+                                }
                                 function showChangeMembership() {
 				  $("#btnholder").empty();
                                   $('#payment-info').addClass('hidden');
 				  $('#membership-type-info').addClass('hidden');
                                   $('#credit-info').addClass('hidden');
                                   $('#change-membership').toggleClass('hidden');
-                                }	    
+                                }
 				function showMembershipTypeInfo() {
 				  $("#btnholder").empty();
                                   $('#payment-info').addClass('hidden');
@@ -275,7 +275,7 @@ We use the services of Stripe, with which we have a merchant agreement, to recei
 				  $('#membership-type-info').toggleClass('hidden');
 
 				}
-                                  
+
                             </script>
 			    <style>
 			    .alert-info {
@@ -296,17 +296,17 @@ We use the services of Stripe, with which we have a merchant agreement, to recei
 <div class="col-xs-12" id="">
                                     <div class="alert alert-info" >
 					<p>
-<b>Premium PD Squirrel membership</b> – For a monthly fee of $29.99 (GST/HST included), you are entitled to 
+<b>Premium PD Squirrel membership</b> – For a monthly fee of $29.99 (GST/HST included), you are entitled to
 
-take any 8 PD sessions during the month – you choose the sessions.  The monthly fee is billed directly to 
+take any 8 PD sessions during the month – you choose the sessions.  The monthly fee is billed directly to
 
-your credit card on the first day of each monthly cycle.  A cycle starts on the day you become a Premium 
+your credit card on the first day of each monthly cycle.  A cycle starts on the day you become a Premium
 
-member and ends on the same day of the following month, or the last day of the following month if 
+member and ends on the same day of the following month, or the last day of the following month if
 
-there are fewer days in that month.  If you do not take all 8 PD sessions in a monthly cycle, the unused 
+there are fewer days in that month.  If you do not take all 8 PD sessions in a monthly cycle, the unused
 
-entitlement is not carried over to the next month.  You may purchase additional sessions, beyond the 8 
+entitlement is not carried over to the next month.  You may purchase additional sessions, beyond the 8
 
 included in your Premium membership, at the listed price.
 					</p>
@@ -316,10 +316,10 @@ included in your Premium membership, at the listed price.
 pay no monthly fee.
 </p>
 <p>
-    Your PD is always available to you for at least 2 years – Every PD session taken by you (whether as a 
-    
-    Premium member or a Standard member) is automatically saved for you in your PD Library.  You can access 
-    
+    Your PD is always available to you for at least 2 years – Every PD session taken by you (whether as a
+
+    Premium member or a Standard member) is automatically saved for you in your PD Library.  You can access
+
     these sessions at any time, whether you are a Premium member or Standard member.
 </p>
 
@@ -343,11 +343,11 @@ pay no monthly fee.
                                     <td class="col1">Current monthly cycle ends </td>
                                     <td>{{ customer.subscriptions.data.0.current_period_end|unix_time_convert}}</td>
                                 </tr>
-                                
+
                                 <tr>
                                     <td class="col1">Next billing date</td>
                                     <td>
-                                        ${{ customer.subscriptions.data.0.plan.amount|format_cents }} will be billed on 
+                                        ${{ customer.subscriptions.data.0.plan.amount|format_cents }} will be billed on
                                         {{ customer.subscriptions.data.0.current_period_end|add_day}} for the next monthly cycle.
                                     </td>
                                 </tr>
@@ -360,22 +360,22 @@ pay no monthly fee.
                                 <tr>
                                     <td class="col1">Session credits remaining <a onclick="showCreditInfo()">(more)</a>
 
-					
+
 				    </td>
                                     <td>{{ user.profile.remaining_pd }}</td>
                                 </tr>
-				
+
                                 {% endif %}
 				<tr>
 				    <td colspan="2" class="hidden" id="credit-info">
 					<div class="alert alert-info">
 					    <p>
-						<b>Session credits</b> - means the number of PD sessions you may take from the PD Squirrel site at this time, 
-						without any further payment.  Every PD Squirrel members gets one free credit upon joining.  Standard 
-						members don’t receive any further credits, as they pay per session.  Premium members are entitled to 
-						take 8 sessions during each monthly cycle (we refer to these as PD session credits).  As sessions are 
+						<b>Session credits</b> - means the number of PD sessions you may take from the PD Squirrel site at this time,
+						without any further payment.  Every PD Squirrel members gets one free credit upon joining.  Standard
+						members don’t receive any further credits, as they pay per session.  Premium members are entitled to
+						take 8 sessions during each monthly cycle (we refer to these as PD session credits).  As sessions are
 						taken, the number of credits drops correspondingly.
-					    </p> 
+					    </p>
 					    <div class="row">
 						<div class="col-xs-12">
 						    <p class="pull-right">
@@ -395,13 +395,13 @@ pay no monthly fee.
                                     </td>
                                 </tr>
                             </table>
-                            
+
                             <div class="row">
                                 <div class="col-xs-12">
                                 </div>
                             </div>
 <div class="row hidden">
-                                
+
                             </div>
                             <div class="row hidden" id="change-membership">
                                 <div class="col-xs-12">
@@ -410,44 +410,44 @@ pay no monthly fee.
 <p>
 You may downgrade from Premium to Standard membership at any time.  If you do, you will not be
 
-entitled to any additional monthly PD session credits and we will stop billing your credit card for the 
+entitled to any additional monthly PD session credits and we will stop billing your credit card for the
 
-monthly Premium membership fee.  As a PD Squirrel Standard member, you may continue to purchase 
+monthly Premium membership fee.  As a PD Squirrel Standard member, you may continue to purchase
 
-individual PD sessions at any time for the listed price.  You will still be entitled to take your remaining 
+individual PD sessions at any time for the listed price.  You will still be entitled to take your remaining
 
-unused PD session credits until the end of the monthly cycle in which your membership changed, however, 
+unused PD session credits until the end of the monthly cycle in which your membership changed, however,
 
-we will not refund any portion of your monthly Premium membership fee applicable to that monthly 
+we will not refund any portion of your monthly Premium membership fee applicable to that monthly
 
 cycle.</p>
 {% else %}
 					<p>
-<b>Upgrade to Premium membership today</b> – just $29.99 (taxes incl.) per month for 8 PD sessions per 
+<b>Upgrade to Premium membership today</b> – just $29.99 (taxes incl.) per month for 8 PD sessions per
 
 month. </p><p>
 
-When you click below, you authorize us to charge your credit card now for the first $29.99 monthly fee, 
+When you click below, you authorize us to charge your credit card now for the first $29.99 monthly fee,
 
-and at the beginning of each monthly cycle for the same monthly fee.  By clicking below, you also 
+and at the beginning of each monthly cycle for the same monthly fee.  By clicking below, you also
 
 confirm your continued agreement to the terms and conditions of Site use.</p><p>
 
-We will never change the monthly fee without notifying you well in advance in accordance with our 
+We will never change the monthly fee without notifying you well in advance in accordance with our
 
-terms and conditions.  You may change your membership from Premium to Standard at any time, on 
+terms and conditions.  You may change your membership from Premium to Standard at any time, on
 
-this Account options page, and we will stop our automatic monthly billing to your credit card.  If you do, 
+this Account options page, and we will stop our automatic monthly billing to your credit card.  If you do,
 
-you will still be entitled to take your remaining unused PD session credits until the end of the monthly 
+you will still be entitled to take your remaining unused PD session credits until the end of the monthly
 
-cycle in which your member changed, however, we will not refund any portion of your monthly 
+cycle in which your member changed, however, we will not refund any portion of your monthly
 
 membership fee applicable to that monthly cycle.
 					</p>
 					<p>
 
-By clicking below, you agree to change your membership from Standard to Premium and you confirm 
+By clicking below, you agree to change your membership from Standard to Premium and you confirm
 
 your continued agreement to the terms and conditions of Site use.
 					</p>
@@ -470,7 +470,7 @@ your continued agreement to the terms and conditions of Site use.
                                     </div>
                                 </div>
                             </div>
-			    
+
                             <!-- If you're using Stripe for payments -->
                             <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
                             <script>
@@ -486,7 +486,7 @@ your continued agreement to the terms and conditions of Site use.
                                 $(".iclose").click(function() {
                                     $(".msg").toggleClass('hidden');
                                 });
-                                    
+
                             </script>
                     <div class="row">
                         <div class="col-xs-12">
@@ -496,7 +496,6 @@ your continued agreement to the terms and conditions of Site use.
                         <table class="table no-border" >
                             <form action="{% url 'change-email' %}" method="POST">
                                 {% csrf_token %}
-                                <input type="hidden" id="type" name ="type">
                                 <tr>
                                     <td class="col1">Change email</td>
                                 </tr>
@@ -527,7 +526,7 @@ your continued agreement to the terms and conditions of Site use.
                     <td class="col1">Change password</td>
                     </tr>
                     </form>
-                    <form action="{% url 'change-pass' %}" method = "POST" >	
+                    <form action="{% url 'change-pass' %}" method = "POST" >
                     {% csrf_token %}
                     <tr>
                     <td>
