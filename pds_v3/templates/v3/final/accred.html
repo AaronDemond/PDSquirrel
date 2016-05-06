@@ -17,9 +17,9 @@
             <input type="hidden" value ="{{pd.id}}" id="pd_id">
             <input type="hidden" value ="{{society.id}}" id="society_id">
             <label for="">Select your law society to check the CPD eligibility of this session  </label>
-            <select id="society-select" class ="form-control" name="society-select" onchange="myfunction();">
+            <select id="society-select" class ="form-control" name="society-select" onchange="navigateSociety();">
             {% for entry in societies %}
-            <option value="{{entry.id}}" onclick="myfunction();" {% if entry.id == society_chosen.id %}selected{% endif %}>{{entry.name}}</option>
+            <option value="{{entry.id}}" onclick="navigateSociety();" {% if entry.id == society_chosen.id %}selected{% endif %}>{{entry.name}}</option>
             {% endfor %}
             </select>
             <br>
@@ -54,45 +54,7 @@
 
 	</div>
     </div>
+    <script src="{% static 'pd/js/user/accred.js' %}"></script>
     <script src="{% static 'pd/js/jquery.min.js' %}"></script>
-    <script>
-        function myfunction() {
-        	var selected = $("#society-select option:selected").val();
-        	var pd_id = $('#pd_id').val();
-        	var url = "/pd/accred/" + pd_id + "/" + selected + "/";
-        	window.location.href = url;
-        }
-    </script>
-    <script src="{% static 'pd/js/jquery.min.js' %}"></script>
-    <script>
-        $(document).ready(function(){
-        
-        
-        function search(){
-        	    $('#browse-options').addClass('hidden');
-                $('#search-options').removeClass('hidden');
-                $('#search-toggle').addClass('active');
-        	    $('#browse-toggle').removeClass('active');
-        }
-        function browse(){
-                $('#search-options').addClass('hidden');
-                $('#browse-options').removeClass('hidden');
-                $('#browse-toggle').addClass('active');
-        	    $('#search-toggle').removeClass('active');
-        //alert(subject);
-        }
-        
-        
-        
-        //	    alert('{{type}}');
-            $("#").click(function(){
-        search();
-            });
-            $("#browse-toggle").click(function(){
-        browse();
-            });
-        
-        });
-    </script>
 </div>
 {% endblock body %}

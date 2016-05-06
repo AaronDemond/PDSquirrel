@@ -1,16 +1,6 @@
 {% extends 'v3/final/base/scripts.html' %}
 {% block main-content %}
 {% block browse-nav %}
-<!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-
-<!-- Optional theme -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
-
-<!-- Latest compiled and minified JavaScript -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-
-<link rel="stylesheet" href="/static/fixes.css">
 
 <div class="container" style="padding: 0">
 <nav class="navbar navbar-default white-tile" style="margin-bottom: 0; border-radius: 0px !important; min-height: 60px !important; padding-top: 5px !important">
@@ -19,10 +9,10 @@
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#pdsnav">
 		<span class="icon-bar"></span>
 		<span class="icon-bar"></span>
-		<span class="icon-bar"></span>                        
+		<span class="icon-bar"></span>
             </button>
 	    <!-- <a class="navbar-brand" href="{% url 'home' %}">PDSquirrel</a> -->
-	     <a href="{% url 'home' %}"><img class="navbar-brand" style="margin-right: 20px !important; padding-top:10 !important; padding-bottom: 5 !important; padding-right: 0 !important;" src="/static/img/logo_green.png" alt=""></a> 
+	     <a href="{% url 'home' %}"><img class="navbar-brand" style="margin-right: 20px !important; padding-top:10 !important; padding-bottom: 5 !important; padding-right: 0 !important;" src="/static/img/logo_green.png" alt=""></a>
         </div>
         <div class="collapse navbar-collapse" id="pdsnav">
             <ul class="nav navbar-nav">
@@ -36,9 +26,9 @@
 				<a href="{% url 'upload-admin' %}">Presenter Uploads</a>
 				<a href="{% url 'accounting' %}">Accounting</a>
 			    </li>
-			</ul>			
+			</ul>
 		    </li>
-			    
+
 			    {% endif %}
                 <li><a href="{% url 'browse' %}">Browse</a></li>
 
@@ -52,7 +42,7 @@
 			<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{user.first_name}} {{user.last_name}}<span class="caret"></span></a>
 			<ul class="dropdown-menu scrollbar-fix"  role = "menu">
 
-	
+
 			    <li><a href="{% url 'dash' %}">My PD Library</a></li>
 			    <li><a href="{% url 'reports' %}">My Reports</a></li>
 			    <li><a href="{% url 'options' %}">My Account Options</a></li>
@@ -61,7 +51,7 @@
 			    <hr>
 			    <li><p class="navbar-text">Credits Remaining: {{user.profile.remaining_pd}}</p></li>
 			    {% endif %}
-			</ul>			
+			</ul>
 		    </li>
 			    <li>
 		    </li>
@@ -133,7 +123,7 @@
 	background-color: #f2f2f2;
     }
 </style>
-    
+
 
 
 </div>

@@ -28,16 +28,16 @@ margin-bottom: 0px !important;
    {% endif %}
    <div class="row">
       <div class="col-xs-12">
-        <h3>{{pd}}</h3>	
+        <h3>{{pd}}</h3>
 		<hr>
-		
+
 		<div class="col-sm-5" style="margin-top: 20px">
 			{% for presenter in pd.presenters.all %}
-						<img id ="session_pres_img" class="white-tile-img" 
+						<img id ="session_pres_img" class="white-tile-img"
 						{# if no img uploaded by user, pull one of two placeholders #}
 						{# tested: no #}
 						{% if presenter.image %}
-						src="/static/presenter_pics/{{presenter.image_name}}" 
+						src="/static/presenter_pics/{{presenter.image_name}}"
 						{% else %}
 							{% if presenter.placeholder_type == 0 %}
 								src="{{presenter.female_placeholder}}"
@@ -45,11 +45,11 @@ margin-bottom: 0px !important;
 								src="{{presenter.male_placeholder}}"
 							{% endif %}
 						{% endif %}
-						style="-webkit-box-shadow: 0 1px 1px rgba(0,0,0,0.15),-1px 0 0 rgba(0,0,0,0.03),1px 0 0 rgba(0,0,0,0.03),0 1px 0 rgba(0,0,0,0.12)" 
+						style="-webkit-box-shadow: 0 1px 1px rgba(0,0,0,0.15),-1px 0 0 rgba(0,0,0,0.03),1px 0 0 rgba(0,0,0,0.03),0 1px 0 rgba(0,0,0,0.12)"
 						alt="" width="90%" />
 			{% endfor %}
-			<br>	
-			<br>	
+			<br>
+			<br>
 			<h4>
 				{% for x in pd.presenters.all %} <a href="{% url 'presenter-detail' x.id %}"> {{x}}{% if x.credentials %}, {{x.credentials}} <br>{%endif%}{% endfor %}</a>
 			</h4>
@@ -111,7 +111,7 @@ margin-bottom: 0px !important;
 		</div>
 	  </div> {# end title/by_text/presenter image 12-col #}
    </div> {# end row for top half. Includes img desctiption and listen now btn #}
-   
+
    <div class="row" style="margin-top:20px">
       <div class="col-sm-12 col-md-6 col-lg-6">
          <h4>Session Details</h4>
@@ -122,7 +122,7 @@ margin-bottom: 0px !important;
             </tr>
             <tr>
                <td>Subject area(s)</td>
-               <td>				
+               <td>
                   {% for a in pd.subject.all %}
                   {{a}}<br />
                   {% endfor %}
@@ -159,7 +159,7 @@ margin-bottom: 0px !important;
 		      </tr>
 	      </table>
       </div>
-      
+
    </div>
 
 </div>
