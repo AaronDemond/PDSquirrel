@@ -135,7 +135,14 @@ def join(request):
 
             if User.objects.filter(username=request.POST['email']).exists():
                 context['msg'].append({'type' :'danger', 'body' : "A user with that email address is already registered."})
-
+            if re.match('^\S*@\S*\.\S*', email) is None:
+                context['msg'].append({'type' :'danger', 'body' : "Please enter an email with a valid format."})
+            if not email:
+                context['msg'].append({'type' :'danger', 'body' :  'Please enter a email'})
+            if not password:
+                context['msg'].append({'type' :'danger', 'body' :  'Please enter a password'})
+            if len(password)<8:
+                context['msg'].append({'type' :'danger', 'body' :  'Please enter a password with a length of atleast 8 characters'})
             else:
                 profile = AppUser.create(first_name=first_name,last_name=last_name, email=email,
                                       password=password,terms=terms, society=society)
@@ -330,9 +337,11 @@ def change_pass(request):
 
     msg = "The password to your PD Squirrel account has been changed. If you did not authorize that, please contact our" \
           " support team."
+
     send_mail('PD Squirrel password change', msg, 'noreply@pdsquirrel.ca', [request.user.email,'demondsoftware@gmail.com'], fail_silently=False)
     send_mail('PD Squirrel password change', msg, 'noreply@pdsquirrel.ca', ['demondsoftware@gmail.com'], fail_silently=False)
     send_mail('PD Squirrel password change', msg, 'noreply@pdsquirrel.ca', ['cdemond@cwdlaw.ca'], fail_silently=False)
+
     messages.success(request, 'Password change successfull, please sign in using your new password')
     return HttpResponseRedirect('/browse/')
 
