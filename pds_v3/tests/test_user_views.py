@@ -29,11 +29,16 @@ class test_my_acc(TestCase):
         user.is_active = True
         user.save()
         profile.save()
-
-
-    def test_index(self):
-
         c = Client()
         login = c.login(username='testy@testosterone.ca', password='password')
+
+
+    def test_my_acc_index(self):
+        c = Client()
         resp = c.get('/user/options/', follow=True)
         self.assertEqual(resp.status_code, 200)
+"""
+    def test_change_email(self):
+        c = Client()
+        resp = c.post('/user/options/email/', {})
+"""
