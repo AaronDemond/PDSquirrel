@@ -241,7 +241,7 @@ $('#addfile').removeClass('hidden');
 
 		<div class="row">
 		    <div class="col-lg-12">
-			<h4>Upload audio, or use audio you have recorded on PdSquirrel<h4>
+			<h4>Upload audio, or use audio you have recorded on PDSquirrel<h4>
 				<hr>
 		    </div>
 		    <div class="col-lg-5">
@@ -255,6 +255,7 @@ $('#addfile').removeClass('hidden');
 			<div class="control-grup">
 			    <label>Select from online recordings</label>
 			    <select id="" class="form-control" name="recording">
+					<option value="0" selected></option>
 			        {% for x in recordings %}
 			        <option value="{{x.id}}">{{x}}</option>
 			        {% endfor %}
@@ -266,6 +267,10 @@ $('#addfile').removeClass('hidden');
 		    </div>
 		</div>
 		<div class="row">
+			<div class="col-lg-12">
+				<h4>Upload Attachments to suppliment your session<h4>
+				<hr>
+		    </div>
 		    <div class="col-lg-5">
 			<div id="file-upload-container">
 			    <div class="control-group">

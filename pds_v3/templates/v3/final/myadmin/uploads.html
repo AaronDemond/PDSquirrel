@@ -27,6 +27,12 @@
 		<a class="list-group-item" onclick="loadXMLDoc('{% url 'upload-admin' pd.id %}','#session-content')">{{pd}} <small>{{pd.presenters.all|join:", "}}</small></a>
 		{% endfor %}
 	    </div>
+		<h4>PD Marked for Suspension <small>PD that is requesting removal</small></h4>
+	    <div class="list-group">
+		{% for pd in removed_pd %}
+		<a class="list-group-item" onclick="loadXMLDoc('{% url 'upload-admin' pd.id %}','#session-content')">{{pd}} <small>{{pd.presenters.all|join:", "}}</small></a>
+		{% endfor %}
+	    </div>
 	</div>
 	<div class="col-lg-8" id="session-content">
 

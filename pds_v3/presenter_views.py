@@ -134,7 +134,7 @@ def dash(request, msg=False):
 
         
         if presenter is not None:
-            context['pd'] = PdSession.objects.filter(presenters=presenter).order_by('-upload_date', 'name')
+            context['pd'] = PdSession.objects.filter(presenters=presenter,suspended=False).order_by('-upload_date', 'name')
 	    earnings = 0
         if request.POST:
 
@@ -285,22 +285,15 @@ def dash(request, msg=False):
 
 		    return HttpResponseRedirect('/user/presenter/dash/?direct_to=sessions')
 
-
-		#check file type 
-
-
-
                 pd_description = request.POST['description']
                 subjects = request.POST.getlist('subject') 
 
-                if 'recording' in request.POST:
-                    pdaud = request.POST['recording']  #Recorded using recorder
-
-                    if pdaud is not None:
-                        pdaud = PdAudio.objects.get(pk=int(pdaud))
-                        pdaud.used = True
-                        pdaud.save();
-                        new_session = PdSession(name=pd_name,description=pd_description, pdaudio=pdaud, approved=False)
+                pdaud = int(request.POST['recording'])
+                if pdaud > 0:
+                    pdaud = PdAudio.objects.get(pk=int(pdaud))
+                    pdaud.used = True
+                    pdaud.save();
+                    new_session = PdSession(name=pd_name,description=pd_description, pdaudio=pdaud, approved=False)
                 else:
                     if not request.FILES['audio_file'].name.lower().endswith(('.wav', '.mp3')):
                         messages.add_message(request, messages.ERROR, 'Please upload the correct file type')
@@ -381,52 +374,87 @@ def edit(request, id):
     context = {'sesh' : pd, 'subjects' : Subject.objects.all()}
     if request.POST:
 
+        #Cancels an edit.
+        if 'c-edit' in request.POST:
+            pd.edited = False
+            pd.presenter_approved = True
+            pd.save()
 
         #the following creates the edit
         if 'create-edit' in request.POST: 
-
-            #change must be approved
-            pd.presenter_approved = False
-            pd.edited = True
-
-            #gather post data
-            name = request.POST['name']
-            description = request.POST['description']
-            subjects = request.POST.getlist('subjects')
-            if 'audio_file' in request.FILES:
-                audio_file = request.FILES['audio_file']
-            else:
-                audio_file = False
-
 
             #bounce if terms are not accepted
             if 'p-terms' not in request.POST:
                 messages.add_message(request, messages.ERROR, 'You must accept the \
                         Terms and Conditions before editing content.')
-                context['sesh'] = pd(name=name, description=description)
                 return HttpResponseRedirect('/user/presenter/dash/?direct_to=sessions')
+
+
+            #gather post data
+            name = request.POST['name']
+            description = request.POST['description']
+            subjects = request.POST.getlist('subjects')
 
             #create the edit
             edit = PdSessionEdit(name=name, description=description)
-            if audio_file:
-                edit.audio_file = audio_file
-            #save before adding subjects to avoid foreignkey error (edit does not exist yet)
             edit.save()
+
+            # If there was a previous edit, use its data
+            if pd.edited:
+		old_edit = pd.edits.latest('date')
+                edit.attachments = old_edit.attachments.all()
+                edit.audio_file = old_edit.audio_file
+
+            edit.save()
+            
+            # Mark files to delete
+            files_to_delete = request.POST.getlist('files_to_delete')
+            for f in files_to_delete:
+                attachment = PdAttachment.objects.get(pk=f)
+                attachment.mark_for_delete = True
+                attachment.save()
+
+            #change must be approved
+            pd.presenter_approved = False
+            pd.edited = True
+
+            if 'audio_file' in request.FILES:
+                audio_file = request.FILES['audio_file']
+                edit.audio_file = audio_file
+                counter = 0
+            else:
+                audio_file = False
+                counter = 1 #0 if first file is audio, 1 if first file is attachment
+            
+            for afile in request.FILES:
+                    if counter > 0:
+                        attachment = PdAttachment(attachment=request.FILES[afile])
+                        attachment.save()
+                        edit.attachments.add(attachment)
+                    counter+=1
+
             for subject_id in subjects:
                 subject = Subject.objects.get(pk=subject_id)
                 edit.subjects.add(subject)
+
             edit.save()
             pd.edits.add(edit)
             pd.save()
             messages.success(request,'Edit successful. If you are happy with your session, click \'Release Session\'.')
-
 
         return HttpResponseRedirect('/user/presenter/dash/?direct_to=sessions')
 
     else:
 	if pd.edited:
 	    edit = pd.edits.latest('date')
-            context['sesh'] = fuseEdit(edit,pd)
+            pd.name=edit.name
+            pd.description=edit.description
+            context['session_subjects'] = edit.subjects.all()
+            context['sesh'] = pd
+            context['edit'] = edit
+        else:
+            context['session_subjects'] = pd.subject.all()
+
         return render(request, 'v3/final/presenter-pages/final/edit.html' , context)
 
 

@@ -111,16 +111,24 @@ function showSuspendCancel(id, suslink) {
     background-color: green;
     }
     .actions input {
-    margin-left: 50px;
+   	 margin-left: 0px;
     }
     .status p {
     margin-left: 10px;
     }
+	.pres_btn {
+		padding: 0 5;
+		margin-right: 5px;
+		position: relative;
+		top: 10;
+		right: 0;
+		border: 1px solid black;
+	}
     #approve-btn {
     padding: 0 5;
     position: relative;
     top: 10;
-    right: 50;
+    right: 0;
     border: 1px solid black;
     }
     .pd-upload h4 {
@@ -164,32 +172,32 @@ function showSuspendCancel(id, suslink) {
                         <div class="status">
                             <p><b>Status:</b>
                                 {% if sesh.suspend_request %}
-                                Accepted & listed<br>
-                                <span class="status-brown">
-                                (Pending removal request)
-                                </span>
+									Accepted & listed<br>
+									<span class="status-brown">
+									(Pending removal request)
+									</span>
                                 {% elif sesh.presenter_approved == False %}
-                                {% if sesh.approved %}
-                                Accepted & listed<br>
-                                <span class="status-brown">
-                                (Edited version is awaiting your release)
-                                </span>
-                                {% else %}
-                                Awaiting your release
-                                {% endif %}		
+									{% if sesh.approved %}
+										Accepted & listed<br>
+										<span class="status-brown">
+										(Edited version is awaiting your release)
+										</span>
+									{% else %}
+										Awaiting your release
+									{% endif %}		
                                 {% elif sesh.edited %}
-                                {% if sesh.approved %}
-                                Accepted & listed<br>
-                                <span class="status-brown">
-                                (Edited version awaiting acceptance)
-                                </span>
-                                {% else %}
-                                Awaiting our acceptance
-                                {%endif %}
+									{% if sesh.approved %}
+										Accepted & listed<br>
+										<span class="status-brown">
+										(Edited version awaiting acceptance)
+										</span>
+									{% else %}
+										Awaiting our acceptance
+									{%endif %}
                                 {% elif sesh.approved == False %}
-                                Awaiting our acceptance
+									Awaiting our acceptance
                                 {% else %}
-                                Accepted & listed
+									Accepted & listed
                                 {% endif %}
                                 <a class="status-link" onclick="showStatus({{sesh.id}}, this)">(info ▾)</a>
                             </p>
@@ -225,6 +233,8 @@ function showSuspendCancel(id, suslink) {
                         {% if sesh.edited %}
                         <a class=""  onclick="loadXMLDoc('{% url 'preview-session' sesh.id %}?l=true', '#page-content')">Listen to existing</a>
                         <a class=""  onclick="loadXMLDoc('{% url 'preview-session' sesh.id %}', '#page-content')">Preview edited</a>
+
+
                         {% else %}
                         <a class=""  onclick="loadXMLDoc('{% url 'preview-session' sesh.id %}?l=true', '#page-content')">Listen</a>
                         {% endif %}
@@ -232,8 +242,15 @@ function showSuspendCancel(id, suslink) {
                         <a class=""  onclick="loadXMLDoc('{% url 'preview-session' sesh.id %}', '#page-content')">Preview</a>
                         {% endif %}
                         <a class="" onclick="loadXMLDoc('{% url 'edit' sesh.id %}', '#page-content')">Edit</a>
-                        <a class="suspend-link" onclick="showRemove({{sesh.id}}, this)" >Remove ▾</a>
+                        <a class="suspend-link" style="" onclick="showRemove({{sesh.id}}, this)" >Remove ▾</a>
                         {% if sesh.presenter_approved == False %}
+							{% if sesh.edited %}
+								<form action="{% url 'edit' sesh.id %}" style="float:left;" method="POST">
+									{% csrf_token %}
+									<input type="submit" class="pres_btn btn btn-success" value="Cancel edit">
+									<input type="hidden" name="c-edit" value="1">
+								</form>
+							{% endif %}
                         <form action="{% url 'presenter-dash' %}" method="POST" style="float: left; margin-right: 5px;">
                             {% csrf_token %}
                             <input type="hidden" name="session_id" value="{{sesh.id}}">
@@ -244,6 +261,8 @@ function showSuspendCancel(id, suslink) {
                             <input type="submit" id="approve-btn" class="btn btn-success" value="Release Session">
                             {% endif %}
                         </form>
+
+						
                         {% endif %}
                         {% endif %}
                     </div>

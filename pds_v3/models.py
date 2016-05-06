@@ -239,6 +239,7 @@ class PdAttachment(models.Model):
     name = models.CharField(max_length=100, blank=True, null=True)
     attachment = models.FileField(upload_to='attachments', blank=True, null=True)
     upload_date = models.DateTimeField(auto_now_add=True)
+    mark_for_delete = models.BooleanField(default=False)
 
 
 class PdSessionEdit(models.Model):
@@ -249,6 +250,7 @@ class PdSessionEdit(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     approved = models.BooleanField(default=False)
     presenter_approved = models.BooleanField(default=False)
+    attachments = models.ManyToManyField(PdAttachment, blank=True)
 
     def __str__(self):
 	return self.name

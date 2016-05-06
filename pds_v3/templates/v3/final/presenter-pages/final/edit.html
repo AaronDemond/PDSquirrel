@@ -38,6 +38,24 @@
 				$('#infoLink').text('(info ▾)');
 			    }
 		</script>
+<script>
+			    //file counter gets increased with each upload, resets on page reload.
+			    //adds a div with a label and new file input box to form
+			    //server loops through files
+			    var file_counter = 1;
+			    function addAttachment(){
+				file_counter++;
+				file_counter_str = file_counter.toString();
+				file_id = '#file-upload-'.concat(file_counter_str)
+				var new_div = '<div class="control-group"><label for="">Attachment #'.concat(file_counter_str).concat('</label><input type="file" class="form-control" name="').concat(file_id).concat('" required></div>');
+				$('#file-upload-container').append(new_div);
+			    }
+function anotherFile() {
+
+$('#addfile').removeClass('hidden');
+}
+
+		</script>
 
 
 <div class="col-lg-9 col-lg-offset-1">
@@ -77,7 +95,7 @@
 			    <div class="controls">
 			    <select multiple class="form-control"  name="subjects">
 				{% for subject in subjects %}
-				    {% if subject in sesh.subject.all %}
+				    {% if subject in session_subjects %}
 				    <option value="{{subject.id}}" selected>{{subject}}</option>
 				    {% else %}
 				    <option value="{{subject.id}}">{{subject}}</option>
@@ -103,7 +121,44 @@
 
                     <label for="">Change audio file</label>
 		    <input type="file" class="form-control" name="audio_file">
+			
 		    <p class="help-block">If you wish to request that the audio file of this PD Session be changed, attach the file above.</p>
+		</div>
+		<div class="control-group">
+			<div class="control-group">
+				<p class="help-block">Select attachments to delete</p>
+				<select multiple id="" name="files_to_delete">
+				{% for attachment in sesh.attachments.all %}
+					<option value="{{ attachment.id }}">
+					{{ attachment.attachment }} 
+					{% if attachment.mark_for_delete %}
+						---Marked for Deletion
+					{% endif %}
+					</option>
+				{% endfor %}
+
+				{% for attachment in edit.attachments.all %}
+					<option value="{{ attachment.id }}">
+						{{ attachment.attachment }} --- Recently Uploaded
+						{% if attachment.mark_for_delete %}
+							<p>
+								---Marked for Deletion
+							</p>
+						{% endif %}
+					</option>
+				{% endfor %}
+
+				</select>
+			</div>
+<div id="file-upload-container">
+			    <div class="control-group">
+				<label for="">Optional additional attachment(s)</label>
+				<input type="file" class="form-control" onclick="anotherFile()" name="file-upload-0">
+				<p class="help-block">(Optonal) You may upload attachments to suppliment your PD Session, such as slides or other documents.</p>
+			    </div>
+			</div>
+
+			    <button onclick="addAttachment()" class="btn btn-primary hidden" id="addfile" style="margin-top:25px" >Add another file</button>
 		</div>
                 
 		<div class="checkbox">

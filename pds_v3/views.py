@@ -116,14 +116,17 @@ def activate(request, id):
 
 def debug(request):
     return render(request, 'v3/debug-django.html')
-
 def fuseEdit(edit,pd):
     pd.name=edit.name
     pd.description=edit.description
 
+    for attachment in edit.attachments.all():
+        pd.attachments.add(attachment)
+
     if edit.audio_file:
 	pd.audio_file = edit.audio_file
 
+    pd.subject.clear()
     for subject in edit.subjects.all():
 	pd.subject.add(subject)
     return pd
@@ -144,8 +147,10 @@ def preview(request,id):
 
     if session.edited == True:
 	edit = session.edits.order_by('-date')[0]
+        context['edit'] = edit
+        session.name = edit.name
+        session.description = edit.description
 	messages.add_message(request, messages.INFO, 'Click to preview the PD Session shown below.')
-	session = fuseEdit(edit, session)
     else:
 	if session.approved:
 	    messages.add_message(request, messages.INFO, 'Click to preview the PD Session shown below.')
@@ -342,9 +347,17 @@ def upload_admin(request, pd_id=False):
 	if request.POST:
 	    pd = PdSession.objects.get(pk=request.POST['pd'])
 	    if "approve" in request.POST:
+                if pd.suspend_request == True:
+                    pd.suspended = True
+
 		if pd.edited:
 		    edit = pd.edits.latest('date')
 		    pd = fuseEdit(edit,pd)
+
+                    for attachment in pd.attachments.all():
+                        if attachment.mark_for_delete == True:
+                            attachment.delete()
+
 		pd.price = 9.99
 		pd.edited=False
 		pd.approved = True
@@ -358,13 +371,16 @@ def upload_admin(request, pd_id=False):
 	    pd = PdSession.objects.get(pk=pd_id)
 	    if pd.edited:
 		edit = pd.edits.latest('date')
-		pd = fuseEdit(edit,pd)
+                c['edit'] = edit
 	    c['pd'] = pd 
 	    return render(request, 'v3/final/myadmin/session.html', c)
 
 
-	c["unapproved_pd"] = PdSession.objects.filter(approved=False, presenter_approved=True)
-	c["edited_pd"] = PdSession.objects.filter(edited=True, presenter_approved=True, approved=True)	
+	c["unapproved_pd"] = PdSession.objects.filter(approved=False, presenter_approved=True,
+                suspended=False, suspend_request=False)
+	c["edited_pd"] = PdSession.objects.filter(edited=True, presenter_approved=True, 
+                approved=True, suspended=False, suspend_request=False)	
+        c['removed_pd'] = PdSession.objects.filter(suspend_request=True, suspended=False)
 	return render(request, 'v3/final/myadmin/uploads.html', c)
 
     #if not an admin
