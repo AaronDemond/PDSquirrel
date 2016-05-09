@@ -34,6 +34,7 @@ def handle_uploaded_file(f):
 
 
 def analytics_report(request):
+
     start = request.POST.get('start', False)
     end = request.POST.get('end', False)
 
@@ -49,12 +50,15 @@ def analytics_report(request):
 
 
     #datetime objects for range comparison
-    try:
+    if end or start:
         start = dfi(start)
         end = dfi(end)
         end = end + datetime.timedelta(days=1)
-    except:
-        return HttpResponse('Unable to parse date')
+    else:
+        messages.add_message(request, messages.ERROR, 'You must accept the \
+                Terms and Conditions before uploading content.')
+        return render(request, 'v3/final/presenter-pages/final/analytics.html')
+
 
     #add day to make end inclusive
     end = end + datetime.timedelta(days=1)
@@ -144,7 +148,7 @@ def dash(request, msg=False):
                 #datetime objects for range comparison
                 start = dfi(request.POST['start'])
                 end = dfi(request.POST['end'])
-                
+
                 if start == False or end == False:
                     return HttpResponse('Please enter a correctly formatted date.')
 
