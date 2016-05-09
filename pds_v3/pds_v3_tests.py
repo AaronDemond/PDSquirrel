@@ -9,4 +9,3 @@ def test_answer():
 
 
 from django.test.client import Client
-

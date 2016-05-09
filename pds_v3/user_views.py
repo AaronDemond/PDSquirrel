@@ -16,7 +16,6 @@ stripe.api_key = "sk_test_Rxq0kWwzxNPQfOSCEsAjVd7e"
 
 '''
 Any method with ajax appended to its name will return a boolean value based on the inputs given.
-
 I should write tests for these too.
 '''
 
@@ -42,7 +41,7 @@ def login_user(request):
         if user.is_active:
             login(request,user)
             if 'type' in request.POST:
-	        messages.success(request, 'Login Successful')
+                messages.success(request, 'Login Successful')
                 return HttpResponseRedirect('/browse/')
             else:
                 return HttpResponse("success")
@@ -66,11 +65,11 @@ def randomword(length):
 def recover(request):
     if request.POST:
         email = request.POST["email"]
-	try:
-	    user = User.objects.get(username = email)
-	except:
-	    messages.warning(request, 'That email is not associated with an account, please try again.')
-	    return render(request, 'v3/final/login-new.html')
+        try:
+            user = User.objects.get(username = email)
+        except:
+            messages.warning(request, 'That email is not associated with an account, please try again.')
+            return render(request, 'v3/final/login-new.html')
 
         plainpass = randomword(10)
         password = hashers.make_password(plainpass)
@@ -78,9 +77,9 @@ def recover(request):
         user.save()
         msg = "Hello, " + user.first_name + ".\n\nWe have reset your password for you. Your new password for temporary use is:\n" + plainpass + \
                                                 "\n\nPlease sign in and change it (in your My Account page).\n\nThank you,\n\nPD Squirrel admin team."
-	send_mail('PD Squirrel Recovery', msg, 'noreply@pdsquirrel.ca', [user.email,'demondsoftware@gmail.com'], fail_silently=False)
+        send_mail('PD Squirrel Recovery', msg, 'noreply@pdsquirrel.ca', [user.email,'demondsoftware@gmail.com'], fail_silently=False)
 
-	messages.success(request, 'You have been sent a recovery password to your email')
+        messages.success(request, 'You have been sent a recovery password to your email')
         return render(request, 'v3/final/login-new.html')
 
     else:
@@ -146,19 +145,19 @@ def join(request):
             else:
                 profile = AppUser.create(first_name=first_name,last_name=last_name, email=email,
                                       password=password,terms=terms, society=society)
-		msg = "Welcome to PD Squirrel!\n\nPlease click on the following link to activate your membership account: http://pdsquirrel.ca:15032/user/activate/%s\n\nThanks,\n\nThe PD Squirrel admin team" % (str(profile.user.id) + "/")
+                msg = "Welcome to PD Squirrel!\n\nPlease click on the following link to activate your membership account: http://pdsquirrel.ca:15032/user/activate/%s\n\nThanks,\n\nThe PD Squirrel admin team" % (str(profile.user.id) + "/")
                 send_mail('PD Squirrel Activation', msg, 'noreply@pdsquirrel.ca', [profile.user.email], fail_silently=False)
 
-		send_mail('PD Squirrel Activation', msg, 'noreply@pdsquirrel.ca', ['demondsoftware@gmail.com'], fail_silently=False)
-		send_mail('PD Squirrel Activation', msg, 'noreply@pdsquirrel.ca', ['cdemond@cwdlaw.ca'], fail_silently=False)
+                send_mail('PD Squirrel Activation', msg, 'noreply@pdsquirrel.ca', ['demondsoftware@gmail.com'], fail_silently=False)
+                send_mail('PD Squirrel Activation', msg, 'noreply@pdsquirrel.ca', ['cdemond@cwdlaw.ca'], fail_silently=False)
 
                 context['msg'].append({'type' : 'success', 'body' : 'Thank you. We have sent a welcome email to you. '
                                                                     'Click the link in that email to instantly activate '
                                                                     'your account and open the sign-in page. You may close this page.'})
                 logout(request)
-		customer = stripe.Customer.create(email=email)
-		profile.stripe_id = customer.id
-		profile.save()
+                customer = stripe.Customer.create(email=email)
+                profile.stripe_id = customer.id
+                profile.save()
                 return render(request, 'v3/final/join-success.html', context)
 
         else:
@@ -193,7 +192,7 @@ def dash(request):
         else:
             page_range = range(False)
 
-	context['range'] = page_range
+        context['range'] = page_range
 
 
 
@@ -282,27 +281,27 @@ def change_email(request):
 
 def change_membership(request):
     if request.POST:
-	appuser = request.user.profile
-	stripe_id = appuser.stripe_id
+        appuser = request.user.profile
+        stripe_id = appuser.stripe_id
 
-	if appuser.is_premium == True:
-		appuser.is_premium = False
-		appuser.save()
-		messages.add_message(request, messages.SUCCESS, 'You are now a standard user. We hope to see you soon!')
-		return HttpResponseRedirect('/user/options/')
-	else:
-		try:
-			customer = stripe.Customer.retrieve(stripe_id)
-			customer.subscriptions.create(plan=117)
-		except:
-			messages.add_message(request, messages.ERROR, "There was an error while creating your subscription. Please make sure you have entered in a credit card")
+        if appuser.is_premium == True:
+            appuser.is_premium = False
+            appuser.save()
+            messages.add_message(request, messages.SUCCESS, 'You are now a standard user. We hope to see you soon!')
+            return HttpResponseRedirect('/user/options/')
+        else:
+            try:
+                customer = stripe.Customer.retrieve(stripe_id)
+                customer.subscriptions.create(plan=117)
+            except:
+                messages.add_message(request, messages.ERROR, "There was an error while creating your subscription. Please make sure you have entered in a credit card")
 
-			return HttpResponseRedirect('/user/options/')
+                return HttpResponseRedirect('/user/options/')
 
-		appuser.is_premium = True
-		appuser.remaining_pd = 8
-		appuser.save()
-		messages.add_message(request, messages.SUCCESS, "You are now a premium user. Thanks for choosing us!")
+            appuser.is_premium = True
+            appuser.remaining_pd = 8
+            appuser.save()
+            messages.add_message(request, messages.SUCCESS, "You are now a premium user. Thanks for choosing us!")
 
     return HttpResponseRedirect('/user/options/')
 
@@ -361,38 +360,38 @@ def purchase_report(request,):
     tax_total = 0.00
     before_tax = 0
     for p in purchases:
-	if p.credit_used == False:
-                p.price = p.price / 1.15
-		before_tax = before_tax + p.price
-		p.tax = 0.15 * p.price
-		tax_total= tax_total + p.tax
-		p.total = p.tax + p.price
-		total = total + p.total
+        if p.credit_used == False:
+            p.price = p.price / 1.15
+            before_tax = before_tax + p.price
+            p.tax = 0.15 * p.price
+            tax_total= tax_total + p.tax
+            p.total = p.tax + p.price
+            total = total + p.total
     context = {'purchases': purchases, 'total': ("%.2f" % total), 'total_tax':("%.2f" % tax_total), 'before_tax':("%.2f" % before_tax)}
     return render(request, 'v3/final/reports/purchases.html', context)
 
 def del_card(request):
-	if request.POST:
-		customer = stripe.Customer.retrieve(request.user.profile.stripe_id)
-		card_id = request.POST['cardid']
-		for x in customer.sources.data:
-			if x.id == card_id:
-				x.delete()
-				return options(request,msg=[('success','Card Removed')])
-		return options(request,msg=[('danger','Card removal error')])
+    if request.POST:
+        customer = stripe.Customer.retrieve(request.user.profile.stripe_id)
+        card_id = request.POST['cardid']
+        for x in customer.sources.data:
+            if x.id == card_id:
+                x.delete()
+                return options(request,msg=[('success','Card Removed')])
+        return options(request,msg=[('danger','Card removal error')])
 
 
 
-	else:
-		return HttpResponseRedirect('/user/options/')
+    else:
+        return HttpResponseRedirect('/user/options/')
 
 def add_card(request):
-	if request.POST:
-		token = request.POST['stripeToken']
-		customer = stripe.Customer.retrieve(request.user.profile.stripe_id)
-		customer.sources.create(source=token)
-		return HttpResponseRedirect('/user/options/')
-		return HttpResponse(customer)
-	else:
+    if request.POST:
+        token = request.POST['stripeToken']
+        customer = stripe.Customer.retrieve(request.user.profile.stripe_id)
+        customer.sources.create(source=token)
+        return HttpResponseRedirect('/user/options/')
+        return HttpResponse(customer)
+    else:
 
-		return HttpResponseRedirect('/user/options/')
+        return HttpResponseRedirect('/user/options/')

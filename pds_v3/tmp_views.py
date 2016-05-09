@@ -15,9 +15,9 @@ def learn(request):
 def contact(request):
 
     if 'from_pres' in request.GET:
-	c = {'from_pres': True}
+        c = {'from_pres': True}
     else:
-	c = {'from_pres': 'False'}
+        c = {'from_pres': 'False'}
     return render(request, 'v3/final/contact.html', c)
 
 

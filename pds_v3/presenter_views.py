@@ -38,23 +38,23 @@ def analytics_report(request):
     end = request.POST.get('end', False)
 
     if not start or not end:
-	start = request.GET.get('start', False)
-	end = request.GET.get('end', False)
+        start = request.GET.get('start', False)
+        end = request.GET.get('end', False)
 
     if request.GET:
-	report_type = 'pdf'
+        report_type = 'pdf'
     else:
-	report_type = 'html'
+        report_type = 'html'
 
 
 
     #datetime objects for range comparison
     try:
-	start = dfi(start) 
-	end = dfi(end) 
+        start = dfi(start)
+        end = dfi(end)
         end = end + datetime.timedelta(days=1)
     except:
-	return HttpResponse('Unable to parse date')
+        return HttpResponse('Unable to parse date')
 
     #add day to make end inclusive
     end = end + datetime.timedelta(days=1)
@@ -62,21 +62,21 @@ def analytics_report(request):
 
     #tally takes and earnings
     ppd = request.user.presenter.pdsession_set.filter(approved=True)
-    opening_balance = 0 
+    opening_balance = 0
     total_earnings = 0
     for pd in ppd:
-	pd.takes = pd.purchase_set.filter(date__range=[start,end]).count()
+        pd.takes = pd.purchase_set.filter(date__range=[start,end]).count()
 
-	#calculate earnings within date range
-	pd.earnings = sum([purchase.price * 0.6 for purchase in pd.purchase_set.filter(date__range=[start,end]) if not purchase.credit_used])
-	pd.earnings += sum([2 for purchase in pd.purchase_set.filter(date__range=[start,end]) if purchase.credit_used])
-	total_earnings += pd.earnings
+        #calculate earnings within date range
+        pd.earnings = sum([purchase.price * 0.6 for purchase in pd.purchase_set.filter(date__range=[start,end]) if not purchase.credit_used])
+        pd.earnings += sum([2 for purchase in pd.purchase_set.filter(date__range=[start,end]) if purchase.credit_used])
+        total_earnings += pd.earnings
 
-	#calculate earnings prior to date range
-	pd.prior = sum([purchase.price * 0.6 for purchase in pd.purchase_set.filter(date__lt=start) if not purchase.credit_used])
-	pd.prior += sum([2 for purchase in pd.purchase_set.filter(date__lt=start) if purchase.credit_used])
-	opening_balance += pd.prior
-    
+        #calculate earnings prior to date range
+        pd.prior = sum([purchase.price * 0.6 for purchase in pd.purchase_set.filter(date__lt=start) if not purchase.credit_used])
+        pd.prior += sum([2 for purchase in pd.purchase_set.filter(date__lt=start) if purchase.credit_used])
+        opening_balance += pd.prior
+
     #since there is no payout yet, closing is all earnings to date.
     closing_balance = total_earnings + opening_balance
     total_takes = sum([pd.takes for pd in ppd])
@@ -85,9 +85,9 @@ def analytics_report(request):
     end = end - datetime.timedelta(days=1)
     user = request.user.profile
     context = {'ppd' : ppd, 'start': start, 'end': end, \
-	    'open' : opening_balance, 'close' : closing_balance, \
-	    'total_earnings': total_earnings, 'total_takes' : total_takes,
-	    'type': report_type, 'request' : request}
+            'open' : opening_balance, 'close' : closing_balance, \
+            'total_earnings': total_earnings, 'total_takes' : total_takes,
+            'type': report_type, 'request' : request}
 
     #use render_to_response because render causes 500 error using request variable from ajax (not serialized?)
     return render_to_response('v3/final/presenter-pages/final/reports/analytics.html', context)
@@ -99,11 +99,11 @@ def dash(request, msg=False):
         context = {'msg' : msg }
 
         presenter = Presenter.objects.filter(user=request.user)[0]
-	context['presenter'] = presenter
+        context['presenter'] = presenter
 
         context['start'] = datetime.datetime(year=2015, month=01, day=01)
 
-        context['end'] = datetime.datetime.now() 
+        context['end'] = datetime.datetime.now()
         context['total_earnings'] = 0
         context['total_takes'] = 0
         context['open'] = 0
@@ -111,7 +111,7 @@ def dash(request, msg=False):
         context['paid'] = 0
         #ppd = presenter PD
         context['ppd'] = request.user.presenter.pdsession_set.all()
-        pending_count = 0 
+        pending_count = 0
         takes_count = 0
         cumulative_earnings = 0.00
         for x in context['ppd']:
@@ -125,25 +125,25 @@ def dash(request, msg=False):
         total_takes = sum([x.purchase_set.all().count() for x in ppd])
         pending_count = len([x for x in ppd if x.edited and not x.approved or not x.approved])
         edit_count = len([x for x in ppd if x.edited and x.approved])
-	non_pending_count = len([x for x in ppd if x.approved])
-	context['listed_count'] = non_pending_count
-	context['edit_count'] = edit_count
+        non_pending_count = len([x for x in ppd if x.approved])
+        context['listed_count'] = non_pending_count
+        context['edit_count'] = edit_count
         context['takes_count'] = total_takes
         context['pending_count'] = pending_count
         context['cumulative_earnings'] = cumulative_earnings
 
-        
+
         if presenter is not None:
             context['pd'] = PdSession.objects.filter(presenters=presenter,suspended=False).order_by('-upload_date', 'name')
-	    earnings = 0
+            earnings = 0
         if request.POST:
 
             if 'date-rng' in request.POST:
                 context['report_ran'] = 'True'
 
                 #datetime objects for range comparison
-                start = dfi(request.POST['start']) 
-                end = dfi(request.POST['end']) 
+                start = dfi(request.POST['start'])
+                end = dfi(request.POST['end'])
 
                 #datedict with 'year' 'mont' 'date'
                 start_dict = dfi(request.POST['start'], True)
@@ -151,7 +151,7 @@ def dash(request, msg=False):
 
                 if start == False or end == False:
                     return HttpResponse('Please enter a correctly formatted date.')
-                
+
                 context['start'] = start
                 context['end'] = end
 
@@ -184,23 +184,23 @@ def dash(request, msg=False):
                     context['total_earnings'] += pd.tmp_earnings
                     context['total_takes'] += pd.takes
 
-                
+
                 context['close'] = context['open'] + context['total_earnings']
-               
+
                 context['pd_earnings'] = presenter_pd
 
                 return render(request, 'v3/final/presenter-pages/final/dash.html', context)
                 return HttpResponseRedirect('/user/presenter/dash/')
 
 
-	    if 'edit-pres-public' in request.POST:
+            if 'edit-pres-public' in request.POST:
                 from django.core.files import File
-		presenter.credentials = request.POST['credentials']
-		presenter.bio = request.POST['bio']
+                presenter.credentials = request.POST['credentials']
+                presenter.bio = request.POST['bio']
                 if 'clear_photo' in request.POST:
                     presenter.image = None
-		if request.FILES:
-		    presenter.image = request.FILES['photo']
+                if request.FILES:
+                    presenter.image = request.FILES['photo']
                     presenter.placeholder_type = 2;
                 else:
                     # 0=female 1=male
@@ -208,19 +208,19 @@ def dash(request, msg=False):
                         presenter.placeholder_type = 1;
                     elif request.POST['placeholder_gender'] == "female":
                         presenter.placeholder_type = 0;
-		presenter.save()
-		messages.add_message(request, messages.SUCCESS,
-			'Account successfully updated.')
+                presenter.save()
+                messages.add_message(request, messages.SUCCESS,
+                        'Account successfully updated.')
                 return HttpResponseRedirect('/user/presenter/dash/?direct_to=info')
 
-	    if 'edit-pres-private' in request.POST:
-		presenter.phone = request.POST['number']
-		presenter.law_firm = request.POST['law_firm']
-		presenter.save()
-		messages.add_message(request, messages.SUCCESS,
-		    'Account successfully updated.')
-		presenter.save()
-		return HttpResponseRedirect('/user/presenter/dash/?direct_to=private')
+            if 'edit-pres-private' in request.POST:
+                presenter.phone = request.POST['number']
+                presenter.law_firm = request.POST['law_firm']
+                presenter.save()
+                messages.add_message(request, messages.SUCCESS,
+                    'Account successfully updated.')
+                presenter.save()
+                return HttpResponseRedirect('/user/presenter/dash/?direct_to=private')
 
 
             #Cancel an edit
@@ -244,7 +244,7 @@ def dash(request, msg=False):
                     pd.suspend_reason = request.POST['reason']
                     pd.save()
 
-		return HttpResponseRedirect('/user/presenter/dash/?direct_to=sessions')
+                return HttpResponseRedirect('/user/presenter/dash/?direct_to=sessions')
             if 'suspend-cancel' in request.POST:
                 pd = PdSession.objects.get(pk=request.POST['session_id'])
                 pd.suspend_request = False
@@ -255,38 +255,38 @@ def dash(request, msg=False):
             #approve PD session (ready for quality test by admins)
             if 'p-approved' in request.POST:
                 pd = PdSession.objects.get(pk=request.POST['session_id'])
-		if pd.edited:
-		    pd.name = pd.edits.latest().name
-		    messages.add_message(request, messages.SUCCESS, 'Thank you for releasing \
+                if pd.edited:
+                    pd.name = pd.edits.latest().name
+                    messages.add_message(request, messages.SUCCESS, 'Thank you for releasing \
                         your edited PD Session titled \'%s\'. When accepted by us, it will be listed on the Site, and offered by us to all PD Squirrel members.' % pd)
-		else:
-		    messages.add_message(request, messages.SUCCESS, 'Thank you for releasing \
+                else:
+                    messages.add_message(request, messages.SUCCESS, 'Thank you for releasing \
                         your PD Session titled \'%s\'. When accepted by us, it will be listed on the Site, and offered by us to all PD Squirrel members.' % pd)
                 pd.presenter_approved = True
                 pd.save()
                 return HttpResponseRedirect('/user/presenter/dash/?direct_to=sessions')
 
 
-                
-	    if 'p-terms' not in request.POST:
-		messages.add_message(request, messages.ERROR, 'You must accept the \
-			Terms and Conditions before uploading content.')
-		
-		return HttpResponseRedirect('/user/presenter/dash/?direct_to=sessions')
 
-	    #New upload
+            if 'p-terms' not in request.POST:
+                messages.add_message(request, messages.ERROR, 'You must accept the \
+                        Terms and Conditions before uploading content.')
+
+                return HttpResponseRedirect('/user/presenter/dash/?direct_to=sessions')
+
+            #New upload
             form = PdSessionForm(request.POST, request.FILES)
             if form.is_valid():
-		if 'name' in request.POST:
-		    pd_name = request.POST['name']
-		else:
-		    messages.add_message(request, messages.ERROR, 'Please provide a \
-						title.')
+                if 'name' in request.POST:
+                    pd_name = request.POST['name']
+                else:
+                    messages.add_message(request, messages.ERROR, 'Please provide a \
+                                                title.')
 
-		    return HttpResponseRedirect('/user/presenter/dash/?direct_to=sessions')
+                    return HttpResponseRedirect('/user/presenter/dash/?direct_to=sessions')
 
                 pd_description = request.POST['description']
-                subjects = request.POST.getlist('subject') 
+                subjects = request.POST.getlist('subject')
 
                 pdaud = int(request.POST['recording'])
                 if pdaud > 0:
@@ -329,40 +329,40 @@ def dash(request, msg=False):
                     counter+=1
 
                 new_session.presenters.add(Presenter.objects.get(user=request.user))
-		
-	        	
+
+
                 msg = request.user.username + ' has uploaded and released a new session'
-	        send_mail('new upload/release' , msg , 'support@pdsquirrel.ca', ['admin@pdsquirrel.ca'], fail_silently=False)
+                send_mail('new upload/release' , msg , 'support@pdsquirrel.ca', ['admin@pdsquirrel.ca'], fail_silently=False)
 
-		messages.add_message(request, messages.INFO, "Thank you for uploading your PD Session, titled '%s'. \
-			Click below to preview and release." % new_session)
+                messages.add_message(request, messages.INFO, "Thank you for uploading your PD Session, titled '%s'. \
+                        Click below to preview and release." % new_session)
 
-		return HttpResponseRedirect('/user/presenter/dash/?direct_to=sessions')
+                return HttpResponseRedirect('/user/presenter/dash/?direct_to=sessions')
             else:
                 return HttpResponseRedirect('/user/presenter/dash/')
-	#get methods
+        #get methods
         else:
-	    if 'direct_to' in request.GET:
-		context['direct_to'] = request.GET['direct_to']
+            if 'direct_to' in request.GET:
+                context['direct_to'] = request.GET['direct_to']
 
-	    if 'mysessions' in request.GET:
-		return render(request, 'v3/final/presenter-pages/final/my-sessions.html', context)
+            if 'mysessions' in request.GET:
+                return render(request, 'v3/final/presenter-pages/final/my-sessions.html', context)
 
-	    elif 'myaccount' in request.GET:
-		context['presenter'] = presenter
-		return render(request, 'v3/final/presenter-pages/final/account.html', context)
+            elif 'myaccount' in request.GET:
+                context['presenter'] = presenter
+                return render(request, 'v3/final/presenter-pages/final/account.html', context)
 
-	    elif 'landing' in request.GET:
-		return render(request, 'v3/final/presenter-pages/final/landing.html', context)
+            elif 'landing' in request.GET:
+                return render(request, 'v3/final/presenter-pages/final/landing.html', context)
 
-	    elif 'analytics' in request.GET:
-		return render(request, 'v3/final/presenter-pages/final/analytics.html', context)
-	    elif 'testanalytics' in request.GET:
-		return HttpResponse('test content');
+            elif 'analytics' in request.GET:
+                return render(request, 'v3/final/presenter-pages/final/analytics.html', context)
+            elif 'testanalytics' in request.GET:
+                return HttpResponse('test content');
 
-	    elif 'myinfo' in request.GET:
-		return render(request, 'v3/final/presenter-pages/final/presenter-info.html', context)
-	    
+            elif 'myinfo' in request.GET:
+                return render(request, 'v3/final/presenter-pages/final/presenter-info.html', context)
+
             return render(request, 'v3/final/presenter-pages/final/dash.html', context)
     else:
         return HttpResponse("Authentication Error")
@@ -381,7 +381,7 @@ def edit(request, id):
             pd.save()
 
         #the following creates the edit
-        if 'create-edit' in request.POST: 
+        if 'create-edit' in request.POST:
 
             #bounce if terms are not accepted
             if 'p-terms' not in request.POST:
@@ -401,12 +401,12 @@ def edit(request, id):
 
             # If there was a previous edit, use its data
             if pd.edited:
-		old_edit = pd.edits.latest('date')
+                old_edit = pd.edits.latest('date')
                 edit.attachments = old_edit.attachments.all()
                 edit.audio_file = old_edit.audio_file
 
             edit.save()
-            
+
             # Mark files to delete
             files_to_delete = request.POST.getlist('files_to_delete')
             for f in files_to_delete:
@@ -425,13 +425,13 @@ def edit(request, id):
             else:
                 audio_file = False
                 counter = 1 #0 if first file is audio, 1 if first file is attachment
-            
+
             for afile in request.FILES:
-                    if counter > 0:
-                        attachment = PdAttachment(attachment=request.FILES[afile])
-                        attachment.save()
-                        edit.attachments.add(attachment)
-                    counter+=1
+                if counter > 0:
+                    attachment = PdAttachment(attachment=request.FILES[afile])
+                    attachment.save()
+                    edit.attachments.add(attachment)
+                counter+=1
 
             for subject_id in subjects:
                 subject = Subject.objects.get(pk=subject_id)
@@ -445,8 +445,8 @@ def edit(request, id):
         return HttpResponseRedirect('/user/presenter/dash/?direct_to=sessions')
 
     else:
-	if pd.edited:
-	    edit = pd.edits.latest('date')
+        if pd.edited:
+            edit = pd.edits.latest('date')
             pd.name=edit.name
             pd.description=edit.description
             context['session_subjects'] = edit.subjects.all()
@@ -459,7 +459,7 @@ def edit(request, id):
 
 
 def notice(request):
-    pass	
+    pass
 
 
 
@@ -467,40 +467,40 @@ def notice(request):
 def record(request):
 
     if 'del' in request.POST:
-	aud_id = request.POST['aud_id']
-	x = PdAudio.objects.filter(id=aud_id, appuser=request.user.profile)[0]
-	x.hidden=True
-	x.save();
-	return HttpResponseRedirect('/record/');
+        aud_id = request.POST['aud_id']
+        x = PdAudio.objects.filter(id=aud_id, appuser=request.user.profile)[0]
+        x.hidden=True
+        x.save();
+        return HttpResponseRedirect('/record/');
 
     if 'upload' in request.POST:
-	#wav binary
-	au = request.user.profile
-	upload = request.FILES['data']
-	name = request.POST['name']
+        #wav binary
+        au = request.user.profile
+        upload = request.FILES['data']
+        name = request.POST['name']
 
-	audio_to_hide = PdAudio.objects.filter(name=name, appuser=au)
-	for a in audio_to_hide:
-	    a.hidden = True;
-	    a.save()
+        audio_to_hide = PdAudio.objects.filter(name=name, appuser=au)
+        for a in audio_to_hide:
+            a.hidden = True;
+            a.save()
 
-	pda = PdAudio(name=name, audio=upload, appuser=au)
+        pda = PdAudio(name=name, audio=upload, appuser=au)
 
-	pda.save()
-	pda.convertToMp3()
-	pda.mp3_location = pda.getMp3Location();
-	data_test = serializers.serialize("json", [pda]);
-	return HttpResponse(data_test);
-	#return HttpResponse("Saved Succesfully")
+        pda.save()
+        pda.convertToMp3()
+        pda.mp3_location = pda.getMp3Location();
+        data_test = serializers.serialize("json", [pda]);
+        return HttpResponse(data_test);
+        #return HttpResponse("Saved Succesfully")
 
 
-	#subprocess.call(('lame --preset insane %s' % filename), shell=True)
+        #subprocess.call(('lame --preset insane %s' % filename), shell=True)
 
     else:
 
-	audio = PdAudio.objects.filter(appuser = request.user.profile, used = False, hidden = False)
-	c = {'audio_recordings': audio}
-	return render(request, 'v3/final/presenter-pages/final/record.html', c)
+        audio = PdAudio.objects.filter(appuser = request.user.profile, used = False, hidden = False)
+        c = {'audio_recordings': audio}
+        return render(request, 'v3/final/presenter-pages/final/record.html', c)
 
 def editRecording(request, r_id=False):
     pdaudio = PdAudio.objects.get(pk=r_id)
@@ -509,14 +509,3 @@ def editRecording(request, r_id=False):
     lol = list(f)
     c = {'pdaudio': pdaudio, 'f': f, 'lol': lol}
     return render(request, 'v3/final/presenter-pages/final/edit-recording.html', c)
-
-
-
-
-
-
-
-
-
-
-

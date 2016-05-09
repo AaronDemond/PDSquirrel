@@ -8,7 +8,7 @@ admin.site.site_header = 'PD Squirrel Administration'
 
 @admin.register(AppUser)
 class AppUserAdmin(admin.ModelAdmin):
-	list_filter = ('is_presenter','is_premium')
+    list_filter = ('is_presenter','is_premium')
 
 admin.site.register(PdSession)
 admin.site.register(PdAudio)

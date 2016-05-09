@@ -90,11 +90,11 @@ def place_holder(request):
     return HttpResponse('placeholder')
 
 def activate(request, id):
-	user_id = id - 9
-	user = AppUser.objects.get(pk=user_id)
-	user.is_active = 1
-	user.save()
-	return HttpResponse("activated")
+    user_id = id - 9
+    user = AppUser.objects.get(pk=user_id)
+    user.is_active = 1
+    user.save()
+    return HttpResponse("activated")
 
 
 
@@ -102,13 +102,13 @@ def debug(request):
     return render(request, 'v3/debug-django.html')
 
 def email(request):
-	msg = "Please go to the following link to activate: http://pdsquirrel.ca:90/activate/" + str(request.user.id) + "/"
-	try:
-		send_mail('PD Squirrel Activation', msg, 'no-reply@pdsquirrel.ca',['demondsoftware@gmail.com'], fail_silently=False)
-	except:
-		return HttpResponse("email not sent")
+    msg = "Please go to the following link to activate: http://pdsquirrel.ca:90/activate/" + str(request.user.id) + "/"
+    try:
+        send_mail('PD Squirrel Activation', msg, 'no-reply@pdsquirrel.ca',['demondsoftware@gmail.com'], fail_silently=False)
+    except:
+        return HttpResponse("email not sent")
 
-	return HttpResponse("Email sent")
+    return HttpResponse("Email sent")
 
 def learn(request):
     return HttpResponse("empty learning page")
@@ -246,15 +246,3 @@ def support_msg(request):
 
     else:
         return HttpResponseRedirect('/contact/')
-
-
-
-
-
-
-
-
-
-
-
-
