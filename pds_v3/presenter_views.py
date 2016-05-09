@@ -144,11 +144,7 @@ def dash(request, msg=False):
                 #datetime objects for range comparison
                 start = dfi(request.POST['start'])
                 end = dfi(request.POST['end'])
-
-                #datedict with 'year' 'mont' 'date'
-                start_dict = dfi(request.POST['start'], True)
-                end_dict = dfi(request.POST['end'], True)
-
+                
                 if start == False or end == False:
                     return HttpResponse('Please enter a correctly formatted date.')
 
