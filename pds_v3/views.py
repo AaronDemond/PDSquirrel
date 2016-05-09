@@ -29,15 +29,15 @@ def browse(request):
     if request.POST:
         query = request.POST.get('query', None)
         subject = request.POST.get('subject', None)
-	if subject != None:
-	    if subject == '0':
-		sub_name = 'All Subjects'
-	    else:
-		sub_name = Subject.objects.get(pk=subject)
-	else:
-	    sub_name = None
+        if subject != None:
+            if subject == '0':
+                sub_name = 'All Subjects'
+            else:
+                sub_name = Subject.objects.get(pk=subject)
+        else:
+            sub_name = None
 
-	    
+
         search_type = request.POST.get('search_type', None)
 
         if search_type == 'search':
@@ -95,7 +95,7 @@ def browse(request):
             pd = False
             page_range = range(False)
 
-	context =  {'pd_list' : pd, 'subjects' : Subject.objects.all(), 'type' : search_type, 'range' :  page_range, 'subject' : 'All Subjects',}
+        context =  {'pd_list' : pd, 'subjects' : Subject.objects.all(), 'type' : search_type, 'range' :  page_range, 'subject' : 'All Subjects',}
         return render(request, 'v3/final/browse.html' , context)
 
 
@@ -106,11 +106,11 @@ def place_holder(request):
     return HttpResponse('placeholder')
 
 def activate(request, id):
-	user_id = id - 9
-	user = AppUser.objects.get(pk=user_id)
-	user.is_active = 1
-	user.save()
-	return HttpResponse("activated")
+    user_id = id - 9
+    user = AppUser.objects.get(pk=user_id)
+    user.is_active = 1
+    user.save()
+    return HttpResponse("activated")
 
 
 
@@ -124,11 +124,11 @@ def fuseEdit(edit,pd):
         pd.attachments.add(attachment)
 
     if edit.audio_file:
-	pd.audio_file = edit.audio_file
+        pd.audio_file = edit.audio_file
 
     pd.subject.clear()
     for subject in edit.subjects.all():
-	pd.subject.add(subject)
+        pd.subject.add(subject)
     return pd
 
 def preview(request,id):
@@ -137,36 +137,36 @@ def preview(request,id):
 
 
     if session in presenter.pdsession_set.all():
-	context = {'pd': session, 'preview' : True, 'presenter' : presenter}
+        context = {'pd': session, 'preview' : True, 'presenter' : presenter}
     else:
-	return HttpResponse('auth error')
+        return HttpResponse('auth error')
     if 'l' in request.GET:
-	messages.add_message(request, messages.INFO, 'Click to listen the PD Session shown below.')
-	return render(request, 'v3/final/presenter-pages/final/preview.html', context)
+        messages.add_message(request, messages.INFO, 'Click to listen the PD Session shown below.')
+        return render(request, 'v3/final/presenter-pages/final/preview.html', context)
 
 
     if session.edited == True:
-	edit = session.edits.order_by('-date')[0]
+        edit = session.edits.order_by('-date')[0]
         context['edit'] = edit
         session.name = edit.name
         session.description = edit.description
-	messages.add_message(request, messages.INFO, 'Click to preview the PD Session shown below.')
+        messages.add_message(request, messages.INFO, 'Click to preview the PD Session shown below.')
     else:
-	if session.approved:
-	    messages.add_message(request, messages.INFO, 'Click to preview the PD Session shown below.')
-	else:
-	    messages.add_message(request, messages.INFO, 'Click to preview the PD Session shown below.')
-	
+        if session.approved:
+            messages.add_message(request, messages.INFO, 'Click to preview the PD Session shown below.')
+        else:
+            messages.add_message(request, messages.INFO, 'Click to preview the PD Session shown below.')
+
     return render(request, 'v3/final/presenter-pages/final/preview.html', context)
 
 def email(request):
-	msg = "Please go to the following link to activate: http://pdsquirrel.ca:90/activate/" + str(request.user.id) + "/"
-	try:
-		send_mail('PD Squirrel Activation', msg, 'no-reply@pdsquirrel.ca',['demondsoftware@gmail.com'], fail_silently=False)
-	except:
-		return HttpResponse("email not sent")
+    msg = "Please go to the following link to activate: http://pdsquirrel.ca:90/activate/" + str(request.user.id) + "/"
+    try:
+        send_mail('PD Squirrel Activation', msg, 'no-reply@pdsquirrel.ca',['demondsoftware@gmail.com'], fail_silently=False)
+    except:
+        return HttpResponse("email not sent")
 
-	return HttpResponse("Email sent")
+    return HttpResponse("Email sent")
 
 def learn(request):
     return HttpResponse("empty learning page")
@@ -188,7 +188,7 @@ def detail(request, pd_id):
                 own = 1
     else:
         own = 0
-    
+
     if '_q' in request.GET:
         prev_q = request.GET['_q']
     else:
@@ -258,8 +258,8 @@ def presenter_detail(request, p_id):
     profile = models.Presenter.objects.get(id=p_id)
 
     if profile.bio == '':
-	messages.info(request, 'This presenter has not completed their Biography page yet, check again soon.')
-	return HttpResponseRedirect('/browse/')
+        messages.info(request, 'This presenter has not completed their Biography page yet, check again soon.')
+        return HttpResponseRedirect('/browse/')
 
     name = profile
     context = {'name': name, 'bio': profile.bio, 'img': '/static/img/placeholder.png ', 'presenter': profile}
@@ -273,15 +273,15 @@ def watch(request, pd_id):
 
     #if user owns pd, show them and mark as 'complete' (viewed)
     for x in request.user.profile.purchase_set.all():
-	if x.pdsession == pd:
-	    x.completed = True; x.save()
-	    return render(request, 'v3/final/view.html', context)
+        if x.pdsession == pd:
+            x.completed = True; x.save()
+            return render(request, 'v3/final/view.html', context)
 
     #if its a presenter, they may be previewing
     if request.user.profile.is_presenter:
-	presenter = Presenter.objects.get(user=request.user)
-	if presenter in pd.presenters.all():
-	    return render(request, 'v3/final/view.html', context)
+        presenter = Presenter.objects.get(user=request.user)
+        if presenter in pd.presenters.all():
+            return render(request, 'v3/final/view.html', context)
 
     return HttpResponse('Invalid Request')
 
@@ -322,14 +322,14 @@ def support_msg(request):
         email = request.POST['user_email']
         name = request.POST['name']
         message = request.POST['message']
-	subject = request.POST['subject']
+        subject = request.POST['subject']
 
         #email = EmailMessage('Testing Email instance','body test message', 'support@pdsquirrel.ca',['admin@pdsquirrel.ca'],
                 #['demondsoftware@gmail.com'])
-	send_mail('PDSquirrel support from  ' + name + ' subj: ' + subject , message + '\nreturn email: ' + email , 'support@pdsquirrel.ca', ['admin@pdsquirrel.ca'], fail_silently=False)
+        send_mail('PDSquirrel support from  ' + name + ' subj: ' + subject , message + '\nreturn email: ' + email , 'support@pdsquirrel.ca', ['admin@pdsquirrel.ca'], fail_silently=False)
 
 
-	messages.success(request, 'Message sent. We will get back to you shortly')	    
+        messages.success(request, 'Message sent. We will get back to you shortly')
         return render(request, 'v3/final/contact.html')
 
     else:
@@ -343,55 +343,48 @@ def upload_admin(request, pd_id=False):
     #Must be an ADMIN
     if request.user.is_superuser == True:
 
-	#Make changes to sessions
-	if request.POST:
-	    pd = PdSession.objects.get(pk=request.POST['pd'])
-	    if "approve" in request.POST:
+        #Make changes to sessions
+        if request.POST:
+            pd = PdSession.objects.get(pk=request.POST['pd'])
+            if "approve" in request.POST:
                 if pd.suspend_request == True:
                     pd.suspended = True
 
-		if pd.edited:
-		    edit = pd.edits.latest('date')
-		    pd = fuseEdit(edit,pd)
+                if pd.edited:
+                    edit = pd.edits.latest('date')
+                    pd = fuseEdit(edit,pd)
 
                     for attachment in pd.attachments.all():
                         if attachment.mark_for_delete == True:
                             attachment.delete()
 
-		pd.price = 9.99
-		pd.edited=False
-		pd.approved = True
-		now = datetime.datetime.now()
-		pd.release_date = now
-		pd.save()
-		messages.success(request, 'Session Approved')	    
+                pd.price = 9.99
+                pd.edited=False
+                pd.approved = True
+                now = datetime.datetime.now()
+                pd.release_date = now
+                pd.save()
+                messages.success(request, 'Session Approved')
 
-	#if pd number is provided, half of page is rendered with a session to review
-	if pd_id:
-	    pd = PdSession.objects.get(pk=pd_id)
-	    if pd.edited:
-		edit = pd.edits.latest('date')
+        #if pd number is provided, half of page is rendered with a session to review
+        if pd_id:
+            pd = PdSession.objects.get(pk=pd_id)
+            if pd.edited:
+                edit = pd.edits.latest('date')
                 c['edit'] = edit
-	    c['pd'] = pd 
-	    return render(request, 'v3/final/myadmin/session.html', c)
+            c['pd'] = pd
+            return render(request, 'v3/final/myadmin/session.html', c)
 
 
-	c["unapproved_pd"] = PdSession.objects.filter(approved=False, presenter_approved=True,
+        c["unapproved_pd"] = PdSession.objects.filter(approved=False, presenter_approved=True,
                 suspended=False, suspend_request=False)
-	c["edited_pd"] = PdSession.objects.filter(edited=True, presenter_approved=True, 
-                approved=True, suspended=False, suspend_request=False)	
+        c["edited_pd"] = PdSession.objects.filter(edited=True, presenter_approved=True,
+                approved=True, suspended=False, suspend_request=False)
         c['removed_pd'] = PdSession.objects.filter(suspend_request=True, suspended=False)
-	return render(request, 'v3/final/myadmin/uploads.html', c)
+        return render(request, 'v3/final/myadmin/uploads.html', c)
 
     #if not an admin
     return HttpResponse('Invalid Credentials')
 
 def accounting_admin(request):
     return render(request, 'v3/final/myadmin/accounting.html')
-
-
-
-
-
-
-

@@ -12,7 +12,7 @@ function loadXMLDoc(url,div, direct_to)
 
     var xmlhttp;
     //url = 'https://www.pdsquirrel.ca';
-    url = 'http://127.0.0.1:8000' + url;
+    url = 'http://127.0.0.1' + url;
     console.log('url used: ' + url);
 
     xmlhttp = new XMLHttpRequest();

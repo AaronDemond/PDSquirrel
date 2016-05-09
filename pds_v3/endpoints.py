@@ -7,4 +7,3 @@ def example(request):
         return request.POST
     else:
         raise AJAXError(500, 'Nothing to echo back')
-

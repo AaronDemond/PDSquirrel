@@ -5,12 +5,12 @@ import datetime
 def add_day(value):
     date = datetime.datetime.fromtimestamp(int(value))
     try:
-	date = datetime.datetime(date.year,date.month, date.day+1)
+        date = datetime.datetime(date.year,date.month, date.day+1)
     except:
-	try:
-	    date = datetime.datetime(date.year,date.month+1, 1)
-	except:
-	    date = datetime.datetime(date.year+1,1,1)
+        try:
+            date = datetime.datetime(date.year,date.month+1, 1)
+        except:
+            date = datetime.datetime(date.year+1,1,1)
     return date.strftime("%B %d, %Y")
 
 def remove_time(dt):
@@ -33,8 +33,8 @@ def days_since_join(value):
     now = datetime.datetime.now()
     date_joined = value
     return date_joined.days()
-    
-    
+
+
 
 
 

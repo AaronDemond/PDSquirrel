@@ -6,20 +6,20 @@ def foo(a_list, idx):
 
 class Node:
     def __init__(self, cargo=None, next=None):
-	self.cargo = cargo
-	self.next = next
+        self.cargo = cargo
+        self.next = next
 
     def __str__(self):
-	return str(self.cargo)
+        return str(self.cargo)
 
     def print_list(node):
-	while node:
-	    print node
-	    node = node.next
-	return True
+        while node:
+            print node
+            node = node.next
+        return True
 
     def print_backwards(list):
-	if list == None: return
+        if list == None: return
 
 def print_backwards(node):
     if node == None : return

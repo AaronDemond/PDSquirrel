@@ -15,7 +15,7 @@ class Address(models.Model):
     postal_code = models.CharField(max_length=100, blank=True, null=True)
 
     def __str__(self):
-	return self.street_address
+        return self.street_address
 
 #default law societies
 class LawSociety(models.Model):
@@ -49,19 +49,19 @@ class Presenter(models.Model):
     male_placeholder = '/static/presenter_pics/speaker-placeholder-male.png'
 
     def image_name(self):
-	return os.path.basename(self.image.name)
+        return os.path.basename(self.image.name)
 
     def __str__(self):
         return self.user.first_name + ' ' + self.user.last_name
 
     def imagePlaceholderUrl(self):
-	''' Returns relative url of a placeholder img for presenters '''
+        ''' Returns relative url of a placeholder img for presenters '''
 
-	if random.randint(1,2) == 1:
-	    return '/static/presenter_pics/Female-Placeholder1.jpg'
-	else:
-	    return '/static/presenter_pics/speaker-placeholder-male.png'
-    
+        if random.randint(1,2) == 1:
+            return '/static/presenter_pics/Female-Placeholder1.jpg'
+        else:
+            return '/static/presenter_pics/speaker-placeholder-male.png'
+
 
 
 class AppUser(models.Model):
@@ -151,88 +151,88 @@ class PdAudio(models.Model):
     appuser = models.ForeignKey(AppUser, blank=True, null=True)
     hidden = models.BooleanField(default=False, blank=True)
     used = models.BooleanField(default=False, blank=True)
-    
+
 
     def getMp3Location(self):
         #return self.audio.name
-	return '%s.mp3' % self.audio.name
+        return '%s.mp3' % self.audio.name
 
     def convertToMp3(self):
-	call = 'lame %s %s.mp3' % (self.audio.name, self.audio.name)
-	subprocess.call(call, shell=True)
+        call = 'lame %s %s.mp3' % (self.audio.name, self.audio.name)
+        subprocess.call(call, shell=True)
 
 
     def insert(self, start_ms, pdaudio):
-	'''
-	Takes a start_ms int and PdAudio obj. Inserts the audio
-	at the start time. Updates parent audio.
-	'''
+        '''
+        Takes a start_ms int and PdAudio obj. Inserts the audio
+        at the start time. Updates parent audio.
+        '''
 
-	#Opens self audio file, gets wav metadata
-	w = wave.open(self.audio.name, 'r')
-	framerate = w.getframerate()
-	framerate_ms = framerate / 1000
-	frames = w.getnframes()
-	channels = w.getnchannels()
-	sample_width = w.getsampwidth()
-	start_frame = start_ms * framerate_ms
+        #Opens self audio file, gets wav metadata
+        w = wave.open(self.audio.name, 'r')
+        framerate = w.getframerate()
+        framerate_ms = framerate / 1000
+        frames = w.getnframes()
+        channels = w.getnchannels()
+        sample_width = w.getsampwidth()
+        start_frame = start_ms * framerate_ms
 
-	#slices audio into two sections
-	start_chunk = w.readframes(start_frame)
-	end_chunk = w.readframes(frames-start_frame)
-	
-	#gets raw frames of new recorded audio
-	new_audio = wave.open(pdaudio.audio.name, 'r')
-	middle_chunk = new_audio.readframes(new_audio.getnframes())
+        #slices audio into two sections
+        start_chunk = w.readframes(start_frame)
+        end_chunk = w.readframes(frames-start_frame)
 
-	#concats three audio sections
-	full_chunk = start_chunk + middle_chunk + end_chunk
+        #gets raw frames of new recorded audio
+        new_audio = wave.open(pdaudio.audio.name, 'r')
+        middle_chunk = new_audio.readframes(new_audio.getnframes())
 
-	#build wave file
-	w = wave.open(self.audio.name, 'w')
-	w.setnchannels(channels)
-	w.setsampwidth(sample_width)
-	w.setframerate(framerate)
-	w.writeframes(full_chunk)
-	
+        #concats three audio sections
+        full_chunk = start_chunk + middle_chunk + end_chunk
+
+        #build wave file
+        w = wave.open(self.audio.name, 'w')
+        w.setnchannels(channels)
+        w.setsampwidth(sample_width)
+        w.setframerate(framerate)
+        w.writeframes(full_chunk)
+
 
     def trim(self, start_ms, end_ms):
-	'''
-	Takes start and end in ms (int). Removes the selected range
-	and updates the audio
-	'''
+        '''
+        Takes start and end in ms (int). Removes the selected range
+        and updates the audio
+        '''
 
-	#opens file for editing, pulls info from it
-	w = wave.open(self.audio.name, 'r')
-	framerate = w.getframerate()
-	framerate_ms = framerate / 1000
-	frames = w.getnframes()
-	channels = w.getnchannels()
-	sample_width = w.getsampwidth()
-	start_frame = start_ms * framerate_ms
-	end_frame = end_ms * framerate_ms
+        #opens file for editing, pulls info from it
+        w = wave.open(self.audio.name, 'r')
+        framerate = w.getframerate()
+        framerate_ms = framerate / 1000
+        frames = w.getnframes()
+        channels = w.getnchannels()
+        sample_width = w.getsampwidth()
+        start_frame = start_ms * framerate_ms
+        end_frame = end_ms * framerate_ms
 
-	#get start and end chunks
-	start_chunk = w.readframes(start_frame)
-	w.setpos(end_frame)
-	end_chunk = w.readframes(frames - end_frame)
+        #get start and end chunks
+        start_chunk = w.readframes(start_frame)
+        w.setpos(end_frame)
+        end_chunk = w.readframes(frames - end_frame)
 
-	#data is just a string of characters, so we combine them
-	full_chunk = start_chunk + end_chunk
+        #data is just a string of characters, so we combine them
+        full_chunk = start_chunk + end_chunk
 
-	#create new wav with identical metadeta as input
-	#write the combined data to create the new audio
+        #create new wav with identical metadeta as input
+        #write the combined data to create the new audio
 
-	#todo: naming, save back to parent
-	w = wave.open(self.audio.name, 'w')
-	w.setnchannels(channels)
-	w.setsampwidth(sample_width)
-	w.setframerate(framerate)
-	w.writeframes(full_chunk)
-	return 
+        #todo: naming, save back to parent
+        w = wave.open(self.audio.name, 'w')
+        w.setnchannels(channels)
+        w.setsampwidth(sample_width)
+        w.setframerate(framerate)
+        w.writeframes(full_chunk)
+        return
 
     def __str__(self):
-	return self.name
+        return self.name
 
 
 class PdAttachment(models.Model):
@@ -253,7 +253,7 @@ class PdSessionEdit(models.Model):
     attachments = models.ManyToManyField(PdAttachment, blank=True)
 
     def __str__(self):
-	return self.name
+        return self.name
 
     class Meta:
         get_latest_by = "date"
@@ -292,17 +292,17 @@ class PdSession(models.Model):
         return self.name
 
     def getAudioLocation(self):
-	if self.pdaudio:
-	    return self.pdaudio.getMp3Location()
-	else:
-	    return self.audio_file
+        if self.pdaudio:
+            return self.pdaudio.getMp3Location()
+        else:
+            return self.audio_file
 
     class Meta:
         verbose_name = "PD Session"
         verbose_name_plural = "PD Sessions"
 
     def save(self, *args, **kwargs):
-	super(PdSession, self).save(*args, **kwargs)
+        super(PdSession, self).save(*args, **kwargs)
 
 
 
@@ -330,15 +330,15 @@ class Purchase(models.Model):
 
     def save(self, *args, **kwargs):
 
-	if self.credit_used:
-	    self.pdsession.total_credits += 1
-	else:
-	    self.pdsession.total_sales += float(self.price)
+        if self.credit_used:
+            self.pdsession.total_credits += 1
+        else:
+            self.pdsession.total_sales += float(self.price)
 
-	self.pdsession.total_takes += 1
-	self.pdsession.save()
+        self.pdsession.total_takes += 1
+        self.pdsession.save()
 
-	super(Purchase, self).save(*args, **kwargs)
+        super(Purchase, self).save(*args, **kwargs)
 
 
 
@@ -347,7 +347,7 @@ class report(models.Model):
     PdSession = models.ManyToManyField(PdSession)
     purchase = models.ManyToManyField(Purchase)
 
- 
+
 class Notice(models.Model):
     title = models.CharField(max_length=200, blank=True)
     message = models.TextField(blank=True, null=True)
@@ -371,12 +371,3 @@ class MembershipCancellationRecord(models.Model):
     user = models.ForeignKey(AppUser, blank=True)
     date = models.DateTimeField(auto_now_add=True)
     notes = models.TextField(blank=True, null=True)
-
-
-
-
-
-
-
-
-
