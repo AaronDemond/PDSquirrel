@@ -55,9 +55,9 @@ def analytics_report(request):
         end = dfi(end)
         end = end + datetime.timedelta(days=1)
     else:
-        messages.add_message(request, messages.ERROR, 'You must accept the \
-                Terms and Conditions before uploading content.')
-        return render(request, 'v3/final/presenter-pages/final/analytics.html')
+        context = {'type': None}
+        return render_to_response('v3/final/presenter-pages/final/reports/analytics.html', context)
+
 
 
     #add day to make end inclusive
