@@ -1,3 +1,24 @@
+
+	<script>
+		$(document).ready(function() {
+			$('.iclose').click(function() {
+				$('.msg-container').empty();
+			});
+	    });
+	</script>
+
+	<div class="row">
+		<div class="col-lg-9 col-lg-offset-1">
+			<div class="msg-container">
+				{% if messages %}
+				{% for msg in messages %}
+				<div class="alert alert-{{msg.tags}} msg" role="alert">{{msg}} <a href="#"><i class="fa fa-times pull-right iclose"></i></a> </div>
+				{% endfor %}
+				{% endif %}
+			</div>
+		</div>
+	</div>
+
 <div class="row" id="upload-row">
     <div class="col-lg-9 col-lg-offset-1">
             {% csrf_token %}
