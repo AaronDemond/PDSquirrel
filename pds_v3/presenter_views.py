@@ -288,19 +288,25 @@ def dash(request, msg=False):
                 pd_description = request.POST['description']
                 subjects = request.POST.getlist('subject')
 
-                pdaud = int(request.POST['recording'])
-                if pdaud > 0:
-                    pdaud = PdAudio.objects.get(pk=int(pdaud))
-                    pdaud.used = True
-                    pdaud.save();
-                    new_session = PdSession(name=pd_name,description=pd_description, pdaudio=pdaud, approved=False)
-                else:
-                    if not request.FILES['audio_file'].name.lower().endswith(('.wav', '.mp3')):
-                        messages.add_message(request, messages.ERROR, 'Please upload the correct file type')
-                        return HttpResponseRedirect('/user/presenter/dash/?direct_to=upload')
+                try:
+                    pdaud = int(request.POST['recording'])
+                    if pdaud > 0:
+                        pdaud = PdAudio.objects.get(pk=int(pdaud))
+                        pdaud.used = True
+                        pdaud.save();
+                        new_session = PdSession(name=pd_name,description=pd_description, pdaudio=pdaud, approved=False)
+                    else:
+                        if not request.FILES['audio_file'].name.lower().endswith(('.wav', '.mp3')):
+                            messages.add_message(request, messages.ERROR, 'Please upload the correct file type')
+                            return HttpResponseRedirect('/user/presenter/dash/?direct_to=upload')
 
-                    new_session = PdSession(name=pd_name,description=pd_description, audio_file=request.FILES['audio_file'], approved=False)
-                    new_session.save()
+                        new_session = PdSession(name=pd_name,description=pd_description, audio_file=request.FILES['audio_file'], approved=False)
+                        new_session.save()
+                except:
+                    messages.add_message(request, messages.ERROR, 'Please include an audio recording with your session upload')
+                    return HttpResponseRedirect('/user/presenter/dash/?direct_to=upload')
+
+
 
                     #get length if it is mp3.. need to convert wav
                     if request.FILES['audio_file'].name.lower().endswith(('.mp3')):

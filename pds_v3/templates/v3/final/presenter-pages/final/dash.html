@@ -44,7 +44,7 @@ $(document).ready(function() {
 	}
 
 	else if  ("{{direct_to}}" == "analytics") { 
-	    loadXMLDoc('/analytics/', '#page-content');
+	    loadXMLDoc('/user/presenter/dash/?analytics', '#page-content');
 	    $("li").removeClass("active");
 	    $("#analytics-link").addClass("active");
 	}

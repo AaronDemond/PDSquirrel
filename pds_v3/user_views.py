@@ -377,6 +377,8 @@ def del_card(request):
         for x in customer.sources.data:
             if x.id == card_id:
                 x.delete()
+                request.user.profile.has_card = False
+                request.user.profile.save()
                 return options(request,msg=[('success','Card Removed')])
         return options(request,msg=[('danger','Card removal error')])
 
@@ -387,11 +389,15 @@ def del_card(request):
 
 def add_card(request):
     if request.POST:
-        token = request.POST['stripeToken']
-        customer = stripe.Customer.retrieve(request.user.profile.stripe_id)
-        customer.sources.create(source=token)
-        return HttpResponseRedirect('/user/options/')
-        return HttpResponse(customer)
-    else:
+        try:
+            token = request.POST['stripeToken']
+            customer = stripe.Customer.retrieve(request.user.profile.stripe_id)
+            customer.sources.create(source=token)
+            request.user.profile.has_card = True
+            request.user.profile.save()
+            return HttpResponseRedirect('/user/options/')
 
+        except:
+            return options(request, msg=[('danger','Error adding card')])
+    else:
         return HttpResponseRedirect('/user/options/')

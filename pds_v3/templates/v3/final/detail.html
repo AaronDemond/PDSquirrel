@@ -17,15 +17,18 @@ margin-bottom: 0px !important;
 <div class="row">
 <div class="col-lg-10 col-lg-offset-1">
 
-   {% if msg %}
-   <div class="row">
-      <div class="col-sm-12">
-         <div class="alert alert-{{msgType}}">
-            <p>{{msg}}</p>
-         </div>
-      </div>
-   </div>
-   {% endif %}
+	<div class="row">
+		<div class="col-lg-9 col-lg-offset-1">
+			<div class="msg-container">
+			    {% if messages %}
+			    {% for msg in messages %}
+			    <div class="alert alert-{{msg.tags}} msg" role="alert">{{msg}} <a href="#"><i class="fa fa-times pull-right iclose"></i></a> </div>
+			    {% endfor %}
+			    {% endif %}
+			</div>
+		</div>
+	</div>
+
    <div class="row">
       <div class="col-xs-12">
         <h3>{{pd}}</h3>
@@ -66,6 +69,23 @@ margin-bottom: 0px !important;
 					 </div>
 					 {% else %}
 					 {% if user.profile.remaining_pd = 0 %}
+
+					 {% if user.profile.has_card %}
+					<form  action="{% url 'payment-process' %}" method="POST">
+						<input type="hidden" name="pd_id" value="{{pd.id}}" />
+						<input type="hidden" name="s_card" value="1"> {# flag meaning user is using saved card #}
+						{% csrf_token %}
+						<div class="">
+						   <button type="submit" class= "btn btn-success btn-lg" id="purchase" >Purchase using saved card</button>
+						   <div class="checkbox">
+							  <label>
+							  <input type="checkbox"> Inform me via email when this presenter releases content.
+							  </label>
+						   </div>
+						</div>
+					 </form>
+
+					 {% else %}
 					 <form id="pform" action="{% url 'payment-process' %}" method="POST">
 						<input type="hidden" name="pd_id" value="{{pd.id}}" />
 						{% csrf_token %}
@@ -88,6 +108,7 @@ margin-bottom: 0px !important;
 						   </div>
 						</div>
 					 </form>
+					 {% endif %}
 					 {% else %}
 					 <form action="{% url 'payment-process' %}" method ="POST">
 						{% csrf_token %}
