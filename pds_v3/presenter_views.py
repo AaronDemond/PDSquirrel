@@ -56,8 +56,6 @@ def analytics_report(request):
     except:
         return HttpResponse('Unable to parse date')
 
-    #add day to make end inclusive
-    end = end + datetime.timedelta(days=1)
 
 
     #tally takes and earnings
@@ -65,16 +63,16 @@ def analytics_report(request):
     opening_balance = 0
     total_earnings = 0
     for pd in ppd:
-        pd.takes = pd.purchase_set.filter(date__range=[start,end]).count()
+        pd.takes = pd.purchase_set.filter(date__range=[start,end], success=True).count()
 
         #calculate earnings within date range
-        pd.earnings = sum([purchase.price * 0.6 for purchase in pd.purchase_set.filter(date__range=[start,end]) if not purchase.credit_used])
-        pd.earnings += sum([2 for purchase in pd.purchase_set.filter(date__range=[start,end]) if purchase.credit_used])
+        pd.earnings = sum([purchase.price * 0.6 for purchase in pd.purchase_set.filter(date__range=[start,end], success=True) if not purchase.credit_used])
+        pd.earnings += sum([2 for purchase in pd.purchase_set.filter(date__range=[start,end], success=True) if purchase.credit_used])
         total_earnings += pd.earnings
 
         #calculate earnings prior to date range
-        pd.prior = sum([purchase.price * 0.6 for purchase in pd.purchase_set.filter(date__lt=start) if not purchase.credit_used])
-        pd.prior += sum([2 for purchase in pd.purchase_set.filter(date__lt=start) if purchase.credit_used])
+        pd.prior = sum([purchase.price * 0.6 for purchase in pd.purchase_set.filter(date__lt=start, success=True) if not purchase.credit_used])
+        pd.prior += sum([2 for purchase in pd.purchase_set.filter(date__lt=start, success=True) if purchase.credit_used])
         opening_balance += pd.prior
 
     #since there is no payout yet, closing is all earnings to date.
@@ -101,7 +99,7 @@ def dash(request, msg=False):
         presenter = Presenter.objects.filter(user=request.user)[0]
         context['presenter'] = presenter
 
-        context['start'] = datetime.datetime(year=2015, month=01, day=01)
+        context['start'] = datetime.datetime(year=2016, month=01, day=01)
 
         context['end'] = datetime.datetime.now()
         context['total_earnings'] = 0
