@@ -50,11 +50,11 @@ def analytics_report(request):
 
 
     #datetime objects for range comparison
-    if end or start:
+    try:
         start = dfi(start)
         end = dfi(end)
         end = end + datetime.timedelta(days=1)
-    else:
+    except:
         context = {'type': None}
         return render_to_response('v3/final/presenter-pages/final/reports/analytics.html', context)
 
