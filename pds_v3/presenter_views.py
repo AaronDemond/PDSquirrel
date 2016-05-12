@@ -295,7 +295,11 @@ def dash(request, msg=False):
                     pdaud.save();
                     new_session = PdSession(name=pd_name,description=pd_description, pdaudio=pdaud, approved=False)
                 else:
-                    if not request.FILES['audio_file'].name.lower().endswith(('.wav', '.mp3')):
+                    audio_file = request.FILES.get('audio_file', False)
+                    if not audio_file:
+                        messages.add_message(request, messages.ERROR, 'Please upload a file')
+                        return HttpResponseRedirect('/user/presenter/dash/?direct_to=upload')
+                    elif not audio_file.name.lower().endswith(('.wav', '.mp3')):
                         messages.add_message(request, messages.ERROR, 'Please upload the correct file type')
                         return HttpResponseRedirect('/user/presenter/dash/?direct_to=upload')
 
@@ -303,7 +307,7 @@ def dash(request, msg=False):
                     new_session.save()
 
                     #get length if it is mp3.. need to convert wav
-                    if request.FILES['audio_file'].name.lower().endswith(('.mp3')):
+                    if audio_file.name.lower().endswith(('.mp3')):
                         song = MP3(new_session.audio_file.name)
                         seconds = song.info.length
                         m, s = divmod(seconds, 60)
