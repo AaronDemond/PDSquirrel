@@ -1,15 +1,15 @@
 
-/*   
+/*
 
    Script notes
    ============
-    
+
    [refactor]
 
-	Needs to be refactored. Too intertwined. Need to properly setup git, then fork this and try to refactor? 
-   Script should be broken down into sections. Anything not directly related to the recorder should be moved outside the script tag? 
+	Needs to be refactored. Too intertwined. Need to properly setup git, then fork this and try to refactor?
+   Script should be broken down into sections. Anything not directly related to the recorder should be moved outside the script tag?
    Idk though because some of the things, for example the link click, depend on variables initilied within the script tag. Although I think
-   they stay loaded in memory until the page refreshes? I am not sure.  
+   they stay loaded in memory until the page refreshes? I am not sure.
 
 
 */
@@ -37,12 +37,12 @@ function delAudio(id) {
 
 $("a").click(function(e) {
  // When a link is clicked, confirm twice if the user wants to Save changes.
-	if (saved == false && page == 'recorder') { 
+	if (saved == false && page == 'recorder') {
 	    confirmation = confirm("Save changes first?");
 	    if (confirmation) {
 		    saveRecording();
 	    } else {
-		confirmation = confirm("Are you sure? Press OK to save changes before leaving, otherwise this recording will be lost.");	
+		confirmation = confirm("Are you sure? Press OK to save changes before leaving, otherwise this recording will be lost.");
 		if (confirmation) {
 		    saveRecording();
 		}
@@ -50,7 +50,7 @@ $("a").click(function(e) {
 	}
 
 	// Close audio context, otherwise page gets incredibly slow and recordings lag.
-	if (page =='recorder' && this.id != 'refresh_link') { 
+	if (page =='recorder' && this.id != 'refresh_link') {
 	    try {
 		context.close();
 		page = null;
@@ -62,17 +62,17 @@ $("a").click(function(e) {
 });
 
 
- /* 
+ /*
    Audio recorder
  */
 
     // Script global vars
-    var container = document.getElementById('main-content');                 
-    var refresh_link = document.getElementById('refresh_link');              
-    var outputElement = document.getElementById('output');		     
-    var audio_player = document.getElementById("player");                    
-    var page = 'recorder';                                                   
-    var aud_name = document.getElementById("name");                           
+    var container = document.getElementById('main-content');
+    var refresh_link = document.getElementById('refresh_link');
+    var outputElement = document.getElementById('output');
+    var audio_player = document.getElementById("player");
+    var page = 'recorder';
+    var aud_name = document.getElementById("name");
     var sbox = document.getElementById("start-mark");
     var ebox = document.getElementById("end-mark");
 	var loading_alert = document.getElementById("loading-alert");
@@ -107,6 +107,61 @@ $("a").click(function(e) {
     var edited_name = null;
     var allowing_mic = false;
 
+
+    // timer
+    var running = false;
+     var time = 0;
+     var clock_interval;
+     var $stopwatch = document.getElementById('timer'); //div with ID stopwatch
+
+     function start() {
+       running=true;
+       clock_interval = setInterval(display_time, 1);
+     }
+
+     function stop() {
+       clearInterval(clock_interval);
+       running = false;
+     }
+
+     function reset() {
+       if (running) {
+         stop();
+       }
+       time=0;
+       $stopwatch.innerHTML = format_time(0);
+     }
+
+
+     function display_time() {
+       if (running){
+         time++;
+         $stopwatch.innerHTML = format_time(time);
+       }
+     }
+     function pad(num, size) {
+       var s = "0000" + num;
+    	 return s.substr(s.length - size);
+     }
+
+     function format_time(time_input) {
+       var h, m, s, ms;
+       var time_output = '';
+
+       h = Math.floor( time_input / (60 * 60 * 1000) );
+       time_input = time_input % (60 * 60 * 1000);
+       m = Math.floor( time / (60 * 1000) );
+       time_input = time_input % (60 * 1000);
+       s = Math.floor( time_input / 1000 );
+       ms = time_input % 1000;
+
+       time_output = pad(h, 2) + ':' + pad(m, 2) + ':' + pad(s, 2) + ':' + pad(ms, 3);
+       return time_output;
+     }
+
+
+
+
     // remove prefixes
     if (!navigator.getUserMedia)
         navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia ||
@@ -114,12 +169,12 @@ $("a").click(function(e) {
 
     // If webcam available, request permission. Display Error message elsewise.
     if (navigator.getUserMedia){
-	navigator.getUserMedia({audio:true}, 
-	    success, 
-	    function(e) { 
-	    alert('Error capturing audio.'); 
+	navigator.getUserMedia({audio:true},
+	    success,
+	    function(e) {
+	    alert('Error capturing audio.');
 	});
-    } else { 
+    } else {
 	alert('getUserMedia not supported in this browser.');
     }
 
@@ -166,12 +221,12 @@ $("a").click(function(e) {
 	    }
 	}
 
-	function loaded(evt) { 
+	function loaded(evt) {
 
 	    var buffer = reader.result; // buffer of raw wav file data
 
 	    var localview = new DataView(buffer);
-	    var fmt_chunk_size = localview.getUint32(16, true); // size, in bytes, of fmt data chunk. 
+	    var fmt_chunk_size = localview.getUint32(16, true); // size, in bytes, of fmt data chunk.
 	    var header_chunk_size = 28 + fmt_chunk_size; // in bytes, of the header. Typically 44
 	    var lc = [];
 
@@ -180,7 +235,8 @@ $("a").click(function(e) {
 
 	    console.log("header_chunk_size: ");
 	    console.log(header_chunk_size);
-	    console.log("buffer byte length");
+
+      ("buffer byte length");
 	    console.log(buffer.byteLength);
 
 	    // Determin how much to take off of buffer. it must fit perfectly for Int16Array
@@ -244,7 +300,7 @@ $("a").click(function(e) {
     }
 
     /* send wav to server */
-    function saveRecording() {	
+    function saveRecording() {
 	if (edited_name == aud_name.value) {
 	    if(!confirm("Are you sure you wish to save changes to '" + edited_name + "'? You may change the name to save it as a new audio recording")) {
 		return false;
@@ -268,7 +324,7 @@ $("a").click(function(e) {
     function clearRange() {
 	ebox.value = 0;
 	sbox.value = 0;
-    }    
+    }
 
     // Ensure its playing
     function isPlaying(player) { return !audio_player.paused; }
@@ -298,22 +354,22 @@ $("a").click(function(e) {
 	    window.clearInterval(gd);
 	}
     }
-    
-  
+
+
     // either pauses recording, or pauses audio playback
     function pauseClick() {
 		if (recording == true) {
-			recordToggle(); 
+			recordToggle();
 			outputElement.innerHTML = "Recording Paused";
-		} else { 
-			if (isPlaying(audio_player)) { 
+		} else {
+			if (isPlaying(audio_player)) {
 			audio_player.pause();
-			} 
+			}
 		}
     }
 
     /* Toggle recording. Data is fed to left and right chanels, in the correct position. */
-    function recordToggle(e) {	
+    function recordToggle(e) {
         if (recording == true) { // Pause clicked
 
 			recording = false;
@@ -321,6 +377,7 @@ $("a").click(function(e) {
 			save_btn.disabled = false;
 			var leftBuffer = mergeBuffers(leftchannel, recordingLength);
 			var rightBuffer = mergeBuffers(rightchannel, recordingLength);
+      console.log(leftchannel);
 			interleaved = interleave(leftBuffer, rightBuffer);
 			buildLocalWav();
 
@@ -345,7 +402,7 @@ $("a").click(function(e) {
 			saved = false;
 			rec_btn.disabled = true;
 			save_btn.disabled = true;
-
+      console.log(leftchannel);
 			// finds offset to be used when inserting recorded audio into an exisiting wav file
 			// Divides by 2048 because channel data is stored in arrays of float32arrays.
 			// float arrays are 2048 in length, as decided by the buffer size. Lower buffer size
@@ -379,7 +436,7 @@ $("a").click(function(e) {
         // combines data and builds wav
         var leftBuffer = mergeBuffers(leftchannel, recordingLength);
         var rightBuffer = mergeBuffers(rightchannel, recordingLength);
-        interleaved = interleave(leftBuffer, rightBuffer); // Should probably edit this instead of channel data, but it gave issues earlier. 
+        interleaved = interleave(leftBuffer, rightBuffer); // Should probably edit this instead of channel data, but it gave issues earlier.
         buildLocalWav();
 		clearRange();
 		gd = setInterval(getDur, 20);
@@ -391,7 +448,7 @@ $("a").click(function(e) {
         var buffer = new ArrayBuffer(44 + interleaved.length * 2);
         view = new DataView(buffer);
 
-        // RIFF 
+        // RIFF
         writeUTFBytes(view, 0, 'RIFF');
         view.setUint32(4, 44 + interleaved.length * 2, true);
         writeUTFBytes(view, 8, 'WAVE');
@@ -446,9 +503,9 @@ $("a").click(function(e) {
 		// Build form data obj with wavblob, upload flag, and name text.
     	fd.append('data', blob);
 		fd.append('upload', 'true');
-    	fd.append('name', name); 
+    	fd.append('name', name);
 
-		// Post to server. Alert on failure. 
+		// Post to server. Alert on failure.
 		// TODO local file editing.. maybe
 
 		console.log('loading.');
@@ -462,7 +519,7 @@ $("a").click(function(e) {
 				processData: false,
 				contentType: false,
 				success: function(data) {
-				// If POST succesfull, return json for that rec. 
+				// If POST succesfull, return json for that rec.
 				var this_audio = JSON.parse(data);
 				console.log(this_audio[0]); // fields_obj, model_str, pk_id
 				pda_obj = this_audio[0]
@@ -478,14 +535,14 @@ $("a").click(function(e) {
 			});
     }
 
-    
-    
+
+
     function interleave(leftChannel, rightChannel){
     // Interleave the left and right channels together. Wav file looks like ABABAB for data.
       var length = leftChannel.length + rightChannel.length;
       var result = new Float32Array(length);
       var inputIndex = 0;
-    
+
       for (var index = 0; index < length; ){
         result[index++] = leftChannel[inputIndex];
         result[index++] = rightChannel[inputIndex];
@@ -493,7 +550,7 @@ $("a").click(function(e) {
       }
       return result;
     }
-    
+
     // Flattens array of 32bitarrays
     function mergeBuffers(channelBuffer, recordingLength){
       var result = new Float32Array(channelBuffer.length * 2048);
@@ -506,38 +563,38 @@ $("a").click(function(e) {
       }
       return result;
     }
-    
-    function writeUTFBytes(view, offset, string){ 
+
+    function writeUTFBytes(view, offset, string){
       var lng = string.length;
       for (var i = 0; i < lng; i++){
         view.setUint8(offset + i, string.charCodeAt(i));
       }
     }
-    
+
     function success(e){
 	allowing_mic = true; //Only check for microphone if this flag is off. first time rec btn clicked.
 	console.log(allowing_mic);
 
-	/* creates audio context, which provides info such as sample rate and access to the source 
+	/* creates audio context, which provides info such as sample rate and access to the source
 	   stream */
         audioContext = window.AudioContext || window.webkitAudioContext;
         context = new audioContext();
         sampleRate = context.sampleRate;
         volume = context.createGain();
-    
+
         // creates an audio node from the microphone incoming stream
         audioInput = context.createMediaStreamSource(e);
-    
+
         // connect the stream to the gain node
         audioInput.connect(volume);
-    
-        /* From the spec: This value controls how frequently the audioprocess event is 
-        dispatched and how many sample-frames need to be processed each call. 
-        Lower values for buffer size will result in a lower (better) latency. 
+
+        /* From the spec: This value controls how frequently the audioprocess event is
+        dispatched and how many sample-frames need to be processed each call.
+        Lower values for buffer size will result in a lower (better) latency.
         Higher values will be necessary to avoid audio breakup and glitches */
         var bufferSize = 2048;
         recorder = context.createScriptProcessor(bufferSize, 2, 2);
-    
+
         recorder.onaudioprocess = function(e){
             if (!recording) return;
             var left = e.inputBuffer.getChannelData (0);
@@ -552,5 +609,5 @@ $("a").click(function(e) {
             console.log('recording');
         }
         volume.connect (recorder);
-        recorder.connect (context.destination); 
+        recorder.connect (context.destination);
     }
