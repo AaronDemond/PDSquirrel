@@ -35,7 +35,7 @@ function delAudio(id) {
 }
 
 
-$("a").click(function(e) {
+$("a").not('#infoLink').click(function(e) {
  // When a link is clicked, confirm twice if the user wants to Save changes.
 	if (saved == false && page == 'recorder') {
 	    confirmation = confirm("Save changes first?");
@@ -98,9 +98,10 @@ $("a").click(function(e) {
     		this.time = function() {
     				return lapTime + (startAt ? now() - startAt : 0);
     			};
+          /*
           this.print = function() {
             console.log("lapTime: "+lapTime+" startAt: "+startAt);
-          }
+          };*/
     	};
 
     var recorder_timer = new stopwatch();
@@ -372,17 +373,17 @@ recorder_timer.set_time(time);
     }
 
     function delete_curr_audio() {
-      audio_player.pause();
+      if (confirm("Are you sure you want to delete all of your current recording?")) {
+        audio_player.pause();
 
-      audio_player.src = '';
+        audio_player.src = '';
 
-      recorder_timer.print();
-      reset();
+        reset();
 
-      leftchannel = [];
-      rightchannel = [];
+        leftchannel = [];
+        rightchannel = [];
+      }
 
-      console.log(audio_player.duration);
     }
     // Ensure its playing
     function isPlaying(player) { return !audio_player.paused; }
