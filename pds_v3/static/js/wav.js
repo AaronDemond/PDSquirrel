@@ -37,7 +37,7 @@ function delAudio(id) {
 
 $("a").not('#infoLink').click(function(e) {
  // When a link is clicked, confirm twice if the user wants to Save changes.
-	if (saved == false && page == 'recorder') {
+  if (saved == false && page == 'recorder' && audio_player.src.startsWith('blob') ) {
 	    confirmation = confirm("Save changes first?");
 	    if (confirmation) {
 		    saveRecording();
@@ -191,13 +191,11 @@ $("a").not('#infoLink').click(function(e) {
     var edited_name = null;
     var allowing_mic = false;
 
-    console.log(audio_player);
 
     audio_player.onloadeddata = function() {
       var time = isNaN(audio_player.duration) ? 0 : Math.round(audio_player.duration * 1000);
       recorder_timer.set_time(time);
       update();
-      console.log("audio_player: "+audio_player.duration);
     }
 
     // remove prefixes
@@ -373,11 +371,10 @@ recorder_timer.set_time(time);
     }
 
     function delete_curr_audio() {
-      if (confirm("Are you sure you want to delete all of your current recording?")) {
+       console.log("what"+audio_player.src);
+      if (confirm("Are you sure you want to delete your current recording?")) {
         audio_player.pause();
-
         audio_player.src = '';
-
         reset();
 
         leftchannel = [];
