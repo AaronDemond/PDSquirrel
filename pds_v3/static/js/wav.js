@@ -345,6 +345,19 @@ recorder_timer.set_time(time);
     /* send wav to server */
     function saveRecording() {
 
+
+
+	if (edited_name == aud_name.value) {
+	    if(!confirm("Are you sure you wish to save changes to '" + edited_name + "'? You may change the name to save it as a new audio recording")) {
+		return false;
+	    }
+	}
+
+	    if (aud_name.value == "") {
+		alert("Please enter a name for the recording");
+		return false;
+	    }
+
       var filename = $('#name').val();
       var confirmed = true;
       $(".recording_name").each(function() {
@@ -354,21 +367,12 @@ recorder_timer.set_time(time);
           }
         }
       });
-// td:first-child"
-  if (!confirmed) {
-    return false;
-  }
 
-	if (edited_name == aud_name.value) {
-	    if(!confirm("Are you sure you wish to save changes to '" + edited_name + "'? You may change the name to save it as a new audio recording")) {
-		return false;
-	    }
-	}
-	try {
-	    if (aud_name.value == "") {
-		alert("Please enter a name for the recording");
-		return false;
-	    }
+    if (!confirmed) {
+    return false;
+    }
+    try {
+
 	    createWavBlob();
 	    saved = true;
 	} catch (err) {
