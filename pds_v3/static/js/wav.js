@@ -146,6 +146,7 @@ $("a").click(function(e) {
     }
 
 
+
  /*
    Audio recorder
  */
@@ -189,17 +190,14 @@ $("a").click(function(e) {
     var edited_name = null;
     var allowing_mic = false;
 
+    console.log(audio_player);
 
     audio_player.onloadeddata = function() {
       var time = isNaN(audio_player.duration) ? 0 : Math.round(audio_player.duration * 1000);
       recorder_timer.set_time(time);
       update();
+      console.log("audio_player: "+audio_player.duration);
     }
-
-
-
-
-
 
     // remove prefixes
     if (!navigator.getUserMedia)
@@ -266,6 +264,8 @@ console.log(audio_player.duration);
 var time = isNaN(audio_player.duration) ? 0 : audio_player.duration;
 recorder_timer.set_time(time);
 */
+
+
 
 
 	function loaded(evt) {
@@ -371,6 +371,19 @@ recorder_timer.set_time(time);
 	sbox.value = 0;
     }
 
+    function delete_curr_audio() {
+      audio_player.pause();
+
+      audio_player.src = '';
+
+      recorder_timer.print();
+      reset();
+
+      leftchannel = [];
+      rightchannel = [];
+
+      console.log(audio_player.duration);
+    }
     // Ensure its playing
     function isPlaying(player) { return !audio_player.paused; }
 
