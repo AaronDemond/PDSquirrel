@@ -35,7 +35,7 @@ function delAudio(id) {
 }
 
 
-$("a").not('#infoLink').click(function(e) {
+$("a").not('#infoLink, .download').click(function(e) {
  // When a link is clicked, confirm twice if the user wants to Save changes.
   if (saved == false && page == 'recorder' && audio_player.src.startsWith('blob') ) {
 	    confirmation = confirm("Save changes first?");
@@ -338,11 +338,6 @@ recorder_timer.set_time(time);
         ebox.value = audio_player.currentTime.toFixed(2);
     }
 
-    /* Pause and Save recording */
-    function pausePlayer() {
-	audio_player.pause();
-    }
-
     /* send wav to server */
     function saveRecording() {
 	if (edited_name == aud_name.value) {
@@ -371,14 +366,16 @@ recorder_timer.set_time(time);
     }
 
     function delete_curr_audio() {
-       console.log("what"+audio_player.src);
+       pauseClick();
       if (confirm("Are you sure you want to delete your current recording?")) {
         audio_player.pause();
         audio_player.src = '';
         reset();
-
         leftchannel = [];
         rightchannel = [];
+        var name = document.getElementById('name');
+        name.value = '';
+        outputElement.innerHTML = "Click record to being capturing audio";
       }
 
     }
@@ -666,7 +663,6 @@ recorder_timer.set_time(time);
 
             recordingLength += bufferSize; // Probably not needed
 
-            console.log('recording');
         }
         volume.connect (recorder);
         recorder.connect (context.destination);
