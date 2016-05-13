@@ -45,6 +45,7 @@ urlpatterns = [
     url(r'^user/options/membership$', user_views.change_membership, name="change-membership"),
     url(r'^user/options/newcard/$', user_views.add_card, name="newcard"),
     url(r'^user/options/delcard/$', user_views.del_card, name="delcard"),
+    url(r'^user/options/u_card/$', user_views.default_payment, name="update-payment"),
     url(r'^ajax/cap_ref/$', views.cap_refresh, name='ajax-captcha'),
     url(r'^cap_ref/$', tmp_views.cap_ajax, name='cap-ref'),
 
@@ -52,6 +53,7 @@ urlpatterns = [
     url(r'^upload-admin/(?P<pd_id>\d+)/$', views.upload_admin, name="upload-admin"),
 
     url(r'^accounting/$', views.accounting_admin, name="accounting"),
+    url(r'^memberships/$', views.membership_information, name="memberships"),
 
 
     #presenter urls

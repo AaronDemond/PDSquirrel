@@ -284,25 +284,34 @@ def change_membership(request):
         appuser = request.user.profile
         stripe_id = appuser.stripe_id
 
+        #Retreive customer obj from stripe
+        try:
+            customer = stripe.Customer.retrieve(stripe_id)
+        except:
+            messages.add_message(request, messages.ERROR,
+                    'Error retreiving your customer profile. No changes have been made')
+
+        # If they are premium currently, they must be downgrading
         if appuser.is_premium == True:
             appuser.is_premium = False
-            appuser.save()
+            for sub in customer.subscriptions:
+                sub.delete()
             messages.add_message(request, messages.SUCCESS, 'You are now a standard user. We hope to see you soon!')
-            return HttpResponseRedirect('/user/options/')
         else:
             try:
-                customer = stripe.Customer.retrieve(stripe_id)
+                customer.default_source = request.POST['default_card']
+                customer.save() #Save selected card
                 customer.subscriptions.create(plan=117)
             except:
                 messages.add_message(request, messages.ERROR, "There was an error while creating your subscription. Please make sure you have entered in a credit card")
-
                 return HttpResponseRedirect('/user/options/')
 
             appuser.is_premium = True
-            appuser.remaining_pd = 8
-            appuser.save()
+            appuser.remaining_pd += 8
             messages.add_message(request, messages.SUCCESS, "You are now a premium user. Thanks for choosing us!")
 
+    
+    appuser.save()
     return HttpResponseRedirect('/user/options/')
 
 
@@ -372,20 +381,40 @@ def purchase_report(request,):
 
 def del_card(request):
     if request.POST:
+
         customer = stripe.Customer.retrieve(request.user.profile.stripe_id)
         card_id = request.POST['cardid']
+
+        # if card used for subscription, user must downgrade first.
+        if card_id == customer.default_source and request.user.profile.is_premium:
+            messages.add_message(request, messages.ERROR, 'This card is linked to your monthly subscription. To remove it, select another card for monthly billing or downgrade to standard.')
+            return HttpResponseRedirect('/user/options/')
+
+        # Delete card
         for x in customer.sources.data:
             if x.id == card_id:
-                x.delete()
-                request.user.profile.has_card = False
-                request.user.profile.save()
-                return options(request,msg=[('success','Card Removed')])
-        return options(request,msg=[('danger','Card removal error')])
+                try:
+                    x.delete()
+                    messages.add_message(request, messages.SUCCESS, 'Card removed')
+                except:
+                    messages.add_message(request, messages.SUCCESS, 'Card removal error')
 
+    return HttpResponseRedirect('/user/options/')
 
+def default_payment(request):
+    ''' Updates customers default payment method for monthly billing '''
+    if request.POST:
+        try:
+            card_id = request.POST['card_id']
+            customer = stripe.Customer.retrieve(request.user.profile.stripe_id)
+            customer.default_source = card_id
+            customer.save()
+            messages.add_message(request, messages.SUCCESS, 'Default payment method updated')
+        except:
+            messages.add_message(request, messages.ERROR, 'There was an error updating your default payment method.')
+        finally:
+            return HttpResponseRedirect('/user/options/')
 
-    else:
-        return HttpResponseRedirect('/user/options/')
 
 def add_card(request):
     if request.POST:

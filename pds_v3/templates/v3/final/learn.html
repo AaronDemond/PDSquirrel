@@ -26,17 +26,49 @@ li {
     	    <div class="col-lg-10 col-lg-offset-1">
 			<h3 style="margin-top: 0">Learn more about us</h3>
 			<hr>
+			
 		    <div class="row">
 			<div class="col-lg-12">
 			    <p class="muted">
-		          At PD Squirrel we provide continuing professional development to Canadian lawyers.  Our sessions are concise, topical audio presentations, created by Canadian professionals among the best in their field.  The sessions at PD Squirrel can be used to meet the continuing professional development obligations of your law society, and assist you day to day with your practice. </p>
+		          At PD Squirrel we provide continuing professional development to Canadian lawyers.  Our sessions are concise, topical audio presentations, created by Canadian professionals among the best in their field.  The sessions at PD Squirrel can be used to meet the continuing professional development obligations of your law society, and assist you day to day with your practice.</p>
 
-			  
-
-			<p class="muted">
-			  Join today at no cost. As a Standard member <a onclick="toggleMembership()">(more)</a> you only pay for the individual sessions you take. For more value, upgrade to Premium membership <a onclick="togglePremium()">(more)</a> and get multiple sessions for a monthly fee. 
+<p class="muted">
+			  Join PD Squirrel today at no cost, and receive one free session. As a Standard member, you only pay for the individual sessions you take. For more value, upgrade to Premium membership and receive multiple sessions for a monthly fee. 
 			  As a PD Squirrel member, you always have instant access to excellent PD. Just browse, choose, and listen.
 			  </p>
+			<table class="table">
+				<tr>
+					<th>Standard membership</th>
+					<th>Premium membership</th>
+				</tr>
+				<tr>
+					<td>
+						<ul>
+							<li>Free, new accounts receive one free session</li>
+							<li>$7.99 per session</li>
+							<li>Unlimited desktop, tablet and mobile access to purchased sessions</li>
+						</ul>
+					</td>
+					<td>
+						<ul>
+							<li>$29.99 Monthly</li>
+							<li>8 sessions (credits) per month</li>
+							<li>Unlimited desktop, tablet and mobile access to purchased sessions</li>
+							<li>Cancel easily at any time</li>
+						</ul>
+					</td>
+				</tr>
+			</table>
+			{% if user.is_authenticated %}
+			<p style="text-align: center">Select "<i>change membership</i>" on your <a href="{% url 'options' %}">account options page</a> to become a premium member. </p>
+			{% else %}
+			<p style="text-align: center">Once you have created a free account, you may visit your account options page to upgrade to a premium membership.</p>
+
+			{% endif %}
+                
+			  
+
+			
 			
 			  
 <p class="muted hidden">

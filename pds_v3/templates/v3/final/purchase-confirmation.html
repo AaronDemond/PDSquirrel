@@ -1,0 +1,25 @@
+<hr>
+<h3>Purchase Confirmation</h3>
+<table class="table">
+	<tr>
+		<td>Title</td>
+		<td>{{ pd }}</td>
+	</tr>
+	<tr>
+		<td>Ammount</td>
+		<td>{{ pd.price }}</td>
+	</tr>
+	<tr>
+		<td>Payment Method</td>
+		<td>{{ token.card.brand }} **** **** **** {{ token.card.last4 }} Expires: {{token.card.exp_year}}</td>
+	</tr>
+</table>
+<form action="{% url 'payment-process' %}" method="POST">
+	{% csrf_token %}
+	<input type="hidden" name="confirm">
+	<input type="hidden" name="pd_id" value="{{pd.id}}">
+	<input type="hidden" name="token" value="{{token.id}}">
+	Save card for future purchases <input type="checkbox" name="save_card">
+	<input type="submit" value="Confirm Purchase">
+</form>
+

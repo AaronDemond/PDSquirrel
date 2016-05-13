@@ -107,6 +107,8 @@ $("a").click(function(e) {
     var edited_name = null;
     var allowing_mic = false;
 
+
+
     // remove prefixes
     if (!navigator.getUserMedia)
         navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia ||

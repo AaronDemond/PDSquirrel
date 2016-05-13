@@ -12,6 +12,7 @@ from django.template import Context, Template
 import pdb; #pdb.set_trace()
 import json
 from pds_v3.forms import CaptchaForm
+import stripe
 
 
 #only root level url
@@ -19,6 +20,10 @@ def landing(request):
     pd_list = PdSession.objects.all()
     context = {'pd_list': pd_list}
     return render(request, 'v3/final/home.html', context)
+
+
+def membership_information(request):
+    return render(request, 'v3/final/membership-info.html')
 
 
 
@@ -179,6 +184,7 @@ def cap_refresh(request):
     return HttpResponse(page)
 
 def detail(request, pd_id):
+
     pd = PdSession.objects.get(pk=pd_id)
     if request.user.is_authenticated():
         user_pd = Purchase.objects.filter(user=request.user.profile)
@@ -189,12 +195,12 @@ def detail(request, pd_id):
     else:
         own = 0
 
-    if '_q' in request.GET:
-        prev_q = request.GET['_q']
-    else:
-        prev_q = None
+    context = {'pd' : pd, 'own' : own}
 
-    return render(request, 'v3/final/detail.html', {'pd' : pd, 'own' : own, 'previous_search_query': prev_q})
+    if request.user.is_authenticated:
+        context['customer'] = stripe.Customer.retrieve(request.user.profile.stripe_id)
+
+    return render(request, 'v3/final/detail.html', context )
 
 
 

@@ -205,20 +205,25 @@ We use the services of Stripe, with which we have a merchant agreement, to recei
                                     <td>{{user.profile.date_joined|remove_time}}</td>
                                 </tr>
                                 <tr>
-                                    <td class='col1'>My card <a onclick="showPaymentInfo()">(more information)</a></td>
+                                    <td class='col1'>My cards <a onclick="showPaymentInfo()">(more information)</a></td>
                                     <td id="card-cell">
-                                        {% if customer.sources.total_count < 1 %}
                                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Add Card</button>
-                                        {% else %}
-                                        {% for x in customer.sources.data %}
-                                        {{x.brand}} **** **** **** {{ x.last4 }}
-                                        <form action = "{% url 'delcard' %}" id="delform" method="POST">
-                                            {% csrf_token %}
-                                            <input type="hidden" value="{{x.id}}" name="cardid">
-                                            <input type="submit" class="btn btn-default" id="delete-btn" value="Remove Card">
-                                        </form>
-                                        {% endfor %}
-                                        {% endif %}
+										<hr>
+										
+										<ul class="list-group">
+											{% for x in customer.sources.data %}
+												<li class="list-group-item" style="clear: both; height: 55px">
+													<p style="float: left">
+														{{x.brand}} **** **** **** {{ x.last4 }}
+													</p>
+													<form action = "{% url 'delcard' %}" class="delform" style="float: left; margin-left: 10px" method="POST">
+														{% csrf_token %}
+														<input type="hidden" value="{{x.id}}" name="cardid">
+														<input type="submit" class="btn btn-default" id="delete-btn" value="Remove Card">
+													</form>
+												</li>
+                                        	{% endfor %}
+										</ul>
                                     </td>
                                 </tr>
                             </table>
@@ -235,39 +240,52 @@ We use the services of Stripe, with which we have a merchant agreement, to recei
                                 <div class="row">
                                     <div class="col-xs-12">
                                         <p class="pull-right">
-                                            <button class="btn btn-default" onclick="showPaymentInfo()" style="margin-top: 10px;">Close</button>
+                                            <button class="btn btn-default" onclick="showPaymentInfo()" style="margin-top: 10px;">Cancel</button>
                                         </p>
                                     </div>
                                 </div>
                             </div>
                             <script>
-                                $("#delform").submit(function() {
+                                $(".delform").submit(function() {
                                 var c = confirm("Are you sure you want to remove this card?");
                                 return c;
                                 });
                                 function showPaymentInfo() {
 
+								  $('#change-default').addClass('hidden');
 				  $("#btnholder").empty();
                                   $('#credit-info').addClass('hidden');
                                   $('#change-membership').addClass('hidden');
 				  $('#membership-type-info').addClass('hidden');
                                   $('#payment-info').toggleClass('hidden');
                                 }
-                                function showCreditInfo() {
-				  $("#btnholder").empty();
+								function showChangeDefault() {
                                   $('#change-membership').addClass('hidden');
-				  $('#membership-type-info').addClass('hidden');
+				  				  $('#membership-type-info').addClass('hidden');
+                                  $('#payment-info').addClass('hidden');
+                                  $('#credit-info').addClass('hidden');
+								  $('#change-default').toggleClass('hidden');
+
+								}
+                                function showCreditInfo() {
+
+								  $('#change-default').addClass('hidden');
+				  				  $("#btnholder").empty();
+                                  $('#change-membership').addClass('hidden');
+				  				  $('#membership-type-info').addClass('hidden');
                                   $('#payment-info').addClass('hidden');
                                   $('#credit-info').toggleClass('hidden');
                                 }
                                 function showChangeMembership() {
-				  $("#btnholder").empty();
+								  $('#change-default').addClass('hidden');
+				  				$("#btnholder").empty();
                                   $('#payment-info').addClass('hidden');
-				  $('#membership-type-info').addClass('hidden');
+				  				$('#membership-type-info').addClass('hidden');
                                   $('#credit-info').addClass('hidden');
                                   $('#change-membership').toggleClass('hidden');
                                 }
 				function showMembershipTypeInfo() {
+								  $('#change-default').addClass('hidden');
 				  $("#btnholder").empty();
                                   $('#payment-info').addClass('hidden');
                                   $('#credit-info').addClass('hidden');
@@ -330,7 +348,7 @@ pay no monthly fee.
                                         <div class="row">
 <div class="col-xs-12">
 <p class="pull-right">
-                                            <button onclick="showMembershipTypeInfo()" class="btn btn-default">Close</button>
+                                            <button onclick="showMembershipTypeInfo()" class="btn btn-default">Cancel</button>
                                         </p></div>
 				    </div>
                                     </div>
@@ -379,7 +397,7 @@ pay no monthly fee.
 					    <div class="row">
 						<div class="col-xs-12">
 						    <p class="pull-right">
-							<button class="btn btn-default" onclick="showCreditInfo()" style="margin-top: 10px;">Close</button>
+							<button class="btn btn-default" onclick="showCreditInfo()" style="margin-top: 10px;">Cancel</button>
 						    </p>
 						</div>
 					    </div>
@@ -392,6 +410,9 @@ pay no monthly fee.
                                     </td>
                                     <td>
                                         <button class="btn btn-primary" onclick="showChangeMembership()">Change Membership</button>
+										{% if user.profile.is_premium %}
+										<button class="btn btn-primary" onclick="showChangeDefault()">Change Payment Method</button>
+										{% endif %}
                                     </td>
                                 </tr>
                             </table>
@@ -403,6 +424,26 @@ pay no monthly fee.
 <div class="row hidden">
 
                             </div>
+							<div id="change-default" class="row hidden">
+								<div class="col-xs-12">
+									<div class="alert alert-info" style="height: 130px">
+										<form action="{% url 'update-payment' %}" method="POST">
+											<label for="">Update default payment method</label>
+											<select id="" name="card_id">
+												{% for card in customer.sources.data %}
+												<option value="{{card.id}}">{{ card.brand }} **** **** **** {{ card.last4 }} Expires: {{ card.exp_year }}</option>
+												{% endfor %}
+											</select>
+											<input type="submit">
+                                            {% csrf_token %}
+                                        </form>
+										<p>Current default: {{ customer.sources.data.0.brand }} **** **** **** {{ customer.sources.data.0.last4 }}</p>
+										<p class="pull-right">
+											<button class="btn btn-default" onclick="showChangeDefault()">Cancel</button>
+										</p>
+									</div>
+								</div>
+							</div>
                             <div class="row hidden" id="change-membership">
                                 <div class="col-xs-12">
                                     <div class="alert alert-info">
@@ -453,16 +494,44 @@ your continued agreement to the terms and conditions of Site use.
 					</p>
 
 					{% endif %}
-                                        <form action="{% url 'change-membership' %}" method="POST" id="memform">
+                                        {% if user.profile.is_premium %}
+
+
+										<hr>
+										
+                                        										<form action="{% url 'change-membership' %}" method="POST" id="memform">
                                             {% csrf_token %}
                                         </form>
-                                        {% if user.profile.is_premium %}
+
                                         <button class="btn btn-primary memsubmit">Downgrade to Standard</button>
                                         {% else %}
+
+
+
+										<hr>
+										{% if not customer.sources.data %}
+										<p class="alert alert-danger">No payment source, please enter payment details above before upgrading</p>
+										<hr>
+										
+
+                                        <button class="btn btn-primary memsubmit" disabled>Upgrade to Premium</button>
+										{% else %}
+										<form action="{% url 'change-membership' %}" method="POST" id="memform">
+											<label for="">Default payment method</label>
+											<select id="" name="default_card">
+												{% for card in customer.sources.data %}
+												<option value="{{card.id}}">{{ card.brand }} **** **** **** {{ card.last4 }} Expires: {{ card.exp_year }}</option>
+												{% endfor %}
+											</select>
+                                            {% csrf_token %}
+                                        </form>
                                         <button class="btn btn-primary memsubmit">Upgrade to Premium</button>
-                                        {% endif %}
+
+										{% endif %} {# end if cards > 0 #}
+										{% endif %} {# end if user premium #}
+
                                         <p class="pull-right">
-                                            <button onclick="showChangeMembership()" class="btn btn-default">Close</button>
+                                            <button onclick="showChangeMembership()" class="btn btn-default">Cancel</button>
                                         </p>
 
 					<div id="btnholder" style="margin-top: 10px;">
