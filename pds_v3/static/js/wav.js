@@ -62,6 +62,90 @@ $("a").click(function(e) {
 });
 
 
+    // stopwatch
+    var	stopwatch = function() {
+    		// Private vars
+    		var	startAt	= 0;	// Time of last start / resume. (0 if not running)
+    		var	lapTime	= 0;	// Time on the clock when last stopped in milliseconds
+
+    		var	now	= function() {
+    				return (new Date()).getTime();
+    			};
+
+    		// Public methods
+    		// Start or resume
+    		this.start = function() {
+    				startAt	= startAt ? startAt : now();
+    			};
+
+    		// Stop or pause
+    		this.stop = function() {
+    				// If running, update elapsed time otherwise keep it
+    				lapTime	= startAt ? lapTime + now() - startAt : lapTime;
+    				startAt	= 0; // Paused
+    			};
+
+    		// Reset
+    		this.reset = function() {
+    				lapTime = startAt = 0;
+    			};
+
+        this.set_time = function(time) {
+          lapTime = time;
+        };
+
+    		// Duration
+    		this.time = function() {
+    				return lapTime + (startAt ? now() - startAt : 0);
+    			};
+          this.print = function() {
+            console.log("lapTime: "+lapTime+" startAt: "+startAt);
+          }
+    	};
+
+    var recorder_timer = new stopwatch();
+    var $timer= document.getElementById('timer');
+    var clocktimer;
+
+    function pad(num, size) {
+    	var s = "0000" + num;
+    	return s.substr(s.length - size);
+    }
+
+    function formatTime(time) {
+    	var m = s = ms = 0;
+    	var newTime = '';
+
+    	m = Math.floor( time / (60 * 1000) );
+    	time = time % (60 * 1000);
+    	s = Math.floor( time / 1000 );
+    	ms = time % 1000;
+
+    	newTime =  pad(m, 2) + ':' + pad(s, 2) + ':' + pad(ms, 3);
+    	return newTime;
+    }
+
+    function update() {
+    	$timer.innerHTML = formatTime(recorder_timer.time());
+    }
+
+    function start() {
+    	clocktimer = setInterval("update()", 1);
+    	recorder_timer.start();
+    }
+
+    function stop() {
+    	recorder_timer.stop();
+    	clearInterval(clocktimer);
+    }
+
+    function reset() {
+    	stop();
+    	recorder_timer.reset();
+    	update();
+    }
+
+
  /*
    Audio recorder
  */
@@ -97,8 +181,6 @@ $("a").click(function(e) {
     var channel_offset = null;
 	var leftBuffer = mergeBuffers(leftchannel, 0);
 	var rightBuffer = mergeBuffers(rightchannel, 0);
-	interleaved = interleave(leftBuffer, rightBuffer);
-	buildLocalWav();
     var mode = null;
     var audio_proccess_counter = 0;
     var lastSelectedTime = 0;
@@ -108,56 +190,13 @@ $("a").click(function(e) {
     var allowing_mic = false;
 
 
-    // timer
-    var running = false;
-     var time = 0;
-     var clock_interval;
-     var $stopwatch = document.getElementById('timer'); //div with ID stopwatch
-
-     function start() {
-       running=true;
-       clock_interval = setInterval(display_time, 1);
-     }
-
-     function stop() {
-       clearInterval(clock_interval);
-       running = false;
-     }
-
-     function reset() {
-       if (running) {
-         stop();
-       }
-       time=0;
-       $stopwatch.innerHTML = format_time(0);
-     }
+    audio_player.onloadeddata = function() {
+      var time = isNaN(audio_player.duration) ? 0 : Math.round(audio_player.duration * 1000);
+      recorder_timer.set_time(time);
+      update();
+    }
 
 
-     function display_time() {
-       if (running){
-         time++;
-         $stopwatch.innerHTML = format_time(time);
-       }
-     }
-     function pad(num, size) {
-       var s = "0000" + num;
-    	 return s.substr(s.length - size);
-     }
-
-     function format_time(time_input) {
-       var h, m, s, ms;
-       var time_output = '';
-
-       h = Math.floor( time_input / (60 * 60 * 1000) );
-       time_input = time_input % (60 * 60 * 1000);
-       m = Math.floor( time / (60 * 1000) );
-       time_input = time_input % (60 * 1000);
-       s = Math.floor( time_input / 1000 );
-       ms = time_input % 1000;
-
-       time_output = pad(h, 2) + ':' + pad(m, 2) + ':' + pad(s, 2) + ':' + pad(ms, 3);
-       return time_output;
-     }
 
 
 
@@ -218,11 +257,18 @@ $("a").click(function(e) {
 		reader = new FileReader();
 		reader.readAsArrayBuffer(fileblob);
 		reader.onload = loaded;
+
 	    }
 	}
 
-	function loaded(evt) {
+/*
+console.log(audio_player.duration);
+var time = isNaN(audio_player.duration) ? 0 : audio_player.duration;
+recorder_timer.set_time(time);
+*/
 
+
+	function loaded(evt) {
 	    var buffer = reader.result; // buffer of raw wav file data
 
 	    var localview = new DataView(buffer);
@@ -273,14 +319,13 @@ $("a").click(function(e) {
 		interleaved = interleave(leftBuffer, rightBuffer);
 		buildLocalWav();
 
-	    // Query duration
-	    gd = setInterval(getDur, 20);
 
 		audio_player.hidden = false;
 		pause_btn.disabled = false;
 		rec_btn.disabled = false;
 		save_btn.disabled = false;
 		loading_alert.className = 'hidden';
+
 
 	}
 
@@ -316,7 +361,7 @@ $("a").click(function(e) {
 	} catch (err) {
 	    console.log("error saving");
 	}
-
+  reset();
     }
 
     /* Helper functions */
@@ -346,20 +391,13 @@ $("a").click(function(e) {
 	}
     }
 
-    // Query and display duration of wav file. 4 means loaded and ready.
-    function getDur() {
-	document.getElementById("duration").innerHTML = audio_player.duration.toFixed(2) ;
-	if (audio_player.readyState == 4) {
-	    document.getElementById("duration").innerHTML = audio_player.duration.toFixed(2) ;
-	    window.clearInterval(gd);
-	}
-    }
 
 
     // either pauses recording, or pauses audio playback
     function pauseClick() {
 		if (recording == true) {
 			recordToggle();
+
 			outputElement.innerHTML = "Recording Paused";
 		} else {
 			if (isPlaying(audio_player)) {
@@ -373,20 +411,21 @@ $("a").click(function(e) {
         if (recording == true) { // Pause clicked
 
 			recording = false;
+
+      stop();
+
 			rec_btn.disabled = false;
 			save_btn.disabled = false;
 			var leftBuffer = mergeBuffers(leftchannel, recordingLength);
 			var rightBuffer = mergeBuffers(rightchannel, recordingLength);
-      console.log(leftchannel);
+
 			interleaved = interleave(leftBuffer, rightBuffer);
 			buildLocalWav();
 
 			audio_player.currentTime = lastSelectedTime;
-
 			/* Interval used because wav file takes slight time to build
 			   otherwise NaN is displayed because there is no wav source
 			   getDur is a function to get length of wav file  */
-			gd = setInterval(getDur, 20);
 			outputElement.innerHTML = '';
 
 
@@ -400,9 +439,15 @@ $("a").click(function(e) {
 				return false;
 			}
 			saved = false;
+
+      // get length of recording, in case its imported and just to keep it accurate
+      var time = isNaN(audio_player.duration) ? 0 : Math.round(audio_player.duration * 1000);
+      // set start time as length of recording
+      recorder_timer.set_time(time);
+      start();
+
 			rec_btn.disabled = true;
 			save_btn.disabled = true;
-      console.log(leftchannel);
 			// finds offset to be used when inserting recorded audio into an exisiting wav file
 			// Divides by 2048 because channel data is stored in arrays of float32arrays.
 			// float arrays are 2048 in length, as decided by the buffer size. Lower buffer size
@@ -437,9 +482,12 @@ $("a").click(function(e) {
         var leftBuffer = mergeBuffers(leftchannel, recordingLength);
         var rightBuffer = mergeBuffers(rightchannel, recordingLength);
         interleaved = interleave(leftBuffer, rightBuffer); // Should probably edit this instead of channel data, but it gave issues earlier.
-        buildLocalWav();
-		clearRange();
-		gd = setInterval(getDur, 20);
+
+          buildLocalWav();
+
+
+		    clearRange();
+
     }
 
     // Adds header information to interleaved data.
@@ -606,6 +654,7 @@ $("a").click(function(e) {
             audio_proccess_counter += 1;
 
             recordingLength += bufferSize; // Probably not needed
+
             console.log('recording');
         }
         volume.connect (recorder);

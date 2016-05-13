@@ -70,6 +70,7 @@ label {
     </div>
     <div class="row">
 		<div class="col-lg-6">
+			<div>Total recorded time: <span id='timer'>00:00:000</span></div>
 			<button onclick="recordToggle()" class="btn btn-danger" id = "record_button">Record</button>
 			<button onclick = "pauseClick()" class="btn btn-default" id = "pause_button">Pause</button>
 			<button id = "save_button"  class="btn btn-default" onclick="saveRecording()">Save</button>
@@ -77,11 +78,6 @@ label {
 			<div style="float: left; margin-bottom: 20px; margin-top: 5px" id="output" style="font-weight: bold">
 				<p>Click record to begin capturing audio.</p>
 			</div>
-		</div>
-		<div class="col-lg-6 hidden">
-			<h5>Duration: </h5><div id="duration"></div>
-			<!-- <button onclick="showData()" >Load chosen file</button>
-			<input type="file" name="file" id="file" style="margin-top:10px"> -->
 		</div>
     </div>
     <div class="row">
