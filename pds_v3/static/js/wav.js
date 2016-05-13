@@ -338,8 +338,27 @@ recorder_timer.set_time(time);
         ebox.value = audio_player.currentTime.toFixed(2);
     }
 
+/*
+
+*/
+
     /* send wav to server */
     function saveRecording() {
+
+      var filename = $('#name').val();
+      var confirmed = true;
+      $(".recording_name").each(function() {
+        if ($(this).text() == filename) {
+          if (!confirm("A file already has that name are you sure you wanna overwrite it?")) {
+            confirmed= false;
+          }
+        }
+      });
+// td:first-child"
+  if (!confirmed) {
+    return false;
+  }
+
 	if (edited_name == aud_name.value) {
 	    if(!confirm("Are you sure you wish to save changes to '" + edited_name + "'? You may change the name to save it as a new audio recording")) {
 		return false;
@@ -355,6 +374,7 @@ recorder_timer.set_time(time);
 	} catch (err) {
 	    console.log("error saving");
 	}
+
   reset();
     }
 
@@ -366,6 +386,8 @@ recorder_timer.set_time(time);
     }
 
     function delete_curr_audio() {
+
+
        pauseClick();
       if (confirm("Are you sure you want to delete your current recording?")) {
         audio_player.pause();

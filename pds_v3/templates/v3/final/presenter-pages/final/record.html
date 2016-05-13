@@ -124,7 +124,7 @@ label {
 	    <table id="clips_table" class="table table-striped">
 		{% for rec in audio_recordings %}
 		<tr id ="rec-{{rec.id}}">
-		    <td>{{rec}}</td>
+		    <td class="recording_name">{{rec}}</td>
 		    <td>
 			<a class="download btn btn-default" href="/{{rec.getMp3Location}}" download="{{rec}}.mp3" target="_blank">Download </a>
 			<button class="btn btn-default" onclick="showData('/{{rec.audio.name}}', '{{rec}}')">Edit/Listen</button>
