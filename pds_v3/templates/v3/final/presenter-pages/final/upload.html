@@ -51,7 +51,7 @@
 	$('#infoLink').text('(info ▾)');
     }
 </script>
-		
+
 
 <style>
 
@@ -191,7 +191,7 @@ transform: scale(1);
   }
 }
 </style>
- 
+
 
 
 
@@ -208,7 +208,7 @@ transform: scale(1);
 		    </div>
 		</div>
 		    <hr>
-		    
+
         <form class="form-horizontal" action="{% url 'presenter-dash' %}" method = "POST" enctype="multipart/form-data" >
 	    {% csrf_token %}
                 <div class="control-group">
@@ -230,7 +230,7 @@ transform: scale(1);
 			    </div>
 			</div>
 		    </div>
-                    
+
                 </div>
                 <div class="control-group">
                 </div>
@@ -247,12 +247,17 @@ transform: scale(1);
 			    //server loops through files
 			    var file_counter = 1;
 			    function addAttachment(){
-				file_counter++;
-				file_counter_str = file_counter.toString();
-				file_id = '#file-upload-'.concat(file_counter_str)
-				var new_div = '<div class="control-group"><label for="">Attachment #'.concat(file_counter_str).concat('</label><input type="file" class="form-control" name="').concat(file_id).concat('" required></div>');
-				$('#file-upload-container').append(new_div);
-			    }
+						if (file_counter < 5) {
+							file_counter++;
+							file_counter_str = file_counter.toString();
+							file_id = '#file-upload-'.concat(file_counter_str)
+							var new_div = '<div class="control-group"><label for="">Attachment #'.concat(file_counter_str).concat('</label><input type="file" class="form-control" name="').concat(file_id).concat('" ></div>');
+							$('#file-upload-container').append(new_div);
+						} else {
+							alert("You have added the maximum number of additional file fields to the form");
+						}
+					}
+
 function anotherFile() {
 
 $('#addfile').removeClass('hidden');
@@ -262,20 +267,33 @@ $('#addfile').removeClass('hidden');
 
 		<div class="row">
 		    <div class="col-lg-12">
-			<h4>Upload audio, or use audio you have recorded on PDSquirrel<h4>
+			<p>Upload audio, or use audio you have recorded on PDSquirrel<p>
 				<hr>
 		    </div>
+				<div class="col-lg-12">
+					<div class="control-group">
+						<h4>Choose audio file upload method</h4>
+						<div class="radio">
+							<label>
+								<input id="upload" type="radio" name="upload">Upload From Computer
+							</label>
+							<label>
+								<input id="online" checked="true" type="radio" name="upload">Select upload from online your recordings
+							</label>
+						</div>
+					</div>
+				</div>
 		    <div class="col-lg-5">
 			<div class="control-group">
 			    <label for="">Upload from computer</label>
-			    <input type="file" class="form-control" name="audio_file">
+			    <input disabled="true" id="upload_input" type="file" class="form-control" name="audio_file">
 			    <p class="help-block">(Required) Select the audio file of your PD Session for upload. It should be in MP3 or WAV format.</p>
 			</div>
 		    </div>
 		    <div class="col-lg-7">
 			<div class="control-grup">
-			    <label>Select from online recordings</label>
-			    <select id="" class="form-control" name="recording">
+			    <label>Select from your online recordings</label>
+			    <select id="online_input" class="form-control" name="recording">
 					<option value="0" selected></option>
 			        {% for x in recordings %}
 			        <option value="{{x.id}}">{{x}}</option>
@@ -302,15 +320,15 @@ $('#addfile').removeClass('hidden');
 			</div>
 		    </div>
 			<div class="col-lg-2">
-			    <button onclick="addAttachment()" class="btn btn-primary hidden" id="addfile" style="margin-top:25px" >Add another file</button>
+			    <input type="button" onclick="addAttachment()" class="btn btn-primary hidden" id="addfile" style="margin-top:25px" value="Add another file" ></button>
 			</div>
 
 		</div>
-		
-		
-			
-			
-		
+
+
+
+
+
 		 <div class="checkbox">
 		    <label>
 			<input type="checkbox" name="p-terms" value="true" required><p class="muted">I agree to the <a href="{% url 'presenter-terms' %}" target="_blank">Presenter terms & conditions</a></p>
@@ -321,15 +339,27 @@ $("form").submit(function() {
 	$('#loader').removeClass('hidden');
 	$('fieldset').addClass('hidden');
 	});
-		
+$('#online').click(function () {
+
+	$('#online_input').prop('disabled', false);
+	var upload_input = $('#upload_input')
+	upload_input.prop('disabled', true);
+	upload_input.val('');
+});
+$('#upload').click(function() {
+	$('#upload_input').prop('disabled', false);
+	var online_input = $('#online_input');
+	online_input.prop('disabled', true);
+	online_input.val('');
+});
 		</script>
 		<div class="control-group">
 
                     <div class="controls">
- 
+
                         <input type="submit" value="Upload" id="upload-btn" class="btn btn-success">
 			<a class="btn btn-default" href="{% url 'presenter-dash' %}">Cancel</a>
-			    
+
                     </div>
                 </div>
         </form>
@@ -364,7 +394,7 @@ $("form").submit(function() {
 
   </div>
     </div>
-    
+
     </div>
     <script>
     </script>
