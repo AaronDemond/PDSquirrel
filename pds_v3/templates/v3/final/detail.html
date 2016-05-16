@@ -17,18 +17,38 @@ margin-bottom: 0px !important;
 <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
 
 <script>
+
+	
+
     Stripe.setPublishableKey('pk_test_URIzgmhYoVYuzDm9Q98RHkIQ');
     jQuery(function($) {
       $('#payment-form').submit(function(event) {
         var $form = $(this);
 
-        // Disable the submit button to prevent repeated clicks
-        $form.find('button').prop('disabled', true);
+		if (document.getElementById('e_card').checked == true) {
+			event.preventDefault();
+			$form.find('button').prop('disabled', true);
+			console.log('existing card used');
+			$.ajax({
+				type: "POST",
+				url: "{% url 'payment-process' %}",
+				data: $form.serialize(),
+			}).done(function(data) {
+				$form.append(data);
+			}).fail(function(data) {
+			console.log('failed');
+			});
+			return false;
+		}
+		if (document.getElementById('n_card').checked == true) {
+			// Disable the submit button to prevent repeated clicks
+			$form.find('button').prop('disabled', true);
 
-        Stripe.card.createToken($form, stripeResponseHandler);
+			Stripe.card.createToken($form, stripeResponseHandler);
 
-        // Prevent the form from Sessiange pn with the default action
-        return false;
+			// Prevent the form from Sessiange pn with the default action
+			return false;
+		}
       });
     });
 
@@ -52,23 +72,7 @@ margin-bottom: 0px !important;
 			url: "{% url 'payment-process' %}",
 			data: $form.serialize(),
 		}).done(function(data) {
-
-			/*	
-			console.log(data);
-			card = JSON.parse(data);
-			console.log(card['brand']);
-
-			$form.append('<hr>');
-			card_to_show = card['brand'] + ' **** **** **** ' + card['last4'];
-			$form.append(card_to_show);
-            $form.append(' Are you sure you wish to continune?');
-			$form.append('<hr>');
-			*/
-
 			$form.append(data);
-			
-
-
 		}).fail(function(data) {
 			console.log('failed');
 		});
@@ -77,10 +81,116 @@ margin-bottom: 0px !important;
 
 
 </script>
+<script>
+$(document).ready(function() {
+
+	var $new_radio = document.getElementById('n_card');
+	var $existing_radio = document.getElementById('e_card');
+	var $cancel_btn_one = document.getElementById('cancel_btn_one');
+
+	$('#existing_card_col :input').prop('disabled', true);
+	$('#new_card_col :input').prop('disabled', true);
+
+
+	$cancel_btn_one.onclick = function(e) {
+		e.preventDefault();
+		$('#payment-modal').modal('hide');
+		$('#existing_card_col :input').val('');
+		$('#new_card_col :input').val('');
+	}
+
+	$new_radio.onclick = function() {
+		$existing_radio.checked = false;
+		$('#existing_card_col :input').prop('disabled', true);
+		$('#new_card_col :input').prop('disabled', false);
+		$('#existing_card_col :input').val('');
+	}
+	$existing_radio.onclick = function() {
+		$new_radio.checked = false;
+		$('#new_card_col :input').prop('disabled', true);
+		$('#existing_card_col :input').prop('disabled', false);
+		$('#new_card_col :input').val('');
+
+	}
+});
+</script>
 
 <div id="main-content" class="container"  >
+
+<div class="modal fade bs-example-modal-lg" tabindex="-1" id="payment-modal" role="dialog" aria-labelledby="myLargeModalLabel">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+		<h3>{{pd}}</h3>
+		<p class="help-text" style="color: #8a6d3b;">Select a payment method</h4>
+		<hr>
+		<form class="" method="POST" id="payment-form">
+
+					{% csrf_token %}
+			<input type="hidden" name="pd_id" value="{{ pd.id }}">
+			<div class="row" style="margin-bottom: 20px">
+				<div class="col-lg-6">
+					<input style="float: left; margin-top: 12px; margin-right: 5px;" type="radio" id="n_card" name="new_card">
+					<h4 style="float: left">Pay with a new card</h4>
+				</div>
+				<div class="col-lg-6">
+					<input style="float: left; margin-top: 12px; margin-right: 5px;" type="radio" id="e_card" name="existing_card">
+					<h4 style="float: left">Pay with existing card</h4>		
+				</div>
+				
+			</div>
+			<div class="row">
+				<div class="col-lg-6" id="new_card_col">
+					<div class="col-lg-12">
+						<span class="payment-errors help-text"></span>
+					</div>
+
+					<div class="col-lg-12">
+						<label>Cardholder's Name</label>
+						<input type="text" class="form-control" data-stripe="number"/>
+					</div>
+					<div class="col-lg-12">
+						<label>Card Number</label>
+						<input type="text" class="form-control" data-stripe="number"/>
+					</div>
+					<div class="col-lg-3">
+						<label>CVC</label>
+						<input type="text" class="form-control" data-stripe="cvc"/>
+					</div>
+					<div class="col-lg-4">
+						<label> Exp Month (MM)</label>
+						<input type="text" class="form-control"  data-stripe="exp-month"/>
+					</div>
+					<div class="col-lg-5">
+						<label for="">Exp Year (YYYY)</label>
+						<input type="text" class="form-control" data-stripe="exp-year"/>
+					</div>
+				</div>
+
+				<div class="col-lg-6" id="existing_card_col">
+					<div class="input-group">
+						<label for="">Saved card</label>
+						<select class="form-control" name="saved_card">
+						{% for source in customer.sources.data %}
+						<option value="{{source.id}}">{{source.brand}} **** **** **** {{source.last4}} Expires on {{source.exp_year}}</option>
+						{% endfor %}
+						</select>
+					</div>
+				</div>
+				<div class="col-lg-12" style="margin-top: 20px">
+					<hr>
+					
+					<button type="submit" class="btn btn-primary">Continue</button>
+					<button class="btn btn-default" id="cancel_btn_one">Cancel</button>
+				</div>
+			</div>
+		</form>
+		
+    </div>
+  </div>
+</div>
 <div class="row">
 <div class="col-lg-10 col-lg-offset-1">
+
 
 	<div class="row">
 		<div class="col-lg-9 col-lg-offset-1">
@@ -123,114 +233,44 @@ margin-bottom: 0px !important;
 			</h4>
 		</div> <!-- end presenter image div -->
 		<div class="col-sm-7">
-         	<h4>Session Description</h4>
-			{{pd.description}}
-			<div class="row"> {# Row within 7 col description section, for button #}
-				  <div class="col-xs-12">
-					 {% if user.is_authenticated %}
 
-<!-- Large modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg">Purchase</button>
-
-<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-		<h3>{{pd}}</h3>
-		<p class="help-text">Select a payment method</h4>
-		<hr>
-		<form class="form-inline" method="POST" id="payment-form">
-			<input type="hidden" name="pd_id" value="{{ pd.id }}">
-			<input type="hidden" name="new_card">
 			<div class="row">
-				<div class="col-sm-5">
-					<span class="payment-errors"></span>
-					<div class="input-group">
-						<label>Card Number</label>
-						<input type="text" class="form-control" size="20" data-stripe="number"/>
-					</div>
-					<div class="input-group">
-						<label>CVC</label>
-						<input type="text" class="form-control" size="4" data-stripe="cvc"/>
-					</div>
-					<div class="input-group">
-						<label> Expiration Month (MM)</label>
-						<input type="text" size="2" class="form-control"  data-stripe="exp-month"/>
-					</div>
-					<div class="input-group">
-						<label for="">Expiration Year (YYYY)</label>
-						<input type="text" size="4" class="form-control" data-stripe="exp-year"/>
-					</div>
-					{% csrf_token %}
-				</div>
-				<div class="col-sm-7">
-					<h4>Pay with existing card</h4>		
-					<select id="" name="existing_card">
-					{% for source in customer.sources.data %}
-					<option value="">{{source.brand}} **** **** **** {{source.last4}} Expires on {{source.exp_year}}</option>
-					{% endfor %}
-					</select>
-				</div>
-				<div class="col-xs-3 col-xs-offset-9">
-					<button type="submit" class="btn btn-success">Submit</button>
+				<div class="col-xs-12" style="min-height: 200px">
+					<h4>Description</h4>
+					<hr>
+					
+					{{pd.description}}
 				</div>
 			</div>
-		</form>
-		
-    </div>
-  </div>
-</div>
 
+			<div class="row"> {# Row within 7 col description section, for button #}
+				  <div class="col-xs-12">
+					  {% if own == 1 %}
+					  <h4>Listen</h4>
+					  {% else %}
+					  <h4>Purchase</h4>
+					  {% endif %}
+					  <hr>
+					  
+					 {% if user.is_authenticated %}
 					 {% if own == 1 %}
 					 <div class="">
 						<a class="btn btn-success btn-lg" href="{% url 'watch' pd.id %}" >Listen Now</a>
 					 </div>
 					 {% else %}
+
 					 {% if user.profile.remaining_pd = 0 %}
+					 <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg">Purchase for ${{pd.price}}</button>
+					 <div class="checkbox">
+						<label>
+						<input type="checkbox"> Inform me via email when this presenter releases content.
+						</label>
+					 </div>
 
-					 {% if user.profile.has_card %}
-					<form  action="{% url 'payment-process' %}" method="POST">
-						<input type="hidden" name="pd_id" value="{{pd.id}}" />
-						<input type="hidden" name="s_card" value="1"> {# flag meaning user is using saved card #}
-						{% csrf_token %}
-						<div class="">
-						   <button type="submit" class= "btn btn-success btn-lg" id="purchase" >Purchase using saved card</button>
-						   <p>Or learn about our <a href="{% url 'learn' %}">premium membership</a></p>
-						   <div class="checkbox">
-							  <label>
-							  <input type="checkbox"> Inform me via email when this presenter releases content.
-							  </label>
-						   </div>
-						</div>
-					 </form>
-
-					 {% else %}
-					 <form id="pform" action="{% url 'payment-process' %}" method="POST">
-						<input type="hidden" name="pd_id" value="{{pd.id}}" />
-						{% csrf_token %}
-						<div class= "hidden">
-						   <script
-							  src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-							  data-key="pk_test_URIzgmhYoVYuzDm9Q98RHkIQ"
-							  data-amount="{{pd.price|fix_price}}"
-							  data-name="{{pd}}"
-							  data-description='{{ pd.presenters.all|join:", "}}'
-							  data-image="">
-						   </script>
-						</div>
-						<div class="">
-						   <button type="submit" class= "btn btn-success btn-lg" id="purchase" >Purchase Now</button>
-						   <p>Or learn about our <a href="{% url 'learn' %}">premium membership</a></p>
-						   <div class="checkbox">
-							  <label>
-							  <input type="checkbox"> Inform me via email when this presenter releases content.
-							  </label>
-						   </div>
-						</div>
-					 </form>
-					 {% endif %}
 					 {% else %}
 					 <form action="{% url 'payment-process' %}" method ="POST">
 						{% csrf_token %}
+						<input type="hidden" name="use_credit">
 						<input class = "form-control" type="hidden" name="pd_id" value="{{pd.id}}" />
 						<div class="">
 						   <input class="btn btn-success btn-lg" type="submit" value="Use Credit">
