@@ -399,8 +399,6 @@ recorder_timer.set_time(time);
         reset();
         leftchannel = [];
         rightchannel = [];
-        var name = document.getElementById('name');
-        name.value = '';
         outputElement.innerHTML = "Click record to begin capturing audio";
       }
 
@@ -410,19 +408,35 @@ recorder_timer.set_time(time);
 
     // Preview range selection
     function pselection(){
+      var start = sbox.value;
+      var end = ebox.value;
+
+      if(! $.isNumeric(start)) {
+        alert("incorrect end range value");
+        return;
+      } else if (! $.isNumeric(end)) {
+        alert("incorrect start range value");
+        return;
+      } else if (end <= start) {
+       alert("incorrect range");
+       return;
+     } else if (start<0) {
+       alert("incorrect start time");
+       return;
+     }
 
 	// Plays audio at start time
-	audio_player.currentTime = sbox.value;
+	audio_player.currentTime = start;
 	audio_player.play();
 
 	// Makes sure player doesnt exceed end time
 	ct = setInterval(checkTime, 50);
-	function checkTime() {
-	    if (audio_player.currentTime > ebox.value) {
-		window.clearInterval(ct);
-		audio_player.pause();
-	    }
-	}
+    	function checkTime() {
+    	    if (audio_player.currentTime > ebox.value) {
+        		window.clearInterval(ct);
+        		audio_player.pause();
+    	    }
+    	}
     }
 
 
@@ -448,6 +462,17 @@ recorder_timer.set_time(time);
 
       stop();
 
+      var trim = document.getElementById('trim');
+      var preview = document.getElementById('preview');
+
+      var start_set = document.getElementById('start_set');
+      var end_set = document.getElementById('end_set');
+
+      start_set.disabled=false;
+      end_set.disabled=false;
+
+      trim.disabled=false;
+      preview.disabled = false;
 			rec_btn.disabled = false;
 			save_btn.disabled = false;
 			var leftBuffer = mergeBuffers(leftchannel, recordingLength);
@@ -480,6 +505,17 @@ recorder_timer.set_time(time);
       recorder_timer.set_time(time);
       start();
 
+      var trim = document.getElementById('trim');
+      var preview = document.getElementById('preview');
+      var start_set = document.getElementById('start_set');
+      var end_set = document.getElementById('end_set');
+
+      start_set.disabled=true;
+      end_set.disabled=true;
+
+
+      trim.disabled=true;
+      preview.disabled = true;
 			rec_btn.disabled = true;
 			save_btn.disabled = true;
 			// finds offset to be used when inserting recorded audio into an exisiting wav file
