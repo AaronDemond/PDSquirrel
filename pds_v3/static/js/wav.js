@@ -391,15 +391,18 @@ recorder_timer.set_time(time);
 
     function delete_curr_audio() {
 
+      if (!isNaN(audio_player.duration)) {
 
-       pauseClick();
-      if (confirm("Are you sure you want to delete your current recording?")) {
-        audio_player.pause();
-        audio_player.src = '';
-        reset();
-        leftchannel = [];
-        rightchannel = [];
-        outputElement.innerHTML = "Click record to begin capturing audio";
+        pauseClick();
+
+        if (confirm("Are you sure you want to delete your current recording?")) {
+          audio_player.pause();
+          audio_player.src = '';
+          reset();
+          leftchannel = [];
+          rightchannel = [];
+          outputElement.innerHTML = "Click record to begin capturing audio";
+        }
       }
 
     }
