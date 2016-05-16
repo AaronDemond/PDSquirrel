@@ -192,7 +192,7 @@ $("a").not('#infoLink, .download').click(function(e) {
     var allowing_mic = false;
 
 
-    audio_player.onloadeddata = function() {
+    audio_player.ondurationchange = function() {
       var time = isNaN(audio_player.duration) ? 0 : Math.round(audio_player.duration * 1000);
       recorder_timer.set_time(time);
       update();
@@ -401,7 +401,7 @@ recorder_timer.set_time(time);
         rightchannel = [];
         var name = document.getElementById('name');
         name.value = '';
-        outputElement.innerHTML = "Click record to being capturing audio";
+        outputElement.innerHTML = "Click record to begin capturing audio";
       }
 
     }
@@ -501,10 +501,20 @@ recorder_timer.set_time(time);
         var start = document.getElementById('start-mark').value;
         var end = document.getElementById('end-mark').value;
 
-		if (end <= start) {
-			alert("incorrect range");
-			return;
-		}
+         if(! $.isNumeric(start)) {
+           alert("incorrect end range value");
+           return;
+         } else if (! $.isNumeric(end)) {
+           alert("incorrect start range value");
+           return;
+         } else if (end <= start) {
+    			alert("incorrect range");
+    			return;
+    		} else if (start<0) {
+    		  alert("incorrect start time");
+          return;
+        }
+
 
 		// Remove raw data from left and right channels
         var length = (end - start) * sampleRate;
@@ -517,9 +527,11 @@ recorder_timer.set_time(time);
         var rightBuffer = mergeBuffers(rightchannel, recordingLength);
         interleaved = interleave(leftBuffer, rightBuffer); // Should probably edit this instead of channel data, but it gave issues earlier.
 
+        // bugfix for when you trim the whole thing the recording timer wasn't reseting
+        if (start == 0 && end >= audio_player.duration) {
+          reset();
+        }
           buildLocalWav();
-
-
 		    clearRange();
 
     }
