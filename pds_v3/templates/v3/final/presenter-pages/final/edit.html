@@ -1,6 +1,6 @@
 <script>
 	$(document).ready(function() {
-    
+
 	    $('.iclose').click(function() {
 			$('.msg-container').empty();
 			});
@@ -11,10 +11,10 @@
 
 <div class="col-xs-9 col-lg-offset-1">
 <div class="msg-container">
-    
+
                                 {% if messages %}
                                 {% for msg in messages %}
-    
+
                                 <div class="alert alert-{{msg.tags}} msg" role="alert">{{msg}} <a href="#"><i class="fa fa-times pull-right iclose"></i></a> </div>
                                 {% endfor %}
                                 {% endif %}
@@ -42,14 +42,18 @@
 			    //file counter gets increased with each upload, resets on page reload.
 			    //adds a div with a label and new file input box to form
 			    //server loops through files
-			    var file_counter = 1;
+					var file_counter = 1;
 			    function addAttachment(){
-				file_counter++;
-				file_counter_str = file_counter.toString();
-				file_id = '#file-upload-'.concat(file_counter_str)
-				var new_div = '<div class="control-group"><label for="">Attachment #'.concat(file_counter_str).concat('</label><input type="file" class="form-control" name="').concat(file_id).concat('" required></div>');
-				$('#file-upload-container').append(new_div);
-			    }
+						if (file_counter < 5) {
+							file_counter++;
+							file_counter_str = file_counter.toString();
+							file_id = '#file-upload-'.concat(file_counter_str)
+							var new_div = '<div class="control-group"><label for="">Attachment #'.concat(file_counter_str).concat('</label><input type="file" class="form-control" name="').concat(file_id).concat('" ></div>');
+							$('#file-upload-container').append(new_div);
+						} else {
+							alert("You have added the maximum number of additional file fields to the form");
+						}
+					}
 function anotherFile() {
 
 $('#addfile').removeClass('hidden');
@@ -90,7 +94,7 @@ $('#addfile').removeClass('hidden');
 		    </div>
 		    <div class="col-lg-4">
 			<div class="control-group">
-			    
+
 			    <label class="control-label" for="">Subjects</label>
 			    <div class="controls">
 			    <select multiple class="form-control"  name="subjects">
@@ -106,9 +110,9 @@ $('#addfile').removeClass('hidden');
 			</div>
 		    </div>
 		</div>
-                
-		
-                
+
+
+
                 <!-- Textarea -->
                 <div class="control-group">
                     <label class="control-label" for="textarea">Edit description</label>
@@ -116,21 +120,22 @@ $('#addfile').removeClass('hidden');
                         <textarea id="description" name="description" class="form-control" rows="15">{{sesh.description}}</textarea>
                     </div>
                 </div>
-                <!-- File Button --> 
+                <!-- File Button -->
 		<div class="control-group">
 
                     <label for="">Change audio file</label>
 		    <input type="file" class="form-control" name="audio_file">
-			
+
 		    <p class="help-block">If you wish to request that the audio file of this PD Session be changed, attach the file above.</p>
 		</div>
 		<div class="control-group">
 			<div class="control-group">
 				<p class="help-block">Select attachments to delete</p>
+
 				<select multiple id="" name="files_to_delete">
 				{% for attachment in sesh.attachments.all %}
 					<option value="{{ attachment.id }}">
-					{{ attachment.attachment }} 
+					{{ attachment.attachment }}
 					{% if attachment.mark_for_delete %}
 						---Marked for Deletion
 					{% endif %}
@@ -150,6 +155,7 @@ $('#addfile').removeClass('hidden');
 
 				</select>
 			</div>
+
 <div id="file-upload-container">
 			    <div class="control-group">
 				<label for="">Optional additional attachment(s)</label>
@@ -158,9 +164,9 @@ $('#addfile').removeClass('hidden');
 			    </div>
 			</div>
 
-			    <button onclick="addAttachment()" class="btn btn-primary hidden" id="addfile" style="margin-top:25px" >Add another file</button>
+			    <input type="button" onclick="addAttachment()" class="btn btn-primary hidden" id="addfile" style="margin-top:25px" value="Add another file" ></input>
 		</div>
-                
+
 		<div class="checkbox">
 		    <label>
 			<input type="checkbox" name="p-terms" value="true" required><p class="muted">I confirm my continued agreement with the <a href="{% url 'presenter-terms' %}" target="_blank">Presenter Terms and Condidtions.</a></p>
@@ -177,5 +183,5 @@ $('#addfile').removeClass('hidden');
         </form>
     </div>
 
-    
+
     </div>
