@@ -7,6 +7,8 @@ from django.core.mail import send_mail
 from django.contrib import messages
 from .forms import CaptchaForm
 from pds_v3.forms import PdSessionForm
+import datetime
+import tasks
 
 
 import json, uuid, random, string, stripe, urllib, re
@@ -302,12 +304,21 @@ def change_membership(request):
                 customer.default_source = request.POST['default_card']
                 customer.save() #Save selected card
                 customer.subscriptions.create(plan=117)
+
+
             except:
                 messages.add_message(request, messages.ERROR, "There was an error while creating your subscription. Please make sure you have entered in a credit card")
                 return HttpResponseRedirect('/user/options/')
 
             appuser.is_premium = True
-            appuser.remaining_pd += 8
+            #appuser.remaining_pd += 8
+
+            # Setup first deposit task for the end date. This task will then use
+            # rollover to setup the next deposit task
+            end_time_stamp = customer.subscriptions.data[0].current_period_end
+            end_time_obj = datetime.datetime.fromtimestamp(end_time_stamp)
+            tasks.incrementCredits.apply_async((request.user, 8), eta=end_time_obj)
+
             messages.add_message(request, messages.SUCCESS, "You are now a premium user. Thanks for choosing us!")
 
     
