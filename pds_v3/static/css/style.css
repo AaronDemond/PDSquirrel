@@ -14,19 +14,6 @@
   .my-footer a {
     color: #a3a3a3 !important; }
 
-#card-cell button {
-  position: relative;
-  display: block;
-  float: left;
-  margin-right: 5px; }
-#card-cell #delete-btn, #card-cell #change-btn {
-  display: block;
-  float: left;
-  margin-left: 5px;
-  margin-right: 5px;
-  margin-top: 15px; }
-#card-cell #delete-btn {
-  margin-left: 0; }
 
 .btn-default {
   height: 34px !important; }

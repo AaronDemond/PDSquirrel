@@ -192,6 +192,7 @@ $("a").not('#infoLink, .download').click(function(e) {
     var allowing_mic = false;
 
 
+
     audio_player.ondurationchange = function() {
       var time = isNaN(audio_player.duration) ? 0 : Math.round(audio_player.duration * 1000);
       recorder_timer.set_time(time);

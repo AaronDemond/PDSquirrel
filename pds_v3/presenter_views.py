@@ -60,8 +60,6 @@ def analytics_report(request):
 
 
 
-    #add day to make end inclusive
-    end = end + datetime.timedelta(days=1)
 
 
     #tally takes and earnings
@@ -69,16 +67,16 @@ def analytics_report(request):
     opening_balance = 0
     total_earnings = 0
     for pd in ppd:
-        pd.takes = pd.purchase_set.filter(date__range=[start,end]).count()
+        pd.takes = pd.purchase_set.filter(date__range=[start,end], success=True).count()
 
         #calculate earnings within date range
-        pd.earnings = sum([purchase.price * 0.6 for purchase in pd.purchase_set.filter(date__range=[start,end]) if not purchase.credit_used])
-        pd.earnings += sum([2 for purchase in pd.purchase_set.filter(date__range=[start,end]) if purchase.credit_used])
+        pd.earnings = sum([purchase.price * 0.6 for purchase in pd.purchase_set.filter(date__range=[start,end], success=True) if not purchase.credit_used])
+        pd.earnings += sum([2 for purchase in pd.purchase_set.filter(date__range=[start,end], success=True) if purchase.credit_used])
         total_earnings += pd.earnings
 
         #calculate earnings prior to date range
-        pd.prior = sum([purchase.price * 0.6 for purchase in pd.purchase_set.filter(date__lt=start) if not purchase.credit_used])
-        pd.prior += sum([2 for purchase in pd.purchase_set.filter(date__lt=start) if purchase.credit_used])
+        pd.prior = sum([purchase.price * 0.6 for purchase in pd.purchase_set.filter(date__lt=start, success=True) if not purchase.credit_used])
+        pd.prior += sum([2 for purchase in pd.purchase_set.filter(date__lt=start, success=True) if purchase.credit_used])
         opening_balance += pd.prior
 
     #since there is no payout yet, closing is all earnings to date.
@@ -105,7 +103,7 @@ def dash(request, msg=False):
         presenter = Presenter.objects.filter(user=request.user)[0]
         context['presenter'] = presenter
 
-        context['start'] = datetime.datetime(year=2015, month=01, day=01)
+        context['start'] = datetime.datetime(year=2016, month=01, day=01)
 
         context['end'] = datetime.datetime.now()
         context['total_earnings'] = 0
@@ -129,7 +127,7 @@ def dash(request, msg=False):
         total_takes = sum([x.purchase_set.all().count() for x in ppd])
         pending_count = len([x for x in ppd if x.edited and not x.approved or not x.approved])
         edit_count = len([x for x in ppd if x.edited and x.approved])
-        non_pending_count = len([x for x in ppd if x.approved])
+        non_pending_count = len([x for x in ppd if x.approved and not x.suspended])
         context['listed_count'] = non_pending_count
         context['edit_count'] = edit_count
         context['takes_count'] = total_takes
@@ -288,6 +286,7 @@ def dash(request, msg=False):
                 pd_description = request.POST['description']
                 subjects = request.POST.getlist('subject')
 
+
                 pdaud = int(request.POST['recording'])
                 if pdaud > 0:
                     pdaud = PdAudio.objects.get(pk=int(pdaud))
@@ -303,8 +302,7 @@ def dash(request, msg=False):
                         messages.add_message(request, messages.ERROR, 'Please upload the correct file type')
                         return HttpResponseRedirect('/user/presenter/dash/?direct_to=upload')
 
-                    new_session = PdSession(name=pd_name,description=pd_description, audio_file=request.FILES['audio_file'], approved=False)
-                    new_session.save()
+
 
                     #get length if it is mp3.. need to convert wav
                     if audio_file.name.lower().endswith(('.mp3')):
@@ -394,7 +392,7 @@ def edit(request, id):
                         Terms and Conditions before editing content.')
                 return HttpResponseRedirect('/user/presenter/dash/?direct_to=sessions')
 
-    
+
 
 
             #gather post data

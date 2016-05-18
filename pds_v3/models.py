@@ -76,6 +76,7 @@ class AppUser(models.Model):
     remaining_pd = models.IntegerField(default=1)
     stripe_id = models.CharField(max_length = 100, blank=True, null=True)
     date_premium = models.DateTimeField(blank=True, null=True)
+    has_card = models.BooleanField(default=False)
 
 
 
