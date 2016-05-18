@@ -17,8 +17,12 @@ import stripe
 
 #only root level url
 def landing(request):
-    pd_list = PdSession.objects.all()
-    context = {'pd_list': pd_list}
+    content = PdSession.objects.order_by('name')[0:4]
+    presenter = Presenter.objects.order_by('date_approved')[0:2]
+    context = {
+        'presenter': presenter,
+        'content': content
+    }
     return render(request, 'v3/final/home.html', context)
 
 

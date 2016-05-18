@@ -28,31 +28,7 @@ def print_backwards(node):
 
 def date_from_input(user_input,return_dict=False):
     date = str(user_input)
-    date_dict = {}
-    try:
-        day = int(date[8:10])
-        month = int(date[5:7])
-        year = int(date[:4])
-        if day < 10:
-            date_dict['day'] = '0' + str(day)
-        else:
-            date_dict['day'] = str(day)
-        if month < 10:
-            date_dict['month'] = '0' + str(month)
-        else:
-            date_dict['month'] =  str(month)
-
-        date_dict['year'] = str(year)
-
-    except ValueError:
-        return False
-
-    try:
-        d = datetime.date(year,month,day)
-    except:
-        return False
-
-    if return_dict == True:
-        return date_dict
-    else:
-        return datetime.date(year,month,day)
+    day = int(date[8:10])
+    month = int(date[5:7])
+    year = int(date[:4])
+    return datetime.date(year,month,day)

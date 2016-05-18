@@ -34,6 +34,7 @@ def handle_uploaded_file(f):
 
 
 def analytics_report(request):
+
     start = request.POST.get('start', False)
     end = request.POST.get('end', False)
 
@@ -54,7 +55,10 @@ def analytics_report(request):
         end = dfi(end)
         end = end + datetime.timedelta(days=1)
     except:
-        return HttpResponse('Unable to parse date')
+        context = {'type': None}
+        return render_to_response('v3/final/presenter-pages/final/reports/analytics.html', context)
+
+
 
 
 
@@ -142,10 +146,6 @@ def dash(request, msg=False):
                 #datetime objects for range comparison
                 start = dfi(request.POST['start'])
                 end = dfi(request.POST['end'])
-
-                #datedict with 'year' 'mont' 'date'
-                start_dict = dfi(request.POST['start'], True)
-                end_dict = dfi(request.POST['end'], True)
 
                 if start == False or end == False:
                     return HttpResponse('Please enter a correctly formatted date.')
@@ -286,28 +286,26 @@ def dash(request, msg=False):
                 pd_description = request.POST['description']
                 subjects = request.POST.getlist('subject')
 
-                try:
-                    pdaud = int(request.POST['recording'])
-                    if pdaud > 0:
-                        pdaud = PdAudio.objects.get(pk=int(pdaud))
-                        pdaud.used = True
-                        pdaud.save();
-                        new_session = PdSession(name=pd_name,description=pd_description, pdaudio=pdaud, approved=False)
-                    else:
-                        if not request.FILES['audio_file'].name.lower().endswith(('.wav', '.mp3')):
-                            messages.add_message(request, messages.ERROR, 'Please upload the correct file type')
-                            return HttpResponseRedirect('/user/presenter/dash/?direct_to=upload')
 
-                        new_session = PdSession(name=pd_name,description=pd_description, audio_file=request.FILES['audio_file'], approved=False)
-                        new_session.save()
-                except:
-                    messages.add_message(request, messages.ERROR, 'Please include an audio recording with your session upload')
-                    return HttpResponseRedirect('/user/presenter/dash/?direct_to=upload')
+                pdaud = int(request.POST['recording'])
+                if pdaud > 0:
+                    pdaud = PdAudio.objects.get(pk=int(pdaud))
+                    pdaud.used = True
+                    pdaud.save();
+                    new_session = PdSession(name=pd_name,description=pd_description, pdaudio=pdaud, approved=False)
+                else:
+                    audio_file = request.FILES.get('audio_file', False)
+                    if not audio_file:
+                        messages.add_message(request, messages.ERROR, 'Please upload a file')
+                        return HttpResponseRedirect('/user/presenter/dash/?direct_to=upload')
+                    elif not audio_file.name.lower().endswith(('.wav', '.mp3')):
+                        messages.add_message(request, messages.ERROR, 'Please upload the correct file type')
+                        return HttpResponseRedirect('/user/presenter/dash/?direct_to=upload')
 
 
 
                     #get length if it is mp3.. need to convert wav
-                    if request.FILES['audio_file'].name.lower().endswith(('.mp3')):
+                    if audio_file.name.lower().endswith(('.mp3')):
                         song = MP3(new_session.audio_file.name)
                         seconds = song.info.length
                         m, s = divmod(seconds, 60)
@@ -331,6 +329,7 @@ def dash(request, msg=False):
                         attachment.save()
                         new_session.attachments.add(attachment)
                     counter+=1
+
 
                 new_session.presenters.add(Presenter.objects.get(user=request.user))
 
@@ -392,6 +391,8 @@ def edit(request, id):
                 messages.add_message(request, messages.ERROR, 'You must accept the \
                         Terms and Conditions before editing content.')
                 return HttpResponseRedirect('/user/presenter/dash/?direct_to=sessions')
+
+
 
 
             #gather post data

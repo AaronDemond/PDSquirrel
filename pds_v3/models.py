@@ -143,7 +143,10 @@ class PdSessionManager(models.Manager):
 
 class Subject(models.Model):
     name = models.CharField(max_length=60)
+    image = models.FileField(upload_to='pds_v3/static/img/subject', blank=True, null=True)
 
+    def image_name(self):
+        return os.path.basename(self.image.name)
 
     def __str__(self):
         return self.name

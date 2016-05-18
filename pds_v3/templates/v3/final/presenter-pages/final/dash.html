@@ -22,34 +22,38 @@ $(document).ready(function() {
 	    loadXMLDoc('/user/presenter/dash/?mysessions', '#page-content');
 	    $("li").removeClass("active");
 	    $("#sessions-link").addClass("active");
-	} 
+	}
 
-	else if  ("{{direct_to}}" == "upload") { 
+	else if  ("{{direct_to}}" == "upload") {
 	    loadXMLDoc('/ajax-test', '#page-content');
 	    $("li").removeClass("active");
 	    $("#upload-link").addClass("active");
 
 	}
 
-	else if  ("{{direct_to}}" == "info") { 
+	else if  ("{{direct_to}}" == "info") {
 	    loadXMLDoc('/user/presenter/dash/?myaccount', '#page-content');
 	    $("li").removeClass("active");
 	    $("#info-link").addClass("active");
 	}
 
-	else if  ("{{direct_to}}" == "recorder") { 
+	else if  ("{{direct_to}}" == "recorder") {
 	    loadXMLDoc('/record/', '#page-content');
 	    $("li").removeClass("active");
 	    $("#record-link").addClass("active");
 	}
 
+<<<<<<< HEAD
+	else if  ("{{direct_to}}" == "analytics") {
+=======
 	else if  ("{{direct_to}}" == "analytics") { 
+>>>>>>> 546550393c237151e31988f0a07fdde2cece5f86
 	    loadXMLDoc('/user/presenter/dash/?analytics', '#page-content');
 	    $("li").removeClass("active");
 	    $("#analytics-link").addClass("active");
 	}
 
-	else if  ("{{direct_to}}" == "private") { 
+	else if  ("{{direct_to}}" == "private") {
 	    loadXMLDoc('/user/presenter/dash/?myinfo', '#page-content');
 	    $("li").removeClass("active");
 	    $("#private-info-link").addClass("active");
@@ -87,12 +91,10 @@ $(document).ready(function() {
 	</div>
     </div>
 </div>
-    
+
 <div id="page-content">
 
 </div>
-    
+
 </div>
 {% endblock %}
-
-
