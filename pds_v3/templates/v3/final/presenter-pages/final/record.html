@@ -69,20 +69,22 @@ label {
 		</div>
     </div>
     <div class="row">
-		<div class="col-lg-6">
-			<div>Total length of recording: <span id='timer'>00:00:000</span></div>
-			<button onclick="recordToggle()" class="btn btn-danger" id = "record_button">Record</button>
-			<button onclick = "pauseClick()" class="btn btn-default" id = "pause_button">Pause</button>
-			<button id = "save_button"  class="btn btn-default" onclick="saveRecording()">Save</button>
-			<button id="delete" onclick="delete_curr_audio()" class="btn btn-default">Delete</button>
-			<br>
-			<div style="float: left; margin-bottom: 20px; margin-top: 5px" id="output" style="font-weight: bold">
-				<p>Click record to begin capturing audio.</p>
+			<div class="col-lg-6">
+				<div>Total length of recording: <span id='timer'>00:00:000</span></div>
+				<button onclick="recordToggle()" class="btn btn-danger" id = "record_button">Record</button>
+				<button onclick = "pauseClick()" class="btn btn-default" id = "pause_button">Pause</button>
+				<button id = "save_button"  class="btn btn-default" onclick="saveRecording()">Save</button>
+				<button id="delete" onclick="delete_curr_audio()" class="btn btn-default">Delete</button>
+				<br>
+				<div style="float: left; margin-bottom: 20px; margin-top: 5px" id="output" style="font-weight: bold">
+					<p>Click record to begin capturing audio.</p>
+				</div>
 			</div>
-		</div>
     </div>
     <div class="row">
-			<div class="col-lg-6">
+
+			<div class="col-lg-12">
+
 				<label>Start Time</label>
 				<input class="timebox" type="text" value = '0' id="start-mark">
 
@@ -98,26 +100,27 @@ label {
 			<div class="col-lg-6 hidden" id="loading-alert">
 				<h2 class="alert alert-info">Loading WAV audio...</h2>
 				<p>This may take up some time depending on the length of the recording.</p>
-			</div>
-    </div>
+
+		</div>
+
     <div class="col-lg-12">
 		<hr>
     </div>
 	</div>
 
 <div class="row">
-    <div class="col-lg-12">
-	<audio controls style="width: 100%" id ="player"></audio>
-    </div>
+  <div class="col-lg-12">
+		<audio controls style="width: 100%" id ="player"></audio>
+  </div>
 </div>
     <div class="row">
-	<div class="col-lg-12 col-lg-offset-2" style="margin-top: 10px;">
+	<div class="col-lg-12" style="margin-top: 10px;">
 	    <div style="float: right" class="dur-container">
 	    </div>
 	</div>
     </div>
     <div class="row">
-        <div class="col-lg-6 col-lg-offset-2" style="margin-top: 30px">
+        <div class="col-lg-12" style="margin-top: 30px">
 		<hr>
 	    <h4>My Audio Clips</h4>
 	    {% if audio_recordings %}
