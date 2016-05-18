@@ -17,9 +17,9 @@
     width: 100px !important;
     left: 120px;
     background-color: rgb(173, 216, 230);
-    background-color:rgb(46, 141, 215); 
-    background-color: rgb(46, 215, 109); 
-    background-color: rgb(72, 165, 107); 
+    background-color:rgb(46, 141, 215);
+    background-color: rgb(46, 215, 109);
+    background-color: rgb(72, 165, 107);
 
     border: 1px solid #6DBCBF !important;
     border: 1px solid black !important;
@@ -31,7 +31,7 @@
 }
 .muted {
     margin-bottom: 10px !important;
-    
+
 }
 .brand-img {
     width: 100% !important;
@@ -48,93 +48,124 @@
 
 </style>
 <div class="container">
-<div class="row">			
+<div class="row">
 		    <div class="col-lg-12 col-xs-12 hidden-xs" style="">
 			    <img  src="/static/img/brand5.png" class="brand-img hidden-xs" alt="">
-			    <div class="input-group">
-                            <form action ="{% url 'browse' %}" method ="POST" />
+			    <div class="input-group" style="position: absolute;">
+                            <form  action ="{% url 'browse' %}" method ="POST" />
 				{% csrf_token %}
 			        <input type="text" name="query" placeholder="Search PDSquirrel. Go nuts on PD!" class="home-search form-control">
 				<!--<input type="submit" value="Search" class="home-search-btn form-control">-->
-				<button class="home-search-btn"><i class="fa fa-search" style="padding-top: 5px; padding-bottom: 5px"></i> </button>
+				<button class="home-search-btn"><i class="fa fa-search" style="padding-top: 2px; padding-bottom: 2px"></i> </button>
                                 <input type="hidden" name="search_type" value="search">
 			    </form>
 			    </div>
 		    </div>
 		</div>
 </div>
-<div id="main-content" class="container white-tile" style="min-height: auto">
-<div class="row" id="">
 
-<div class="col-lg-12 visible-xs" style="margin-bottom: 100px">
-                            <form action ="{% url 'browse' %}" method ="POST" />
-				{% csrf_token %}
+<style>
+.featured_box {
+    background-color:#ffffff;
+  	padding:5px;
+  	margin:3px 0;
+    border: 1px solid #cfcfcf;
+}
 
-				<div class="input-group">
-				    <input type="text" name="query" placeholder="Search PDSquirrel. Go nuts on PD!" class="form-control">
-				    <span class="input-group-btn">
-				        <button class="btn btn-success" id="mobile_search"><i class="fa fa-search" style="padding-top: 5px; padding-bottom: 5px"></i> </button>
-				    </span>
-				</div>
+.featured_title {
+    font-weight:bold;
+    font-size:1.2em;
+	  padding:5px 0 5px 0;
+}
 
-                                <input type="hidden" name="search_type" value="search">
-			    </form>
-			</div>
-    
-		
-    
-    <div class="col-xs-10 col-xs-offset-1" style="">
+.portrait {
+   height: auto;
+   width: 100%;
+}
+
+@media all and (min-width: 770px) {
+  .featured_box:hover {
+    margin-top: 0.1px;
+  }
+}
+.featured_box:hover {
+  box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.5);
+  -webkit-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+}
+
+.text-vcenter {
+  display: inline;
+  text-align: center;
+  vertical-align: middle;
+}
+
+a {
+  color: inherit;
+}
+a:hover {
+  color: inherit;
+}
+</style>
+
+<div id="main-content"  class="container" style="min-height: auto; padding-top: 0px;">
+  <div class="row">
+    <div class="col-xs-12">
+      <h3 class="text-center">
+        Featured Presenter
+      </h3>
     </div>
-</div>
-    <div class="row">
-        <div class="col-xs-12 btn-container">
-	    <div class="row">
-		<div class="col-xs-12 col-sm-6 col-lg-6">
-		    <div class="box">							
-			<div class="icon">
-			    <div class="image">
-				<i class="fa fa-question"></i>
-			    </div>
-			    <div class="info">
-				<h3 class="title">Learn about PD Squirrel</h3>
-				<p class="muted">PD Squirrel provides continuing professional 
-			development to Canadian lawyers and accountants. Our sessions are concise, topical audio 
-			presentations, created by professionals among the best in their field.	
-				</p>
-	
-				<div class="more">
-				    <a href="{% url 'learn' %}" title="Title Link">More <i class="fa fa-angle-double-right"></i></a>
-				</div>
-			    </div>
-			</div>
-			<div class="space">
-			</div>
-		    </div> 
-		</div>
-		<div class="col-xs-12 col-sm-6 col-lg-6">
-		    <div class="box">							
-			<div class="icon">
-			    <div class="image"><i class="fa fa-check"></i></div>
-			    <div class="info">
-				<h3 class="title">Get Started</h3>
-				<!-- <p class="muted">Join today and receive three free sessions. Pay per session or take advantage of our premium plan. Looking to share your expertise? Become a speaker and get paid. As a Standard member you only pay for the individual sessions you take. For more value, upgrade to Premium membership and get multiple sessions for a monthly fee. </p> -->
+  </div>
+  <div class="row">
 
-				<p class="muted">Join today and receive 3 free sessions. Pay per session or take advantage of our premium plan. Looking to share your expertise? Inquire to <a href="{% url 'presenter-info' %}">become a speaker</a>, and get compensated for your sessions.</p>
-				
-				<div class="more">
-				    <a href="{% url 'join' %}" title="Title Link">Join PD Squirrel <i class="fa fa-angle-double-right"></i></a>
-				</div>
-			    </div>
-			</div>
-			<div class="space"></div>
-		    </div>
-		</div>
-		
-		</div>		    
-	    </div>
-	</div>
-    </div>
+    {% for pres in presenter %}
+    <a href="{% url 'presenter-detail' pres.id %}">
+      <div class="col-sm-6 col-xs-12">
+        <div class="featured_box">
+          <div class="row">
+
+            <div class="text-vcenter col-sm-6">
+              <div class="featured_title text-center">{{ pres }}</div>
+              <p class="featured_bio text-center">{{ pres.bio|truncatechars:"200" }}</p>
+            </div>
+
+            <div class="col-xs-6 center-block" >
+              <img src="/static/presenter_pics/{{ pres.image_name }}" class="img-circle portrait">
+            </div>
+          </div>
+        </div>
+      </div>
+    </a>
+
+    {% endfor %}
+
+  </div>
+
+  <div class="row">
+    <h3 class="text-center">
+      Featured Content
+    </h3>
+  </div>
+  <div class="row">
+
+      {% for cont in content %}
+      <a href="{% url 'detail' cont.id %}">
+        <div class="col-sm-3 col-xs-6">
+          <div class="featured_box">
+            <img src="/static/img/subject/{{ cont.subject.all.0.image_name }}" class="img-responsive">
+            <div class="featured_title">{{ cont.name }}</div>
+            <p>{{ cont.description }}</p>
+          </div>
+
+      </div>
+    </a>
+    {% endfor %}
+
+  </div>
 </div>
+
 <style>
 @import "https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css";
 @import "https://fonts.googleapis.com/css?family=Roboto:400,500";

@@ -332,6 +332,7 @@ def dash(request, msg=False):
                         new_session.attachments.add(attachment)
                     counter+=1
 
+
                 new_session.presenters.add(Presenter.objects.get(user=request.user))
 
 
@@ -392,6 +393,8 @@ def edit(request, id):
                 messages.add_message(request, messages.ERROR, 'You must accept the \
                         Terms and Conditions before editing content.')
                 return HttpResponseRedirect('/user/presenter/dash/?direct_to=sessions')
+
+    
 
 
             #gather post data
