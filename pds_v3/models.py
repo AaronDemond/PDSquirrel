@@ -78,6 +78,8 @@ class AppUser(models.Model):
     date_premium = models.DateTimeField(blank=True, null=True)
     has_card = models.BooleanField(default=False)
 
+    increment_task_id = models.CharField(max_length=100, blank=True, null=True)
+
 
 
 
