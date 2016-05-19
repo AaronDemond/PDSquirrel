@@ -43,7 +43,7 @@
             </div>
             <div class="row {% if type == 'browse' %}hidden{% endif %}" id = "search-options">
                 <div class="col-xs-12 col-md-9">
-                    <div id = "search-container" style="height: auto";>
+                    <div id = "search-container" style="height: auto">
                         <div class="row">
                             <form action ="{% url 'browse' %}" method ="POST" />
                                 <input type="hidden" name="search_type" value="search">
