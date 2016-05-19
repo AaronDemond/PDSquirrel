@@ -7,17 +7,11 @@
     width: 400px;
 }
 
-#main-container {
-}
-
-
 .hidden {
     display: none;
 }
 
 #browse-container {
-   // background-color: #f8f8f8;
-    //background-color: #D9EDF7;
     height: 120px;
 
 }
@@ -26,17 +20,10 @@
     background-color: #f8f8f8;
 }
 
-#browse-toggle > a {
-    //background-color: #D9EDF7;
-}
 
 
-#search-toggle > a {
-//	background-color: #F7EAD9;
 
-}
 #search-container {
-    //background-color: #F7EAD9;
     height: 120px;
 
 }
@@ -99,9 +86,6 @@ a {
 }
 
 
-.navbar {
-   // background-color: #307D9A;
-}
 
 #pd-list-sort {
     font-weight: bold;
@@ -148,20 +132,9 @@ a {
 	width: 100%;
 }
 
-#banner-container {
-}
-
 #home-header-container h2, #our-pricing h2 {
 	display: block;
 	text-align: center;
-	//background-color: #1a5a88;
-	//background-color: #2d93dc;
-	//line-height: 70px;
-	//color: white;
-}
-#home-header-container {
-//	height: 70px;
-	//background-color: blue;
 }
 
 .home-feature {
@@ -176,7 +149,7 @@ a {
 }
 .home-feature-nested-content {
 	border-radius: 5px 5px 5px 5px;
-	
+
 }
 .home-feature p {
 	text-align: center;
@@ -206,8 +179,6 @@ a {
 }
 
 
-
-
 .join-container h2 {
 	margin: 0;
 }
@@ -223,7 +194,6 @@ a {
 .bs-callout {
   padding: 20px;
   margin: 20px 0;
-  //border: 1px solid #eee;
   background-color: #F7EAD9;
   border-left-width: 5px;
   border-radius: 3px;
@@ -247,7 +217,6 @@ a {
 
 .me-h-info {
 	background-color: #AA9274;
-	//color: white;
 	font-weight: bold;
 }
 
@@ -255,10 +224,7 @@ a {
 	background-color: #F7EAD9;
 	padding: 5px;
 	border-left: 5px solid #AA9274;
-
 }
-
-
 
 
 .breadcrumb>li+li:before {
@@ -284,7 +250,6 @@ a {
 	padding: 15px;
 }
 
-
 .current-user-li p {
 	margin-top: 15px;
 	margin-bottom: 15px;
@@ -301,7 +266,6 @@ a {
 #login-link {
 	padding-left: 0px;
 }
-
 
 .form-spacer {
 	margin-top: 0.5em;
@@ -330,8 +294,6 @@ a {
 }
 
 
-
-
 .col-centered {
 	float: none;
 	margin: 0 auto;
@@ -354,9 +316,6 @@ html, body {
 	overflow-x: hidden !important;
 }
 
-
-
-
 .pd-title {
 	font-size: 1.2em;
 	margin: 0;
@@ -372,27 +331,13 @@ html, body {
 	margin-bottom: 1.2em;
 }
 
-
-
-img {
-	overflow: hidden !important;
-}
-
 .pencil-icon-fix {
 	line-height: 20px;
 }
 
-
-
-
-
-
 img {
     overflow: hidden;
 }
-
-
-
 
 #top-nav-ul {
     min-width: 350px;
@@ -401,7 +346,6 @@ img {
 .sign-in-row {
     margin-bottom: 15px;
 }
-
 
 
 #main-content {

@@ -18,7 +18,7 @@ margin-bottom: 0px !important;
 
 <script>
 
-	
+
 
     Stripe.setPublishableKey('pk_test_URIzgmhYoVYuzDm9Q98RHkIQ');
     jQuery(function($) {
@@ -134,9 +134,9 @@ $(document).ready(function() {
 				</div>
 				<div class="col-lg-6">
 					<input style="float: left; margin-top: 12px; margin-right: 5px;" type="radio" id="e_card" name="existing_card">
-					<h4 style="float: left">Pay with existing card</h4>		
+					<h4 style="float: left">Pay with existing card</h4>
 				</div>
-				
+
 			</div>
 			<div class="row">
 				<div class="col-lg-6" id="new_card_col">
@@ -178,13 +178,13 @@ $(document).ready(function() {
 				</div>
 				<div class="col-lg-12" style="margin-top: 20px">
 					<hr>
-					
+
 					<button type="submit" class="btn btn-primary">Continue</button>
 					<button class="btn btn-default" id="cancel_btn_one">Cancel</button>
 				</div>
 			</div>
 		</form>
-		
+
     </div>
   </div>
 </div>
@@ -197,7 +197,10 @@ $(document).ready(function() {
 			<div class="msg-container">
 			    {% if messages %}
 			    {% for msg in messages %}
-			    <div class="alert alert-{{msg.tags}} msg" role="alert">{{msg}} <a href="#"><i class="fa fa-times pull-right iclose"></i></a> </div>
+			    <div class="alert alert-{{msg.tags}} msg" role="alert">
+						<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+						{{msg}}
+					</div>
 			    {% endfor %}
 			    {% endif %}
 			</div>
@@ -238,7 +241,7 @@ $(document).ready(function() {
 				<div class="col-xs-12" style="min-height: 200px">
 					<h4>Description</h4>
 					<hr>
-					
+
 					{{pd.description}}
 				</div>
 			</div>
@@ -251,7 +254,7 @@ $(document).ready(function() {
 					  <h4>Purchase</h4>
 					  {% endif %}
 					  <hr>
-					  
+
 					 {% if user.is_authenticated %}
 					 {% if own == 1 %}
 					 <div class="">

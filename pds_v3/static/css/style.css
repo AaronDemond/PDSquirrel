@@ -1,4 +1,8 @@
 
+body {
+    background-color: rgb(246,246,246);
+}
+
 
 #pd-listing h3 {
   font-size: 18px !important;
@@ -35,11 +39,18 @@
   min-height: 850px;
   border-radius: 0px;
   margin-top: 20px;
-  margin-bottom: 20px; }
+  margin-bottom: 20px;
+  background-color: white;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+}
 
 .muted {
   color: grey;
-  
+
  }
 
 .removal-bar, .cancel-removal-bar {
