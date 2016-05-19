@@ -79,8 +79,16 @@
 }
 
 .portrait {
-   height: auto;
-   width: 100%;
+   height: 200px;
+   width: 140px;
+}
+
+.subject_pic {
+  height: 110px;
+}
+
+.content_container {
+  height: 260px;
 }
 
 @media all and (min-width: 770px) {
@@ -96,12 +104,6 @@
   transition: all 0.3s ease-in-out;
 }
 
-.text-vcenter {
-  display: inline;
-  text-align: center;
-  vertical-align: middle;
-}
-
 a {
   color: inherit;
 }
@@ -109,6 +111,7 @@ a:hover {
   color: inherit;
 }
 </style>
+
 
 <div id="main-content"  class="container" style="min-height: auto; padding-top: 0px;">
   <div class="row">
@@ -122,17 +125,17 @@ a:hover {
 
     {% for pres in presenter %}
     <a href="{% url 'presenter-detail' pres.id %}">
-      <div class="col-sm-6 col-xs-12">
+      <div class="col-sm-6">
         <div class="featured_box">
           <div class="row">
 
-            <div class="text-vcenter col-sm-6">
+            <div class="col-xs-6">
               <div class="featured_title text-center">{{ pres }}</div>
-              <p class="featured_bio text-center">{{ pres.bio|truncatechars:"200" }}</p>
+              <p class="text-center">{{ pres.bio|truncatechars:"225" }}</p>
             </div>
 
-            <div class="col-xs-6 center-block" >
-              <img src="/static/presenter_pics/{{ pres.image_name }}" class="img-circle portrait">
+            <div class="col-xs-6" >
+              <img src="/static/presenter_pics/{{ pres.image_name }}" class="img-circle portrait center-block">
             </div>
           </div>
         </div>
@@ -153,10 +156,10 @@ a:hover {
       {% for cont in content %}
       <a href="{% url 'detail' cont.id %}">
         <div class="col-sm-3 col-xs-6">
-          <div class="featured_box">
-            <img src="/static/img/subject/{{ cont.subject.all.0.image_name }}" class="img-responsive">
-            <div class="featured_title">{{ cont.name }}</div>
-            <p>{{ cont.description }}</p>
+          <div class="featured_box content_container">
+            <img src="/static/img/subject/{{ cont.subject.all.0.image_name }}" class="img-thumbnail center-block subject_pic">
+            <div class="featured_title text-center">{{ cont.name|truncatechars:"30" }}</div>
+            <p>{{ cont.description|truncatechars:"60" }}</p>
           </div>
 
       </div>

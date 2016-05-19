@@ -43,7 +43,8 @@ $(document).ready(function() {
 	    $("#record-link").addClass("active");
 	}
 
-	else if  ("{{direct_to}}" == "analytics") { 
+	
+	else if  ("{{direct_to}}" == "analytics") {
 	    loadXMLDoc('/user/presenter/dash/?analytics', '#page-content');
 	    $("li").removeClass("active");
 	    $("#analytics-link").addClass("active");
