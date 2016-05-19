@@ -1,6 +1,7 @@
 from __future__ import absolute_import
 from celery import shared_task
-import stripe
+import stripe, datetime
+
 
 
 @shared_task
@@ -25,20 +26,21 @@ def incrementCredits(user, amount):
                 # Allow time for new charge to go through,
                 # at which point rollover gathers the new end date 
                 # and sets up another deposit for that time
-                wait_period = datetime.utcnow() + timedelta(hours=2)
-                rolloverSubscription().apply_async((user),eta=wait_period)
+                wait_period = datetime.datetime.now() + datetime.timedelta(hours=2)
+                rolloverSubscription.apply_async((user, amount),eta=wait_period)
 
 
 @shared_task
-def rolloverSubscription(user):
+def rolloverSubscription(user, amount):
     ''' Sets up the next celery task which adds credits.
-        This task should be ran approx 1 day after most
+        This task should be ran after most
         recent subscription end time, to give the charge time
         to go through.
     '''
 
     # If user has active plan
     user.profile.refresh_from_db()
+    customer = stripe.Customer.retrieve(id=user.profile.stripe_id)
     if customer.subscriptions.data:
         if customer.subscriptions.data[0].status == 'active':
             if customer.subscriptions.data[0].plan.id == '117':
@@ -47,6 +49,19 @@ def rolloverSubscription(user):
                 customer = stripe.Customer.retrieve(id=user.profile.stripe_id)
                 end_time_stamp = customer.subscriptions.data[0].current_period_end
                 end_time_obj = datetime.datetime.fromtimestamp(end_time_stamp)
-                incrementCredits().apply_async((request.user, 8), eta=end_time_obj)
+
+
+                # This may be a bug with celery? Without this line the times
+                # object is correct but the task instance incorrectly subtracts
+                # 3 hours for its eta. Look into this.
+                end_time_obj = end_time_obj + datetime.timedelta(hours=3)
+
+                # Add task id to user
+                #print 'Scheduled credit deposit for: ' + user.username 
+                t = incrementCredits.apply_async((user, amount), eta=end_time_obj)
+                user.profile.increment_task_id = t.id
+                user.profile.save()
+
+                
 
 

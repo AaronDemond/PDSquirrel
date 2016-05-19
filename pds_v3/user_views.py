@@ -298,26 +298,35 @@ def change_membership(request):
             appuser.is_premium = False
             for sub in customer.subscriptions:
                 sub.delete()
+
+
+            # Revoke the monthly desposit
+            task_id = appuser.increment_task_id
+            result = tasks.incrementCredits.AsyncResult(task_id)
+            result.revoke()
+
+
+            # Remove id from databse (task no longer exists)
+            appuser.increment_task_id = None
+            appuser.save()
+
             messages.add_message(request, messages.SUCCESS, 'You are now a standard user. We hope to see you soon!')
         else:
             try:
                 customer.default_source = request.POST['default_card']
                 customer.save() #Save selected card
                 customer.subscriptions.create(plan=117)
-
-
             except:
                 messages.add_message(request, messages.ERROR, "There was an error while creating your subscription. Please make sure you have entered in a credit card")
                 return HttpResponseRedirect('/user/options/')
 
-            appuser.is_premium = True
-            #appuser.remaining_pd += 8
+            # After initial subscription creation, add credits
+            request.user.profile.remaining_pd += 8
 
-            # Setup first deposit task for the end date. This task will then use
-            # rollover to setup the next deposit task
-            end_time_stamp = customer.subscriptions.data[0].current_period_end
-            end_time_obj = datetime.datetime.fromtimestamp(end_time_stamp)
-            tasks.incrementCredits.apply_async((request.user, 8), eta=end_time_obj)
+            # Wait a few seconds before setting up next deposit.
+            tasks.rolloverSubscription.apply_async([request.user, 8], countdown=15)
+            appuser.is_premium = True
+
 
             messages.add_message(request, messages.SUCCESS, "You are now a premium user. Thanks for choosing us!")
 
