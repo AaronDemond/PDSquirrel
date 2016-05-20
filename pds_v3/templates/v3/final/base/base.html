@@ -116,10 +116,10 @@
 
 
 </div>
-<div class="navbar-bottom my-footer" style="margin-top: 50px">
+<div class="navbar-bottom my-footer">
         <div class="row">
             <div class="col-xs-12 col-sm-offset-1">
-                <p style = "padding:20px;padding-bottom:0;padding-left:10px; color: rgb(255,255,255);">&#169; PD Squirrel Inc. 2015</p>
+                <p id="squirrel-inc">&#169; PD Squirrel Inc. 2015</p>
             </div>
         </div>
         <div class="row bottom-logo">
@@ -129,17 +129,17 @@
                     <li><a href="{% url 'about' %}">About Us</a></li>
                     <li><a href="{% url 'learn' %}">Learn</a></li>
                     <li><a href="{% url 'contact-us' %}">Contact Us</a></li>
-                    <li><a href="{% url 'terms' %}">Terms & Conditions</a></li>
+                    <li><a href="{% url 'terms' %}">Terms &amp; Conditions</a></li>
                     <li><a href="{% url 'privacy' %}">Privacy</a></li>
                     <li><a href="{% url 'presenter-info' %}">Become a Presenter</a></li>
                     {% endblock bottom-nav-links %}
                 </ul>
             </div>
-	    <div style="margin-top: 25px" class="col-sm-11 col-sm-offset-1 col-xs-11 col-xs-offset-1"id="seal">
-			<table style="margin: 0px" width="135" border="0" cellpadding="2" cellspacing="0" title="Click to Verify - This site chose Symantec SSL for secure e-commerce and confidential communications.">
+	    <div id="seal_container" class="col-sm-11 col-sm-offset-1 col-xs-11 col-xs-offset-1">
+			<table id="SSL" title="Click to Verify - This site chose Symantec SSL for secure e-commerce and confidential communications.">
 			<tr>
-			<td width="135" align="center" valign="top"><script type="text/javascript" src="https://seal.websecurity.norton.com/getseal?host_name=www.pdsquirrel.ca&amp;size=M&amp;use_flash=NO&amp;use_transparent=YES&amp;lang=en"></script><br />
-			<a href="http://www.symantec.com/ssl-certificates" target="_blank"  style="color:#000000; text-decoration:none; font:bold 7px verdana,sans-serif; letter-spacing:.5px; text-align:center; margin:0px; padding:0px;">ABOUT SSL CERTIFICATES</a></td>
+			<td id="seal"><script type="text/javascript" src="https://seal.websecurity.norton.com/getseal?host_name=www.pdsquirrel.ca&amp;size=M&amp;use_flash=NO&amp;use_transparent=YES&amp;lang=en"></script><br />
+			<a id="certificate" href="http://www.symantec.com/ssl-certificates" target="_blank" >ABOUT SSL CERTIFICATES</a></td>
 			</tr>
 			</table>
 	    </div>

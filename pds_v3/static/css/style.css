@@ -13,11 +13,6 @@ body {
   color: #545454;
   line-height: 1.4; }
 
-.my-footer {
-  background-color: #444444; }
-  .my-footer a {
-    color: #a3a3a3 !important; }
-
 
 .btn-default {
   height: 34px !important; }
@@ -28,9 +23,6 @@ body {
 
 .padded {
   margin-bottom: 15px !important; }
-
-.iclose :hover {
-  color: blue; }
 
 .fright {
   float: right; }
