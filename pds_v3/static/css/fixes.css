@@ -218,32 +218,8 @@ a {
 	line-height: 20px;
 }
 
-.dropdown-menu {
-	min-width: 300px !important;
-	padding-top:15px;
-}
-
-
-#login-link {
-	padding-left: 0px;
-}
-
-.form-spacer {
-	margin-top: 0.5em;
-	margin-bottom: 0.5em;
-}
 #login-header {
 	padding-left: .9em;
-}
-#login-header-error {
-	padding-left: .9em;
-	font-size: 0.9em;
-}
-#forgot-pass-link {
-	position: absolute;
-	bottom: 0.5em;
-	padding-left:1em;
-
 }
 
 .browse-btn-fix {
@@ -264,11 +240,6 @@ html, body {
 	height: auto !important;
 	overflow-x: hidden !important;
 
-}
-
-.scrollbar-fix {
-	width: auto !important;
-	overflow-x: hidden !important;
 }
 
 .pd-title {
@@ -292,14 +263,6 @@ html, body {
 
 img {
     overflow: hidden;
-}
-
-#top-nav-ul {
-    min-width: 350px;
-}
-
-.sign-in-row {
-    margin-bottom: 15px;
 }
 
 
