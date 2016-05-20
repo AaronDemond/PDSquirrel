@@ -7,12 +7,75 @@
 {% endblock header-metatags %}
 
 {% block header-content %}
-<script src="{% static 'js/presenter/dash.js' %}"></script>
+<script src="{% static 'js/myscript.js' %}"></script>
+<link rel="stylesheet" href="{% static 'css/presenter-nav-css.css' %}" >
 {% endblock header-content %}
 
 {% block body %}
-<link rel="stylesheet" href="{% static 'css/presenter-nav-css.css' %}" >
-<script src="{% static 'js/myscript.js' %}"></script>
+<script>
+
+$(document).ready(function() {
+	{% comment %} 
+
+	This function uses variables from the template language, 
+	so we can't move it to static. This is fine for now.
+
+	{% endcomment %}
+	
+
+	$('button').click(function() {
+	     $('button').removeClass('active');
+	     $(this).addClass('active');
+	});
+
+	if ("{{direct_to}}" == "sessions") {
+	    loadXMLDoc('/user/presenter/dash/?mysessions', '#page-content');
+	    $("li").removeClass("active");
+	    $("#sessions-link").addClass("active");
+	}
+
+	else if  ("{{direct_to}}" == "upload") {
+	    loadXMLDoc('/ajax-test', '#page-content');
+	    $("li").removeClass("active");
+	    $("#upload-link").addClass("active");
+
+	}
+
+	else if  ("{{direct_to}}" == "info") {
+	    loadXMLDoc('/user/presenter/dash/?myaccount', '#page-content');
+	    $("li").removeClass("active");
+	    $("#info-link").addClass("active");
+	}
+
+	else if  ("{{direct_to}}" == "recorder") {
+	    loadXMLDoc('/record/', '#page-content');
+	    $("li").removeClass("active");
+	    $("#record-link").addClass("active");
+	}	
+
+	else if  ("{{direct_to}}" == "analytics") {
+	    loadXMLDoc('/user/presenter/dash/?analytics', '#page-content');
+	    $("li").removeClass("active");
+	    $("#analytics-link").addClass("active");
+	}
+
+	else if  ("{{direct_to}}" == "private") {
+	    loadXMLDoc('/user/presenter/dash/?myinfo', '#page-content');
+	    $("li").removeClass("active");
+	    $("#private-info-link").addClass("active");
+	}
+
+	else {
+	    loadXMLDoc('/user/presenter/dash/?landing', '#page-content');
+	    $("li").removeClass("active");
+	    $("#dash-link").addClass("active");
+	}
+
+	$("a").click(function() {
+	    $(".msg-container").empty();
+    	});
+});
+</script>
 
 
 <div id="main-content" class="container">

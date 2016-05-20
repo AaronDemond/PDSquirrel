@@ -1,4 +1,7 @@
 // Directs to appropriate sub page after form POST
+// For now, this is generated using django template variables, but we 
+// should re write it to accept proper input so we can move it to static
+// rather than dynamically create it each time on dash.html
 
 $(document).ready(function() {
 

@@ -201,7 +201,7 @@ def detail(request, pd_id):
 
     context = {'pd' : pd, 'own' : own}
 
-    if request.user.is_authenticated:
+    if request.user.is_authenticated():
         context['customer'] = stripe.Customer.retrieve(request.user.profile.stripe_id)
 
     return render(request, 'v3/final/detail.html', context )
