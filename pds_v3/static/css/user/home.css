@@ -1,4 +1,9 @@
 
+#main-content {
+  min-height: auto;
+  padding-top: 0px;
+}
+
 .home-search {
     padding-right: 200px;
     position:relative;

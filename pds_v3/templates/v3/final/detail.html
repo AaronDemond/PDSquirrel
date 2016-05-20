@@ -1,7 +1,15 @@
 {% extends "v3/final/base/base.html" %}
 {% load staticfiles %}
-{% block body %}
 {% load pds_extras %}
+{% block header-metatags %}
+        <title>PDSquirrel Home</title>
+        <meta name=”description” content='Prfoessional development talks, offered by lawyers, for lawyers'>
+{% endblock header-metatags %}
+{% block header-content %}
+        <link rel="stylesheet" href="{% static 'css/detail.css' %}">
+{% endblock header-content %}
+{% block body %}
+
 <style>
 .btn-lg {
 	margin-top:20px;

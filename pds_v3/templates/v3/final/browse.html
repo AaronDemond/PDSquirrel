@@ -1,37 +1,35 @@
 {% extends "v3/final/base/base.html" %}
 {% load staticfiles %}
 {% load pds_extras %}
+{% block header-metatags %}
+        <title>PDSquirrel Browse</title>
+        <meta name=”description” content='Browse professional development talks, offered by lawyers, for lawyers'>
+{% endblock header-metatags %}
+{% block header-content %}
+        <link rel="stylesheet" href="{% static 'css/user/browse.css' %}">
+        <script src="{% static 'js/user/browse.js' %}"></script>
+{% endblock header-content %}
 {% block body %}
-<style>
-.page-title {
-    margin-top: 0;
-    margin-bottom: 20px;
-}
-</style>
 
-<script src="{% static 'js/user/browse.js' %}"></script>
-<div id="main-content" class="container" style="height: auto">
+
+<div id="main-content" class="container" >
     <div class="row">
         <div class="col-xs-12 col-lg-offset-1">
 		<div class="row">
 		    <div class="col-lg-9">
 				<div class="msg-container">
-				    {% if messages %}
-				    {% for msg in messages %}
-				    <div class="alert alert-{{msg.tags}} msg" role="alert">{{msg}} <a href="#"><i class="fa fa-times pull-right iclose"></i></a> </div>
-				    {% endfor %}
-				    {% endif %}
+          {% if messages %}
+          {% for msg in messages %}
+          	<div class="alert alert-{{msg.tags}} msg" role="alert">
+          		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+          		{{msg}}
+          	</div>
+          {% endfor %}
+          {% endif %}
 				</div>
 			    </div>
 		    </div>
-		    <!--
-	 	    <div class="row hidden-xs">
-	        <div class="col-lg-9">
-	            <h3 class="page-title">Browse and choose a PD session</h3>
 
-	        </div>
-	    </div>
-		    -->
 	              <div class="row">
                 <div class="col-xs-12 col-md-9">
                     <ul class="nav nav-tabs">
@@ -43,7 +41,7 @@
             </div>
             <div class="row {% if type == 'browse' %}hidden{% endif %}" id = "search-options">
                 <div class="col-xs-12 col-md-9">
-                    <div id = "search-container" style="height: auto">
+                    <div id = "search-container">
                         <div class="row">
                             <form action ="{% url 'browse' %}" method ="POST" />
                                 <input type="hidden" name="search_type" value="search">
@@ -63,9 +61,9 @@
                         </div>
                     </div>
                 </div>
-            <div id="browse-options" class="row {% if type == 'search' %}hidden{% endif %}" style="height: auto;">
+            <div id="browse-options" class="row {% if type == 'search' %}hidden{% endif %}">
                 <div class="col-xs-12 col-md-9">
-                    <div id = "browse-container" style="height: auto;">
+                    <div id = "browse-container" >
                         <div class="row">
                             <form action="{% url 'browse' %}" method ="POST">
                             <input type="hidden" name="search_type" value="browse">
@@ -100,7 +98,7 @@
 
 
                     {% if pd_list %}
-		    <p id="titles-found" style="color: grey; font-weight: 200">{% if type == 'browse' %}Browsing <b>{{subject}}</b>{% else %}Searching for <b> {% if query %}{{query}}{% else %} recent {%endif %} </b>{% endif %} > {{pd_list.paginator.count}} Session(s) found</p>
+		    <p id="titles-found" >{% if type == 'browse' %}Browsing <b>{{subject}}</b>{% else %}Searching for <b> {% if query %}{{query}}{% else %} recent {%endif %} </b>{% endif %} > {{pd_list.paginator.count}} Session(s) found</p>
                     {% endif %}
 
                     {% if pd_list %}
@@ -148,12 +146,12 @@
 
         </div>
     </div>
-<div class="container" style="margin-bottom:10px;">
+<div id="browse-footer" class="container" >
 <div class="row">
 <div class="col-xs-12 col-lg-8 col-lg-offset-1">
     <hr>
 
-    <p style="margin: 0;">More results</p>
+    <p id="results">More results</p>
 <nav>
   <ul class="pagination">
 
