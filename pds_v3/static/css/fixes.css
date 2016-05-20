@@ -21,14 +21,10 @@
 }
 
 
-
-
 #search-container {
     height: 120px;
 
 }
-
-
 
 h1 {
     font-size: 1.4em;
@@ -47,45 +43,10 @@ a {
     font-size: 0.8em;
 }
 
-.navbar-bottom {
-    height: 270px;
-    border-top: 1px solid #d8d7d7;
-}
-
-.navbar-bottom-container {
-    padding:0;
-}
-
-#bottom-nav-links {
-    padding: 0;
-    margin: 0;
-    padding-top: 0.7em;
-    padding-left: 5px;
-    font-size: 0.9em;
-}
-
-#bottom-nav-links {
-    list-style-type: none;
-}
-
-#bottom-nav-links li {
-    list-style-type: none;
-    display: inline;
-}
-.bottom-logo h4 {
-    margin:auto;
-}
-
-.navbar-bottom h4 {
-    margin: auto;
-}
-
 .col-centered{
     float: none;
     margin: 0 auto;
 }
-
-
 
 #pd-list-sort {
     font-weight: bold;
@@ -257,32 +218,8 @@ a {
 	line-height: 20px;
 }
 
-.dropdown-menu {
-	min-width: 300px !important;
-	padding-top:15px;
-}
-
-
-#login-link {
-	padding-left: 0px;
-}
-
-.form-spacer {
-	margin-top: 0.5em;
-	margin-bottom: 0.5em;
-}
 #login-header {
 	padding-left: .9em;
-}
-#login-header-error {
-	padding-left: .9em;
-	font-size: 0.9em;
-}
-#forgot-pass-link {
-	position: absolute;
-	bottom: 0.5em;
-	padding-left:1em;
-
 }
 
 .browse-btn-fix {
@@ -291,12 +228,6 @@ a {
 
 .view-container h3 {
 	text-align:center;
-}
-
-
-.col-centered {
-	float: none;
-	margin: 0 auto;
 }
 
 #recovery-header {
@@ -309,11 +240,6 @@ html, body {
 	height: auto !important;
 	overflow-x: hidden !important;
 
-}
-
-.scrollbar-fix {
-	width: auto !important;
-	overflow-x: hidden !important;
 }
 
 .pd-title {
@@ -337,14 +263,6 @@ html, body {
 
 img {
     overflow: hidden;
-}
-
-#top-nav-ul {
-    min-width: 350px;
-}
-
-.sign-in-row {
-    margin-bottom: 15px;
 }
 
 
