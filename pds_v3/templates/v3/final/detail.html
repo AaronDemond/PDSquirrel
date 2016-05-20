@@ -2,147 +2,38 @@
 {% load staticfiles %}
 {% load pds_extras %}
 {% block header-metatags %}
-        <title>PDSquirrel Home</title>
-        <meta name=”description” content='Prfoessional development talks, offered by lawyers, for lawyers'>
+        <title>{{ pd }}</title>
+        <meta name=”description” content='{{pd.description}}'>
 {% endblock header-metatags %}
 {% block header-content %}
-        <link rel="stylesheet" href="{% static 'css/detail.css' %}">
+        <link rel="stylesheet" href="{% static 'css/user/detail.css' %}">
+
+				<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+				<script type="text/javascript" src="{% static 'js/user/detail.js' %}"></script>
 {% endblock header-content %}
 {% block body %}
 
-<style>
-.btn-lg {
-	margin-top:20px;
-	margin-bottom:20px;
-}
-
-#session_pres_img {
-width: 200px;
-margin-bottom: 0px !important;
-}
-</style>
-
-<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
-
-<script>
-
-
-
-    Stripe.setPublishableKey('pk_test_URIzgmhYoVYuzDm9Q98RHkIQ');
-    jQuery(function($) {
-      $('#payment-form').submit(function(event) {
-        var $form = $(this);
-
-		if (document.getElementById('e_card').checked == true) {
-			event.preventDefault();
-			$form.find('button').prop('disabled', true);
-			console.log('existing card used');
-			$.ajax({
-				type: "POST",
-				url: "{% url 'payment-process' %}",
-				data: $form.serialize(),
-			}).done(function(data) {
-				$form.append(data);
-			}).fail(function(data) {
-			console.log('failed');
-			});
-			return false;
-		}
-		if (document.getElementById('n_card').checked == true) {
-			// Disable the submit button to prevent repeated clicks
-			$form.find('button').prop('disabled', true);
-
-			Stripe.card.createToken($form, stripeResponseHandler);
-
-			// Prevent the form from Sessiange pn with the default action
-			return false;
-		}
-      });
-    });
-
-    function stripeResponseHandler(status, response) {
-      var $form = $('#payment-form');
-
-      if (response.error) {
-        // Show the errors on the form
-        $form.find('.payment-errors').text(response.error.message);
-        $form.find('button').prop('disabled', false);
-      } else {
-        // response contains id and card, which contains additional card details
-        var token = response.id;
-		console.log(token);
-        // Insert the token into the form so it gets submitted to the server
-        $form.append($('<input type="hidden" name="stripeToken" />').val(token));
-
-        // and submit
-		$.ajax({
-			type: "POST",
-			url: "{% url 'payment-process' %}",
-			data: $form.serialize(),
-		}).done(function(data) {
-			$form.append(data);
-		}).fail(function(data) {
-			console.log('failed');
-		});
-      }
-    };
-
-
-</script>
-<script>
-$(document).ready(function() {
-
-	var $new_radio = document.getElementById('n_card');
-	var $existing_radio = document.getElementById('e_card');
-	var $cancel_btn_one = document.getElementById('cancel_btn_one');
-
-	$('#existing_card_col :input').prop('disabled', true);
-	$('#new_card_col :input').prop('disabled', true);
-
-
-	$cancel_btn_one.onclick = function(e) {
-		e.preventDefault();
-		$('#payment-modal').modal('hide');
-		$('#existing_card_col :input').val('');
-		$('#new_card_col :input').val('');
-	}
-
-	$new_radio.onclick = function() {
-		$existing_radio.checked = false;
-		$('#existing_card_col :input').prop('disabled', true);
-		$('#new_card_col :input').prop('disabled', false);
-		$('#existing_card_col :input').val('');
-	}
-	$existing_radio.onclick = function() {
-		$new_radio.checked = false;
-		$('#new_card_col :input').prop('disabled', true);
-		$('#existing_card_col :input').prop('disabled', false);
-		$('#new_card_col :input').val('');
-
-	}
-});
-</script>
-
-<div id="main-content" class="container"  >
+<div id="main-content" class="container">
 
 <div class="modal fade bs-example-modal-lg" tabindex="-1" id="payment-modal" role="dialog" aria-labelledby="myLargeModalLabel">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
-		<h3>{{pd}}</h3>
-		<p class="help-text" style="color: #8a6d3b;">Select a payment method</h4>
+		<h3>{{ pd }}</h3>
+		<p id="payment-method" class="help-text">Select a payment method</h4>
 		<hr>
-		<form class="" method="POST" id="payment-form">
+		<form method="POST" id="payment-form">
 
 					{% csrf_token %}
 			<input type="hidden" name="pd_id" value="{{ pd.id }}">
-			<div class="row" style="margin-bottom: 20px">
-				<div class="col-lg-6">
-					<input style="float: left; margin-top: 12px; margin-right: 5px;" type="radio" id="n_card" name="new_card">
-					<h4 style="float: left">Pay with a new card</h4>
+			<div id="new-card" class="row" >
+				<div class="col-xs-6">
+					<label for="new_card">Pay with a new card</label>
+					<input type="radio" id="n_card" name="new_card">
 				</div>
-				<div class="col-lg-6">
-					<input style="float: left; margin-top: 12px; margin-right: 5px;" type="radio" id="e_card" name="existing_card">
-					<h4 style="float: left">Pay with existing card</h4>
+				<div class="col-xs-6">
+					<label for"existing_card">Pay with existing card</label>
+					<input type="radio" id="e_card" name="existing_card">
+
 				</div>
 
 			</div>
@@ -184,7 +75,7 @@ $(document).ready(function() {
 						</select>
 					</div>
 				</div>
-				<div class="col-lg-12" style="margin-top: 20px">
+				<div id="form-submit" class="col-lg-12">
 					<hr>
 
 					<button type="submit" class="btn btn-primary">Continue</button>
@@ -199,28 +90,27 @@ $(document).ready(function() {
 <div class="row">
 <div class="col-lg-10 col-lg-offset-1">
 
-
 	<div class="row">
 		<div class="col-lg-9 col-lg-offset-1">
 			<div class="msg-container">
-			    {% if messages %}
-			    {% for msg in messages %}
-			    <div class="alert alert-{{msg.tags}} msg" role="alert">
+				{% if messages %}
+				{% for msg in messages %}
+					<div class="alert alert-{{msg.tags}} msg" role="alert">
 						<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 						{{msg}}
 					</div>
-			    {% endfor %}
-			    {% endif %}
+				{% endfor %}
+				{% endif %}
 			</div>
 		</div>
 	</div>
 
    <div class="row">
       <div class="col-xs-12">
-        <h3>{{pd}}</h3>
+        <h3>{{ pd }}</h3>
 		<hr>
 
-		<div class="col-sm-5" style="margin-top: 20px">
+		<div class="col-sm-5" id="pres-img-container">
 			{% for presenter in pd.presenters.all %}
 						<img id ="session_pres_img" class="white-tile-img"
 						{# if no img uploaded by user, pull one of two placeholders #}
@@ -234,8 +124,7 @@ $(document).ready(function() {
 								src="{{presenter.male_placeholder}}"
 							{% endif %}
 						{% endif %}
-						style="-webkit-box-shadow: 0 1px 1px rgba(0,0,0,0.15),-1px 0 0 rgba(0,0,0,0.03),1px 0 0 rgba(0,0,0,0.03),0 1px 0 rgba(0,0,0,0.12)"
-						alt="" width="90%" />
+						>
 			{% endfor %}
 			<br>
 			<br>
@@ -246,7 +135,7 @@ $(document).ready(function() {
 		<div class="col-sm-7">
 
 			<div class="row">
-				<div class="col-xs-12" style="min-height: 200px">
+				<div class="col-xs-12" id="description">
 					<h4>Description</h4>
 					<hr>
 
@@ -256,16 +145,17 @@ $(document).ready(function() {
 
 			<div class="row"> {# Row within 7 col description section, for button #}
 				  <div class="col-xs-12">
+						<hr>
 					  {% if own == 1 %}
 					  <h4>Listen</h4>
 					  {% else %}
 					  <h4>Purchase</h4>
 					  {% endif %}
-					  <hr>
+
 
 					 {% if user.is_authenticated %}
 					 {% if own == 1 %}
-					 <div class="">
+					 <div>
 						<a class="btn btn-success btn-lg" href="{% url 'watch' pd.id %}" >Listen Now</a>
 					 </div>
 					 {% else %}
@@ -283,7 +173,7 @@ $(document).ready(function() {
 						{% csrf_token %}
 						<input type="hidden" name="use_credit">
 						<input class = "form-control" type="hidden" name="pd_id" value="{{pd.id}}" />
-						<div class="">
+						<div>
 						   <input class="btn btn-success btn-lg" type="submit" value="Use Credit">
 						</div>
 					 </form>
@@ -303,7 +193,7 @@ $(document).ready(function() {
 	  </div> {# end title/by_text/presenter image 12-col #}
    </div> {# end row for top half. Includes img desctiption and listen now btn #}
 
-   <div class="row" style="margin-top:20px">
+   <div id="session-details" class="row" >
       <div class="col-sm-12 col-md-6 col-lg-6">
          <h4>Session Details</h4>
          <table class = "table table-striped">

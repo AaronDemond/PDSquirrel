@@ -17,7 +17,7 @@
                             <form  action ="{% url 'browse' %}" method ="POST" />
 				{% csrf_token %}
 			        <input type="text" name="query" placeholder="Search PDSquirrel. Go nuts on PD!" class="home-search form-control">
-				<button class="home-search-btn"><span id="search-button" class="glyphicon glyphicon-search" ></span> </button>
+				<button class="home-search-btn"><span id="search-icon" class="glyphicon glyphicon-search" ></span> </button>
                                 <input type="hidden" name="search_type" value="search">
 			    </form>
 			    </div>
