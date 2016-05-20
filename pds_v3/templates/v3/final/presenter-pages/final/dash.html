@@ -1,97 +1,45 @@
-
-
-
 {% extends "v3/final/base/base.html" %}
 {% load staticfiles %}
 {% load pds_extras %}
-{% block body %}
 
+{% block header-metatags %}
+<title>Presenter Hub</title>
+{% endblock header-metatags %}
+
+{% block header-content %}
+<script src="{% static 'js/presenter/dash.js' %}"></script>
+{% endblock header-content %}
+
+{% block body %}
 <link rel="stylesheet" href="{% static 'css/presenter-nav-css.css' %}" >
 <script src="{% static 'js/myscript.js' %}"></script>
-<script>
-// Directs to appropriate sub page after form POST
 
-$(document).ready(function() {
-
-	$('button').click(function() {
-	     $('button').removeClass('active');
-	     $(this).addClass('active');
-	});
-
-	if ("{{direct_to}}" == "sessions") {
-	    loadXMLDoc('/user/presenter/dash/?mysessions', '#page-content');
-	    $("li").removeClass("active");
-	    $("#sessions-link").addClass("active");
-	}
-
-	else if  ("{{direct_to}}" == "upload") {
-	    loadXMLDoc('/ajax-test', '#page-content');
-	    $("li").removeClass("active");
-	    $("#upload-link").addClass("active");
-
-	}
-
-	else if  ("{{direct_to}}" == "info") {
-	    loadXMLDoc('/user/presenter/dash/?myaccount', '#page-content');
-	    $("li").removeClass("active");
-	    $("#info-link").addClass("active");
-	}
-
-	else if  ("{{direct_to}}" == "recorder") {
-	    loadXMLDoc('/record/', '#page-content');
-	    $("li").removeClass("active");
-	    $("#record-link").addClass("active");
-	}
-
-	
-	else if  ("{{direct_to}}" == "analytics") {
-	    loadXMLDoc('/user/presenter/dash/?analytics', '#page-content');
-	    $("li").removeClass("active");
-	    $("#analytics-link").addClass("active");
-	}
-
-	else if  ("{{direct_to}}" == "private") {
-	    loadXMLDoc('/user/presenter/dash/?myinfo', '#page-content');
-	    $("li").removeClass("active");
-	    $("#private-info-link").addClass("active");
-	}
-
-	else {
-	    loadXMLDoc('/user/presenter/dash/?landing', '#page-content');
-	    $("li").removeClass("active");
-	    $("#dash-link").addClass("active");
-	}
-
-	$("a").click(function() {
-	    $(".msg-container").empty();
-    	});
-});
-</script>
 
 <div id="main-content" class="container">
     <div class="col-lg-9 col-lg-offset-1" style="padding: 0">
-    <h3 class="my-page-header">Presenter Hub<small> ({{presenter}}{% if presenter.credentials %}, {{presenter.credentials}}{% endif %})</small></h3>
-    <div class="presenter-nav-container">
-	<div class="row">
-	    <div class="col-lg-12">
-		<ul class="nav nav-tabs" style="">
-		    <li class="active" id="dash-link" ><a onclick="loadXMLDoc('/user/presenter/dash/?landing', '#page-content', 'dash')">Dash</a></li>
-		    <li id="analytics-link"><a onclick="loadXMLDoc('/user/presenter/dash/?analytics', '#page-content', 'analytics')">Analytics</a></li>
-		    <li id="info-link"><a onclick="loadXMLDoc('/user/presenter/dash/?myaccount', '#page-content', 'info')">Bio</a></li>
-		    <li id="private-info-link"><a onclick="loadXMLDoc('/user/presenter/dash/?myinfo', '#page-content', 'private' )">Personal</a></li>
-		    <li id="sessions-link"> <a onclick="loadXMLDoc('/user/presenter/dash/?mysessions', '#page-content', 'sessions')">Sessions</a></li>
-		    <li id="upload-link"><a onclick="loadXMLDoc('/ajax-test/' , '#page-content', 'upload')">Upload</a></li>
-		    <li id="record-link"><a onclick="loadXMLDoc('/record/' , '#page-content', 'recorder')">Record</a></li>
-		    <!--<li><a href="">Earnings & Analytics</a></li> -->
-		</ul>
-	    </div>
+		<h3 class="my-page-header">Presenter Hub<small> ({{presenter}}{% if presenter.credentials %}, {{presenter.credentials}}{% endif %})</small></h3>
+		<div class="presenter-nav-container">
+			<div class="row">
+				<div class="col-lg-12">
+					<ul class="nav nav-tabs">
+						<li class="active" id="dash-link" ><a onclick="loadXMLDoc('/user/presenter/dash/?landing', '#page-content', 'dash')">Dash</a></li>
+						<li id="analytics-link"><a onclick="loadXMLDoc('/user/presenter/dash/?analytics', '#page-content', 'analytics')">Analytics</a></li>
+						<li id="info-link"><a onclick="loadXMLDoc('/user/presenter/dash/?myaccount', '#page-content', 'info')">Bio</a></li>
+						<li id="private-info-link"><a onclick="loadXMLDoc('/user/presenter/dash/?myinfo', '#page-content', 'private' )">Personal</a></li>
+						<li id="sessions-link"> <a onclick="loadXMLDoc('/user/presenter/dash/?mysessions', '#page-content', 'sessions')">Sessions</a></li>
+						<li id="upload-link"><a onclick="loadXMLDoc('/ajax-test/' , '#page-content', 'upload')">Upload</a></li>
+						<li id="record-link"><a onclick="loadXMLDoc('/record/' , '#page-content', 'recorder')">Record</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
 	</div>
-    </div>
-</div>
 
-<div id="page-content">
-
-</div>
-
+	<div class="row"> {# Content for presenter hub goes here #}
+		<div class="col-lg-12">
+			<div id="page-content">
+			</div>
+		</div>
+	</div>
 </div>
 {% endblock %}

@@ -1,64 +1,49 @@
+{% load staticfiles %}
+
+{% block header-content %}
+<script src="{% static 'js/presenter/landing.js' %}"></script>
+{% endblock header-content %}
+
 {% load pds_extras %}
 <div id="page-content">
-
-    <div class="row" style="margin-top:10px">
+    <div class="row">
         <div class="col-lg-3 col-lg-offset-1">
-	    <h4>{{user.first_name}} {{user.last_name}}{% if user.presenter.credentials %}, {{user.presenter.credentials}}{% endif %}</h4>
-	    <p style="margin-left:10px">{{user.profile.address.street_address}}
-	    <br>
-	    {% if user.profile.address.po_box %}P.O. Box {{user.profile.address.po_box}}<br>{% endif %}{{user.profile.address.municipality}} {{user.profile.address.province}} {{user.profile.address.postal_code}}</p>
-	</div>
+			<h4>{{user.first_name}} {{user.last_name}}{% if user.presenter.credentials %}, {{user.presenter.credentials}}{% endif %}</h4>
+			<p style="margin-left:10px">{{user.profile.address.street_address}}
+			<br>
+			{% if user.profile.address.po_box %}P.O. Box {{user.profile.address.po_box}}<br>{% endif %}{{user.profile.address.municipality}} {{user.profile.address.province}} {{user.profile.address.postal_code}}</p>
+		</div> {# address #}
         <div class="col-lg-6">
-	    <h4 >Overview <small>(Cumulative to date)</small></h4>
-	    <table class="table">
-		<tr>
-		    <td>Number of PD Sessions you have listed on PD Squirrel<br><small>{% if edit_count > 0 %}(pending edits: {{edit_count}}){% endif %}</small></td>
+			<h4 >Overview <small>(Cumulative to date)</small></h4>
+			<table class="table">
+				<tr>
+					<td>Number of PD Sessions you have listed on PD Squirrel<br><small>{% if edit_count > 0 %}(pending edits: {{edit_count}}){% endif %}</small></td>
 
-		    <td>{{listed_count}}</td>
-		</tr>
-		<tr>
-		    <td>Number of PD Sessions uploaded by you but not yet listed</td>
-		    <td>{{pending_count}}</td>
-		    
-		</tr>
-		<tr>
-		    <td>Total member takes of all your listed PD Sessions
-		    <a onclick = "showTakesInfo()" id="infoLink">(info ▾)</a></td>
-		    <td>{{takes_count}}</td>
-		</tr>
-		
-	<script>
-		function showTakesInfo() {
-		    $('#takeInfo').toggleClass('hidden');
-
-		    if ($('#infoLink').text() == '(info ▴)') {
-
-			$('#infoLink').text('(info ▾)');
-		    } else {
-			$('#infoLink').text('(info ▴)');
-		    }
-		}
-	</script>
-	    </table>
-<div class="alert alert-info hidden" id="takeInfo">
-			    <p>
-			        One 'take' is the taking of a particular PD Session from the Site by a PD Squirrel member, by way of a single purchase (if the member is a Standard member) or by using a member credit (if a Premium member).
-			    </p>
-			    <div class="row">
-			    <div class="col-xs-12">
-			        <button class="btn btn-default pull-right" onclick="showTakesInfo()">Close</button>
-			    </div>
-			    </div>
+					<td>{{listed_count}}</td>
+				</tr>
+				<tr>
+					<td>Number of PD Sessions uploaded by you but not yet listed</td>
+					<td>{{pending_count}}</td>
+					
+				</tr>
+				<tr>
+					<td>Total member takes of all your listed PD Sessions
+					<a onclick = "showTakesInfo()" id="infoLink">(info ▾)</a></td>
+					<td>{{takes_count}}</td>
+				</tr>	
+			</table>
+			<div class="alert alert-info hidden" id="takeInfo">
+				<p>
+					One 'take' is the taking of a particular PD Session from the Site by a PD Squirrel member, by way of a single purchase (if the member is a Standard member) or by using a member credit (if a Premium member).
+				</p>
+				<div class="row">
+					<div class="col-xs-12">
+						<button class="btn btn-default pull-right" onclick="showTakesInfo()">Close</button>
+					</div>
+				</div>
 			</div>
-	</div>
+		</div>
     </div>
-    
-    
-    
-
-    
-	
-        
-    </div>
+</div>
 
 

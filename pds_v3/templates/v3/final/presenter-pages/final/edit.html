@@ -1,187 +1,169 @@
-<script>
-	$(document).ready(function() {
+{% load staticfiles %}
+{% block header-content %}
+	<script src="{% static 'js/presenter/edit.js' %}"></script>
+	{% endblock header-content %}
 
-	    $('.iclose').click(function() {
-			$('.msg-container').empty();
-			});
-	    });
-
-	</script>
 <div class="row">
-
-<div class="col-xs-9 col-lg-offset-1">
-<div class="msg-container">
-
-                                {% if messages %}
-                                {% for msg in messages %}
-
-                                <div class="alert alert-{{msg.tags}} msg" role="alert">{{msg}} <a href="#"><i class="fa fa-times pull-right iclose"></i></a> </div>
-                                {% endfor %}
-                                {% endif %}
-</div>
-</div>
-	<script>
-			    function showInfo(infolink){
-				row_id = "#info-row";
-				$(row_id).toggleClass("hidden");
-
-				if ($(infolink).text() == '(info ▾)'){
-
-				    $(infolink).text('(info ▴)');
-				    }
-				    else {
-				    $(infolink).text('(info ▾)');
-				    }
-			    }
-			    function closeInfo() {
-				$('#info-row').addClass('hidden');
-				$('#infoLink').text('(info ▾)');
-			    }
-		</script>
-<script>
-			    //file counter gets increased with each upload, resets on page reload.
-			    //adds a div with a label and new file input box to form
-			    //server loops through files
-					var file_counter = 1;
-			    function addAttachment(){
-						if (file_counter < 5) {
-							file_counter++;
-							file_counter_str = file_counter.toString();
-							file_id = '#file-upload-'.concat(file_counter_str)
-							var new_div = '<div class="control-group"><label for="">Attachment #'.concat(file_counter_str).concat('</label><input type="file" class="form-control" name="').concat(file_id).concat('" ></div>');
-							$('#file-upload-container').append(new_div);
-						} else {
-							alert("You have added the maximum number of additional file fields to the form");
-						}
-					}
-function anotherFile() {
-
-$('#addfile').removeClass('hidden');
-}
-
-		</script>
-
-
-<div class="col-lg-9 col-lg-offset-1">
-
-		    <a onclick="loadXMLDoc('/user/presenter/dash/?mysessions', '#page-content')">Back to my sessions</a>
-		    <h4>Use this page to make changes to '{{sesh}}' <small><a class="status-link" id ="infoLink" onclick="showInfo(this)">(info ▾)</a></small></h4>
-<div class="row hidden" id="info-row">
-		    <div class="col-lg-12">
-		        <div class="alert alert-info">
-			    <p>Make changes to your session below. After saving, you have the opportunity to preview your session, via the Sessions tab, before releasing.</p>
-			    <div class="row">
-			        <div class="col-lg-12"><button class="btn btn-default pull-right" onclick="closeInfo()">Close</button></div>
-			    </div>
-			</div>
-		    </div>
+	<div class="col-xs-9 col-lg-offset-1">
+		<div class="msg-container">
+			{% if messages %}
+			{% for msg in messages %}
+			<div class="alert alert-{{msg.tags}} msg" role="alert">{{msg}}<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a></div>
+			{% endfor %}
+			{% endif %}
 		</div>
-
-        <form class="form-horizontal" action="{% url 'edit' sesh.id %}" method = "POST"  enctype="multipart/form-data" >
-            {% csrf_token %}
-            <fieldset>
-                <!-- Form Name -->
-                <!-- Text input-->
-		<div class="row">
-		    <div class="col-lg-8">
-			<div class="control-group">
-			    <label class="control-label" for="name" >Edit title</label>
-			    <div class="controls">
-				<input id="name" name="name" value="{{sesh.name}}" type="text" placeholder="" class="form-control" required="">
-				<p class="help-block">Enter a descriptive title for your session.</p>
-			    </div>
+	</div>
+	<div class="col-lg-9 col-lg-offset-1">
+		<a onclick="loadXMLDoc('/user/presenter/dash/?mysessions', '#page-content')">Back to my sessions</a>
+		<h4>Use this page to make changes to '{{sesh}}' <small><a class="status-link" id ="infoLink" onclick="showInfo(this)">(info ▾)</a></small></h4>
+		<div class="row hidden" id="info-row">
+			<div class="col-lg-12">
+				<div class="alert alert-info">
+					<p>
+						Make changes to your session below. 
+						After saving, you have the opportunity to 
+						preview your session, via the Sessions tab, before releasing.
+					</p>
+					<div class="row">
+						<div class="col-lg-12">
+							<button class="btn btn-default pull-right" onclick="closeInfo()">Close</button>
+						</div>
+					</div>
+				</div>
 			</div>
-		    </div>
-		    <div class="col-lg-4">
-			<div class="control-group">
-
-			    <label class="control-label" for="">Subjects</label>
-			    <div class="controls">
-			    <select multiple class="form-control"  name="subjects">
-				{% for subject in subjects %}
-				    {% if subject in session_subjects %}
-				    <option value="{{subject.id}}" selected>{{subject}}</option>
-				    {% else %}
-				    <option value="{{subject.id}}">{{subject}}</option>
-				    {% endif %}
-				{% endfor %}
-			    </select>
-			    </div>
-			</div>
-		    </div>
 		</div>
-
-
-
-                <!-- Textarea -->
-                <div class="control-group">
-                    <label class="control-label" for="textarea">Edit description</label>
-                    <div class="controls">
-                        <textarea id="description" name="description" class="form-control" rows="15">{{sesh.description}}</textarea>
-                    </div>
-                </div>
-                <!-- File Button -->
-		<div class="control-group">
-
-                    <label for="">Change audio file</label>
-		    <input type="file" class="form-control" name="audio_file">
-
-		    <p class="help-block">If you wish to request that the audio file of this PD Session be changed, attach the file above.</p>
-		</div>
-		<div class="control-group">
-			<div class="control-group">
-				<p class="help-block">Select attachments to delete</p>
-
-				<select multiple id="" name="files_to_delete">
-				{% for attachment in sesh.attachments.all %}
-					<option value="{{ attachment.id }}">
-					{{ attachment.attachment }}
-					{% if attachment.mark_for_delete %}
-						---Marked for Deletion
-					{% endif %}
-					</option>
-				{% endfor %}
-
-				{% for attachment in edit.attachments.all %}
-					<option value="{{ attachment.id }}">
-						{{ attachment.attachment }} --- Recently Uploaded
-						{% if attachment.mark_for_delete %}
-							<p>
-								---Marked for Deletion
+		<form class="form-horizontal" action="{% url 'edit' sesh.id %}" method = "POST"  enctype="multipart/form-data" >
+			{% csrf_token %}
+			<fieldset>
+				<div class="row">
+					<div class="col-lg-8">
+						<div class="control-group">
+							<label class="control-label" for="name" >Edit title</label>
+							<div class="controls">
+								<input id="name" name="name" value="{{sesh.name}}" type="text" placeholder="" class="form-control" required="">
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-4">
+						<div class="control-group">
+							<label class="control-label" for="">Subjects</label>
+							<div class="controls">
+							<select multiple class="form-control"  name="subjects">
+							{% for subject in subjects %}
+								{% if subject in session_subjects %}
+								<option value="{{subject.id}}" selected>{{subject}}</option>
+								{% else %}
+								<option value="{{subject.id}}">{{subject}}</option>
+								{% endif %}
+							{% endfor %}
+							</select>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="control-group">
+							<label class="control-label" for="textarea">Edit description</label>
+							<div class="controls">
+								<textarea id="description" name="description" class="form-control" rows="15">
+									{{sesh.description}}
+								</textarea>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="control-group">
+							<label for="">Change audio file</label>
+							<input type="file" class="form-control" name="audio_file">
+							<p class="help-block">
+								If you wish to request that the audio 
+								file of this PD Session be changed, attach the file above.
 							</p>
-						{% endif %}
-					</option>
-				{% endfor %}
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="control-group">
+							<p class="help-block">Select attachments to delete (if any)</p>
 
-				</select>
-			</div>
+							<select multiple id="" name="files_to_delete">
+							{% for attachment in sesh.attachments.all %}
+								<option value="{{ attachment.id }}">
+								{{ attachment.attachment }}
+								{% if attachment.mark_for_delete %}
+									---Marked for Deletion
+								{% endif %}
+								</option>
+							{% endfor %}
 
-<div id="file-upload-container">
-			    <div class="control-group">
-				<label for="">Optional additional attachment(s)</label>
-				<input type="file" class="form-control" onclick="anotherFile()" name="file-upload-0">
-				<p class="help-block">(Optonal) You may upload attachments to suppliment your PD Session, such as slides or other documents.</p>
-			    </div>
-			</div>
+							{% for attachment in edit.attachments.all %}
+								<option value="{{ attachment.id }}">
+									{{ attachment.attachment }} --- Recently Uploaded
+									{% if attachment.mark_for_delete %}
+										<p>
+											---Marked for Deletion
+										</p>
+									{% endif %}
+								</option>
+							{% endfor %}
+							</select>
+						</div>
+					</div>
+				</div>	
 
-			    <input type="button" onclick="addAttachment()" class="btn btn-primary hidden" id="addfile" style="margin-top:25px" value="Add another file" ></input>
-		</div>
-
-		<div class="checkbox">
-		    <label>
-			<input type="checkbox" name="p-terms" value="true" required><p class="muted">I confirm my continued agreement with the <a href="{% url 'presenter-terms' %}" target="_blank">Presenter Terms and Condidtions.</a></p>
-		    </label>
-		</div>
-                <div class="control-group">
-                    <div class="controls">
-                        <input type="submit" value="Save Requested Changes" class="btn btn-success">
-			<a class="btn btn-default" href="{% url 'presenter-dash' %}?direct_to=sessions">Cancel</a>
-                    </div>
-                </div>
-            </fieldset>
-	    <input type="hidden" name="create-edit"value="!">
-        </form>
-    </div>
-
-
-    </div>
+				<div class="row">
+					<div class="col-lg-12">
+						<div id="file-upload-container">
+							<div class="control-group">
+								<label for="">Optional additional attachment(s)</label>
+								<input type="file" class="form-control" onclick="anotherFile()" name="file-upload-0">
+								<p class="help-block">
+									(Optonal) You may upload attachments 
+									to suppliment your PD Session, such as slides or other documents.
+								</p>
+							</div>
+						</div>
+						<input type="button" onclick="addAttachment()"
+							class="btn btn-primary hidden" id="addfile" 
+							style="margin-top:25px" value="Add another file" >
+						</input>
+					</div>
+				</div>
+				
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="checkbox">
+							<label>
+							<input type="checkbox" name="p-terms" value="true" required>
+								<p class="muted">
+									I confirm my continued agreement with the 
+									<a href="{% url 'presenter-terms' %}" 
+										target="_blank">Presenter Terms and Condidtions.
+									</a>
+								</p>
+							</label>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="control-group">
+							<div class="controls">
+								<input type="submit" value="Save Requested Changes" class="btn btn-success">
+								<a class="btn btn-default" 
+									href="{% url 'presenter-dash' %}?direct_to=sessions">
+									Cancel
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</fieldset>
+			<input type="hidden" name="create-edit"value="!">
+		</form>
+	</div>
+</div>

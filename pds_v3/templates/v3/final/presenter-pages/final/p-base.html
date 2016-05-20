@@ -2,6 +2,10 @@
 {% load staticfiles %}
 {% block body %}
 
+{% block header-metatags %}
+<title>Presenter Hub</title>
+{% endblock header-metatags %}
+
 <link rel="stylesheet" href="{% static 'css/presenter-nav-css.css' %}">
 <script src="{% static 'js/myscript.js' %}"></script>
 <div id="testajax">

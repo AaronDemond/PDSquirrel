@@ -1,11 +1,15 @@
 {% load pds_extras %}
+{% load staticfiles %}
+
+{% block header-scripts %}
+<script src="{% static 'js/presenter/analytics.js' %}"></script>
+{% endblock %}
+
 <div class="analytics-container">
     <div class="row" id="analytics-date">
         <div class="col-lg-9 col-lg-offset-1">
-
     	    <h4 style="margin-bottom: 0">Analytics</h4>
     	    <hr style="margin-top: 10px">
-
     	    <form id="analytics-form" action="{% url 'analytics-report' %}" method="POST">
     	        {% csrf_token %}
     	        <div class="row" style="margin-bottom:20px">
@@ -21,51 +25,10 @@
     	                <input type="hidden" name="date-rng">
     	                <input type="submit" style="margin-top: 25px" class="btn btn-success" onclick="$('#analytics-report').removeClass('hidden')" value="Generate report">
     	            </div>
-
     	        </div>
     	    </form>
-
-
-
         </div>
     </div>
-
-
-
+	<div id="result">
+	</div>
 </div>
-
-    <div id="result">
-
-    </div>
-
-    <script>
-
-
-
-$("#analytics-form").submit(function(event) {
-
-	event.preventDefault();
-	var $form = $(this),
-	start_val = $form.find("input[name='start']").val(),
-	end_val = $form.find("input[name='end']").val(),
-	csrf = $form.find("input[name='csrfmiddlewaretoken']").val(),
-	url = $form.attr("action");
-
-  var start_date = new Date(start_val);
-  var end_date = new Date(end_val);
-  console.log(start_date);
-  console.log(end_date);
-  if (start_date>end_date) {
-    alert("The start date is greater then the end date unable to display report");
-  } else {
-  	var posting = $.post(url, { start: start_val, end: end_val, csrfmiddlewaretoken : csrf } );
-  	posting.done(function(data) {
-  	    $("#result").empty();
-  	    $("#result").append(data);
-  	});
-  }
-});
-
-
-
-    </script>
