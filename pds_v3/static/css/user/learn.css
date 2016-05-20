@@ -21,8 +21,9 @@
 	background-color: aliceblue;
 }
 
-#header {
-  margin-top: 0;
+.my-page-header {
+  margin-top: 0px;
+
 }
 
 .right-plack {

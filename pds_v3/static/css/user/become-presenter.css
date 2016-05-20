@@ -1,0 +1,9 @@
+.plack {
+    width: 400px;
+    border: 5px outset;
+    margin-bottom: 40px;
+}
+
+#mobile-img {
+  width: 100%;
+}
