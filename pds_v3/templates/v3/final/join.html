@@ -1,16 +1,29 @@
 {% extends "v3/final/base/base.html" %}
 {% load staticfiles %}
-{% block body %}
-<style>
-.control-label {
-	color: (85,85,85);
-	font-weight: normal;
-}
+{% block header-metatags %}
+        <title>Join PDSquirrel</title>
+        <meta name=”description” content='Join PDSquirrel today to find all the profressional development you will need'>
+{% endblock header-metatags %}
+{% block header-content %}
+        <link rel="stylesheet" href="{% static 'css/user/join.css' %}">
+				<script src="{% static 'js/user/join.js' %}"></script>
+				<script src='https://www.google.com/recaptcha/api.js'></script>
+				<script type="text/javascript">
+					$('#joinform').submit(function() {
 
-h2 {
-	//font-size: 18px;
-}
-</style>
+					  var auth = {% if user.is_authenticated %}1{% else %}0{% endif %};
+
+					  if (auth == 1) {
+					    alert("please logout before creating a new account");
+					    return false;
+					  }
+
+						error_handler();
+					});
+				</script>
+
+{% endblock header-content %}
+{% block body %}
 <div id="main-content" class="container">
     <div class="row">
         <div class="col-lg-9 col-md-10 col-xs-12 col-lg-offset-1">
@@ -21,18 +34,16 @@ h2 {
                         <!--spits out messages from msg dict (type, body, title) -->
                         {% for m in msg %}
                             <div class="col-xs-12">
-                                <div class="alert alert-{{m.type}}" id = "page-alerts" role="alert">
-	
-                                    <p>
-                                        {{m.body|safe}}
-                                    </p>
+                                <div class="alert alert-{{m.type}}" role="alert">
+																	<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                	{{m.body|safe}}
                                 </div>
                             </div>
                         {% endfor %}
 			{% if user.is_authenticated %}
-			    <div class="col-xs-12" class="" id="auth-problem">
+			    <div class="col-xs-12" id="auth-problem">
                                 <div class="alert alert-danger" id = "page-alerts" role="alert">
-	
+
                                     <p>
 				    You are already signed in. Please signout before creating a new account.
                                     </p>
@@ -57,7 +68,7 @@ h2 {
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="form-group" id="name">
-                            <label for="inputEmail3" class="col-sm-2 control-label" style="font-weight: normal">Name</label>
+                            <label for="inputEmail3" class="col-sm-2 control-label">Name</label>
                             <div class="col-sm-5"><input type="text" id="first_name" value = "{{ first_name }}" name = "first_name" placeholder="First name" class="form-control"></div>
                             <div class="visible-xs"><br></div>
                             <div class="col-sm-5">
@@ -92,7 +103,7 @@ h2 {
                             <label for="inputPassword3" class="col-sm-2 control-label">Member Of</label>
                             <div class="col-sm-10">
                                 {{form.society}}
-                                <select id="" name="society" class="form-control">
+                                <select name="society" class="form-control">
                                 {% for x in societies %}
 				<option value={{x.id}}>{{x}}</option>
                                 {% endfor %}
@@ -118,28 +129,24 @@ h2 {
                     </div>
                     <div class="col-sm-1"></div>
                 </div>
-                
+
                 <div class="row">
                     <div class="col-xs-12">
                         <h3>Create your account</h3>
                         <hr>
                     </div>
                 </div>
-                
+
                 <div class="row">
                     <div class="col-xs-12 col-sm-10 col-sm-offset-2">
-			<div class="form-group" id = "term-div" style="padding-bottom: 0; margin-bottom: 0;">
-			    <div class="checkbox" id="termdiv" style="padding-left: 15px;">
+			<div class="form-group" id = "term-div" >
+			    <div class="checkbox" id="termdiv" >
 				<label>
-					<span style = "color: black"><input id="termbox" type="checkbox" name ="terms">By checking here, I acknowledge that I have reviewed and agree to the <a href="{% url 'terms' %}" target="_blank">PD Squirrel terms and conditions.</a> After you click submit, we will send you an email confirming the creation of your account. Welcome to PD Squirrel.
+					<span id="darken"><input id="termbox" type="checkbox" name ="terms">By checking here, I acknowledge that I have reviewed and agree to the <a href="{% url 'terms' %}" target="_blank">PD Squirrel terms and conditions.</a> After you click submit, we will send you an email confirming the creation of your account. Welcome to PD Squirrel.
 				</label>
 			    </div>
 			</div>
                         <br>
-                    </div>
-		    <div class="col-xs-12 col-sm-offset-2" style = " margin-top: 0; padding-top: 0">
-		    </div>
-                    <div class="col-sm-6">
                     </div>
 		    <div class="col-xs-12">
 <p class="text-center">
@@ -151,7 +158,7 @@ h2 {
                 </div>
             </form>
         </div>
-	
+
     </div>
 </div>
 
@@ -159,7 +166,7 @@ h2 {
 <!-- Modal -->
   <div class="modal fade" id="myModal" role="dialog">
     <div class="modal-dialog">
-    
+
       <!-- Modal content-->
       <div class="modal-content">
         <div class="modal-header">
@@ -173,85 +180,10 @@ h2 {
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         </div>
       </div>
-      
+
     </div>
   </div>
 
 <button id= "example" type="button" class="hidden" data-toggle="modal" data-target="#myModal">Open Modal</button>
 
-<script>
-function ref(){
-$( "#capdiv" ).load( "/cap_ref/" );
-}
-</script>
-
-
-
-
-
-
-<script type="text/javascript">
-    $('#joinform').submit(function() {
-
-	var auth = {% if user.is_authenticated %}1{% else %}0{% endif %};
-	
-	if (auth == 1) {
-	alert("please logout before creating a new account");
-	return false;
-	}
-		
-	$('#term-help').remove();
-	$('#page-alerts').empty();
-	$('#page-alerts').addClass("hidden");
-            var error = 0;
-    	    var p_error = 0;
-          if ( $('#email').val() == "" || $('#first_name').val() == "" || $('#last_name').val() == "" || $('#email').val() == "" || $('#vemail').val() == "" || $('#id_captcha_0').val() == "" || $('#termbox').is(':checked') == 0) {
-		$('#example').click();
-		error++;
-	}
-	if ( $('#termbox').is(':checked') == 0 ) {
-            $('#termdiv').append("<p class=\"bg-danger\" id = \"term-help\" style=\"background-color: white; font-size: 1.2em; color: rgb(169, 68, 66); font-weight: bold\" c>You must accept the terms and conditions to use PD Squirrel</p>");
-	}
- 
-      $('.help-block').remove(); 
-      $('.form-group').removeClass('has-error');
-      if ( $('#email').val() != $('#vemail').val() ) {
-            $('#emailgroup').addClass("has-error");
-            $('#vemailgroup').addClass("has-error");
-            $('#emailgroup').append("<span id=\"emailhelp\" class=\"help-block\">Emails do not match</span>");
-            $('#vemailgroup').append("<span id=\"vemailhelp\" class=\"help-block\">Emails do not match</span>");
-            error++;
-            }
-      if ( $('#pass').val() != $('#vpass').val() ) {
-            $('#passgroup').addClass("has-error");
-            $('vpassgroup').addClass("has-error");
-            $('#passgroup').append("<span id=\"passmatchhelp\" class=\"help-block\">Passwords do not match</span>");
-            $('#vpassgroup').append("<span class=\"help-block\">Passwords do not match</span>");
-            p_error++;
-            error++;
-      }
-    
-      if ( $('#pass').val().length < 8 ) {
-            p_error++;
-            error++;
-            $('#passgroup').addClass("has-error");
-            $('#passgroup').append("<span id=\"passlenhelp\" class=\"help-block\">Password must be over 8 characters long</span>");
-      }
-   
-      if (error > 0) {
-         return false;
-      } else {
-          return true;
-      }
-    
-    });
-</script>
-<script>
-function addStep() {
-	if ($('first_name').val() == 0) {
-		alert('Enter first name');
-	}
-}
-</script>
 {% endblock %}
-

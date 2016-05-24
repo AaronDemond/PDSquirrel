@@ -5,11 +5,6 @@
         <meta name=”description” content='Find out how to become a presenter with PDSquirrel'>
 {% endblock header-metatags %}
 {% block header-content %}
-        <script>
-      	function showFormula(){
-      	    $('#formula').toggleClass('hidden');
-      	}
-        </script>
         <link rel="stylesheet" href="{% static 'css/user/become-presenter.css' %}">
         <link rel="stylesheet" href="{% static 'css/inforow.css' %}">
 {% endblock header-content %}
@@ -118,7 +113,7 @@
 
 		    <div class="row info-row hidden-xs info-row-color-2"> <!-- Earn row-->
 		        <div class="col-sm-7 col-xs-12" >
-					<img id="mobile-img" class="plack" src="{% static 'img/learn/detail.png' %}" alt="">
+					<img id= class="plack" src="{% static 'img/learn/detail.png' %}" width="100%" alt="">
 		        </div>
 		        <div class="col-sm-5 col-xs-12">
 				<p>
@@ -148,7 +143,11 @@
 	Each time we accept and list a PD Session, we confirm our agreement with that Presenter which states we will pay royalties pursuant to an agreed schedule. At any given time, the royalty schedule is the same for all Presenters. We will never change the royalty schedule that applies to any PD Session that has already been accepted by us and listed on the Site. More details are provided in our Presenter Package
 	</p>
     </div>
-
+<script>
+	function showFormula(){
+	    $('#formula').toggleClass('hidden');
+	}
+    </script>
 
     <p>
     <a href="{% url 'contact-us' %}?from_pres=1">Contact us</a> today for your presenter package.

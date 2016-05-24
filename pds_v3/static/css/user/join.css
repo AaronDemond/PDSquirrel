@@ -1,0 +1,17 @@
+.control-label {
+	color: (85,85,85);
+	font-weight: normal;
+}
+
+#term-div {
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+
+#termdiv {
+  padding-left: 15px;
+}
+
+#darken {
+  color: black;
+}
