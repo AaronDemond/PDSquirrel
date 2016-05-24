@@ -287,8 +287,8 @@ def dash(request, msg=False):
                 subjects = request.POST.getlist('subject')
 
 
-                pdaud = int(request.POST['recording'])
-                if pdaud > 0:
+                pdaud = request.POST.get('recording', False)
+                if pdaud:
                     pdaud = PdAudio.objects.get(pk=int(pdaud))
                     pdaud.used = True
                     pdaud.save();
@@ -302,6 +302,8 @@ def dash(request, msg=False):
                         messages.add_message(request, messages.ERROR, 'Please upload the correct file type')
                         return HttpResponseRedirect('/user/presenter/dash/?direct_to=upload')
 
+                    new_session = PdSession(name=pd_name,description=pd_description, audio_file=audio_file, approved=False)
+                    new_session.save()
 
 
                     #get length if it is mp3.. need to convert wav
