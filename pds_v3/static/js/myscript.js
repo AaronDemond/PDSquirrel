@@ -6,8 +6,7 @@ $(document).ready(function() {
     });
 });
 
-function loadXMLDoc(url,div, direct_to)
-{
+function loadXMLDoc(url,div, direct_to) {
 	$.get(url, function( data ) {
 		$(div).html( data );
 	});

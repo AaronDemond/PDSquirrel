@@ -2,9 +2,6 @@
 {% load staticfiles %}
 {% block body %}
 <style>
-.white-tile-img {
-    border: 4px solid white;
-}
 .credentials {
     color: grey;
     margin-top: 0px;
@@ -26,7 +23,7 @@
 					{# if no img uploaded by user, pull one of two placeholders #}
 					{# tested: no #}
 					{% if presenter.image %}
-					src="/static/presenter_pics/{{presenter.image_name}}" 
+					src="/static/presenter_pics/{{presenter.image_name}}"
 					{% else %}
 						{% if presenter.placeholder_type == 0 %}
 							src="{{presenter.female_placeholder}}"
@@ -34,7 +31,7 @@
 							src="{{presenter.male_placeholder}}"
 						{% endif %}
 					{% endif %}
-					style="margin-bottom: 20px; -webkit-box-shadow: 0 1px 1px rgba(0,0,0,0.15),-1px 0 0 rgba(0,0,0,0.03),1px 0 0 rgba(0,0,0,0.03),0 1px 0 rgba(0,0,0,0.12)" 
+					style="margin-bottom: 20px; -webkit-box-shadow: 0 1px 1px rgba(0,0,0,0.15),-1px 0 0 rgba(0,0,0,0.03),1px 0 0 rgba(0,0,0,0.03),0 1px 0 rgba(0,0,0,0.12)"
 					alt="" width="90%" />
 					<br>
 					<ul style="list-style-type: none; padding-left: 10px">
@@ -43,7 +40,7 @@
 						</li>
 
 						{% if presenter.public_email %}
-						<li>{{presenter.public_email}}</li>
+						<li>{{ presenter.public_email }}</li>
 						{% endif %}
 
 						{% if presenter.url %}
@@ -54,14 +51,14 @@
                 <div class="col-sm-8" id="pres-header">
 		    		<br>
 					<div style="padding-left: 15px; padding-right: 15px">
-						<h2 class="name">{{presenter}}</h2>
+						<h2 class="name">{{ presenter }}</h2>
 						<h4 class="credentials">{% if presenter.credentials %}{{presenter.credentials}}{%endif%}</h4>
 					</div>
 					<div style="margin-top:20px; padding-top:10px;">
 						<p style="margin-left: 20px">{{bio}}</p>
 					</div>
                 </div>
-            </div>	
+            </div>
 			<div class="row">
 				<div class="col-md-8 col-lg-6 col-xs-12">
 					<h4>Sessions by this presenter </h4>
