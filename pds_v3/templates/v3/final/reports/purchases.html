@@ -1,9 +1,13 @@
 {% extends "v3/final/base/base.html" %}
 {% load staticfiles %}
 {% load pds_extras %}
-{% block body %}
+{% block header-metatags %}
+        <title>PDSquirrel Purchase Report</title>
+        <meta name=”description” content='View your report on all your purchases with Pdsquirrel'>
+{% endblock header-metatags %}
+{% block header-content %}
 <style>
-td { 
+td {
 	margin-right: 20px;
 	padding-right: 20px;
 }
@@ -11,7 +15,10 @@ td {
 	font-weight: bold;
 }
 </style>
-<div class="container" id = "main-content"> 
+{% endblock header-content %}
+{% block body %}
+
+<div class="container" id = "main-content">
 	<div class="row">
 		<div class="col-xs-12">
 			<table class="">
@@ -46,7 +53,7 @@ td {
 	<div class="row">
 		<div class="col-xs-12">
 			<hr>
-			
+
 			<h4>CPD from PD Squirrel Inc.</h4>
 			<table class="table">
 				<thead>
@@ -93,4 +100,3 @@ td {
 	</div>
 </div>
 {% endblock %}
-

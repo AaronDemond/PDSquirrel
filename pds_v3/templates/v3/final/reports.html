@@ -1,14 +1,18 @@
 {% extends "v3/final/base/base.html" %}
 {% load staticfiles %}
+{% block header-metatags %}
+        <title>PDSquirrel Reports</title>
+        <meta name=”description” content='View your Pdsquirrel reports'>
+{% endblock header-metatags %}
 {% block body %}
 
 
 <div id="main-content" class="container">
     <div class="row">
         <div class="col-lg-9 col-lg-offset-1">
-                <h3 class="my-page-header">Reports<small></small></h3>
+                <h3 class="my-page-header">Reports</h3>
 		<hr>
-		
+
 <ul>
 			<li><a href="{% url 'purchase-report' %}">Purchases</a></li>
 		</ul>
