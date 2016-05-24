@@ -1,70 +1,18 @@
 {% extends "v3/final/base/base.html" %}
 {% load staticfiles %}
-{% block body %}
 {% load pds_extras %}
-<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
-<script>
-    Stripe.setPublishableKey('pk_test_URIzgmhYoVYuzDm9Q98RHkIQ');
-    jQuery(function($) {
-      $('#payment-form').submit(function(event) {
-        var $form = $(this);
+{% block header-metatags %}
+        <title>PDSquirrel Account Options</title>
+        <meta name=”description” content='View and modify your account information with PDSquirrel'>
+{% endblock header-metatags %}
+{% block header-content %}
+        <link rel="stylesheet" href="{% static 'css/user/account-options.css' %}">
+        <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+				<script src="{% static 'js/user/account-options.js' %}"></script>
 
-        // Disable the submit button to prevent repeated clicks
-        $form.find('button').prop('disabled', true);
+{% endblock header-content %}
+{% block body %}
 
-        Stripe.card.createToken($form, stripeResponseHandler);
-
-        // Prevent the form from Sessiange pn with the default action
-        return false;
-      });
-    });
-
-    function stripeResponseHandler(status, response) {
-      var $form = $('#payment-form');
-
-      if (response.error) {
-        // Show the errors on the form
-        $form.find('.payment-errors').text(response.error.message);
-        $form.find('button').prop('disabled', false);
-      } else {
-        // response contains id and card, which contains additional card details
-        var token = response.id;
-        // Insert the token into the form so it gets submitted to the server
-        $form.append($('<input type="hidden" name="stripeToken" />').val(token));
-
-
-        // and submit
-        $form.get(0).submit();
-      }
-    };
-</script>
-<style>
-    td {
-    font-size: 14px;
-    height: 20px;
-    padding: 0px;
-    }
-    b {
-    font-size: 14px;
-    line-height: auto;
-    }
-    .low-space td {
-    padding: 0px;
-    }
-    tr {
-    }
-    td {
-	width: 200px !important;
-    }
-    h3 {
-	margin-bottom: 20px;
-    }
-
-    #account_options {
-	margin-top: 20px;
-	background-color: white;
-    }
-</style>
 <div class="container">
     <div class="row">
         <div class="col-xs-12">
@@ -113,74 +61,31 @@ We use the services of Stripe, with which we have a merchant agreement, to recei
                         </div>
                     </div>
                 </div>
-                <script>
-                    function makeEmailVisible(){
-                    $('#email-confirm-td').removeClass("hidden");
-                    $('#email').removeAttr("disabled");
-                    $('#email-box-2').removeAttr("disabled");
-                        $('#type').val("email");
-                    }
-
-                    function makePassVisible(){
-                    $('#pass-box-1').removeAttr("disabled");
-                    $('#pass-box-2').removeAttr("disabled");
-                    $('#pass-box-3').removeAttr("disabled");
-                    $('#pass-confirm-td').removeClass("hidden");
-                    $('#pass-auth-tr').removeClass("hidden");
-                        $('#type').val("password");
-                    }
-
-                    function makeVisible(id){
-                    $('#save-btn').removeAttr("");
-                    $('#save-btn').removeClass("hidden");
-
-                    if (id == first_name)
-                    $('#first_name').removeAttr("");
-                    if (id == last_name)
-                    $('#last_name').removeAttr("");
-                    if (id == email) {
-
-                    $('#email-confirm-td').removeClass("hidden");
-                    $('#email-box-2').removeAttr("disabled");
-                    $('#email-box-2').removeAttr("");
-                    $('#email-box-2').addClass("hidden");
-
-                    }
-                    if (id == 4) {
-                    $('#pass-box-1').removeAttr("disabled");
-                    $('#pass-box-2').removeAttr("disabled");
-                    $('#pass-box-3').removeAttr("disabled");
-                    $('#pass-confirm-td').removeClass("hidden");
-                    $('#pass-auth-tr').removeClass("hidden");
-                    }
-                    if (id == 5)
-                    $('#society').removeAttr("");
-
-                    }
-                </script>
                 {% csrf_token %}
-		<style>
-		    .col1 {
-			color: grey;
-		    }
 
-
-		</style>
                 <div class="container">
                     <div class="row">
 
 
-                        <div class="col-lg-9 col-lg-offset-1" style="padding-left: 0;margin-top:20px">
-                            {% if messages %}
-                            {% for msg in messages %}
-                            <div class="alert alert-{{msg.tags}} msg" role="alert">{{msg}} <a href="#"><i class="fa fa-times pull-right iclose"></i></a> </div>
-                            {% endfor %}
-                            {% endif %}
+                        <div id="error-container" class="col-lg-9 col-lg-offset-1">
+                          {% if messages %}
+                  				{% for msg in messages %}
+                  					<div class="alert alert-{{msg.tags}} msg" role="alert">
+                  						<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                  						{{ msg }}
+                  					</div>
+                  				{% endfor %}
+                  				{% endif %}
                             {% if msgs %}
                             {% for msg in msgs %}
-                            <div class="alert alert-{{msg.0}} msg" role="alert">{{msg.1}} <a href="#"><i class="fa fa-times pull-right iclose"></i></a> </div>
+                            <div class="alert alert-{{msg.0}} msg" role="alert">
+                              <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                              {{ msg.1 }}
+                            </div>
+
                             {% endfor %}
                             {% endif %}
+                          </div>
                             <p class="bg-info">{{msg}}</p>
                             <h3>My Account<small></small></h3>
                             <table class="table">
@@ -195,9 +100,9 @@ We use the services of Stripe, with which we have a merchant agreement, to recei
                                 <tr>
                                     <td class='col1'>Law society</td>
                                     <td>
-                                            {% for x in user.profile.society.all %}
-                                            <p style="margin: 0;">{{x}}</p>
-                                            {% endfor %}
+
+                                            {{ user.profile.society.all | join:", " }}
+
                                     </td>
                                 </tr>
                                 <tr>
@@ -208,18 +113,19 @@ We use the services of Stripe, with which we have a merchant agreement, to recei
                                     <td class='col1'>My cards <a onclick="showPaymentInfo()">(more information)</a></td>
                                     <td id="card-cell">
                                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Add Card</button>
+                                </tr>
 										<hr>
 
 										<ul class="list-group">
 											{% for x in customer.sources.data %}
-												<li class="list-group-item" style="clear: both; height: 55px">
-													<p style="float: left">
+												<li id="delete-card" class="list-group-item">
+													<p class="pull-left">
 														{{x.brand}} **** **** **** {{ x.last4 }}
 													</p>
-													<form action = "{% url 'delcard' %}" class="delform" style="float: left; margin-left: 10px" method="POST">
+													<form id="delete-card-form" action = "{% url 'delcard' %}" class="delform"  method="POST">
 														{% csrf_token %}
 														<input type="hidden" value="{{x.id}}" name="cardid">
-														<input type="submit" class="btn btn-default" id="delete-btn" value="Remove Card">
+														<input type="submit" id="delete-btn" class="btn btn-default"  value="Remove Card">
 													</form>
 												</li>
                                         	{% endfor %}
@@ -227,11 +133,6 @@ We use the services of Stripe, with which we have a merchant agreement, to recei
                                     </td>
                                 </tr>
                             </table>
-                            <script>
-                                $(document).ready(function(){
-                                    $('[data-toggle="tooltip"]').tooltip();
-                                });
-                            </script>
                             <div class="alert alert-info hidden" id="payment-info">
 				<p>
 				We use the services of Stripe Payments Canada, Ltd., with which we have a merchant agreement, to receive and process payments from our PD Squirrel members. None of your credit card information is stored on our servers, except only the four last digits for your reference purposes only. Instead we receive from Stripe only an electronic token which we use to charge the appropriate payment to your card. Learn more about Stripe by clicking <a target="_blank" href="https://stripe.com/ca">here.</a></p>
@@ -240,66 +141,11 @@ We use the services of Stripe, with which we have a merchant agreement, to recei
                                 <div class="row">
                                     <div class="col-xs-12">
                                         <p class="pull-right">
-                                            <button class="btn btn-default" onclick="showPaymentInfo()" style="margin-top: 10px;">Cancel</button>
+                                            <button id="showPayment" class="btn btn-default" onclick="showPaymentInfo()" >Cancel</button>
                                         </p>
                                     </div>
                                 </div>
                             </div>
-                            <script>
-                                $(".delform").submit(function() {
-                                var c = confirm("Are you sure you want to remove this card?");
-                                return c;
-                                });
-                                function showPaymentInfo() {
-
-								  $('#change-default').addClass('hidden');
-				  $("#btnholder").empty();
-                                  $('#credit-info').addClass('hidden');
-                                  $('#change-membership').addClass('hidden');
-				  $('#membership-type-info').addClass('hidden');
-                                  $('#payment-info').toggleClass('hidden');
-                                }
-								function showChangeDefault() {
-                                  $('#change-membership').addClass('hidden');
-				  				  $('#membership-type-info').addClass('hidden');
-                                  $('#payment-info').addClass('hidden');
-                                  $('#credit-info').addClass('hidden');
-								  $('#change-default').toggleClass('hidden');
-
-								}
-                                function showCreditInfo() {
-
-								  $('#change-default').addClass('hidden');
-				  				  $("#btnholder").empty();
-                                  $('#change-membership').addClass('hidden');
-				  				  $('#membership-type-info').addClass('hidden');
-                                  $('#payment-info').addClass('hidden');
-                                  $('#credit-info').toggleClass('hidden');
-                                }
-                                function showChangeMembership() {
-								  $('#change-default').addClass('hidden');
-				  				$("#btnholder").empty();
-                                  $('#payment-info').addClass('hidden');
-				  				$('#membership-type-info').addClass('hidden');
-                                  $('#credit-info').addClass('hidden');
-                                  $('#change-membership').toggleClass('hidden');
-                                }
-				function showMembershipTypeInfo() {
-								  $('#change-default').addClass('hidden');
-				  $("#btnholder").empty();
-                                  $('#payment-info').addClass('hidden');
-                                  $('#credit-info').addClass('hidden');
-                                  $('#change-membership').addClass('hidden');
-				  $('#membership-type-info').toggleClass('hidden');
-
-				}
-
-                            </script>
-			    <style>
-			    .alert-info {
-				margin-top:10px;
-			    }
-			    </style>
                             <h3>My Membership<small></small></h3>
                             <table class="table">
                                 <tr>
@@ -397,7 +243,7 @@ pay no monthly fee.
 					    <div class="row">
 						<div class="col-xs-12">
 						    <p class="pull-right">
-							<button class="btn btn-default" onclick="showCreditInfo()" style="margin-top: 10px;">Cancel</button>
+							<button id="showCredit" class="btn btn-default" onclick="showCreditInfo()">Cancel</button>
 						    </p>
 						</div>
 					    </div>
@@ -426,7 +272,7 @@ pay no monthly fee.
                             </div>
 							<div id="change-default" class="row hidden">
 								<div class="col-xs-12">
-									<div class="alert alert-info" style="height: 130px">
+									<div id="change-default-sub-container" class="alert alert-info">
 										<form action="{% url 'update-payment' %}" method="POST">
 											<label for="">Update default payment method</label>
 											<select id="" name="card_id">
@@ -534,29 +380,11 @@ your continued agreement to the terms and conditions of Site use.
                                             <button onclick="showChangeMembership()" class="btn btn-default">Cancel</button>
                                         </p>
 
-					<div id="btnholder" style="margin-top: 10px;">
+					<div id="btnholder">
 					</div>
                                     </div>
                                 </div>
                             </div>
-
-                            <!-- If you're using Stripe for payments -->
-                            <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
-                            <script>
-                                $(".memsubmit").click(function() {
-					$("#btnholder").empty();
-					$("#btnholder").append("<button id='memsubform' onclick='memsubform()' class='btn btn-success'>Confirm</button>");
-                                    //$("#memform").submit();
-                                });
-				function memsubform() {
-                                    $("#memform").submit();
-				}
-
-                                $(".iclose").click(function() {
-                                    $(".msg").toggleClass('hidden');
-                                });
-
-                            </script>
                     <div class="row">
                         <div class="col-xs-12">
                             <h3>Make Changes <small> Click on the pencil icon to edit</small></h3>

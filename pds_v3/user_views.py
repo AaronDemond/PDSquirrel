@@ -330,7 +330,7 @@ def change_membership(request):
 
             messages.add_message(request, messages.SUCCESS, "You are now a premium user. Thanks for choosing us!")
 
-    
+
     appuser.save()
     return HttpResponseRedirect('/user/options/')
 
