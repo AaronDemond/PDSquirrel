@@ -172,20 +172,6 @@
 
 {% endblock %}
 {% block footer-content %}
-
 <script src='https://www.google.com/recaptcha/api.js'></script>
-<script type="text/javascript">
-  $('#joinform').submit(function() {
-
-    var auth = {% if user.is_authenticated %}1{% else %}0{% endif %};
-
-    if (auth == 1) {
-      alert("please logout before creating a new account");
-      return false;
-    }
-
-    error_handler();
-  });
-</script>
 <script src="{% static 'js/user/join.js' %}"></script>
 {% endblock footer-content %}

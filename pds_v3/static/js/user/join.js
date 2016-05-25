@@ -3,9 +3,9 @@
 function ref(){
   $( "#capdiv" ).load( "/cap_ref/" );
 }
-
+$('#joinform').submit(function() {
 // error handler for submitting the join form
-function error_handler() {
+
 
   $('#term-help').remove();
   $('#page-alerts').empty();
@@ -52,4 +52,4 @@ function error_handler() {
       return true;
   }
 
-};
+});
