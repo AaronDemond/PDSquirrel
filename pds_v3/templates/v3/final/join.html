@@ -45,7 +45,7 @@
 						</div>
 					</div>
                     <div class="col-xs-12">
-                        <h3 class="my-page-header">Set up your account</h4>
+                        <h3 class="my-page-header">Set up your account</h3>
                         <hr />
                     </div>
                 </div>
@@ -53,7 +53,9 @@
                     <div class="col-sm-12">
                         <div class="form-group" id="name">
                             <label for="inputEmail3" class="col-sm-2 control-label">Name</label>
-                            <div class="col-sm-5"><input type="text" id="first_name" value = "{{ first_name }}" name = "first_name" placeholder="First name" class="form-control"></div>
+                            <div class="col-sm-5">
+                              <input type="text" id="first_name" value = "{{ first_name }}" name = "first_name" placeholder="First name" class="form-control">
+                            </div>
                             <div class="visible-xs"><br></div>
                             <div class="col-sm-5">
                                 <input type="text" name = "last_name" value="{{last_name}}" id="last_name" placeholder="Last name" class="form-control">
@@ -94,39 +96,24 @@
                                 </select>
                             </div>
                         </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-12">
-                        <h3>Prove you're not a robot</h3>
-                        <hr>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-1"></div>
-                    <div class="col-sm-10">
-                        <div id="capdiv">
 
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div>
                             {{form}}
                         </div>
                         <a onclick="ref()">Refresh Captcha</a>
                     </div>
                     <div class="col-sm-1"></div>
                 </div>
-
                 <div class="row">
-                    <div class="col-xs-12">
-                        <h3>Create your account</h3>
-                        <hr>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-xs-12 col-sm-10 col-sm-offset-2">
+                    <div class="col-xs-12 col-sm-8 col-sm-offset-2">
 			<div class="form-group" id = "term-div" >
 			    <div class="checkbox" id="termdiv" >
 				<label>
-					<span id="darken"><input id="termbox" type="checkbox" name ="terms">By checking here, I acknowledge that I have reviewed and agree to the <a href="{% url 'terms' %}" target="_blank">PD Squirrel terms and conditions.</a> After you click submit, we will send you an email confirming the creation of your account. Welcome to PD Squirrel.
+					<span id="darken"><input id="termbox" type="checkbox" name ="terms">By checking here, I acknowledge that I have reviewed and agree to the <a href="{% url 'terms' %}" target="_blank">PD Squirrel terms and conditions.</a> After you click submit, we will send you an email confirming the creation of your account. Welcome to PD Squirrel.</span>
 				</label>
 			    </div>
 			</div>
@@ -146,29 +133,6 @@
     </div>
 </div>
 
-
-<!-- Modal -->
-  <div class="modal fade" id="myModal" role="dialog">
-    <div class="modal-dialog">
-
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Input Error</h4>
-        </div>
-        <div class="modal-body">
-          <p>Please fill out all fields before submitting the form.</p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-<button id= "example" type="button" class="hidden" data-toggle="modal" data-target="#myModal">Open Modal</button>
 
 {% endblock %}
 {% block footer-content %}
