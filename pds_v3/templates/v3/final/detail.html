@@ -7,9 +7,6 @@
 {% endblock header-metatags %}
 {% block header-content %}
         <link rel="stylesheet" href="{% static 'css/user/detail.css' %}">
-
-				<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
-				<script type="text/javascript" src="{% static 'js/user/detail.js' %}"></script>
 {% endblock header-content %}
 {% block body %}
 
@@ -248,6 +245,8 @@
 </div>
 
 {% endblock %}
-{% block bottom-scripts %}
-{% debug %}
-{% endblock %}
+
+{% block footer-content %}
+<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+<script type="text/javascript" src="{% static 'js/user/detail.js' %}"></script>
+{% endblock footer-content %}

@@ -1,5 +1,9 @@
 {% extends "v3/final/base/base.html" %}
 {% load staticfiles %}
+{% block header-metatags %}
+        <title>PDSquirrel {{ pd.name }}s accreditation</title>
+        <meta name=”description” content='Learn about {{ pd.name }}s accreditation'>
+{% endblock header-metatags %}
 {% block body %}
 <div id="main-content" class="container">
     <div class="row">
@@ -54,7 +58,8 @@
 
 	</div>
     </div>
-    <script src="{% static 'pd/js/user/accred.js' %}"></script>
-    <script src="{% static 'pd/js/jquery.min.js' %}"></script>
 </div>
 {% endblock body %}
+{% block footer-content %}
+<script src="{% static 'js/user/accred.js' %}"></script>
+{% endblock footer-content %}

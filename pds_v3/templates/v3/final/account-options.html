@@ -7,9 +7,6 @@
 {% endblock header-metatags %}
 {% block header-content %}
         <link rel="stylesheet" href="{% static 'css/user/account-options.css' %}">
-        <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
-				<script src="{% static 'js/user/account-options.js' %}"></script>
-
 {% endblock header-content %}
 {% block body %}
 
@@ -472,3 +469,7 @@ your continued agreement to the terms and conditions of Site use.
     </div>
 </div>
 {% endblock body %}
+{% block footer-content %}
+<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+<script src="{% static 'js/user/account-options.js' %}"></script>
+{% endblock footer-content %}
