@@ -5,6 +5,7 @@
     jQuery(function($) {
       $('#payment-form').submit(function(event) {
         var $form = $(this);
+		var $url = $form.attr('action');
 
 		if (document.getElementById('e_card').checked == true) {
 			event.preventDefault();
@@ -12,7 +13,7 @@
 			console.log('existing card used');
 			$.ajax({
 				type: "POST",
-				url: "{% url 'payment-process' %}",
+				url:	$url,
 				data: $form.serialize(),
 			}).done(function(data) {
 				$form.append(data);
@@ -50,7 +51,7 @@
         // and submit
 		$.ajax({
 			type: "POST",
-			url: "{% url 'payment-process' %}",
+			url:	$url,
 			data: $form.serialize(),
 		}).done(function(data) {
 			$form.append(data);

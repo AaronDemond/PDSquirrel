@@ -1,17 +1,12 @@
+{% load staticfiles %}
+<link rel="stylesheet" href="{% static 'css/presenter/presenter-hub.css' %}">
 
-
-
-<script>
-    $('a').click(function() {
-        $('.msg-container').empty();
-    });
-</script>
 <div class="row">
 		<div class="col-lg-9 col-lg-offset-1">
 			<div class="msg-container">
 			    {% if messages %}
 			    {% for msg in messages %}
-			    <div class="alert alert-{{msg.tags}} msg" role="alert">{{msg}} <a href="#"><i class="fa fa-times pull-right iclose"></i></a> </div>
+				<div class="alert alert-{{msg.tags}} msg" role="alert">{{msg}}<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a></div>
 			    {% endfor %}
 			    {% endif %}
 			</div>
@@ -19,21 +14,14 @@
 </div>
 <div class="row">
     <div class="col-lg-9 col-lg-offset-1">
-    <style>
-label {
-    font-weight: bold;
-    color: #717171; 
-    color: #478857;
-}
-    </style>
     {% if presenter.bio %}
-    <h4>Use this page to change your bio information <small><a href="{%url 'presenter-detail' presenter.id %}" target="_blank">(click here to see your existing bio page)</a></small></h4>
+    <h4>Use this page to change your bio information 
+		<small><a href="{%url 'presenter-detail' presenter.id %}" target="_blank">(click here to see your existing bio page)</a></small>
+	</h4>
     {% else %}
     <h4>Use this page to upload your bio <small>You can always make changes in the future.</small></h4>
     {% endif %}
     <hr>
-    
-    
     <form action="{% url 'presenter-dash' %}" method="POST" enctype="multipart/form-data" >
 	{% csrf_token %}
 	<input type="hidden" name="edit-pres-public" value="1">
@@ -62,26 +50,18 @@ label {
 				{% endif %}
 			</div>
 	    </div>
-	<div class="control-group" style="margin-top:10px">
-	    <label for="">Bio</label>
-	    <textarea class="form-control"id="" name="bio" cols="30" rows="10">{{presenter.bio}}</textarea>
-	</div>
-	
-	
-    
-
-    
-	    <div class="control-group">
-	        <input type="submit" class="btn btn-success submit-fix">
-		<a class="btn btn-default" href="{% url 'presenter-dash' %}" style="margin-top: 10;">Cancel</a>
-	    </div>
-	
-	
-	
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="control-group">
+					<label for="">Bio</label>
+					<textarea class="form-control"id="" name="bio" cols="30" rows="10">{{presenter.bio}}</textarea>
+				</div>
+				<div class="control-group">
+					<input type="submit" class="btn btn-success submit-fix">
+					<a class="btn btn-default submit-fix" href="{% url 'presenter-dash' %}">Cancel</a>
+				</div>
+			</div>
+		</div>
     </form>
-    </div>
-    <style>
-    </style>
+   </div>
 </div>
-
-

@@ -18,7 +18,7 @@
 		<h3>{{ pd }}</h3>
 		<p id="payment-method" class="help-text">Select a payment method</h4>
 		<hr>
-		<form method="POST" id="payment-form">
+		<form method="POST" id="payment-form" action="{% url 'payment-process' %}">
 
 					{% csrf_token %}
 			<input type="hidden" name="pd_id" value="{{ pd.id }}">
