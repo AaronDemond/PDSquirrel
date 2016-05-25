@@ -7,8 +7,9 @@ b {
   font-size: 14px;
   line-height: auto;
 }
-.low-space td {
-  padding: 0px;
+
+.pencil-icon-fix {
+	line-height: 20px;
 }
 
 td {
