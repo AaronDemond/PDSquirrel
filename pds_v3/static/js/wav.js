@@ -191,6 +191,19 @@ $("a").not('#infoLink, .download').click(function(e) {
     var edited_name = null;
     var allowing_mic = false;
 
+	function getMp3Blob() {
+		console.log(leftBuffer);
+		all_data = new Float32Array(leftBuffer);
+		console.log(all_data);
+
+		encoder = new Mp3LameEncoder(44100, 128);
+		encoder.encode([all_data, all_data]);
+		mp3_blob = encoder.finish()
+		var mp3_url = window.URL.createObjectURL(mp3_blob);
+		console.log('MP3 URL: ', mp3_url);
+		return mp3_blob;
+	}
+
 
 
     audio_player.ondurationchange = function() {
@@ -348,32 +361,30 @@ recorder_timer.set_time(time);
 
 
 
-	if (edited_name == aud_name.value) {
-	    if(!confirm("Are you sure you wish to save changes to '" + edited_name + "'? You may change the name to save it as a new audio recording")) {
-		return false;
-	    }
-	}
+		if (edited_name == aud_name.value) {
+			if(!confirm("Are you sure you wish to save changes to '" + edited_name + "'? You may change the name to save it as a new audio recording")) {
+			return false;
+			}
+		}
 
 	    if (aud_name.value == "") {
-		alert("Please enter a name for the recording");
-		return false;
-	    }
+			alert("Please enter a name for the recording");
+			return false;
+	   }
 
-      var filename = $('#name').val();
-      var confirmed = true;
-      $(".recording_name").each(function() {
-        if ($(this).text() == filename) {
-          if (!confirm("A file already has that name are you sure you wanna overwrite it?")) {
-            confirmed= false;
-          }
-        }
-      });
+	  var filename = $('#name').val();
+	  var confirmed = true;
+	  $(".recording_name").each(function() {
+		if ($(this).text() == filename) {
+		  if (!confirm("A file already has that name are you sure you wanna overwrite it?")) {
+			confirmed= false;
+		  }
+		}
+	  });
 
     if (!confirmed) {
-    return false;
-    }
-    try {
-
+    	return false;
+    } try {
 	    createWavBlob();
 	    saved = true;
 	} catch (err) {
@@ -479,8 +490,8 @@ recorder_timer.set_time(time);
       preview.disabled = false;
 			rec_btn.disabled = false;
 			save_btn.disabled = false;
-			var leftBuffer = mergeBuffers(leftchannel, recordingLength);
-			var rightBuffer = mergeBuffers(rightchannel, recordingLength);
+			leftBuffer = mergeBuffers(leftchannel, recordingLength);
+			rightBuffer = mergeBuffers(rightchannel, recordingLength);
 
 			interleaved = interleave(leftBuffer, rightBuffer);
 			buildLocalWav();
@@ -623,7 +634,9 @@ recorder_timer.set_time(time);
 
 
 		// Creates wav blob from data view
-        var blob = new Blob ( [ view ], { type : 'audio/wav' } );
+        //var blob = new Blob ( [ view ], { type : 'audio/wav' } );
+		//
+		var blob = getMp3Blob();
     	var fd = new FormData();
         var url = (window.URL || window.webkitURL).createObjectURL(blob);
     	var name = document.getElementById('name').value; // Should check name isnt used or empty
@@ -643,6 +656,10 @@ recorder_timer.set_time(time);
 		// TODO local file editing.. maybe
 
 		console.log('loading.');
+
+
+		var mp3_url = window.URL.createObjectURL(mp3_blob);
+		console.log('MP3 URL: ', mp3_url);
 
 		var mc = document.getElementById('main-content');
 		mc.innerHTML = 'Saving, this may take a few moments..';

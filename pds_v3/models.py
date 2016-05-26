@@ -160,8 +160,8 @@ class PdAudio(models.Model):
 
 
     def getMp3Location(self):
-        #return self.audio.name
-        return '%s.mp3' % self.audio.name
+        return self.audio.name
+        #return '%s.mp3' % self.audio.name
 
     def convertToMp3(self):
         call = 'lame %s %s.mp3' % (self.audio.name, self.audio.name)
