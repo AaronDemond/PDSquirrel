@@ -3,16 +3,50 @@
 function ref(){
   $( "#capdiv" ).load( "/cap_ref/" );
 }
-$('#joinform').submit(function() {
+
+$('input').focusout(function() {
+  var curr = $(this);
+  console.log("1");
+  if(curr.val()==="") {
+    console.log("to");
+    curr.next('.help-block').text("Please enter a value");
+  } else {
+    curr.next('.help-block').text("");
+
+  }
+});
+
+
+//$('#joinform').submit(function() {
 // error handler for submitting the join form
-
-
+/*
   $('#term-help').remove();
   $('#page-alerts').empty();
   $('#page-alerts').addClass("hidden");
   var error = 0;
   var p_error = 0;
-  if ( $('#email').val() == "" || $('#first_name').val() == "" || $('#last_name').val() == "" || $('#email').val() == "" || $('#vemail').val() == "" || $('#id_captcha_0').val() == "" || $('#termbox').is(':checked') == 0) {
+  // text_input is div holding inputs that contain text inputs
+
+  */
+  //return false;
+  /*
+  try {
+    for (var text_field in text_input) {
+      if (text_input.hasOwnProperty(text_field)) {
+        if (text_input[text_field].val()==="") {
+          text_input[text_field]
+        }
+      }
+    }
+  } catch (e) {
+    console.log(e);
+  } finally {
+    return false;
+  }
+*/
+
+   /*
+  if ( $('#email').val() == "" || $('#first_name').val() == "" || $('#last_name').val() == "" || $('#email').val() == "" || $('#id_captcha_0').val() == "" || $('#termbox').is(':checked') == 0) {
     $('#example').click();
     error++;
   }
@@ -50,6 +84,6 @@ $('#joinform').submit(function() {
      return false;
   } else {
       return true;
-  }
+  }*/
 
-});
+//});

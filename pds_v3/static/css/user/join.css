@@ -15,3 +15,20 @@
 #darken {
   color: black;
 }
+
+#form-container {
+	margin-top: 18px;
+}
+
+.learn-img {
+	padding: 40px;
+}
+
+.sub-header {
+	color: grey;
+	margin-bottom: 0px
+}
+
+.help-block {
+	color: red;
+}

@@ -9,128 +9,135 @@
 {% endblock header-content %}
 {% block body %}
 <div id="main-content" class="container">
-    <div class="row">
-        <div class="col-lg-9 col-md-10 col-xs-12 col-lg-offset-1">
-            <form method = "post" action = "{% url 'join' %}" class = "form-horizontal" id="joinform">
-                {% csrf_token %}
-                <div class="row">
-                    <div class="col-xs-12">
-                        <!--spits out messages from msg dict (type, body, title) -->
-                        {% for m in msg %}
-                            <div class="col-xs-12">
-                                <div class="alert alert-{{m.type}}" role="alert">
-																	<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                                	{{m.body|safe}}
-                                </div>
-                            </div>
-                        {% endfor %}
-			{% if user.is_authenticated %}
-			    <div class="col-xs-12" id="auth-problem">
-                                <div class="alert alert-danger" id = "page-alerts" role="alert">
 
-                                    <p>
-				    You are already signed in. Please signout before creating a new account.
-                                    </p>
-                                </div>
+            {% csrf_token %}
+            <div class="row">
+                    <!--spits out messages from msg dict (type, body, title) -->
+                    {% for m in msg %}
+                        <div class="col-xs-12">
+                            <div class="alert alert-{{m.type}}" role="alert">
+															<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                            	{{m.body|safe}}
                             </div>
-			    {% endif %}
+                        </div>
+                    {% endfor %}
+	{% if user.is_authenticated %}
+	    <div class="col-xs-12" id="auth-problem">
+                            <div class="alert alert-danger" id = "page-alerts" role="alert">
 
-                    </div>
+                                <p>
+		    You are already signed in. Please signout before creating a new account.
+                                </p>
+                            </div>
+                        </div>
+	    {% endif %}
+
+            </div>
+            <div class="row">
+
+				<div class="col-lg-12">
+					<h2 class="alert alert-danger iclose">This site is still in development. Come back soon</h2>
+				</div>
+      </div>
+        <div class="row">
+
+
+                <div class="col-xs-12">
+                    <h3 class="my-page-header text-center">Create your PDSquirrel Account</h3>
+                    <hr />
                 </div>
-                <div class="row">
-
-					<div class="row">
-						<div class="col-lg-12">
-							<h2 class="alert alert-danger iclose">This site is still in development. Come back soon</h2>
-						</div>
-					</div>
-                    <div class="col-xs-12">
-                        <h3 class="my-page-header">Set up your account</h3>
-                        <hr />
-                    </div>
                 </div>
-                <div class="row">
-                    <div class="col-sm-12">
-                        <div class="form-group" id="name">
-                            <label for="inputEmail3" class="col-sm-2 control-label">Name</label>
-                            <div class="col-sm-5">
-                              <input type="text" id="first_name" value = "{{ first_name }}" name = "first_name" placeholder="First name" class="form-control">
-                            </div>
-                            <div class="visible-xs"><br></div>
-                            <div class="col-sm-5">
-                                <input type="text" name = "last_name" value="{{last_name}}" id="last_name" placeholder="Last name" class="form-control">
-                            </div>
+            <div class="row">
+              <div class="col-sm-6 hidden-xs">
+                <h4 class="text-center sub-header">Listen, Learn and Develop with sessions from PDSquirrel</h4>
+                <img class="center-block img-responsive learn-img" src="{% static 'img/learn/on_device.png' %}" alt="">
+              </div>
+              <div class="col-sm-6" id="form-container">
+                <form method = "post" action = "{% url 'join' %}" data-toggle="validator" class = "form-horizontal" id="joinform">
+                    <div class="form-group" id="name">
+                        <label for="first_name" class="col-sm-2 control-label">Name</label>
+                        <div class="text_input col-sm-5">
+                          <input type="text" id="first_name" value = "{{ first_name }}" name = "first_name" placeholder="First" class="form-control">
+                          <span class="help-block"></span>
                         </div>
-                        <div class="form-group" id="emailgroup">
-                            <label for="inputEmail3" class="col-sm-2 control-label">Email</label>
-                            <div class="col-sm-10">
-                                <input type="text" id="email" value="{{email}}" name = "email" placeholder="Type your email" class="form-control">
-                            </div>
+                        <div class="visible-xs"><br></div>
+                        <div class="text_input col-sm-5">
+                            <input type="text" name = "last_name" value="{{last_name}}" id="last_name" placeholder="Last" class="form-control">
+                            <span class="help-block"></span>
                         </div>
-                        <div class="form-group" id="vemailgroup">
-                            <label for="inputEmail3" class="col-sm-2 control-label">Confirm email</label>
-                            <div class="col-sm-10">
-                                <input type="text" id="vemail" value="{{vemail}}" name = "email_confirm" placeholder="Retype your email" class="form-control">
-                            </div>
+                    </div>
+
+
+                    <div class="form-group" >
+                        <label for="email" class="col-sm-2 control-label">Email</label>
+                        <div class="text_input col-sm-10">
+                            <input type="text" id="email" value="{{email}}" name = "email" class="form-control">
+                            <span class="help-block"></span>
                         </div>
-                        <div class="form-group" id="passgroup">
-                            <label for="inputPassword3" class="col-sm-2 control-label">Password</label>
-                            <div class="col-sm-5">
-                                {{form.password}}
-                                <input type="password" name = "password" id="pass" placeholder="Choose and type a password" class="form-control">
-                            </div>
-                            <div class="visible-xs"><br></div>
-                            <div class="col-sm-5">
+                    </div>
+
+
+                          <div class="form-group">
+                              <label for="pass" class="col-sm-2 control-label">Password</label>
+                              <div class="text_input col-sm-5">
+                              {{form.password}}
+                                <input type="password" name = "password" id="pass" placeholder="Enter password" class="form-control">
+                                <span class="help-block"></span>
+                              </div>
+                              <div class="visible-xs"><br></div>
+                              <div class="text_input col-sm-5">
                                 {{form.password_confirm}}
-                                <input type="password" id="vpass" name = "password_verify" placeholder="Retype your password" class="form-control">
+                                <input type="password" id="vpass" name = "password_verify" placeholder="Retype password" class="form-control">
+                                <span class="help-block"></span>
+                              </div>
+                          </div>
+
+
+
+
+                    <div class="form-group">
+                        <label for="inputPassword3" class="col-sm-2 control-label">Member Of</label>
+                        <div id="societygroup" class="text_input col-sm-10">
+                            {{form.society}}
+                            <select name="society" class="form-control">
+                              <option value=""></option>
+                            {% for x in societies %}
+		<option value={{x.id}}>{{x}}</option>
+                            {% endfor %}
+                            </select>
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-12 text_input">
+                          <label for="">{{form}}</label>
+
+                            <a onclick="ref()">Refresh Captcha</a>
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-10 col-xs-offset-1">
+                            <div class="form-group" id = "term-div" >
+                              <div class="checkbox" id="termdiv" >
+
+                                  <input id="termbox" type="checkbox" name ="terms">
+                                  <div id="darken">By checking here, I acknowledge that I have reviewed and agree to the <a href="{% url 'terms' %}" target="_blank">PD Squirrel terms and conditions.</a> After you click submit, we will send you an email confirming the creation of your account. Welcome to PD Squirrel.</div>
+                                  <span class="help-block"></span>
+
+                              </div>
                             </div>
-                        </div>
-                        <div class="form-group" id="societygroup">
-                            <label for="inputPassword3" class="col-sm-2 control-label">Member Of</label>
-                            <div class="col-sm-10">
-                                {{form.society}}
-                                <select name="society" class="form-control">
-                                {% for x in societies %}
-				<option value={{x.id}}>{{x}}</option>
-                                {% endfor %}
-                                </select>
-                            </div>
-                        </div>
-
+                            <br>
+                          </div>
+                          <div class="col-xs-12">
+                            <p class="text-center">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </p>
+                          </div>
                     </div>
+                    </form>
                 </div>
-                <div class="row">
-                    <div class="col-sm-12">
-                        <div>
-                            {{form}}
-                        </div>
-                        <a onclick="ref()">Refresh Captcha</a>
-                    </div>
-                    <div class="col-sm-1"></div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-12 col-sm-8 col-sm-offset-2">
-			<div class="form-group" id = "term-div" >
-			    <div class="checkbox" id="termdiv" >
-				<label>
-					<span id="darken"><input id="termbox" type="checkbox" name ="terms">By checking here, I acknowledge that I have reviewed and agree to the <a href="{% url 'terms' %}" target="_blank">PD Squirrel terms and conditions.</a> After you click submit, we will send you an email confirming the creation of your account. Welcome to PD Squirrel.</span>
-				</label>
-			    </div>
-			</div>
-                        <br>
-                    </div>
-		    <div class="col-xs-12">
-<p class="text-center">
-
-                        <button type="submit" class="btn btn-primary">Submit</button>
-</p>
-
-		    </div>
-                </div>
-            </form>
-        </div>
-
-    </div>
+            </div>
 </div>
 
 
