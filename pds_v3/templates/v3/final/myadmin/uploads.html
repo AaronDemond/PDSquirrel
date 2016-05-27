@@ -1,8 +1,13 @@
 {% extends "v3/final/base/base.html" %}
 {% load staticfiles %}
-{% load pds_extras %}
+{% block header-metatags %}
+        <title>PDsquirrel Admin Upload Approval</title>
+        <meta name=”description” content='Admin page for monitoring PDSquirrel uploads'>
+{% endblock header-metatags %}
+{% block header-content %}
+        <script src="{% static 'js/myscript.js' %}"></script>
+{% endblock header-content %}
 {% block body %}
-<script src="{% static 'js/myscript.js' %}"></script>
 <div id="main-content" class="container">
     <div class="row">
 	<div class="col-lg-12">

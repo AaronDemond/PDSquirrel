@@ -1,4 +1,4 @@
-{% extends "v3/final/base/base.html" %}
+{% extends "v3/final/base/base.html" %
 {% load staticfiles %}
 {% load pds_extras %}
 {% block header-metatags %}
@@ -7,10 +7,8 @@
 {% endblock header-metatags %}
 {% block header-content %}
         <link rel="stylesheet" href="{% static 'css/user/browse.css' %}">
-        <script src="{% static 'js/user/browse.js' %}"></script>
 {% endblock header-content %}
 {% block body %}
-
 
 <div id="main-content" class="container" >
     <div class="row">
@@ -192,6 +190,7 @@
 </nav></div>
 </div></div>
 </div>
-
-
 {% endblock %}
+{% block footer-content %}
+<script src="{% static 'js/user/browse.js' %}"></script>
+{% endblock footer-content %}

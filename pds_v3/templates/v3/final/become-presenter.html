@@ -1,64 +1,59 @@
 {% extends "v3/final/base/base.html" %}
 {% load staticfiles %}
+{% block header-metatags %}
+        <title>PDSquirrel Become a Presenter</title>
+        <meta name=”description” content='Find out how to become a presenter with PDSquirrel'>
+{% endblock header-metatags %}
+{% block header-content %}
+        <link rel="stylesheet" href="{% static 'css/user/become-presenter.css' %}">
+        <link rel="stylesheet" href="{% static 'css/inforow.css' %}">
+{% endblock header-content %}
 {% block body %}
 
-<link rel="stylesheet" href="{% static 'css/inforow.css' %}">
+
+
 <div class="container" id="main-content">
 
     <div class="row">
     		    <div class="col-lg-10 col-lg-offset-1">
-    		    	<h3 style="margin-top:0">Become a Presenter</h3>
+    		    	<h3 class="my-page-header">Become a Presenter</h3>
 			<hr>
 
 <div class="row">
 <div class="col-lg-12">
     <p class="muted">
-        We are always pleased to have new presenters join our excellent roster.  Many of our presenters have a 
-        
-        particular practice focus, distinct experiences or interesting perspectives and insight.  If you have any of 
-        
+        We are always pleased to have new presenters join our excellent roster.  Many of our presenters have a
+
+        particular practice focus, distinct experiences or interesting perspectives and insight.  If you have any of
+
         these, we want to hear from you.
     <a href="{% url 'contact-us' %}?from_pres=1">Contact us</a> today for your presenter package,
-        
-        as well as more details including the presenter terms and conditions that will govern the commercial 
-        
+
+        as well as more details including the presenter terms and conditions that will govern the commercial
+
         relationship between you and PD Squirrel.
     </p>
-    
+
     <p class="muted">
-        PD Squirrel is all about providing an excellent platform to facilitate professionals developing 
-        
+        PD Squirrel is all about providing an excellent platform to facilitate professionals developing
+
         professionals.
     </p>
     <hr>
     <h3>Heres how we do it</h3>
 	<hr>
-	
-	
-    
+
+
+
 </div></div>
-<style>
-.plack {
-    width: 400px;
-    border: 5px outset;
-    margin-bottom: 40px;
-}
-.vcenter {
-  position: relative;
-  top: 50%;
-  transform: translateY(-50%);
-}
-</style>
-
-
 
 		    <div class="row hidden-md hidden-sm hidden-lg" id="mobile_learn">
 				<div class="col-xs-12">
 					<h3>Create, Upload, Earn. </h3>
 
 			    <p>
-					<b>You create and upload.</b>  As a presenter, you provide an audio recording of your PD session directly to PD 
-					
+					<b>You create and upload.</b>  As a presenter, you provide an audio recording of your PD session directly to PD
+
 					Squirrel.  If needed, we will provide recording hardware and software to assist.
 				</p>
 <p>
@@ -70,26 +65,26 @@
 				</p>
 <p>
 					<b>You Earn.</b>
-					You share in the revenue paid by members.  
-					More than half of all revenue is paid to our Presenters in the form of royalties <a onclick="showFormula()">(more)</a>.  You 
+					You share in the revenue paid by members.
+					More than half of all revenue is paid to our Presenters in the form of royalties <a onclick="showFormula()">(more)</a>.  You
 					always have real-time access to your analytics in the Presenter Hub.
 				</p>
 					<img src="{% static 'img/learn/on_device.png' %}" width="100%" alt="">
 				</div>
 		    </div>
 
-			
+
 
 		    <div class="row info-row hidden-xs info-row-color-1"> <!-- Create row -->
 		        <div class="col-sm-5 col-xs-12">
 			    <p>
-					<b>You create and upload.</b>  As a presenter, you provide an audio recording of your PD session directly to PD 
-					
+					<b>You create and upload.</b>  As a presenter, you provide an audio recording of your PD session directly to PD
+
 					Squirrel.  If needed, we will provide recording hardware and software to assist.
 				</p>
 		        </div>
 		        <div class="col-sm-7 col-xs-12">
-        			<img class="plack" src="{% static 'img/learn/presenter/presenter_page.png' %}" style="float: right;"  alt="">
+        			<img class="plack put-right" src="{% static 'img/learn/presenter/presenter_page.png' %}"  alt="">
 		        </div>
 		    </div>
 
@@ -111,20 +106,20 @@
 					Once accepted, we list your session on PD Squirrel where it is immediately available to all members for purchase.
 				</p>
 		        </div>
-		        <div class="col-sm-7 col-xs-12" style="">
-        		  <img class="plack" style="float:right" src="{% static 'img/learn/presenter/browse_page2.png' %}" alt="">
+		        <div class="col-sm-7 col-xs-12" >
+        		  <img class="plack put-right" src="{% static 'img/learn/presenter/browse_page2.png' %}" alt="">
 		        </div>
 		    </div>
 
 		    <div class="row info-row hidden-xs info-row-color-2"> <!-- Earn row-->
 		        <div class="col-sm-7 col-xs-12" >
-					<img class="plack" src="{% static 'img/learn/detail.png' %}" width="100%" alt="">		
+					<img id= class="plack" src="{% static 'img/learn/detail.png' %}" width="100%" alt="">
 		        </div>
 		        <div class="col-sm-5 col-xs-12">
 				<p>
 					<b>You Earn.</b>
-					You share in the revenue paid by members.  
-					More than half of all revenue is paid to our Presenters in the form of royalties <a onclick="showFormula()">(more)</a>.  You 
+					You share in the revenue paid by members.
+					More than half of all revenue is paid to our Presenters in the form of royalties <a onclick="showFormula()">(more)</a>.  You
 					always have real-time access to your analytics in the Presenter Hub.
 				</p>
 		        </div>
@@ -137,12 +132,12 @@
 
 <div class="row">
 <div class="col-lg-12">
-    
-    
-    
 
 
-    
+
+
+
+
     <div class="alert alert-info hidden" id = "formula">
 	<p>
 	Each time we accept and list a PD Session, we confirm our agreement with that Presenter which states we will pay royalties pursuant to an agreed schedule. At any given time, the royalty schedule is the same for all Presenters. We will never change the royalty schedule that applies to any PD Session that has already been accepted by us and listed on the Site. More details are provided in our Presenter Package
@@ -153,19 +148,15 @@
 	    $('#formula').toggleClass('hidden');
 	}
     </script>
-    
+
     <p>
     <a href="{% url 'contact-us' %}?from_pres=1">Contact us</a> today for your presenter package.
     </p>
 </div>
 </div>
-			
-    
+
+
     		    </div>
                 </div>
 </div>
 {% endblock %}
-
-
-
-
