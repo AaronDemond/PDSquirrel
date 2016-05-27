@@ -27,6 +27,9 @@ label {
 		$('#infoLink').text('(info ▾)');
     }
 </script>
+
+<script src="{% static 'js/presenter/Mp3LameEncoder.js' %}"></script>
+
 {# NOTE: if this page is not working, re dump this script at bottom: #}
 <script src="/static/js/wav.js"></script> {# recorder script #}
 <a class="hidden" href="https://www.pdsquirrel.ca/user/presenter/dash/?direct_to=recorder" id="refresh_link"></a>
@@ -75,6 +78,8 @@ label {
 				<button onclick = "pauseClick()" class="btn btn-default" id = "pause_button">Pause</button>
 				<button id = "save_button"  class="btn btn-default" onclick="saveRecording()">Save</button>
 				<button id="delete" onclick="delete_curr_audio()" class="btn btn-default">Delete</button>
+
+
 				<br>
 				<div style="float: left; margin-bottom: 20px; margin-top: 5px" id="output" style="font-weight: bold">
 					<p>Click record to begin capturing audio.</p>
@@ -130,7 +135,6 @@ label {
 		    <td class="recording_name">{{rec}}</td>
 		    <td>
 			<a class="download btn btn-default" href="/{{rec.getMp3Location}}" download="{{rec}}.mp3" target="_blank">Download </a>
-			<button class="btn btn-default" onclick="showData('/{{rec.audio.name}}', '{{rec}}')">Edit/Listen</button>
 			<button class="btn btn-default" onclick="delAudio('{{rec.id}}')">Delete</button>
 		    </td>
 	        </tr>

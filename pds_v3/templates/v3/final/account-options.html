@@ -209,7 +209,7 @@ We use the services of Stripe, with which we have a merchant agreement, to recei
                                     <td id="card-cell">
                                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Add Card</button>
 										<hr>
-										
+
 										<ul class="list-group">
 											{% for x in customer.sources.data %}
 												<li class="list-group-item" style="clear: both; height: 55px">
@@ -498,7 +498,7 @@ your continued agreement to the terms and conditions of Site use.
 
 
 										<hr>
-										
+
                                         										<form action="{% url 'change-membership' %}" method="POST" id="memform">
                                             {% csrf_token %}
                                         </form>
@@ -512,7 +512,7 @@ your continued agreement to the terms and conditions of Site use.
 										{% if not customer.sources.data %}
 										<p class="alert alert-danger">No payment source, please enter payment details above before upgrading</p>
 										<hr>
-										
+
 
                                         <button class="btn btn-primary memsubmit" disabled>Upgrade to Premium</button>
 										{% else %}

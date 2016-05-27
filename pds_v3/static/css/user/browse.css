@@ -1,0 +1,29 @@
+
+#search-container {
+  height: auto;
+}
+
+#browse-options {
+  height: auto;
+}
+
+#browse-container {
+  height: auto;
+}
+
+#titles-found {
+  color: grey;
+  font-weight: 200;
+}
+
+#browse-footer {
+  margin-bottom:10px;
+}
+
+#results {
+  margin: 0;
+}
+
+#main-content {
+  height: auto;
+}

@@ -1,4 +1,8 @@
 
+body {
+    background-color: rgb(246,246,246);
+}
+
 
 #pd-listing h3 {
   font-size: 18px !important;
@@ -8,11 +12,6 @@
   padding: 0;
   color: #545454;
   line-height: 1.4; }
-
-.my-footer {
-  background-color: #444444; }
-  .my-footer a {
-    color: #a3a3a3 !important; }
 
 
 .btn-default {
@@ -25,9 +24,6 @@
 .padded {
   margin-bottom: 15px !important; }
 
-.iclose :hover {
-  color: blue; }
-
 .fright {
   float: right; }
 
@@ -35,11 +31,18 @@
   min-height: 850px;
   border-radius: 0px;
   margin-top: 20px;
-  margin-bottom: 20px; }
+  margin-bottom: 20px;
+  background-color: white;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+}
 
 .muted {
   color: grey;
-  
+
  }
 
 .removal-bar, .cancel-removal-bar {
@@ -66,11 +69,3 @@ label {
 
 .my-page-header {
   margin-top: 0px; }
-
-.white-tile {
-    background-color: white;
-    -webkit-box-shadow: 0 1px 1px rgba(0,0,0,0.15),-1px 0 0 rgba(0,0,0,0.03),1px 0 0 rgba(0,0,0,0.03),0 1px 0 rgba(0,0,0,0.12) !important;
-    border-radius: 0 !important;
-}
-
-/*# sourceMappingURL=style.css.map */

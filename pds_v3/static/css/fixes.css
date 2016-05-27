@@ -7,17 +7,11 @@
     width: 400px;
 }
 
-#main-container {
-}
-
-
 .hidden {
     display: none;
 }
 
 #browse-container {
-   // background-color: #f8f8f8;
-    //background-color: #D9EDF7;
     height: 120px;
 
 }
@@ -26,22 +20,11 @@
     background-color: #f8f8f8;
 }
 
-#browse-toggle > a {
-    //background-color: #D9EDF7;
-}
 
-
-#search-toggle > a {
-//	background-color: #F7EAD9;
-
-}
 #search-container {
-    //background-color: #F7EAD9;
     height: 120px;
 
 }
-
-
 
 h1 {
     font-size: 1.4em;
@@ -60,47 +43,9 @@ a {
     font-size: 0.8em;
 }
 
-.navbar-bottom {
-    height: 270px;
-    border-top: 1px solid #d8d7d7;
-}
-
-.navbar-bottom-container {
-    padding:0;
-}
-
-#bottom-nav-links {
-    padding: 0;
-    margin: 0;
-    padding-top: 0.7em;
-    padding-left: 5px;
-    font-size: 0.9em;
-}
-
-#bottom-nav-links {
-    list-style-type: none;
-}
-
-#bottom-nav-links li {
-    list-style-type: none;
-    display: inline;
-}
-.bottom-logo h4 {
-    margin:auto;
-}
-
-.navbar-bottom h4 {
-    margin: auto;
-}
-
 .col-centered{
     float: none;
     margin: 0 auto;
-}
-
-
-.navbar {
-   // background-color: #307D9A;
 }
 
 #pd-list-sort {
@@ -148,20 +93,9 @@ a {
 	width: 100%;
 }
 
-#banner-container {
-}
-
 #home-header-container h2, #our-pricing h2 {
 	display: block;
 	text-align: center;
-	//background-color: #1a5a88;
-	//background-color: #2d93dc;
-	//line-height: 70px;
-	//color: white;
-}
-#home-header-container {
-//	height: 70px;
-	//background-color: blue;
 }
 
 .home-feature {
@@ -176,7 +110,7 @@ a {
 }
 .home-feature-nested-content {
 	border-radius: 5px 5px 5px 5px;
-	
+
 }
 .home-feature p {
 	text-align: center;
@@ -206,8 +140,6 @@ a {
 }
 
 
-
-
 .join-container h2 {
 	margin: 0;
 }
@@ -223,7 +155,6 @@ a {
 .bs-callout {
   padding: 20px;
   margin: 20px 0;
-  //border: 1px solid #eee;
   background-color: #F7EAD9;
   border-left-width: 5px;
   border-radius: 3px;
@@ -247,7 +178,6 @@ a {
 
 .me-h-info {
 	background-color: #AA9274;
-	//color: white;
 	font-weight: bold;
 }
 
@@ -255,10 +185,7 @@ a {
 	background-color: #F7EAD9;
 	padding: 5px;
 	border-left: 5px solid #AA9274;
-
 }
-
-
 
 
 .breadcrumb>li+li:before {
@@ -284,7 +211,6 @@ a {
 	padding: 15px;
 }
 
-
 .current-user-li p {
 	margin-top: 15px;
 	margin-bottom: 15px;
@@ -292,33 +218,8 @@ a {
 	line-height: 20px;
 }
 
-.dropdown-menu {
-	min-width: 300px !important;
-	padding-top:15px;
-}
-
-
-#login-link {
-	padding-left: 0px;
-}
-
-
-.form-spacer {
-	margin-top: 0.5em;
-	margin-bottom: 0.5em;
-}
 #login-header {
 	padding-left: .9em;
-}
-#login-header-error {
-	padding-left: .9em;
-	font-size: 0.9em;
-}
-#forgot-pass-link {
-	position: absolute;
-	bottom: 0.5em;
-	padding-left:1em;
-
 }
 
 .browse-btn-fix {
@@ -327,14 +228,6 @@ a {
 
 .view-container h3 {
 	text-align:center;
-}
-
-
-
-
-.col-centered {
-	float: none;
-	margin: 0 auto;
 }
 
 #recovery-header {
@@ -348,14 +241,6 @@ html, body {
 	overflow-x: hidden !important;
 
 }
-
-.scrollbar-fix {
-	width: auto !important;
-	overflow-x: hidden !important;
-}
-
-
-
 
 .pd-title {
 	font-size: 1.2em;
@@ -372,36 +257,13 @@ html, body {
 	margin-bottom: 1.2em;
 }
 
-
-
-img {
-	overflow: hidden !important;
-}
-
 .pencil-icon-fix {
 	line-height: 20px;
 }
 
-
-
-
-
-
 img {
     overflow: hidden;
 }
-
-
-
-
-#top-nav-ul {
-    min-width: 350px;
-}
-
-.sign-in-row {
-    margin-bottom: 15px;
-}
-
 
 
 #main-content {

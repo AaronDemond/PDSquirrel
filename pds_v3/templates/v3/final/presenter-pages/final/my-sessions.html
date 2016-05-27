@@ -1,150 +1,14 @@
-<script>
+{% load staticfiles %}
 
-$('a').click(function() {
-	$('.msg-container').empty();
-});
+<script src="{% static 'js/presenter/sessions.js' %}"></script>
+<link rel="stylesheet" href="{% static 'css/presenter/sessions.css' %}">
 
-function hideStatus() {
-    $('.status-bar').addClass('hidden');
-    $('.status-link').text('(info ▾)');
-}
-
-
-function hideSuspend() {
-    $('.removal-bar').addClass('hidden');
-    $('.suspend-link').text('Remove ▾');
-
-}
-
-function hideCancelBar() {
-    $('.cancel-removal-bar').addClass('hidden');
-    $('.cancel-removal-link').text('Cancel removal ▾');
-}
-
-function showStatus(id, infolink) {
-	hideCancelBar();
-	hideSuspend();
-
-	if ($(infolink).text() ==  '(info ▴)') {
-		hideStatus();
-		return;
-	}
-
-    hideStatus();
-    row_id = "#status-" + id;
-    $(infolink).text('(info ▴)');
-    $(row_id).toggleClass("hidden");
-
-}
-
-
-function showRemove(id, suslink) {
-    hideCancelBar();
-		hideStatus();
-
-    if ($(suslink).text() == 'Remove ▴') {
-		hideSuspend();
-		return;
-	}
-    hideSuspend();
-    row_id = "#remove-" + id;
-    $(row_id).toggleClass("hidden");
-    $(suslink).text('Remove ▴');
-
-}
-
-function showSuspendCancel(id, suslink) {
-    hideSuspend();
-	hideStatus();
-
-    if ($(suslink).text() == 'Cancel removal ▴') {
-		hideCancelBar();
-		return;
-	}
-
-    hideCancelBar();
-    row_id = "#remove-cancel-" + id;
-    $(suslink).text('Cancel removal ▴');
-    $(row_id).toggleClass("hidden");
-}
-
-
-</script>
-<style>
-    .actions button, .actions a {
-    float: left;
-    margin-right: 5px;
-    margin-top:15px;
-    background-color: lightblue;
-    background-color: #EFEFEF;
-    color: #797979;
-    float: left;
-    margin-right: 5px;
-    margin-top: 15px;
-    background-color: lightblue;
-    background-color: #FFFFFF;
-    color: #000000;
-    background-image: linear-gradient(to bottom,#FFFFFF 0,#B7B7B7 100%);
-    border: aliceblue;
-    border-radius: 2px;
-    border: 1px solid grey;
-    padding: 0 5;
-    float: left;
-    margin-right: 5px;
-    margin-top: 15px;
-    background-color: lightblue;
-    background-color: #EFEFEF;
-    color: #797979;
-    float: left;
-    margin-right: 5px;
-    margin-top: 10px;
-    background-color: lightblue;
-    background-color: #FFFFFF;
-    color: #000000;
-    background-image: linear-gradient(to bottom,#FFFFFF 0,#F5F5F5 100%);
-    border: aliceblue;
-    border-radius: 2px;
-    border: 1px solid grey;
-    padding: 0 5;
-    }
-    .release {
-    background-color: green;
-    }
-    .actions input {
-   	 margin-left: 0px;
-    }
-    .status p {
-    margin-left: 10px;
-    }
-	.pres_btn {
-		padding: 0 5;
-		margin-right: 5px;
-		position: relative;
-		top: 10;
-		right: 0;
-		border: 1px solid black;
-	}
-    #approve-btn {
-    padding: 0 5;
-    position: relative;
-    top: 10;
-    right: 0;
-    border: 1px solid black;
-    }
-    .pd-upload h4 {
-    margin-top: 10px;
-    margin-bottom: 0;
-    }
-    .status-brown {
-    color: brown;
-    }
-</style>
 <div class="row">
 		<div class="col-lg-9 col-lg-offset-1">
 			<div class="msg-container">
 			    {% if messages %}
 			    {% for msg in messages %}
-			    <div class="alert alert-{{msg.tags}} msg" role="alert">{{msg}} <a href="#"><i class="fa fa-times pull-right iclose"></i></a> </div>
+				<div class="alert alert-{{msg.tags}} msg" role="alert">{{msg}}<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a></div>
 			    {% endfor %}
 			    {% endif %}
 			</div>
@@ -201,7 +65,7 @@ function showSuspendCancel(id, suslink) {
                                 {% endif %}
                                 <a class="status-link" onclick="showStatus({{sesh.id}}, this)">(info ▾)</a>
                             </p>
-                            <div class="progress" style="height: 10px">
+                            <div class="progress">
 
                                 {% if sesh.presenter_approved == False %}
                                 <div class="progress-bar" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width: 33%;">
@@ -242,10 +106,10 @@ function showSuspendCancel(id, suslink) {
                         <a class=""  onclick="loadXMLDoc('{% url 'preview-session' sesh.id %}', '#page-content')">Preview</a>
                         {% endif %}
                         <a class="" onclick="loadXMLDoc('{% url 'edit' sesh.id %}', '#page-content')">Edit</a>
-                        <a class="suspend-link" style="" onclick="showRemove({{sesh.id}}, this)" >Remove ▾</a>
+                        <a class="suspend-link" onclick="showRemove({{sesh.id}}, this)" >Remove ▾</a>
                         {% if sesh.presenter_approved == False %}
 							{% if sesh.edited %}
-								<form action="{% url 'edit' sesh.id %}" style="float:left;" method="POST">
+								<form action="{% url 'edit' sesh.id %}" id='c-form' method="POST">
 									{% csrf_token %}
 									<input type="submit" class="pres_btn btn btn-success" value="Cancel edit">
 									<input type="hidden" name="c-edit" value="1">
@@ -387,7 +251,6 @@ function showSuspendCancel(id, suslink) {
                 </div>
             </div>
             {% endfor %}
-
         </div>
     </div>
     <div class="col-lg-3">

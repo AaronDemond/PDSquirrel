@@ -1,17 +1,27 @@
-
-
-
 {% extends "v3/final/base/base.html" %}
 {% load staticfiles %}
 {% load pds_extras %}
-{% block body %}
 
-<link rel="stylesheet" href="{% static 'css/presenter-nav-css.css' %}" >
+{% block header-metatags %}
+<title>Presenter Hub</title>
+{% endblock header-metatags %}
+
+{% block header-content %}
 <script src="{% static 'js/myscript.js' %}"></script>
+<link rel="stylesheet" href="{% static 'css/presenter-nav-css.css' %}" >
+{% endblock header-content %}
+
+{% block body %}
 <script>
-// Directs to appropriate sub page after form POST
 
 $(document).ready(function() {
+	{% comment %} 
+
+	This function uses variables from the template language, 
+	so we can't move it to static. This is fine for now.
+
+	{% endcomment %}
+	
 
 	$('button').click(function() {
 	     $('button').removeClass('active');
@@ -41,9 +51,8 @@ $(document).ready(function() {
 	    loadXMLDoc('/record/', '#page-content');
 	    $("li").removeClass("active");
 	    $("#record-link").addClass("active");
-	}
+	}	
 
-	
 	else if  ("{{direct_to}}" == "analytics") {
 	    loadXMLDoc('/user/presenter/dash/?analytics', '#page-content');
 	    $("li").removeClass("active");
@@ -68,30 +77,32 @@ $(document).ready(function() {
 });
 </script>
 
+
 <div id="main-content" class="container">
     <div class="col-lg-9 col-lg-offset-1" style="padding: 0">
-    <h3 class="my-page-header">Presenter Hub<small> ({{presenter}}{% if presenter.credentials %}, {{presenter.credentials}}{% endif %})</small></h3>
-    <div class="presenter-nav-container">
-	<div class="row">
-	    <div class="col-lg-12">
-		<ul class="nav nav-tabs" style="">
-		    <li class="active" id="dash-link" ><a onclick="loadXMLDoc('/user/presenter/dash/?landing', '#page-content', 'dash')">Dash</a></li>
-		    <li id="analytics-link"><a onclick="loadXMLDoc('/user/presenter/dash/?analytics', '#page-content', 'analytics')">Analytics</a></li>
-		    <li id="info-link"><a onclick="loadXMLDoc('/user/presenter/dash/?myaccount', '#page-content', 'info')">Bio</a></li>
-		    <li id="private-info-link"><a onclick="loadXMLDoc('/user/presenter/dash/?myinfo', '#page-content', 'private' )">Personal</a></li>
-		    <li id="sessions-link"> <a onclick="loadXMLDoc('/user/presenter/dash/?mysessions', '#page-content', 'sessions')">Sessions</a></li>
-		    <li id="upload-link"><a onclick="loadXMLDoc('/ajax-test/' , '#page-content', 'upload')">Upload</a></li>
-		    <li id="record-link"><a onclick="loadXMLDoc('/record/' , '#page-content', 'recorder')">Record</a></li>
-		    <!--<li><a href="">Earnings & Analytics</a></li> -->
-		</ul>
-	    </div>
+		<h3 class="my-page-header">Presenter Hub<small> ({{presenter}}{% if presenter.credentials %}, {{presenter.credentials}}{% endif %})</small></h3>
+		<div class="presenter-nav-container">
+			<div class="row">
+				<div class="col-lg-12">
+					<ul class="nav nav-tabs">
+						<li class="active" id="dash-link" ><a onclick="loadXMLDoc('/user/presenter/dash/?landing', '#page-content', 'dash')">Dash</a></li>
+						<li id="analytics-link"><a onclick="loadXMLDoc('/user/presenter/dash/?analytics', '#page-content', 'analytics')">Analytics</a></li>
+						<li id="info-link"><a onclick="loadXMLDoc('/user/presenter/dash/?myaccount', '#page-content', 'info')">Bio</a></li>
+						<li id="private-info-link"><a onclick="loadXMLDoc('/user/presenter/dash/?myinfo', '#page-content', 'private' )">Personal</a></li>
+						<li id="sessions-link"> <a onclick="loadXMLDoc('/user/presenter/dash/?mysessions', '#page-content', 'sessions')">Sessions</a></li>
+						<li id="upload-link"><a onclick="loadXMLDoc('/ajax-test/' , '#page-content', 'upload')">Upload</a></li>
+						<li id="record-link"><a onclick="loadXMLDoc('/record/' , '#page-content', 'recorder')">Record</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
 	</div>
-    </div>
-</div>
 
-<div id="page-content">
-
-</div>
-
+	<div class="row"> {# Content for presenter hub goes here #}
+		<div class="col-lg-12">
+			<div id="page-content">
+			</div>
+		</div>
+	</div>
 </div>
 {% endblock %}

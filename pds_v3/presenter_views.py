@@ -482,7 +482,7 @@ def record(request):
 
     if 'upload' in request.POST:
         #wav binary
-        au = request.user.profile
+        au = request.user.profile #appuser
         upload = request.FILES['data']
         name = request.POST['name']
 
@@ -492,10 +492,11 @@ def record(request):
             a.save()
 
         pda = PdAudio(name=name, audio=upload, appuser=au)
-
         pda.save()
-        pda.convertToMp3()
-        pda.mp3_location = pda.getMp3Location();
+
+        #pda.convertToMp3()
+        #pda.mp3_location = pda.getMp3Location();
+
         data_test = serializers.serialize("json", [pda]);
         return HttpResponse(data_test);
         #return HttpResponse("Saved Succesfully")

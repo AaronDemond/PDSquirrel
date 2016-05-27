@@ -9,6 +9,7 @@ urlpatterns = [
    #Home Page
     url(r'^$', views.landing, name="home"),
     #Browse/Search Page
+
     url(r'^pd/$', views.browse, name="browse"),
     url(r'^pd/(?P<pd_id>\d+)/$', views.detail, name="detail"),
     url(r'^pd/session/(?P<pd_id>\d+)/$', views.watch, name="watch"),

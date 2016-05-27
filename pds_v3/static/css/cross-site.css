@@ -4,7 +4,6 @@ float:none;
 margin:0 auto
 }
 
-
 .grey-back {
 	background-color: lightgrey;
 	color: black;
@@ -15,10 +14,18 @@ margin:0 auto
 	color: #2e75b6;
 }
 
-.list-inline-home{display:block;}
-.list-inline-home li{display:inline-block;}
-.list-inline-home li:after{content:''; margin:0 30px;}
+.list-inline-home{
+	display:block;
+}
 
+.list-inline-home li{
+	display:inline-block;
+}
+
+.list-inline-home li:after{
+	content:'';
+	margin:0 30px;
+}
 
 .tagline {
 	font-size: 24pt;
@@ -27,9 +34,6 @@ margin:0 auto
 	margin-bottom: 40px;
 }
 
-
-#main-container {
-}
 
 
 .a-lg {
