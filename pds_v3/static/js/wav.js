@@ -64,45 +64,41 @@ $("a").not('#infoLink, .download').click(function(e) {
 
     // stopwatch
     var	stopwatch = function() {
-    		// Private vars
-    		var	startAt	= 0;	// Time of last start / resume. (0 if not running)
-    		var	lapTime	= 0;	// Time on the clock when last stopped in milliseconds
+		// Private vars
+		var	startAt	= 0;	// Time of last start / resume. (0 if not running)
+		var	lapTime	= 0;	// Time on the clock when last stopped in milliseconds
 
-    		var	now	= function() {
-    				return (new Date()).getTime();
-    			};
+		var	now	= function() {
+			return (new Date()).getTime();
+		};
 
-    		// Public methods
-    		// Start or resume
-    		this.start = function() {
-    				startAt	= startAt ? startAt : now();
-    			};
+		// Public methods
+		// Start or resume
+		this.start = function() {
+			startAt	= startAt ? startAt : now();
+		};
 
-    		// Stop or pause
-    		this.stop = function() {
-    				// If running, update elapsed time otherwise keep it
-    				lapTime	= startAt ? lapTime + now() - startAt : lapTime;
-    				startAt	= 0; // Paused
-    			};
+		// Stop or pause
+		this.stop = function() {
+			// If running, update elapsed time otherwise keep it
+			lapTime	= startAt ? lapTime + now() - startAt : lapTime;
+			startAt	= 0; // Paused
+		};
 
-    		// Reset
-    		this.reset = function() {
-    				lapTime = startAt = 0;
-    			};
+		// Reset
+		this.reset = function() {
+			lapTime = startAt = 0;
+		};
 
-        this.set_time = function(time) {
-          lapTime = time;
-        };
+		this.set_time = function(time) {
+			lapTime = time;
+		};
 
-    		// Duration
-    		this.time = function() {
-    				return lapTime + (startAt ? now() - startAt : 0);
-    			};
-          /*
-          this.print = function() {
-            console.log("lapTime: "+lapTime+" startAt: "+startAt);
-          };*/
-    	};
+		// Duration
+		this.time = function() {
+				return lapTime + (startAt ? now() - startAt : 0);
+			};
+	};
 
     var recorder_timer = new stopwatch();
     var $timer= document.getElementById('timer');
@@ -192,13 +188,12 @@ $("a").not('#infoLink, .download').click(function(e) {
     var allowing_mic = false;
 
 	function getMp3Blob() {
-		console.log(leftBuffer);
 		all_data = new Float32Array(leftBuffer);
-		console.log(all_data);
-
 		encoder = new Mp3LameEncoder(44100, 128);
+
 		encoder.encode([all_data, all_data]);
 		mp3_blob = encoder.finish()
+
 		var mp3_url = window.URL.createObjectURL(mp3_blob);
 		console.log('MP3 URL: ', mp3_url);
 		return mp3_blob;
@@ -219,130 +214,118 @@ $("a").not('#infoLink, .download').click(function(e) {
 
     // If webcam available, request permission. Display Error message elsewise.
     if (navigator.getUserMedia){
-	navigator.getUserMedia({audio:true},
+		navigator.getUserMedia({audio:true},
 	    success,
 	    function(e) {
-	    alert('Error capturing audio.');
-	});
+	    	alert('Error capturing audio.');
+		});
     } else {
-	alert('getUserMedia not supported in this browser.');
+		alert('getUserMedia not supported in this browser.');
     }
 
     function showData(url, audio_clip_name){
-	// This function is called when load chosen file btn clicked. Loads wav url into editor, only tested with our wavs.
-	if (allowing_mic == true ) {
+	/* This function is called when load chosen file btn clicked. 
+	 * Loads wav url into editor, only tested with our wavs. */
 
-	    if (saved == false) {
-		if(!confirm('Continue? You will lose unsaved work.')) {
-		    return false;
+		if (allowing_mic == true ) {
+			if (saved == false) {
+				if(!confirm('Continue? You will lose unsaved work.')) {
+					return false;
+				}
+			}
+
+			aud_name.value = audio_clip_name;
+			edited_name = audio_clip_name;
+			editing = true;
+
+			saved = false;
+
+			//var url = '/audio_files/blob_KIC6c8L';
+			var req = new XMLHttpRequest();
+			req.responseType = "arraybuffer";
+			var reader = null;
+			var debug = document.getElementById('debug');
+			req.open('GET', url, true);
+			req.send();
+
+			// Give loading feedback. TODO: sub in blue wheel
+			audio_player.hidden = true;
+			pause_btn.disabled = true;
+			rec_btn.disabled = true;
+			save_btn.disabled = true;
+			loading_alert.className = '';
+
+			req.onload = function(e) {
+
+				fileblob = new Blob([req.response], {type : "audio/wav"});
+				reader = new FileReader();
+				reader.readAsArrayBuffer(fileblob);
+				reader.onload = loaded;
+
+			}
 		}
 
-	    }
+		function loaded(evt) {
+			var buffer = reader.result; // buffer of raw wav file data
 
-	    //what are thOOOOOOOOOOOOOOOOOOOse..
-	    aud_name.value = audio_clip_name;
-	    edited_name = audio_clip_name;
-	    editing = true;
+			var localview = new DataView(buffer);
+			var fmt_chunk_size = localview.getUint32(16, true); // size, in bytes, of fmt data chunk.
+			var header_chunk_size = 28 + fmt_chunk_size; // in bytes, of the header. Typically 44
+			var lc = [];
 
-		saved = false;
+			// Number of samples. Sample is 32 bits long. (Two 16 bit audio samples)
+			num_samples = localview.getUint32(40, true); // Number of samples
 
-	    //var url = '/audio_files/blob_KIC6c8L';
-	    var req = new XMLHttpRequest();
-	    req.responseType = "arraybuffer";
-	    var reader = null;
-	    var debug = document.getElementById('debug');
-	    req.open('GET', url, true);
-	    req.send();
+			console.log("header_chunk_size: ");
+			console.log(header_chunk_size);
 
-		// Give loading feedback. TODO: sub in blue wheel
-		audio_player.hidden = true;
-		pause_btn.disabled = true;
-		rec_btn.disabled = true;
-		save_btn.disabled = true;
-		loading_alert.className = '';
+			("buffer byte length");
+			console.log(buffer.byteLength);
 
-	    req.onload = function(e) {
+			// Determin how much to take off of buffer. it must fit perfectly for Int16Array
+			var adjusted_length;
+			if (buffer.byteLength % 2 != 0) {
+				adjusted_length = buffer.byteLength - (header_chunk_size + 1);
+			} else {
+				adjusted_length = buffer.byteLength - header_chunk_size
+			}
+			adjusted_length = adjusted_length / 2;
+			var allSamples = new Int16Array(buffer, header_chunk_size, adjusted_length);
+			console.log(allSamples);
 
-		//fileblob = document.getElementById('file').files[0];      // Works with this <- used to lol
-		fileblob = new Blob([req.response], {type : "audio/wav"});
-		reader = new FileReader();
-		reader.readAsArrayBuffer(fileblob);
-		reader.onload = loaded;
+			// Gets all sampled data, converts it to a float32
+			for (var k=0; k < allSamples.length / 2; k++){
+				lc[k] = allSamples[k*2] / 0x7FFF;
+			}
+			lcfinal = [];
+			rcfinal = [];
 
-	    }
-	}
+			/* Creates an array of float32arrays, each 2048 bytes (buffer size) in 
+			 * length, this is used because trimming edits the raw left and right 
+			 * channels before flattening. */
+			for (var i=0; i < (allSamples.length / 4096); i++) {
+				f32a = new Float32Array(lc.slice(i*2048, (i+1) * 2048));
+				lcfinal.push(f32a);
+				rcfinal.push(f32a);
+			}
 
-/*
-console.log(audio_player.duration);
-var time = isNaN(audio_player.duration) ? 0 : audio_player.duration;
-recorder_timer.set_time(time);
-*/
-
-
-
-
-	function loaded(evt) {
-	    var buffer = reader.result; // buffer of raw wav file data
-
-	    var localview = new DataView(buffer);
-	    var fmt_chunk_size = localview.getUint32(16, true); // size, in bytes, of fmt data chunk.
-	    var header_chunk_size = 28 + fmt_chunk_size; // in bytes, of the header. Typically 44
-	    var lc = [];
-
-	    // Number of samples. Sample is 32 bits long. (Two 16 bit audio samples)
-	    num_samples = localview.getUint32(40, true); // Number of samples
-
-	    console.log("header_chunk_size: ");
-	    console.log(header_chunk_size);
-
-      ("buffer byte length");
-	    console.log(buffer.byteLength);
-
-	    // Determin how much to take off of buffer. it must fit perfectly for Int16Array
-	    var adjusted_length;
-	    if (buffer.byteLength % 2 != 0) {
-			adjusted_length = buffer.byteLength - (header_chunk_size + 1);
-	    } else {
-			adjusted_length = buffer.byteLength - header_chunk_size
-	    }
-	    adjusted_length = adjusted_length / 2;
-	    var allSamples = new Int16Array(buffer, header_chunk_size, adjusted_length);
-	    console.log(allSamples);
-
-	    // Gets all sampled data, converts it to a float32
-	    for (var k=0; k < allSamples.length / 2; k++){
-		lc[k] = allSamples[k*2] / 0x7FFF;
-	    }
-
-	    lcfinal = [];
-	    rcfinal = [];
-
-	    // Creates an array of float32arrays, each 2048 bytes (buffer size) in length, this is used because trimming edits the raw left and right channels before flattening.
-	    for (var i=0; i < (allSamples.length / 4096); i++) {
-		f32a = new Float32Array(lc.slice(i*2048, (i+1) * 2048));
-		lcfinal.push(f32a);
-		rcfinal.push(f32a);
-	    }
-
-	    // Flatten and build wav
-	    leftchannel = lcfinal;
-	    rightchannel = rcfinal;
-		var leftBuffer = mergeBuffers(leftchannel, 0);
-		var rightBuffer = mergeBuffers(rightchannel, 0);
-		interleaved = interleave(leftBuffer, rightBuffer);
-		buildLocalWav();
+			// Flatten and build wav
+			leftchannel = lcfinal;
+			rightchannel = rcfinal;
+			var leftBuffer = mergeBuffers(leftchannel, 0);
+			var rightBuffer = mergeBuffers(rightchannel, 0);
+			interleaved = interleave(leftBuffer, rightBuffer);
+			buildLocalWav();
 
 
-		audio_player.hidden = false;
-		pause_btn.disabled = false;
-		rec_btn.disabled = false;
-		save_btn.disabled = false;
-		loading_alert.className = 'hidden';
+			audio_player.hidden = false;
+			pause_btn.disabled = false;
+			rec_btn.disabled = false;
+			save_btn.disabled = false;
+			loading_alert.className = 'hidden';
+		} // End of loaded function
 
-
-	}
-
-    }
+    } // End of show data function
 
     /* set start and end values for selection. */
     function setStartMark(){
@@ -352,9 +335,6 @@ recorder_timer.set_time(time);
         ebox.value = audio_player.currentTime.toFixed(2);
     }
 
-/*
-
-*/
 
     /* send wav to server */
     function saveRecording() {
@@ -427,10 +407,10 @@ recorder_timer.set_time(time);
       var end = ebox.value;
 
       if(! $.isNumeric(start)) {
-        alert("incorrect end range value");
+        alert("incorrect start range value");
         return;
       } else if (! $.isNumeric(end)) {
-        alert("incorrect start range value");
+        alert("incorrect end range value");
         return;
       } else if (end <= start) {
        alert("incorrect range");
@@ -471,23 +451,23 @@ recorder_timer.set_time(time);
 
     /* Toggle recording. Data is fed to left and right chanels, in the correct position. */
     function recordToggle(e) {
-        if (recording == true) { // Pause clicked
+		if (recording == true) { // Pause clicked
 
 			recording = false;
 
-      stop();
+			stop();
 
-      var trim = document.getElementById('trim');
-      var preview = document.getElementById('preview');
+			var trim = document.getElementById('trim');
+			var preview = document.getElementById('preview');
 
-      var start_set = document.getElementById('start_set');
-      var end_set = document.getElementById('end_set');
+			var start_set = document.getElementById('start_set');
+			var end_set = document.getElementById('end_set');
 
-      start_set.disabled=false;
-      end_set.disabled=false;
+			start_set.disabled=false;
+			end_set.disabled=false;
 
-      trim.disabled=false;
-      preview.disabled = false;
+			trim.disabled=false;
+			preview.disabled = false;
 			rec_btn.disabled = false;
 			save_btn.disabled = false;
 			leftBuffer = mergeBuffers(leftchannel, recordingLength);
@@ -498,11 +478,9 @@ recorder_timer.set_time(time);
 
 			audio_player.currentTime = lastSelectedTime;
 			/* Interval used because wav file takes slight time to build
-			   otherwise NaN is displayed because there is no wav source
-			   getDur is a function to get length of wav file  */
+			otherwise NaN is displayed because there is no wav source
+			getDur is a function to get length of wav file  */
 			outputElement.innerHTML = '';
-
-
 
 		} else { // Record clicked
 			if (allowing_mic == false){
@@ -514,49 +492,49 @@ recorder_timer.set_time(time);
 			}
 			saved = false;
 
-      // get length of recording, in case its imported and just to keep it accurate
-      var time = isNaN(audio_player.duration) ? 0 : Math.round(audio_player.duration * 1000);
-      // set start time as length of recording
-      recorder_timer.set_time(time);
-      start();
+			// get length of recording, in case its imported and just to keep it accurate
+			var time = isNaN(audio_player.duration) ? 0 : Math.round(audio_player.duration * 1000);
+			// set start time as length of recording
+			recorder_timer.set_time(time);
+			start();
 
-      var trim = document.getElementById('trim');
-      var preview = document.getElementById('preview');
-      var start_set = document.getElementById('start_set');
-      var end_set = document.getElementById('end_set');
+			var trim = document.getElementById('trim');
+			var preview = document.getElementById('preview');
+			var start_set = document.getElementById('start_set');
+			var end_set = document.getElementById('end_set');
 
-      start_set.disabled=true;
-      end_set.disabled=true;
+			start_set.disabled=true;
+			end_set.disabled=true;
 
 
-      trim.disabled=true;
-      preview.disabled = true;
+			trim.disabled=true;
+			preview.disabled = true;
 			rec_btn.disabled = true;
 			save_btn.disabled = true;
 			// finds offset to be used when inserting recorded audio into an exisiting wav file
 			// Divides by 2048 because channel data is stored in arrays of float32arrays.
 			// float arrays are 2048 in length, as decided by the buffer size. Lower buffer size
 			// is faster but may glitch due to latency issues
-            channel_offset = parseInt((parseFloat(audio_player.currentTime) * sampleRate) / 2048);
-            audio_proccess_counter = 0;
-	    	lastSelectedTime = audio_player.currentTime;
-            recording = true;
-            outputElement.innerHTML = 'Recording now...';
+			channel_offset = parseInt((parseFloat(audio_player.currentTime) * sampleRate) / 2048);
+			audio_proccess_counter = 0;
+			lastSelectedTime = audio_player.currentTime;
+			recording = true;
+			outputElement.innerHTML = 'Recording now...';
         }
     }
 
 
-    // Trims selection by editing the channel data, to neatrest 2048 byte buffer
+    // Trims selection by editing the channel data, to nearest 2048 byte buffer
     function trimSelection(){
 
         var start = document.getElementById('start-mark').value;
         var end = document.getElementById('end-mark').value;
 
          if(! $.isNumeric(start)) {
-           alert("incorrect end range value");
+           alert("incorrect start range value");
            return;
          } else if (! $.isNumeric(end)) {
-           alert("incorrect start range value");
+           alert("incorrect end range value");
            return;
          } else if (end <= start) {
     			alert("incorrect range");
@@ -648,7 +626,7 @@ recorder_timer.set_time(time);
         outputElement.innerHTML = 'Upload and saving...';
 
 		// Build form data obj with wavblob, upload flag, and name text.
-    	fd.append('data', blob);
+    	fd.append('data', blob, name);
 		fd.append('upload', 'true');
     	fd.append('name', name);
 
@@ -664,26 +642,26 @@ recorder_timer.set_time(time);
 		var mc = document.getElementById('main-content');
 		mc.innerHTML = 'Saving, this may take a few moments..';
 		$.ajax({
-				type: 'POST',
-				url: '/record/',
-				data: fd,
-				processData: false,
-				contentType: false,
-				success: function(data) {
-				// If POST succesfull, return json for that rec.
-				var this_audio = JSON.parse(data);
-				console.log(this_audio[0]); // fields_obj, model_str, pk_id
-				pda_obj = this_audio[0]
-				console.log(pda_obj.fields);
-				alert("Upload Successful");
-				refresh_link.click();
-				outputElement.innerHTML = "Upload complete, It will appear below when you revisit this page";
-				},
-				error: function(data) {
-				// Note: debug this by displaying data. It will display django error message.
-					alert("Error saving file. We recommend you download this file so it isn't lost.");
-				}
-			});
+			type: 'POST',
+			url: '/record/',
+			data: fd,
+			processData: false,
+			contentType: false,
+			success: function(data) {
+			// If POST succesfull, return json for that rec.
+			var this_audio = JSON.parse(data);
+			console.log(this_audio[0]); // fields_obj, model_str, pk_id
+			pda_obj = this_audio[0]
+			console.log(pda_obj.fields);
+			alert("Upload Successful");
+			refresh_link.click();
+			outputElement.innerHTML = "Upload complete, It will appear below when you revisit this page";
+			},
+			error: function(data) {
+			// Note: debug this by displaying data. It will display django error message.
+				alert("Error saving file. We recommend you download this file so it isn't lost.");
+			}
+		});
     }
 
 
@@ -723,40 +701,41 @@ recorder_timer.set_time(time);
     }
 
     function success(e){
-	allowing_mic = true; //Only check for microphone if this flag is off. first time rec btn clicked.
-	console.log(allowing_mic);
+		allowing_mic = true; //Only check for microphone if this flag is off. first time rec btn clicked.
+		console.log(allowing_mic);
 
-	/* creates audio context, which provides info such as sample rate and access to the source
-	   stream */
-        audioContext = window.AudioContext || window.webkitAudioContext;
-        context = new audioContext();
-        sampleRate = context.sampleRate;
-        volume = context.createGain();
+		/* creates audio context, which provides info such as sample rate and access to the source
+		stream */
+		audioContext = window.AudioContext || window.webkitAudioContext;
+		context = new audioContext();
+		sampleRate = context.sampleRate;
+		volume = context.createGain();
 
-        // creates an audio node from the microphone incoming stream
-        audioInput = context.createMediaStreamSource(e);
+		// creates an audio node from the microphone incoming stream
+		audioInput = context.createMediaStreamSource(e);
 
-        // connect the stream to the gain node
-        audioInput.connect(volume);
+		// connect the stream to the gain node
+		audioInput.connect(volume);
 
-        /* From the spec: This value controls how frequently the audioprocess event is
-        dispatched and how many sample-frames need to be processed each call.
-        Lower values for buffer size will result in a lower (better) latency.
-        Higher values will be necessary to avoid audio breakup and glitches */
-        var bufferSize = 2048;
-        recorder = context.createScriptProcessor(bufferSize, 2, 2);
+		/* From the spec: This value controls how frequently the audioprocess event is
+		dispatched and how many sample-frames need to be processed each call.
+		Lower values for buffer size will result in a lower (better) latency.
+		Higher values will be necessary to avoid audio breakup and glitches */
+		var bufferSize = 2048;
+		recorder = context.createScriptProcessor(bufferSize, 2, 2);
 
-        recorder.onaudioprocess = function(e){
-            if (!recording) return;
-            var left = e.inputBuffer.getChannelData (0);
-            var right = e.inputBuffer.getChannelData (1);
+		recorder.onaudioprocess = function(e){
+			if (!recording) return;
 
-	    // adds data at offset (allows for recording midway through a file) and incriments local index
-            leftchannel.splice(channel_offset + audio_proccess_counter, 0, (new Float32Array(left)));
-            rightchannel.splice(channel_offset + audio_proccess_counter, 0, (new Float32Array(right)));
-            audio_proccess_counter += 1;
+			var left = e.inputBuffer.getChannelData (0);
+			var right = e.inputBuffer.getChannelData (1);
 
-            recordingLength += bufferSize; // Probably not needed
+			// adds data at offset (allows for recording midway through a file) and incriments local index
+			leftchannel.splice(channel_offset + audio_proccess_counter, 0, (new Float32Array(left)));
+			rightchannel.splice(channel_offset + audio_proccess_counter, 0, (new Float32Array(right)));
+			audio_proccess_counter += 1;
+
+			recordingLength += bufferSize; // Probably not needed
 
         }
         volume.connect (recorder);
