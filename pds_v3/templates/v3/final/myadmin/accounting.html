@@ -1,13 +1,20 @@
 {% extends "v3/final/base/base.html" %}
 {% load staticfiles %}
 {% load pds_extras %}
+{% block header-metatags %}
+        <title>PDsquirrel Admin Accounting</title>
+        <meta name=”description” content='Handle the accounting information of PDSquirrel'>
+{% endblock header-metatags %}
+{% block header-content %}
+        <script src="{% static 'js/myscript.js' %}"></script>
+        <link rel="stylesheet" href="{% static 'css/admin/accounting.css' %}">
+{% endblock header-content %}
 {% block body %}
-<script src="{% static 'js/myscript.js' %}"></script>
 <div id="main-content" class="container">
     <h3 class="my-page-header">Accounting</h3>
 
     <table class="table">
-	<tr>
+	<tr class="table-header-spacing">
 	    <td class="table-header">PD Squirrel entitlements</td>
 	    <td></td>
 	</tr>
@@ -27,7 +34,7 @@
 	    <td>Dollar take of Individual purchases</td>
 	    <td><input type="Text"></td>
 	</tr>
-	<tr>
+	<tr class="table-header-spacing">
 	    <td class="table-header">Pricing and entitlements for Premium members</td>
 	    <td></td>
 	</tr>
@@ -43,7 +50,7 @@
 	    <td>No. of monthly Session Credits</td>
 	    <td><input type="number"></td>
 	</tr>
-	<tr>
+	<tr class="table-header-spacing">
 	    <td class="table-header">Pricing of individual PD Session</td>
 	    <td></td>
 	</tr>
@@ -53,52 +60,4 @@
 	</tr>
     </table>
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<script>
-
-$(document).ready(function() {
-$("tr:has(.table-header)").addClass("table-header-spacing");
-});
-
-</script>
-
-<style>
-
-.mychk {
-    padding: 0px !important;
-    margin: 0px !important;
-    width: 20px;
-}
-
-input {
-    width: 40%;
-}
-td {
-    padding-left: 20px !important;
-}
-.table-header {
-    font-weight: bold;
-    padding-left: 0px !important;
-    padding-top: 35px !important;
-}
-.table-header-spacing {
-    margin-top: 200px !important;
-    padding-top: 200px !important;
-    color: brown;
-}
-
-
-</style>
 {% endblock %}

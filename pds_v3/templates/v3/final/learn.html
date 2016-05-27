@@ -1,39 +1,28 @@
 {% extends "v3/final/base/base.html" %}
 {% load staticfiles %}
-{% block body %}
 {% load pds_extras %}
+{% block header-metatags %}
+        <title>PDSquirrel Learn</title>
+        <meta name=”description” content='At PD Squirrel we provide continuing professional development to Canadian lawyers.'>
+{% endblock header-metatags %}
+{% block header-content %}
+        <link rel="stylesheet" href="{% static 'css/user/learn.css' %}">
+{% endblock header-content %}
+{% block body %}
 
-
-<link rel="stylesheet" href="{% static 'css/inforow.css' %}">
-<style>
-
-li {
-}
-
-.vcenter {
-  position: relative;
-  top: 50%;
-  transform: translateY(-50%);
-}
-.plack {
-    border: 5px;
-    border-style: outset;
-    width: 400px;
-}
-</style>
 <div class="container" id="main-content">
     <div class="row">
     	    <div class="col-lg-10 col-lg-offset-1">
-			<h3 style="margin-top: 0">Learn more about us</h3>
+			<h3 class="my-page-header">Learn more about us</h3>
 			<hr>
-			
+
 		    <div class="row">
 			<div class="col-lg-12">
 			    <p class="muted">
 		          At PD Squirrel we provide continuing professional development to Canadian lawyers.  Our sessions are concise, topical audio presentations, created by Canadian professionals among the best in their field.  The sessions at PD Squirrel can be used to meet the continuing professional development obligations of your law society, and assist you day to day with your practice.</p>
 
 <p class="muted">
-			  Join PD Squirrel today at no cost, and receive one free session. As a Standard member, you only pay for the individual sessions you take. For more value, upgrade to Premium membership and receive multiple sessions for a monthly fee. 
+			  Join PD Squirrel today at no cost, and receive one free session. As a Standard member, you only pay for the individual sessions you take. For more value, upgrade to Premium membership and receive multiple sessions for a monthly fee.
 			  As a PD Squirrel member, you always have instant access to excellent PD. Just browse, choose, and listen.
 			  </p>
 			<table class="table">
@@ -60,89 +49,23 @@ li {
 				</tr>
 			</table>
 			{% if user.is_authenticated %}
-			<p style="text-align: center">Select "<i>change membership</i>" on your <a href="{% url 'options' %}">account options page</a> to become a premium member. </p>
+			<p class="text-center">Select "<i>change membership</i>" on your <a href="{% url 'options' %}">account options page</a> to become a premium member. </p>
 			{% else %}
-			<p style="text-align: center">Once you have created a free account, you may visit your account options page to upgrade to a premium membership.</p>
+			<p class="text-center">Once you have created a free account, you may visit your account options page to upgrade to a premium membership.</p>
 
 			{% endif %}
-                
-			  
 
-			
-			
-			  
-<p class="muted hidden">
-			  Join today at no cost and as a standard member, you only pay for the individual sessions you take. As a premium member..............................
-			  ..
-			  Either way, as a PD Squirrel member, youll always have instant access to excellent PD. Just browse, choose, and listen.
-			  </p>
-			  <p class="muted hidden">
-			  Pay as you take, or take advantage of our premium monthly membership. <a href="">Get started today.</a>
-			  </p>
-			  	        
+
+
+
+
 		    </div></div>
-<div class="row">
-		        <div class="col-lg-12">
-<div class="alert alert-info hidden" id="membership-info-premium">
 
-<p><b>Premium PD Squirrel member</b> – For a monthly fee of just <span class="monthly-price">$29.99</span> (GST/HST included), you are entitled to 
-    
-    take your choice of any eight (8) sessions during the monthly cycle.  Your monthly cycle starts on the day 
-    
-    you become a Premium member and runs to the same day of the following month.  Any PD session you 
-    
-    take is kept in your personal PD library for unlimited future access.  You may convert back to Standard 
-    
-    membership at any time without penalty and without losing the PD sessions from your personal library.  
-    
-    Upgrading to Premium can be done at any time from your membership account page.
-
-</p>
-
-<div class="row">
-<div class="col-lg-12">
-    <button onclick="closeAlert()" class="btn btn-default pull-right">Close</button>
-</div>
-</div>
-
-
-			    </div>
-<div class="alert alert-info hidden" id="membership-info">
-<p>
-    <b>Standard PD Squirrel member </b>– Upon joining, you automatically become a Standard member. No monthly fee. You pay only for each session you take.  Our prices 
-    
-    include any applicable GST/HST.  Any PD session you take is kept in your personal PD library for 
-    
-    unlimited future access.
-</p>
-
-
-
-
-
-
-<div class="row">
-<div class="col-lg-12">
-    <button onclick="closeAlert()" class="btn btn-default pull-right">Close</button>
-</div>
-</div>
-
-
-<style>
-.info-row {
-    margin-bottom: 45px;
-
-}
-
-</style>
-
-			    </div>
-			</div>
-		    </div>
 		    <hr>
 		    <div class="row hidden-md hidden-sm hidden-lg" id="mobile_learn">
 			<div class="col-xs-12">
-			    <h3>Browse, Choose, Listen. </h3>			    <img src="{% static 'img/learn/on_device.png' %}" width="100%" alt="">
+			    <h3>Browse, Choose, Listen. </h3>
+          <img src="{% static 'img/learn/on_device.png' %}" width="100%" alt="Browse, Choose, Listen">
 			</div>
 		    </div>
 		    <div class="row info-row hidden-xs info-row-color-1"> <!-- Browse row -->
@@ -150,12 +73,12 @@ li {
 			    <p><b>Browse</b> our selection of PD sessions.</p>
 		        </div>
 		        <div class="col-sm-7 col-xs-12">
-			    <img class="plack"  style="float: right;"src="{% static 'img/learn/browse.png' %}"  alt="">		
+			    <img class="plack right-plack" src="{% static 'img/learn/browse.png' %}"  alt="Browse">
 		        </div>
 		    </div>
 		    <div class="row info-row hidden-xs info-row-color-2"> <!-- Choose row -->
 		        <div class="col-sm-7 col-xs-12" >
-		          <img class="plack" src="{% static 'img/learn/detail.png' %}"  alt="">		
+		          <img class="plack" src="{% static 'img/learn/detail.png' %}"  alt="Choose">
 		        </div>
 		        <div class="col-sm-5 col-xs-12">
 			    <p><b>Choose</b> a session.<br>
@@ -166,11 +89,11 @@ li {
 		    </div>
 		    <div class="row info-row hidden-xs info-row-color-1"> <!-- Listen row -->
 		        <div class="col-sm-5 col-xs-12">
-		          <p><b>Listen</b> to your PD immediately or later as you wish. 
+		          <p><b>Listen</b> to your PD immediately or later as you wish.
 			  The sessions you take are kept in your personal library for unlimited future access. </p>
 		        </div>
 		        <div class="col-sm-7 col-xs-12" style="">
-		          <img class="plack"  style="float: right;" src="{% static 'img/learn/watch.png' %}" style="float: right" alt="">		
+		          <img class="plack right-plack"  src="{% static 'img/learn/watch.png' %}" alt="Listen">
 		        </div>
 		    </div>
 		    <div class="row"> <!-- Pricing row -->
@@ -179,40 +102,40 @@ li {
 			    <h4 class="text-center">Pricing</h4>
 			    <hr>
 			    <p>
-				Join PD Squirrel today for free with just your name and email.  You receive one free session credit when 
-				
-				you join PD Squirrel for the first time.  
+				Join PD Squirrel today for free with just your name and email.  You receive one free session credit when
+
+				you join PD Squirrel for the first time.
 			    </p>
 
 			    <p>
-				Every new PD Squirrel member automatically becomes a Standard member.  You may upgrade to 
-				
+				Every new PD Squirrel member automatically becomes a Standard member.  You may upgrade to
+
 				Premium membership at any time with a few clicks.
 			    </p>
 
 			    <p>
-				Standard PD Squirrel member – No monthly fee.  You pay only for each session you take.  Our prices 
-				
-				include any applicable GST/HST.  Any PD session you take is kept in your personal PD library for 
-				
+				Standard PD Squirrel member – No monthly fee.  You pay only for each session you take.  Our prices
+
+				include any applicable GST/HST.  Any PD session you take is kept in your personal PD library for
+
 				unlimited future access.
 			    </p>
 
 			    <p>
-				Premium PD Squirrel member – For a monthly fee of just $29.99 (GST/HST included), you are entitled to 
-				
-				take your choice of any eight (8) sessions during the monthly cycle.  Your monthly cycle starts on the day 
-				
-				you become a premium member and runs to the same day of the following month.  Any PD session you 
-				
-				take is kept in your personal PD library for unlimited future access.  You may convert back to Standard 
-				
-				membership at any time without penalty and without losing the PD sessions from your personal library.  
+				Premium PD Squirrel member – For a monthly fee of just $29.99 (GST/HST included), you are entitled to
+
+				take your choice of any eight (8) sessions during the monthly cycle.  Your monthly cycle starts on the day
+
+				you become a premium member and runs to the same day of the following month.  Any PD session you
+
+				take is kept in your personal PD library for unlimited future access.  You may convert back to Standard
+
+				membership at any time without penalty and without losing the PD sessions from your personal library.
 			    </p>
 
 			    <p>
-				Both Standard and Premium members have access to our report generator to help you keep track of 
-				
+				Both Standard and Premium members have access to our report generator to help you keep track of
+
 				your PD.
 			    </p>
 
@@ -224,27 +147,13 @@ li {
 			    </b>
 			    </p>
 			</div>
-		    </div> 
+		    </div>
 
-		    
-		    
+
+
 
     		    </div>
                 </div>
 </div>
-<script>
-			    function togglePremium() {
-				$('#membership-info').addClass('hidden');
-				$('#membership-info-premium').toggleClass('hidden');
 
-			    }
-			    function closeAlert() {
-				$('.alert').addClass('hidden');
-			    }
-			    function toggleMembership() {
-
-				$('#membership-info-premium').addClass('hidden');
-				$('#membership-info').toggleClass('hidden');
-			    }
-			    </script>
 {% endblock %}

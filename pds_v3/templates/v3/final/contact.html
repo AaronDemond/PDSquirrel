@@ -1,25 +1,27 @@
 {% extends "v3/final/base/base.html" %}
 {% load staticfiles %}
+{% block header-metatags %}
+        <title>PDSquirrel Contact</title>
+        <meta name=”description” content='Contact PDSquirrel'>
+{% endblock header-metatags %}
+{% block header-content %}
+        <link rel="stylesheet" href="{% static 'css/user/contact.css' %}">
+{% endblock header-content %}
 {% block body %}
-<style>
-label {
-	font-weight: normal;
-}
-</style>
 
-<div class="container" id="main-content" style="height: auto">
-
-
-
+<div class="container" id="main-content" >
 
         <div class="row">
             <div class="col-lg-9 col-lg-offset-1">
 <div class="msg-container">
-                {% if messages %}
-                {% for msg in messages %}
-                <div class="alert alert-{{msg.tags}} msg" role="alert">{{msg}} <a href="#"><i class="fa fa-times pull-right iclose"></i></a> </div>
-                {% endfor %}
-                {% endif %}
+					{% if messages %}
+					{% for msg in messages %}
+						<div class="alert alert-{{msg.tags}} msg" role="alert">
+							<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+							{{msg}}
+						</div>
+					{% endfor %}
+					{% endif %}
             </div>
                 <h3 class="my-page-header">Contact us</h3>
 		<hr>
@@ -44,12 +46,12 @@ label {
                                 Subject</label>
 			    <select id="subject" name="subject" class="form-control">
 				{% if from_pres == True %}
-				<option value="Becine a Presenter" selected> I am interested to become a Presenter</option>
+				<option value="Become a Presenter" selected> I am interested to become a Presenter</option>
 				<option value="Support">General Support</option>
 				{% else %}
 
 				<option value="Support" selected>General Support</option>
-				<option value="Becine a Presenter"> I am interested to become a Presenter</option>
+				<option value="Become a Presenter"> I am interested to become a Presenter</option>
 				{% endif %}
 				<option value="Other">Other</option>
 			    </select>
@@ -73,7 +75,7 @@ label {
                         </div>
                     </div>
                     <div class="col-md-12">
-                        <button type="submit" class="btn btn-success pull-right" id="btnContactUs">
+                        <button type="submit" class="btn btn-success pull-right">
                             Send Message</button>
                     </div>
                 </div>
@@ -84,7 +86,7 @@ label {
     <div class="row">
         <div class="col-lg-9 col-lg-offset-1">
             <form>
-            <legend style="font-size: 18px"><span class="glyphicon glyphicon-globe"></span> Our office</legend>
+            <legend id="globe" ><span class="glyphicon glyphicon-globe"></span> Our office</legend>
             <address>
                 <strong>PD Squirrel Inc.</strong><br>
                 PO Box 48155, RPO Mill Cove<br>

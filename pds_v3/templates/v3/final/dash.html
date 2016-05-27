@@ -1,6 +1,9 @@
-
 {% extends "v3/final/base/base.html" %}
 {% load staticfiles %}
+{% block header-metatags %}
+        <title>PDSquirrel Library</title>
+        <meta name=”description” content='Navigate all you purchased Profressional Development talks'>
+{% endblock header-metatags %}
 {% block body %}
 
 <div id="main-content" class="container main-container" >
@@ -10,18 +13,18 @@
         <div class="col-lg-9">
 	    <h3 class="my-page-header">My PD Library</h3>
 	    <hr>
-	    
+
             <div id = "user_pd">
                 <div class="row">
                     <div class="col-xs-12">
                         <p>{{msg}}</p>
                     </div>
                 </div>
-                
+
                 {% if pd_list %}
                     {% for pd in pd_list %}
                     <div id="pd-listing" class="row pdlisting">
-                        
+
                         <div class="col-xs-12">
                             <h3><a href="{% url 'watch' pd.id %}">{{pd.name}}</a></h3>
                             <p>
@@ -32,7 +35,7 @@
 				{{pd.description|truncatechars:155}}
                             <span class="pd-list-small-info">
 				<br>
-                                <b>Subject area(s):</b> 
+                                <b>Subject area(s):</b>
                                 {{pd.subject.all|join:", "}}
                                 <!--	<b>Duration: </b> {{ pd.duration }} -->
                                 <b> Release Date: </b> {{pd.release_date }}
@@ -85,8 +88,8 @@
 				{% endif %}
   </ul>
 </nav>
-{% endif %} 
-{% endif %} 
+{% endif %}
+{% endif %}
                 {% else %}
                 <p>You have no PD. Click "Browse PD" in the links above to get started!</p>
                 {% endif %}
@@ -99,5 +102,3 @@
 
 
 {% endblock %}
-
-
