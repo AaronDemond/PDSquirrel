@@ -64,7 +64,7 @@ We use the services of Stripe, with which we have a merchant agreement, to recei
                     <div class="row">
 
 
-                        <div id="error-container" class="col-lg-9 col-lg-offset-1">
+						<div id="error-container" class="col-lg-10 col-lg-offset-1">
                           {% if messages %}
                   				{% for msg in messages %}
                   					<div class="alert alert-{{msg.tags}} msg" role="alert">
@@ -83,9 +83,10 @@ We use the services of Stripe, with which we have a merchant agreement, to recei
                             {% endfor %}
                             {% endif %}
                           </div>
+						  <div class="col-lg-10 col-lg-offset-1">
                             <p class="bg-info">{{msg}}</p>
                             <h3>My Account<small></small></h3>
-                            <table class="table">
+							<table class="table">
                                 <tr>
                                     <td class='col1'>Name</td>
                                     <td>{{user.first_name}} {{user.last_name}}</td>
@@ -110,9 +111,7 @@ We use the services of Stripe, with which we have a merchant agreement, to recei
                                     <td class='col1'>My cards <a onclick="showPaymentInfo()">(more information)</a></td>
                                     <td id="card-cell">
                                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Add Card</button>
-                                </tr>
 										<hr>
-
 										<ul class="list-group">
 											{% for x in customer.sources.data %}
 												<li id="delete-card" class="list-group-item">
@@ -130,10 +129,10 @@ We use the services of Stripe, with which we have a merchant agreement, to recei
                                     </td>
                                 </tr>
                             </table>
-                            <div class="alert alert-info hidden" id="payment-info">
-				<p>
-				We use the services of Stripe Payments Canada, Ltd., with which we have a merchant agreement, to receive and process payments from our PD Squirrel members. None of your credit card information is stored on our servers, except only the four last digits for your reference purposes only. Instead we receive from Stripe only an electronic token which we use to charge the appropriate payment to your card. Learn more about Stripe by clicking <a target="_blank" href="https://stripe.com/ca">here.</a></p>
-				<p>Click the 'Add Card' button to add a credit card to your account. The linked card can then be used to easily become a Premium member, or purchase individual PD sessions. You can remove or change a card at any point, by clicking the 'Remove Card' button that appears once a card has been added.</p>
+							<div class="alert alert-info hidden" id="payment-info">
+											<p>
+											We use the services of Stripe Payments Canada, Ltd., with which we have a merchant agreement, to receive and process payments from our PD Squirrel members. None of your credit card information is stored on our servers, except only the four last digits for your reference purposes only. Instead we receive from Stripe only an electronic token which we use to charge the appropriate payment to your card. Learn more about Stripe by clicking <a target="_blank" href="https://stripe.com/ca">here.</a></p>
+											<p>Click the 'Add Card' button to add a credit card to your account. The linked card can then be used to easily become a Premium member, or purchase individual PD sessions. You can remove or change a card at any point, by clicking the 'Remove Card' button that appears once a card has been added.</p>
 
                                 <div class="row">
                                     <div class="col-xs-12">
@@ -143,8 +142,12 @@ We use the services of Stripe, with which we have a merchant agreement, to recei
                                     </div>
                                 </div>
                             </div>
+						  </div>
+
+                           <div class="col-lg-10 col-lg-offset-1">
+
                             <h3>My Membership<small></small></h3>
-                            <table class="table">
+<table class="table">
                                 <tr>
                                     <td class="col1">Membership type <a onclick="showMembershipTypeInfo()">(more)</a>
 
@@ -158,29 +161,20 @@ We use the services of Stripe, with which we have a merchant agreement, to recei
                                     <div class="alert alert-info" >
 					<p>
 <b>Premium PD Squirrel membership</b> – For a monthly fee of $29.99 (GST/HST included), you are entitled to
-
 take any 8 PD sessions during the month – you choose the sessions.  The monthly fee is billed directly to
-
 your credit card on the first day of each monthly cycle.  A cycle starts on the day you become a Premium
-
 member and ends on the same day of the following month, or the last day of the following month if
-
 there are fewer days in that month.  If you do not take all 8 PD sessions in a monthly cycle, the unused
-
 entitlement is not carried over to the next month.  You may purchase additional sessions, beyond the 8
-
 included in your Premium membership, at the listed price.
 					</p>
 <p>
 <b>Standard PD Squirrel membership</b> – You purchase each PD session individually for the listed price.  You
-
 pay no monthly fee.
 </p>
 <p>
     Your PD is always available to you for at least 2 years – Every PD session taken by you (whether as a
-
     Premium member or a Standard member) is automatically saved for you in your PD Library.  You can access
-
     these sessions at any time, whether you are a Premium member or Standard member.
 </p>
 
@@ -259,6 +253,10 @@ pay no monthly fee.
                                     </td>
                                 </tr>
                             </table>
+
+						   </div>
+                            
+                            
 
                             <div class="row">
                                 <div class="col-xs-12">
@@ -382,12 +380,11 @@ your continued agreement to the terms and conditions of Site use.
                                     </div>
                                 </div>
                             </div>
-                    <div class="row">
-                        <div class="col-xs-12">
+
+							<div class="col-lg-10 col-lg-offset-1">
+
                             <h3>Make Changes <small> Click on the pencil icon to edit</small></h3>
-                        </div>
-                    </div>
-                        <table class="table no-border" >
+<table class="table no-border" >
                             <form action="{% url 'change-email' %}" method="POST">
                                 {% csrf_token %}
                                 <tr>
@@ -452,6 +449,10 @@ your continued agreement to the terms and conditions of Site use.
                     </td>
                     </tr>
                     </table>
+
+							</div>
+                    
+                        
 
                         </div>
                     </div>
