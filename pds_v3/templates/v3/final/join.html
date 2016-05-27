@@ -56,12 +56,12 @@
                 <form method = "post" action = "{% url 'join' %}" data-toggle="validator" class = "form-horizontal" id="joinform">
                     <div class="form-group" id="name">
                         <label for="first_name" class="col-sm-2 control-label">Name</label>
-                        <div class="text_input col-sm-5">
+                        <div class="col-sm-5">
                           <input type="text" id="first_name" value = "{{ first_name }}" name = "first_name" placeholder="First" class="form-control">
                           <span class="help-block"></span>
                         </div>
                         <div class="visible-xs"><br></div>
-                        <div class="text_input col-sm-5">
+                        <div class="col-sm-5">
                             <input type="text" name = "last_name" value="{{last_name}}" id="last_name" placeholder="Last" class="form-control">
                             <span class="help-block"></span>
                         </div>
@@ -70,7 +70,7 @@
 
                     <div class="form-group" >
                         <label for="email" class="col-sm-2 control-label">Email</label>
-                        <div class="text_input col-sm-10">
+                        <div class=" col-sm-10">
                             <input type="text" id="email" value="{{email}}" name = "email" class="form-control">
                             <span class="help-block"></span>
                         </div>
@@ -79,13 +79,13 @@
 
                           <div class="form-group">
                               <label for="pass" class="col-sm-2 control-label">Password</label>
-                              <div class="text_input col-sm-5">
+                              <div class=" col-sm-5">
                               {{form.password}}
                                 <input type="password" name = "password" id="pass" placeholder="Enter password" class="form-control">
                                 <span class="help-block"></span>
                               </div>
                               <div class="visible-xs"><br></div>
-                              <div class="text_input col-sm-5">
+                              <div class=" col-sm-5">
                                 {{form.password_confirm}}
                                 <input type="password" id="vpass" name = "password_verify" placeholder="Retype password" class="form-control">
                                 <span class="help-block"></span>
@@ -97,42 +97,44 @@
 
                     <div class="form-group">
                         <label for="inputPassword3" class="col-sm-2 control-label">Member Of</label>
-                        <div id="societygroup" class="text_input col-sm-10">
+                        <div id="societygroup" class=" col-sm-10">
                             {{form.society}}
                             <select name="society" class="form-control">
                               <option value=""></option>
                             {% for x in societies %}
-		<option value={{x.id}}>{{x}}</option>
+		                          <option value={{x.id}}>{{x}}</option>
                             {% endfor %}
                             </select>
                             <span class="help-block"></span>
                         </div>
                     </div>
                     <div class="form-group">
-                        <div class="col-sm-12 text_input">
-                          <label for="">{{form}}</label>
-
-                            <a onclick="ref()">Refresh Captcha</a>
-                            <span class="help-block"></span>
-                        </div>
+                          <a onclick="ref()">Refresh Captcha</a>
+                                {{form}}
+                          <span class="help-block"></span>
                     </div>
-                    <div class="form-group">
-                        <div class="col-xs-10 col-xs-offset-1">
-                            <div class="form-group" id = "term-div" >
-                              <div class="checkbox" id="termdiv" >
-
-                                  <input id="termbox" type="checkbox" name ="terms">
-                                  <div id="darken">By checking here, I acknowledge that I have reviewed and agree to the <a href="{% url 'terms' %}" target="_blank">PD Squirrel terms and conditions.</a> After you click submit, we will send you an email confirming the creation of your account. Welcome to PD Squirrel.</div>
-                                  <span class="help-block"></span>
-
-                              </div>
+                          <div class="form-group has-error" id = "term-div" >
+                            <div class="col-xs-1">
+                              <input id="termbox" type="checkbox" name ="terms">
+                              <span class="help-block"></span>
                             </div>
-                            <br>
+                            <div class="col-xs-10 text-center">
+                              <label id="darken" for="terms">
+                                By checking here, I acknowledge that I have reviewed and agree to the
+                                <a href="{% url 'terms' %}" target="_blank">PD Squirrel terms and conditions.</a>
+                                 After you click submit, we will send you an email confirming the creation of your account. Welcome to PD Squirrel.
+                              </label>
+                              <span class=" help-block"></span>
+
+                            </div>
                           </div>
-                          <div class="col-xs-12">
-                            <p class="text-center">
-                                <button type="submit" class="btn btn-primary">Submit</button>
-                            </p>
+                            <br>
+                            <div class="form-group">
+                              <div class="col-xs-12">
+                                <p class="text-center">
+                                    <button id="submit" type="submit" class="btn btn-primary">Submit</button>
+                                </p>
+                              </div>
                           </div>
                     </div>
                     </form>
