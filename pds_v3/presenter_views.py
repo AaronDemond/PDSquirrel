@@ -231,14 +231,11 @@ def dash(request, msg=False):
             #request pd be suspended
             if 'suspend-request' in request.POST:
                 pd = PdSession.objects.get(pk=request.POST['session_id'])
+                messages.add_message(request, messages.SUCCESS, 'Session Removed')
                 if pd.presenter_approved == False:
                     pd.delete()
-                    messages.add_message(request, messages.SUCCESS, 'Session Removed')
                 else:
-
-                    messages.add_message(request, messages.INFO, 'Thank you for your input. \
-                            we will review your removal request.')
-                    pd.suspend_request = True
+                    pd.suspended = True
                     pd.suspend_reason = request.POST['reason']
                     pd.save()
 
@@ -253,13 +250,8 @@ def dash(request, msg=False):
             #approve PD session (ready for quality test by admins)
             if 'p-approved' in request.POST:
                 pd = PdSession.objects.get(pk=request.POST['session_id'])
-                if pd.edited:
-                    pd.name = pd.edits.latest().name
-                    messages.add_message(request, messages.SUCCESS, 'Thank you for releasing \
-                        your edited PD Session titled \'%s\'. When accepted by us, it will be listed on the Site, and offered by us to all PD Squirrel members.' % pd)
-                else:
-                    messages.add_message(request, messages.SUCCESS, 'Thank you for releasing \
-                        your PD Session titled \'%s\'. When accepted by us, it will be listed on the Site, and offered by us to all PD Squirrel members.' % pd)
+                messages.add_message(request, messages.SUCCESS, 'Thank you for releasing \
+                    your PD Session titled \'%s\'. When accepted by us, it will be listed on the Site, and offered by us to all PD Squirrel members.' % pd)
                 pd.presenter_approved = True
                 pd.save()
                 return HttpResponseRedirect('/user/presenter/dash/?direct_to=sessions')
@@ -293,6 +285,7 @@ def dash(request, msg=False):
                     pdaud.used = True
                     pdaud.save();
                     new_session = PdSession(name=pd_name,description=pd_description, pdaudio=pdaud, approved=False)
+                    counter = 1 #file counter. 1 if pd audio, 0 if audio from client pc
                 else:
                     audio_file = request.FILES.get('audio_file', False)
                     if not audio_file:
@@ -324,7 +317,6 @@ def dash(request, msg=False):
                 for sub_id in subjects:
                     subject = Subject.objects.get(pk=sub_id)
                     new_session.subject.add(subject)
-                counter = 0
                 for afile in request.FILES:
                     if counter > 0:
                         attachment = PdAttachment(attachment=request.FILES[afile])
@@ -379,11 +371,6 @@ def edit(request, id):
     context = {'sesh' : pd, 'subjects' : Subject.objects.all()}
     if request.POST:
 
-        #Cancels an edit.
-        if 'c-edit' in request.POST:
-            pd.edited = False
-            pd.presenter_approved = True
-            pd.save()
 
         #the following creates the edit
         if 'create-edit' in request.POST:
@@ -398,7 +385,7 @@ def edit(request, id):
 
 
             #gather post data
-            name = request.POST['name']
+            name = pd.name # Do not allow editing titles
             description = request.POST['description']
             subjects = request.POST.getlist('subjects')
 
@@ -410,7 +397,6 @@ def edit(request, id):
             if pd.edited:
                 old_edit = pd.edits.latest('date')
                 edit.attachments = old_edit.attachments.all()
-                edit.audio_file = old_edit.audio_file
 
             edit.save()
 
@@ -418,36 +404,33 @@ def edit(request, id):
             files_to_delete = request.POST.getlist('files_to_delete')
             for f in files_to_delete:
                 attachment = PdAttachment.objects.get(pk=f)
-                attachment.mark_for_delete = True
-                attachment.save()
+                attachment.delete()
 
-            #change must be approved
-            pd.presenter_approved = False
-            pd.edited = True
 
-            if 'audio_file' in request.FILES:
-                audio_file = request.FILES['audio_file']
-                edit.audio_file = audio_file
-                counter = 0
-            else:
-                audio_file = False
-                counter = 1 #0 if first file is audio, 1 if first file is attachment
 
+            # Add files & subjects to edit
             for afile in request.FILES:
-                if counter > 0:
-                    attachment = PdAttachment(attachment=request.FILES[afile])
-                    attachment.save()
-                    edit.attachments.add(attachment)
-                counter+=1
+                attachment = PdAttachment(attachment=request.FILES[afile])
+                attachment.save()
+                edit.attachments.add(attachment)
+                pd.attachments.add(attachment)
 
+            pd.subject.clear()
             for subject_id in subjects:
                 subject = Subject.objects.get(pk=subject_id)
-                edit.subjects.add(subject)
+                pd.subject.add(subject)
 
+            pd.edited = True
             edit.save()
             pd.edits.add(edit)
+
+
+            # An edit now directly updates the model
+            # Consider saving the original ..?
+            #pd.subject = edit.subjects.all()
+            pd.description = edit.description
             pd.save()
-            messages.success(request,'Edit successful. If you are happy with your session, click \'Release Session\'.')
+            messages.success(request,'Edit successful.')
 
         return HttpResponseRedirect('/user/presenter/dash/?direct_to=sessions')
 

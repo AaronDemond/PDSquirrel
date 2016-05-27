@@ -150,7 +150,6 @@ def preview(request,id):
     else:
         return HttpResponse('auth error')
     if 'l' in request.GET:
-        messages.add_message(request, messages.INFO, 'Click to listen the PD Session shown below.')
         return render(request, 'v3/final/presenter-pages/final/preview.html', context)
 
 
@@ -159,12 +158,6 @@ def preview(request,id):
         context['edit'] = edit
         session.name = edit.name
         session.description = edit.description
-        messages.add_message(request, messages.INFO, 'Click to preview the PD Session shown below.')
-    else:
-        if session.approved:
-            messages.add_message(request, messages.INFO, 'Click to preview the PD Session shown below.')
-        else:
-            messages.add_message(request, messages.INFO, 'Click to preview the PD Session shown below.')
 
     return render(request, 'v3/final/presenter-pages/final/preview.html', context)
 
