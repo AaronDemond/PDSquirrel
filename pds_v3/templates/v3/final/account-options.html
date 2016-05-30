@@ -11,9 +11,9 @@
 {% block body %}
 
 <div class="container">
-    <div class="row">
-        <div class="col-xs-12">
-            <div id = "account_options">
+    <div id = "account_options" class="row">
+          <div class="col-xs-12">
+
                 <div id="myModal" class="modal" role="dialog">
                     <div class="modal-dialog">
                         <!-- Modal content-->
@@ -58,6 +58,8 @@ We use the services of Stripe, with which we have a merchant agreement, to recei
                         </div>
                     </div>
                 </div>
+              </div>
+
                 {% csrf_token %}
 
                 <div class="container">
@@ -111,7 +113,6 @@ We use the services of Stripe, with which we have a merchant agreement, to recei
                                     <td id="card-cell">
                                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Add Card</button>
                                 </tr>
-										<hr>
 
 										<ul class="list-group">
 											{% for x in customer.sources.data %}
@@ -456,18 +457,17 @@ your continued agreement to the terms and conditions of Site use.
                         </div>
                     </div>
                     </div>
-                </div>
+
                 <div class="row">
                 <div class="col-xs-12">
                 <input type="submit" id = "save-btn" value="Save Changes" class="btn btn-success hidden" >
                 </div>
                 </div>
                 </form>
+              </div>
+                </div>
                 <br />
-            </div>
-        </div>
     </div>
-</div>
 {% endblock body %}
 {% block footer-content %}
 <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
