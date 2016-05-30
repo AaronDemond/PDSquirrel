@@ -36,9 +36,9 @@
 				<div class="row">
 					<div class="col-lg-8">
 						<div class="control-group">
-							<label class="control-label" for="name" >Edit title</label>
+							<label class="control-label" for="name" >Title</label>
 							<div class="controls">
-								<input id="name" name="name" value="{{sesh.name}}" type="text" placeholder="" class="form-control" required="">
+								<input id="name" name="name" value="{{sesh.name}}" disabled type="text" placeholder="" class="form-control" required="">
 							</div>
 						</div>
 					</div>
@@ -48,7 +48,7 @@
 							<div class="controls">
 							<select multiple class="form-control"  name="subjects">
 							{% for subject in subjects %}
-								{% if subject in session_subjects %}
+								{% if subject in sesh.subject.all %}
 								<option value="{{subject.id}}" selected>{{subject}}</option>
 								{% else %}
 								<option value="{{subject.id}}">{{subject}}</option>
@@ -64,29 +64,17 @@
 						<div class="control-group">
 							<label class="control-label" for="textarea">Edit description</label>
 							<div class="controls">
-								<textarea id="description" name="description" class="form-control" rows="15">
-									{{sesh.description}}
-								</textarea>
+								<textarea id="description" name="description" class="form-control" rows="15">{{sesh.description}}</textarea>
 							</div>
 						</div>
 					</div>
 				</div>
+				
+				{% if sesh.attachments.all %}
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="control-group">
-							<label for="">Change audio file</label>
-							<input type="file" class="form-control" name="audio_file">
-							<p class="help-block">
-								If you wish to request that the audio 
-								file of this PD Session be changed, attach the file above.
-							</p>
-						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-lg-12">
-						<div class="control-group">
-							<p class="help-block">Select attachments to delete (if any)</p>
+							<p class="help-block">Select attachments to mark them for deletion. Select multiple by holding ctrl / command. </p>
 
 							<select multiple id="" name="files_to_delete">
 							{% for attachment in sesh.attachments.all %}
@@ -98,20 +86,11 @@
 								</option>
 							{% endfor %}
 
-							{% for attachment in edit.attachments.all %}
-								<option value="{{ attachment.id }}">
-									{{ attachment.attachment }} --- Recently Uploaded
-									{% if attachment.mark_for_delete %}
-										<p>
-											---Marked for Deletion
-										</p>
-									{% endif %}
-								</option>
-							{% endfor %}
 							</select>
 						</div>
 					</div>
 				</div>	
+				{% endif %}
 
 				<div class="row">
 					<div class="col-lg-12">
@@ -120,7 +99,7 @@
 								<label for="">Optional additional attachment(s)</label>
 								<input type="file" class="form-control" onclick="anotherFile()" name="file-upload-0">
 								<p class="help-block">
-									(Optonal) You may upload attachments 
+									You may upload attachments 
 									to suppliment your PD Session, such as slides or other documents.
 								</p>
 							</div>
@@ -151,7 +130,7 @@
 					<div class="col-lg-12">
 						<div class="control-group">
 							<div class="controls">
-								<input type="submit" value="Save Requested Changes" class="btn btn-success">
+								<input type="submit" value="Save Changes" class="btn btn-success">
 								<a class="btn btn-default" 
 									href="{% url 'presenter-dash' %}?direct_to=sessions">
 									Cancel

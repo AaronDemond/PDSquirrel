@@ -16,16 +16,17 @@
 </div>
 <div class="row my-sessions-row">
     <div class="col-lg-9 col-lg-offset-1">
+		{% if not pd %}
+		<div class="alert">
+			<p>You have not uploaded any sessions!</p>
+		</div>
+		{% endif %}
         <div class="list-group">
             {% for sesh in pd %}
             <div class="list-group-item pd-upload" >
                 <div class="row">
                     <div class="col-lg-12">
-                        {% if sesh.edited %}
-                        <h4>{{sesh.edits.latest}}</h4>
-                        {% else %}
-                        <h4>{{sesh}}</h4>
-                        {% endif %}
+						<h4>{{sesh}}</h4>
                     </div>
                     <div class="col-lg-6">
                         <p class="muted">Uploaded {{sesh.upload_date}}
@@ -33,6 +34,7 @@
                             <br>Edited {{sesh.last_edited}}
                             {% endif %}
                         </p>
+
                         <div class="status">
                             <p><b>Status:</b>
                                 {% if sesh.suspend_request %}
@@ -41,27 +43,19 @@
 									(Pending removal request)
 									</span>
                                 {% elif sesh.presenter_approved == False %}
-									{% if sesh.approved %}
-										Accepted & listed<br>
-										<span class="status-brown">
-										(Edited version is awaiting your release)
-										</span>
-									{% else %}
+									{% if not sesh.approved %}
 										Awaiting your release
 									{% endif %}
                                 {% elif sesh.edited %}
 									{% if sesh.approved %}
-										Accepted & listed<br>
-										<span class="status-brown">
-										(Edited version awaiting acceptance)
-										</span>
+										Listed
 									{% else %}
-										Awaiting our acceptance
+										Session processing
 									{%endif %}
                                 {% elif sesh.approved == False %}
-									Awaiting our acceptance
+									Session processing
                                 {% else %}
-									Accepted & listed
+									Listed
                                 {% endif %}
                                 <a class="status-link" onclick="showStatus({{sesh.id}}, this)">(info ▾)</a>
                             </p>
@@ -89,45 +83,20 @@
                                 &nbsp;
                             </div>
                         </div>
-                        {% if sesh.suspend_request %}
-                        <a class=""  onclick="loadXMLDoc('{% url 'preview-session' sesh.id %}?l=true', '#page-content')">Listen</a>
-                        <a class="cancel-removal-link" onclick="showSuspendCancel({{sesh.id}}, this)" >Cancel removal ▾</a>
-                        {% else %}
-                        {% if sesh.approved %}
-                        {% if sesh.edited %}
-                        <a class=""  onclick="loadXMLDoc('{% url 'preview-session' sesh.id %}?l=true', '#page-content')">Listen to existing</a>
-                        <a class=""  onclick="loadXMLDoc('{% url 'preview-session' sesh.id %}', '#page-content')">Preview edited</a>
-
-
-                        {% else %}
-                        <a class=""  onclick="loadXMLDoc('{% url 'preview-session' sesh.id %}?l=true', '#page-content')">Listen</a>
-                        {% endif %}
-                        {% else %}
+						{% if sesh.approved %}
+						<a href="{% url 'watch' sesh.id %}">Listen</a>
+						{% else %}
                         <a class=""  onclick="loadXMLDoc('{% url 'preview-session' sesh.id %}', '#page-content')">Preview</a>
-                        {% endif %}
+						{% endif %}
                         <a class="" onclick="loadXMLDoc('{% url 'edit' sesh.id %}', '#page-content')">Edit</a>
                         <a class="suspend-link" onclick="showRemove({{sesh.id}}, this)" >Remove ▾</a>
                         {% if sesh.presenter_approved == False %}
-							{% if sesh.edited %}
-								<form action="{% url 'edit' sesh.id %}" id='c-form' method="POST">
-									{% csrf_token %}
-									<input type="submit" class="pres_btn btn btn-success" value="Cancel edit">
-									<input type="hidden" name="c-edit" value="1">
-								</form>
-							{% endif %}
                         <form action="{% url 'presenter-dash' %}" method="POST" style="float: left; margin-right: 5px;">
                             {% csrf_token %}
                             <input type="hidden" name="session_id" value="{{sesh.id}}">
                             <input type="hidden" name="p-approved" value="44">
-                            {% if sesh.edited and sesh.approved %}
-                            <input type="submit" id="approve-btn" class="btn btn-success" value="Release edited Session">
-                            {% else %}
                             <input type="submit" id="approve-btn" class="btn btn-success" value="Release Session">
-                            {% endif %}
                         </form>
-
-
-                        {% endif %}
                         {% endif %}
                     </div>
                 </div>
@@ -151,7 +120,7 @@
                 {% endif %}
                 <div class="row hidden removal-bar" id="remove-{{sesh.id}}">
                     <div class="col-lg-3">
-                        <p>Do you wish to request removal of this session?</p>
+                        <p>Do you wish to remove this session?</p>
                     </div>
                     <div class="col-lg-8">
                         <form action="{% url 'presenter-dash' %}" method="POST">

@@ -39,5 +39,16 @@
 	<h4>Description</h4>
 	<p>{{pd.description}}</p>
 	</div>
+
+	{% if pd.attachments.all.count > 0 %}
+	    <div class="col-lg-9 col-lg-offset-1">
+		<h4>Downloads</h4>
+		<div class="list-group">
+		    {% for file in pd.attachments.all %}
+			<a class="list-group-item" target="_blank" href="/{{file.attachment}}">{{file.attachment}}</a>
+		    {% endfor %}
+		</div>
+	    </div>
+	{% endif %}
 </div>
 
