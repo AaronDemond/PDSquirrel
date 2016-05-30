@@ -477,8 +477,8 @@ def record(request):
         pda = PdAudio(name=name, audio=upload, appuser=au)
         pda.save()
 
-        #pda.convertToMp3()
-        #pda.mp3_location = pda.getMp3Location();
+        pda.convertToMp3()
+        pda.mp3_location = pda.getMp3Location();
 
         data_test = serializers.serialize("json", [pda]);
         return HttpResponse(data_test);
