@@ -265,6 +265,13 @@ class PdSessionEdit(models.Model):
         get_latest_by = "date"
 
 
+class Comment(models.Model):
+    message = models.TextField(null=True, blank=True)
+    date = models.DateTimeField(auto_now_add=True, null=True)
+    replies = models.ForeignKey('Comment', on_delete=models.CASCADE)
+    user = models.OneToOneField(User, related_name="commenter")
+    is_removed = models.BooleanField(default=False)
+
 
 class PdSession(models.Model):
     name = models.CharField(max_length=60)
@@ -293,6 +300,9 @@ class PdSession(models.Model):
     locked = models.BooleanField(default = False)
     attachments = models.ManyToManyField(PdAttachment, blank=True)
     total_takes = models.IntegerField(default=0)
+
+    #replies = models.ForeignKey(Comment, on_delete=models.CASCADE)
+
 
     def __str__(self):
         return self.name

@@ -5,7 +5,7 @@ from pds_v3 import views, user_views, bootsnip_views, final_views, presenter_vie
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
-
+    url(r'^pd/session/(?P<pd_id>\d+)/$', include('django_comments.urls')),
    #Home Page
     url(r'^$', views.landing, name="home"),
     #Browse/Search Page
