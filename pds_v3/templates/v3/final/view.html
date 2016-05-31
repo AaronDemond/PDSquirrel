@@ -91,7 +91,17 @@
             <div class="row">
               {{ comment.message }}
             </div>
-            
+            <div class="row">
+              <div class="col-xs-2 reply-container ">
+                <button type="button" class="btn btn-link reply" data-toggle="collapse" data-target="#reply-container-{{ comment.id }}">reply</button>
+              </div>
+              <div id="reply-container-{{ comment.id }}" class="col-xs-10 collapse">
+                <textarea  name="reply-message" rows="2" class="form-control "></textarea>
+                <br>
+                <button id="reply-btn-{{ comment.id }}" type="button" class="btn btn-info pull-right">reply</button>
+              </div>
+
+            </div>
           </div>
         </div>
         {% endfor %}
