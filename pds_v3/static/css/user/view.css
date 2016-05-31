@@ -10,3 +10,14 @@
 #description {
   margin-top: 20px;
 }
+
+.comment {
+  margin-bottom: 10px;
+}
+.reply-container {
+  padding-left: 0px;
+}
+
+.reply {
+  padding-left: 0px;
+}

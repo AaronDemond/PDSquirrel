@@ -70,5 +70,44 @@
 	    </div>
 	{% endif %}
     </div>
-</div
+    <div class="col-xs-12 col-md-8 col-md-offset-2">
+      <h3>Comments</h3>
+      <hr>
+      {% if comments %}
+        {% for comment in comments %}
+        <div class="row comment">
+          <div class="col-xs-2">
+            <div class="row">
+              {{ comment.user.user.first_name }} {{ comment.user.user.last_name }}
+            </div>
+            <!--
+            <div class="row">
+              <button type="button" class="btn btn-link delete">delete</button>
+            </div>
+            -->
+          </div>
+
+          <div class="col-xs-10">
+            <div class="row">
+              {{ comment.message }}
+            </div>
+            
+          </div>
+        </div>
+        {% endfor %}
+        <form action="{% url 'comment' %}" method="POST">
+          {% csrf_token %}
+          <input type="hidden" name="pd_id" value="{{ pd.id }}">
+          <div class="form-group">
+            <label for="comment">Comment:</label>
+            <textarea name="Message" rows="5" class="form-control"></textarea>
+            <br>
+            <input type="submit" name="submit" class="btn btn-success" value="Comment">
+          </div>
+
+        </form>
+      </div>
+      {% endif %}
+
+</div>
 {% endblock %}

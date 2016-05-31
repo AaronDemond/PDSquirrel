@@ -1,6 +1,6 @@
 from django.contrib import admin
 from pds_v3.models import PdSession, AppUser, LawSociety, \
-LawSocietyOverride, Purchase, Subject, PdSessionEdit, Notice, PdAttachment, Address, PdAudio
+LawSocietyOverride, Purchase, Subject, PdSessionEdit, Notice, PdAttachment, Address, PdAudio, Comment
 from pds_v3 import models
 
 admin.site.site_header = 'PD Squirrel Administration'
@@ -20,5 +20,5 @@ admin.site.register(LawSociety)
 admin.site.register(LawSocietyOverride)
 admin.site.register(Purchase)
 admin.site.register(PdSessionEdit)
-
+admin.site.register(Comment)
 admin.site.register(models.Presenter)

@@ -4,7 +4,7 @@ import datetime
 from django.contrib import messages
 from django.core.mail import send_mail
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from pds_v3.models import PdSession, AppUser, LawSociety, LawSocietyOverride, Purchase, Subject, Presenter
+from pds_v3.models import PdSession, AppUser, LawSociety, LawSocietyOverride, Purchase, Subject, Presenter, Comment
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.models import User
 from django.db import IntegrityError
@@ -269,10 +269,23 @@ def presenter_detail(request, p_id):
     return render(request, 'v3/final/presenter-landing.html', context)
 
 
+def comment(request):
+    if request.POST:
+        pd_id = int(request.POST['pd_id'])
+        pd = PdSession.objects.get(pk=pd_id)
+        message = request.POST['Message']
+        user = request.user.profile
+        comment = Comment(message=message, user=user, pd=pd)
+        comment.save()
+    return HttpResponseRedirect('/pd/session/' + str(pd_id))
+
+
 
 def watch(request, pd_id):
     pd = PdSession.objects.get(pk=pd_id)
-    context = {'pd': pd}
+    comments = Comment.objects.filter(pd_id = pd_id)
+    context = {'pd': pd, 'comments': comments}
+
 
     #if user owns pd, show them and mark as 'complete' (viewed)
     for x in request.user.profile.purchase_set.all():

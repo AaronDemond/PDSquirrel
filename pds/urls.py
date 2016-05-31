@@ -5,14 +5,13 @@ from pds_v3 import views, user_views, bootsnip_views, final_views, presenter_vie
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^pd/session/(?P<pd_id>\d+)/$', include('django_comments.urls')),
    #Home Page
     url(r'^$', views.landing, name="home"),
     #Browse/Search Page
-
     url(r'^pd/$', views.browse, name="browse"),
     url(r'^pd/(?P<pd_id>\d+)/$', views.detail, name="detail"),
     url(r'^pd/session/(?P<pd_id>\d+)/$', views.watch, name="watch"),
+    url(r'^pd/session/comment/$', views.comment, name="comment"),
     url(r'^pd/accred/(?P<pd_id>\d+)/(?P<s_id>\d+)/$', views.accred, name="accred"),
     url(r'^pd/accred/(?P<pd_id>\d+)/$', views.accred, name="accred"),
     url(r'^browse/$', views.browse, name="browse"),
