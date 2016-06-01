@@ -32,6 +32,10 @@ float: left;
 #session-details {
 	margin-top:20px
 }
+table {
+	line-height: normal;
+	font-size: 14px;
+}
 
 #form-submit {
   margin-top: 20px;
