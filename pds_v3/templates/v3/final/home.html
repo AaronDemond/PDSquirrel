@@ -34,30 +34,7 @@
       </h3>
     </div>
   </div>
-  <div class="row">
-
-    {% for pres in presenter %}
-    <a href="{% url 'presenter-detail' pres.id %}">
-      <div class="col-sm-6">
-        <div class="featured_box">
-          <div class="row">
-
-            <div class="col-xs-6">
-              <div class="featured_title text-center">{{ pres }}</div>
-              <p class="text-center">{{ pres.bio|truncatechars:"225" }}</p>
-            </div>
-
-            <div class="col-xs-6" >
-              <img src="/static/presenter_pics/{{ pres.image_name }}" class="img-circle portrait center-block">
-            </div>
-          </div>
-        </div>
-      </div>
-    </a>
-
-    {% endfor %}
-
-  </div>
+  
 
   <div class="row">
     <h3 class="text-center">
