@@ -283,9 +283,9 @@ def comment(request):
 
 def watch(request, pd_id):
     pd = PdSession.objects.get(pk=pd_id)
-    comments = Comment.objects.filter(pd_id = pd_id)
-    context = {'pd': pd, 'comments': comments}
+    comments = Comment.objects.filter(pd_id = pd_id, parent__isnull = True)
 
+    context = {'pd': pd, 'comments': comments}
 
     #if user owns pd, show them and mark as 'complete' (viewed)
     for x in request.user.profile.purchase_set.all():

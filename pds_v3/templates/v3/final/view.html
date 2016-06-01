@@ -70,21 +70,32 @@
 	    </div>
 	{% endif %}
     </div>
-    <div class="col-xs-12 col-md-8 col-md-offset-2">
-      <h3>Comments</h3>
-      <hr>
-      {% if comments %}
+
+
+    <div class="row">
+      <div name="comment-section" class="col-xs-10 col-xs-offset-1">
+        <div class="row">
+          <h3>Comments</h3>
+          <hr>
+        </div>
+        {% if comments %}
         {% for comment in comments %}
-        <div class="row comment">
+        <div class="comment row">
           <div class="col-xs-2">
             <div class="row">
               {{ comment.user.user.first_name }} {{ comment.user.user.last_name }}
+            </div>
+            <div class="row">
+              {{ comment.date|date }}
+            </div>
+            <div class="row">
+              <button type="button" class="btn btn-link reply" data-toggle="collapse" data-target="#reply-container-{{ comment.id }}">reply</button>
             </div>
             <!--
             <div class="row">
               <button type="button" class="btn btn-link delete">delete</button>
             </div>
-            -->
+          -->
           </div>
 
           <div class="col-xs-10">
@@ -92,32 +103,73 @@
               {{ comment.message }}
             </div>
             <div class="row">
-              <div class="col-xs-2 reply-container ">
-                <button type="button" class="btn btn-link reply" data-toggle="collapse" data-target="#reply-container-{{ comment.id }}">reply</button>
-              </div>
-              <div id="reply-container-{{ comment.id }}" class="col-xs-10 collapse">
-                <textarea  name="reply-message" rows="2" class="form-control "></textarea>
+              <div id="reply-container-{{ comment.id }}" class="collapse">
+                <textarea name="reply-message" rows="2" class="form-control"></textarea>
                 <br>
-                <button id="reply-btn-{{ comment.id }}" type="button" class="btn btn-info pull-right">reply</button>
+                <input type="hidden" name="comment_id" value="{{ comment.id }}">
+                <button name="reply-btn-{{ comment.id }}" type="button" class="btn btn-success pull-left">Comment</button>
               </div>
-
             </div>
           </div>
         </div>
+        {% if comment.get_children %}
+        {% for reply in comment.get_children %}
+        <div class="comment row">
+
+          <div class="col-xs-2 col-xs-offset-2">
+            <div class="row">
+              {{ reply.user.user.first_name }} {{ reply.user.user.last_name }}
+            </div>
+            <div class="row">
+              {{ reply.date|date }}
+            </div>
+            <div class="row">
+              <button type="button" class="btn btn-link reply" data-toggle="collapse" data-target="#reply-container-{{ reply.id }}">reply</button>
+            </div>
+          </div>
+            <div class="col-xs-8">
+              <div class="row">
+                {{ reply.message }}
+              </div>
+              <div class="row">
+                <div id="reply-container-{{ reply.id }}" class="collapse">
+                  <textarea name="reply-message" rows="2" class="form-control">@{{ reply.user.user.first_name }}{{ reply.user.user.last_name }} </textarea>
+                  <br>
+                  <input type="hidden" name="comment_id" value="{{ reply.id }}">
+                  <button name="reply-btn-{{ reply.id }}" type="button" class="btn btn-success pull-left">Comment</button>
+                </div>
+              </div>
+            </div>
+            <!--
+            <div class="row">
+              <button type="button" class="btn btn-link delete">delete</button>
+            </div>
+          -->
+          </div>
+          {% endfor %}
+          {% endif %}
+
         {% endfor %}
-        <form action="{% url 'comment' %}" method="POST">
-          {% csrf_token %}
-          <input type="hidden" name="pd_id" value="{{ pd.id }}">
-          <div class="form-group">
-            <label for="comment">Comment:</label>
-            <textarea name="Message" rows="5" class="form-control"></textarea>
-            <br>
-            <input type="submit" name="submit" class="btn btn-success" value="Comment">
+        {% endif %}
+          <div class="row">
+            <input type="hidden" name="pd_id" value="{{ pd.id }}">
+            <div class="form-group">
+              <label for="comment">Comment:</label>
+              <textarea name="Message" rows="5" class="form-control"></textarea>
+              <br>
+              <input type="submit" name="submit" class="btn btn-success" value="Comment">
+            </div>
           </div>
 
-        </form>
-      </div>
-      {% endif %}
+        </div>
+    </div>
+
+
+
+
 
 </div>
 {% endblock %}
+{% block footer-content %}
+<script type="text/javascript" src="{% static 'js/user/view.js' %}"></script>
+{% endblock footer-content %}

@@ -321,6 +321,8 @@ class Comment(models.Model):
     parent = models.ForeignKey('Comment', blank=True, null=True)
     is_removed = models.BooleanField(default=False)
 
+    def get_children(self):
+        return Comment.objects.filter(parent_id = self.id)
 
     def __str__(self):
         name = self.user.user.username
@@ -329,6 +331,7 @@ class Comment(models.Model):
             return "%s: %s..." % (name, msg[:20])
         else:
             return "%s: %s" % (name, msg)
+
 
 
 
