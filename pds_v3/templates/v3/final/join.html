@@ -54,6 +54,7 @@
               </div>
               <div class="col-sm-6" id="form-container">
                 <form method = "post" action = "{% url 'join' %}" data-toggle="validator" class = "form-horizontal" id="joinform">
+					{% csrf_token %}
                     <div class="form-group" id="name">
                         <label for="first_name" class="col-sm-2 control-label">Name</label>
                         <div class="col-sm-5">

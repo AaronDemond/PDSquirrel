@@ -126,7 +126,7 @@ def join(request):
         password = hashers.make_password(password)
 
         context = {'first_name' : first_name, 'last_name' : last_name,
-                   'terms' : terms, 'email' : email, 'vemail' : request.POST["email_confirm"] }
+                   'terms' : terms, 'email' : email}
         context["societies"] = LawSociety.objects.all()
         context["form"] = CaptchaForm()
         context["msg"] = []
