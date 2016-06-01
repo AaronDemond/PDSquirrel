@@ -247,6 +247,9 @@ class PdAttachment(models.Model):
     upload_date = models.DateTimeField(auto_now_add=True)
     mark_for_delete = models.BooleanField(default=False)
 
+    def filename(self):
+        return os.path.basename(self.attachment.name)
+
 
 class PdSessionEdit(models.Model):
     description = models.TextField(null=True, blank=True)

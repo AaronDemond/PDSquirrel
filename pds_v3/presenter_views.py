@@ -288,6 +288,7 @@ def dash(request, msg=False):
                     counter = 1 #file counter. 1 if pd audio, 0 if audio from client pc
                 else:
                     audio_file = request.FILES.get('audio_file', False)
+                    counter = 0
                     if not audio_file:
                         messages.add_message(request, messages.ERROR, 'Please upload a file')
                         return HttpResponseRedirect('/user/presenter/dash/?direct_to=upload')
