@@ -71,11 +71,11 @@ urlpatterns = [
 
 
     url(r'^edit/(?P<id>\d+)/$', presenter_views.edit, name="edit"),
-
     url(r'^ajax-test/$', ajax_views.ajax_test, name="ajax-test"),
-
     url(r'^analytics/$', presenter_views.analytics_report, name="analytics-report"),
 
+
     url(r'^audio/(?P<pd_id>\d+)/$', views.getAudio, name="audio"),
+    url(r'^attachment/(?P<a_id>\d+)/$', views.getAttachment, name="attachment"),
 
 ]

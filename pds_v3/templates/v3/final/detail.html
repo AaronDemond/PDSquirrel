@@ -220,9 +220,18 @@
 					<div class="col-xs-12">
 						<h4>Downloads</h4>
 						<div class="list-group">
+							{% if own == 1 %}
+							
 							{% for file in pd.attachments.all %}
-							<a class="list-group-item" target="_blank" href="/{{file.attachment}}">{{file.filename}}</a>
+							<a class="list-group-item" target="_blank" href="{% url 'attachment' file.id %}">{{file.filename}}</a>
 							{% endfor %}
+							{% else %}
+
+							{% for file in pd.attachments.all %}
+							<div class="list-group-item">{{file.filename}}</div>
+							{% endfor %}
+
+							{% endif %}
 						</div>
 					</div>
 					{% endif %}

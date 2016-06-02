@@ -5,7 +5,7 @@ import datetime
 from django.contrib import messages
 from django.core.mail import send_mail
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from pds_v3.models import PdSession, AppUser, LawSociety, LawSocietyOverride, Purchase, Subject, Presenter
+from pds_v3.models import PdSession, AppUser, LawSociety, LawSocietyOverride, Purchase, Subject, Presenter, PdAttachment
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.models import User
 from django.db import IntegrityError
@@ -182,6 +182,22 @@ def cap_refresh(request):
     t = Template("{{form.captcha}}")
     page = t.render(c)
     return HttpResponse(page)
+
+
+def getAttachment(request, a_id):
+    attachment = PdAttachment.objects.get(id=a_id)
+    pd = attachment.pdsession_set.all()[0]
+
+    for purchase in request.user.profile.purchase_set.all():
+        if purchase.pdsession == pd:
+            name = attachment.filename()
+            response = HttpResponse()
+            response["Content-Disposition"] = "attachment; filename={0}".format(name)
+            response['X-Accel-Redirect'] = "/attachments/{0}".format(name)
+            return response
+
+    return HttpResponse('error')
+
 
 
 
