@@ -11,14 +11,19 @@
   margin-top: 20px;
 }
 
-.comment {
-  margin-bottom: 10px;
+.comment-head {
+  margin-bottom: 5px;
+}
+
+.comment, .reply {
+  margin-bottom: 8px;
 }
 
 .reply-container {
   padding-left: 0px;
 }
 
-.reply, .delete {
+.toggle-reply, .delete {
   padding-left: 0px;
+  padding-top: 0px;
 }
