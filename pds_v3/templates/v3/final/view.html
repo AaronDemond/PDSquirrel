@@ -71,7 +71,7 @@
 	{% endif %}
     </div>
 
-
+    <!-- comments -->
     <div class="row">
       <div name="comment-section" class="col-xs-10 col-xs-offset-1">
         <div class="row">
@@ -90,12 +90,10 @@
             </div>
             <div class="row">
               <button type="button" class="btn btn-link reply" data-toggle="collapse" data-target="#comment-reply-{{ comment.id }}">reply</button>
+              {% if comment.user.user == request.user or pd.presenters.all.0.user == request.user %}
+              <button type="button" class="btn btn-link delete" value="{{ comment.id }}">delete</button>
+              {% endif %}
             </div>
-            <!--
-            <div class="row">
-              <button type="button" class="btn btn-link delete">delete</button>
-            </div>
-          -->
           </div>
 
           <div class="col-xs-10">
@@ -103,7 +101,7 @@
               {{ comment.message }}
             </div>
             <div class="row">
-              <div id="comment-reply-{{ comment.id }}" class="collapse">
+              <div id="comment-reply-{{ comment.id }}" class="collapse form-group">
                 <textarea name="reply-message" rows="2" class="form-control"></textarea>
                 <br>
                 <button name="reply-btn-{{ comment.id }}" type="button" class="btn btn-success pull-left" value="{{ comment.id }}">Comment</button>
@@ -124,6 +122,9 @@
             </div>
             <div class="row">
               <button type="button" class="btn btn-link reply" data-toggle="collapse" data-target="#thread-reply-{{ reply.id }}">reply</button>
+              {% if reply.user == request.user  or pd.presenters.all.0.user == request.user %}
+              <button type="button" class="btn btn-link delete" value="{{ reply.id }}">delete</button>
+              {% endif %}
             </div>
           </div>
             <div class="col-xs-8">
@@ -131,19 +132,15 @@
                 {{ reply.message }}
               </div>
               <div class="row">
-                <div id="thread-reply-{{ reply.id }}" class="collapse">
+                <div id="thread-reply-{{ reply.id }}" class="collapse form-group">
 
                   <textarea name="reply-message" rows="2" class="form-control">@{{ reply.user.user.first_name }}{{ reply.user.user.last_name }} </textarea>
                   <br>
-                  <button name="reply-btn-{{ reply.id }}" type="button" class="btn btn-success pull-left" value="{{ reply.id }}">Comment</button>
+                  <button name="reply-btn-{{ reply.id }}" type="button" class="btn btn-success pull-left" value="{{ comment.id }}">Comment</button>
                 </div>
               </div>
             </div>
-            <!--
-            <div class="row">
-              <button type="button" class="btn btn-link delete">delete</button>
-            </div>
-          -->
+
           </div>
           {% endfor %}
           {% endif %}

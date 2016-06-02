@@ -12,6 +12,7 @@ urlpatterns = [
     url(r'^pd/(?P<pd_id>\d+)/$', views.detail, name="detail"),
     url(r'^pd/session/(?P<pd_id>\d+)/$', views.watch, name="watch"),
     url(r'^pd/session/comment/$', views.comment, name="comment"),
+    url(r'^pd/session/comment/delete/$', views.delete_comment, name="delete_comment"),
     url(r'^pd/accred/(?P<pd_id>\d+)/(?P<s_id>\d+)/$', views.accred, name="accred"),
     url(r'^pd/accred/(?P<pd_id>\d+)/$', views.accred, name="accred"),
     url(r'^browse/$', views.browse, name="browse"),

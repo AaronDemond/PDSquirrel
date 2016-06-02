@@ -268,20 +268,35 @@ def presenter_detail(request, p_id):
     context = {'name': name, 'bio': profile.bio, 'img': '/static/img/placeholder.png ', 'presenter': profile}
     return render(request, 'v3/final/presenter-landing.html', context)
 
+ # or user pd.presenters.all.0.user
+ # or comment.pd.presenters[0].user == user
+
+def delete_comment(request):
+    if request.POST:
+        comment_id = int(request.POST['comment_id'])
+        comment = Comment.objects.get(pk=comment_id)
+        presenter = comment.pd.presenters.all()[0]
+        if request.user == comment.user or presenter.user == request.user:
+            comment.delete()
+    return HttpResponse('Success')
 
 def comment(request):
-    return HttpResponseRedirect('/browse/')
-
-    """
     if request.POST:
         pd_id = int(request.POST['pd_id'])
-        pd = PdSession.objects.get(pk=pd_id)
-        message = request.POST['Message']
+        reply_id = int(request.POST['reply_id'])
+        message = request.POST['msg']
         user = request.user.profile
-        comment = Comment(message=message, user=user, pd=pd)
-        comment.save()
-    return HttpResponseRedirect('/pd/session/' + str(pd_id))
-    """
+        pd = PdSession.objects.get(pk=pd_id)
+
+        if message or not message.isspace():
+
+            if reply_id == 0:
+                comment = Comment(message=message, user=user, pd=pd)
+            else:
+                parent = Comment.objects.get(pk=reply_id)
+                comment = Comment(message=message, user=user, pd=pd, parent = parent)
+            comment.save()
+    return HttpResponse('Success')
 
 def watch(request, pd_id):
     pd = PdSession.objects.get(pk=pd_id)
