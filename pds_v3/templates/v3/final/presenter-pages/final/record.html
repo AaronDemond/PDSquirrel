@@ -1,35 +1,7 @@
 {% load staticfiles %}
-<style>
-
-	.timebox {
-		padding-bottom: 3px;
-		width: 70px;
-		height: 30px;
-	}
-label {
-    color: rgb(113, 113, 113);
-}
-</style>
-
-<script>
-    function showInfo(infolink){
-		row_id = "#info-row";
-		$(row_id).toggleClass("hidden");
-		if ($(infolink).text() == '(info ▾)'){
-			$(infolink).text('(info ▴)');
-		}
-		else {
-			$(infolink).text('(info ▾)');
-		}
-    }
-    function closeInfo() {
-		$('#info-row').addClass('hidden');
-		$('#infoLink').text('(info ▾)');
-    }
-</script>
-
 
 {# NOTE: if this page is not working, re dump this script at bottom: #}
+<script src="{% static 'js/presenter/record.js' %}"></script>
 <script src="/static/js/wav.js"></script> {# recorder script #}
 <a class="hidden" href="https://www.pdsquirrel.ca/user/presenter/dash/?direct_to=recorder" id="refresh_link"></a>
 <div class="col-lg-9 col-lg-offset-1" id="container">
