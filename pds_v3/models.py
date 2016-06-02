@@ -4,7 +4,6 @@ import subprocess
 import wave
 import os
 from django.contrib.auth.models import User
-from pds_v3.v_functions import clean_join,accept_input
 
 class Address(models.Model):
     street_address = models.CharField(max_length=255, blank=True, null=True)
@@ -103,8 +102,7 @@ class AppUser(models.Model):
 
 
     def save(self, *args, **kwargs):
-        if clean_join(self):
-            super(AppUser,self).save(*args, **kwargs)
+        super(AppUser,self).save(*args, **kwargs)
     def __str__(self):
         return self.user.username
 

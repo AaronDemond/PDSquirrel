@@ -21,6 +21,11 @@ from django.forms.models import modelform_factory
 from forms import PdSessionForm
 
 
+def presenter_uploads(request):
+    subjects = Subject.objects.all()
+    recordings = PdAudio.objects.filter(appuser = request.user.profile, used = False, hidden = False)
+    context = {'subjects' : subjects, 'recordings' : recordings}
+    return render(request, 'v3/final/presenter-pages/final/upload.html', context)
 
 def getEditModel(request, id):
     pd = PdSession.objects.get(pk=id)

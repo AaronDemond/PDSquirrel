@@ -19,17 +19,7 @@
 	<video id="MY_VIDEO_1" class="video-js vjs-default-skin" controls
 		preload="auto" width="100%" height="100" poster="MY_VIDEO_POSTER.jpg"
 		data-setup="{}">
-				{% if pd.edited %}
-					{% if edit.audio_file %}
-					<source src="/{{edit.audio_file}}" type='audio/mpeg'>
-					{% else %}
-
-					<source src="/{{pd.getAudioLocation}}" type='audio/mpeg'>
-					{% endif %}
-				{% else %}
-
-					<source src="/{{pd.getAudioLocation}}" type='audio/mpeg'>
-				{% endif %}
+				<source src="{% url 'audio' pd.id %}" type='audio/mpeg'>
 		<p class="vjs-no-js">To view this video please enable JavaScript 
 		<a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
 	</video>
@@ -45,7 +35,7 @@
 		<h4>Downloads</h4>
 		<div class="list-group">
 		    {% for file in pd.attachments.all %}
-			<a class="list-group-item" target="_blank" href="/{{file.attachment}}">{{file.attachment}}</a>
+			<a class="list-group-item" target="_blank" href="{% url 'attachment' file.id %}">{{file.attachment}}</a>
 		    {% endfor %}
 		</div>
 	    </div>
