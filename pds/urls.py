@@ -76,4 +76,6 @@ urlpatterns = [
 
     url(r'^analytics/$', presenter_views.analytics_report, name="analytics-report"),
 
+    url(r'^audio/(?P<pd_id>\d+)/$', views.getAudio, name="audio"),
+
 ]

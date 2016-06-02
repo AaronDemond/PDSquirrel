@@ -126,7 +126,7 @@
 
 						<video id="MY_VIDEO_1" class="video-js vjs-default-skin" controls preload="auto" width="70%" height="20" poster="MY_VIDEO_POSTER.jpg" data-setup="{}" style="margin-left: 15px; margin-bottom: 20px">
 							{% if own == 1 %}
-						<source src="/{{pd.getAudioLocation}}" type='audio/mpeg'>
+							<source src="{% url 'audio' pd.id %}" type='audio/mpeg'>
 							{% endif %}
 						<p class="vjs-no-js">To view this video please enable JavaScript
 						<a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>

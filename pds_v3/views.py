@@ -1,4 +1,5 @@
 from django.shortcuts import render, HttpResponse, HttpResponseRedirect
+import os
 from itertools import chain
 import datetime
 from django.contrib import messages
@@ -13,6 +14,8 @@ import pdb; #pdb.set_trace()
 import json
 from pds_v3.forms import CaptchaForm
 import stripe
+
+
 
 
 #only root level url
@@ -180,6 +183,42 @@ def cap_refresh(request):
     page = t.render(c)
     return HttpResponse(page)
 
+
+
+def getAudio(request, pd_id):
+    '''
+    If user owns the rights, will return the mp3 of a session
+    Call by: /audio/id
+    '''
+
+    pd = PdSession.objects.get(pk=pd_id)
+
+    if request.user.is_authenticated():
+        user_pd = Purchase.objects.filter(user=request.user.profile)
+        own = False
+        for x in user_pd:
+            if pd == x.pdsession:
+                own = True
+
+    if own == True:
+        if pd.pdaudio:
+            name = os.path.basename(pd.getAudioLocation())
+            print name
+        else:
+            audio_file = pd.getAudioLocation()
+            name = os.path.basename(audio_file.url)
+
+        response = HttpResponse()
+        response["Content-Disposition"] = "attachment; filename={0}".format(name)
+        response['X-Accel-Redirect'] = "/content/{0}".format(name)
+        return response
+    else:
+        print 'does not own'
+        return HttpResponse('You do not own this session')
+
+
+
+
 def detail(request, pd_id):
 
     pd = PdSession.objects.get(pk=pd_id)
@@ -197,7 +236,7 @@ def detail(request, pd_id):
     if request.user.is_authenticated():
         context['customer'] = stripe.Customer.retrieve(request.user.profile.stripe_id)
 
-    return render(request, 'v3/final/detail.html', context )
+    return render(request, 'v3/final/detail.html', context)
 
 
 
