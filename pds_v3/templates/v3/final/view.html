@@ -89,7 +89,7 @@
               {{ comment.date|date }}
             </div>
             <div class="row">
-              <button type="button" class="btn btn-link reply" data-toggle="collapse" data-target="#reply-container-{{ comment.id }}">reply</button>
+              <button type="button" class="btn btn-link reply" data-toggle="collapse" data-target="#comment-reply-{{ comment.id }}">reply</button>
             </div>
             <!--
             <div class="row">
@@ -103,11 +103,10 @@
               {{ comment.message }}
             </div>
             <div class="row">
-              <div id="reply-container-{{ comment.id }}" class="collapse">
+              <div id="comment-reply-{{ comment.id }}" class="collapse">
                 <textarea name="reply-message" rows="2" class="form-control"></textarea>
                 <br>
-                <input type="hidden" name="comment_id" value="{{ comment.id }}">
-                <button name="reply-btn-{{ comment.id }}" type="button" class="btn btn-success pull-left">Comment</button>
+                <button name="reply-btn-{{ comment.id }}" type="button" class="btn btn-success pull-left" value="{{ comment.id }}">Comment</button>
               </div>
             </div>
           </div>
@@ -124,7 +123,7 @@
               {{ reply.date|date }}
             </div>
             <div class="row">
-              <button type="button" class="btn btn-link reply" data-toggle="collapse" data-target="#reply-container-{{ reply.id }}">reply</button>
+              <button type="button" class="btn btn-link reply" data-toggle="collapse" data-target="#thread-reply-{{ reply.id }}">reply</button>
             </div>
           </div>
             <div class="col-xs-8">
@@ -132,11 +131,11 @@
                 {{ reply.message }}
               </div>
               <div class="row">
-                <div id="reply-container-{{ reply.id }}" class="collapse">
+                <div id="thread-reply-{{ reply.id }}" class="collapse">
+
                   <textarea name="reply-message" rows="2" class="form-control">@{{ reply.user.user.first_name }}{{ reply.user.user.last_name }} </textarea>
                   <br>
-                  <input type="hidden" name="comment_id" value="{{ reply.id }}">
-                  <button name="reply-btn-{{ reply.id }}" type="button" class="btn btn-success pull-left">Comment</button>
+                  <button name="reply-btn-{{ reply.id }}" type="button" class="btn btn-success pull-left" value="{{ reply.id }}">Comment</button>
                 </div>
               </div>
             </div>
@@ -152,12 +151,13 @@
         {% endfor %}
         {% endif %}
           <div class="row">
-            <input type="hidden" name="pd_id" value="{{ pd.id }}">
             <div class="form-group">
               <label for="comment">Comment:</label>
+              <input type="hidden" id="pd_id" name="pd_id" value="{{ pd.id }}">
               <textarea name="Message" rows="5" class="form-control"></textarea>
               <br>
-              <input type="submit" name="submit" class="btn btn-success" value="Comment">
+              {% csrf_token %}
+              <button name="reply-btn" type="button" class="btn btn-success" value="0">Comment</button>
             </div>
           </div>
 

@@ -270,6 +270,9 @@ def presenter_detail(request, p_id):
 
 
 def comment(request):
+    return HttpResponseRedirect('/browse/')
+
+    """
     if request.POST:
         pd_id = int(request.POST['pd_id'])
         pd = PdSession.objects.get(pk=pd_id)
@@ -278,8 +281,7 @@ def comment(request):
         comment = Comment(message=message, user=user, pd=pd)
         comment.save()
     return HttpResponseRedirect('/pd/session/' + str(pd_id))
-
-
+    """
 
 def watch(request, pd_id):
     pd = PdSession.objects.get(pk=pd_id)
