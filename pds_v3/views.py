@@ -210,27 +210,20 @@ def getAudio(request, pd_id):
     pd = PdSession.objects.get(pk=pd_id)
 
     if request.user.is_authenticated():
-        user_pd = Purchase.objects.filter(user=request.user.profile)
-        own = False
-        for x in user_pd:
-            if pd == x.pdsession:
-                own = True
+        for purchase in Purchase.objects.filter(user=request.user.profile):
+            if pd == purchase.pdsession:
+                if pd.pdaudio:
+                    name = os.path.basename(pd.getAudioLocation())
+                else:
+                    name = os.path.basename(pd.getAudioLocation().url)
 
-    if own == True:
-        if pd.pdaudio:
-            name = os.path.basename(pd.getAudioLocation())
-            print name
-        else:
-            audio_file = pd.getAudioLocation()
-            name = os.path.basename(audio_file.url)
+                response = HttpResponse()
+                response["Content-Disposition"] = "attachment; filename={0}".format(name)
+                response['X-Accel-Redirect'] = "/content/{0}".format(name)
+                return response
 
-        response = HttpResponse()
-        response["Content-Disposition"] = "attachment; filename={0}".format(name)
-        response['X-Accel-Redirect'] = "/content/{0}".format(name)
-        return response
-    else:
-        print 'does not own'
-        return HttpResponse('You do not own this session')
+    print 'does not own'
+    return HttpResponse('You do not own this session')
 
 
 
@@ -238,14 +231,11 @@ def getAudio(request, pd_id):
 def detail(request, pd_id):
 
     pd = PdSession.objects.get(pk=pd_id)
+    own = 0
     if request.user.is_authenticated():
-        user_pd = Purchase.objects.filter(user=request.user.profile)
-        own = 0
-        for x in user_pd:
-            if pd == x.pdsession:
+        for purchase in Purchase.objects.filter(user=request.user.profile):
+            if purchase.pdsession == pd:
                 own = 1
-    else:
-        own = 0
 
     context = {'pd' : pd, 'own' : own}
 
