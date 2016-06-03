@@ -94,3 +94,19 @@ $(document).ready(function() {
 
 	}
 });
+
+// Toggle description box size
+function showDescription() {
+	$(document).ready(function() {
+		$('#pd-description-small').toggleClass('hidden');
+		$('#pd-description-full').toggleClass('hidden');
+
+		$btn = $('#more-btn');
+		if ( $btn.text() == 'Show More') {
+			$btn.text('Show Less');
+		}
+		else if ( $btn.text() == 'Show Less') {
+			$btn.text('Show More');
+		}
+	});
+}

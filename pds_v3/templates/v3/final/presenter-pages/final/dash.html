@@ -24,7 +24,7 @@
 						<li id="info-link"><a onclick="loadXMLDoc('/user/presenter/dash/?myaccount', '#page-content', 'info')">Bio</a></li>
 						<li id="private-info-link"><a onclick="loadXMLDoc('/user/presenter/dash/?myinfo', '#page-content', 'private' )">Personal</a></li>
 						<li id="sessions-link"> <a onclick="loadXMLDoc('/user/presenter/dash/?mysessions', '#page-content', 'sessions')">Sessions</a></li>
-						<li id="upload-link"><a onclick="loadXMLDoc('/ajax-test/' , '#page-content', 'upload')">Upload</a></li>
+						<li id="upload-link"><a onclick="loadXMLDoc('/upload/' , '#page-content', 'upload')">Upload</a></li>
 						<li id="record-link"><a onclick="loadXMLDoc('/record/' , '#page-content', 'recorder')">Record</a></li>
 					</ul>
 				</div>
@@ -62,7 +62,7 @@ $(document).ready(function() {
 	}
 
 	else if  ("{{direct_to}}" == "upload") {
-	    loadXMLDoc('/ajax-test', '#page-content');
+	    loadXMLDoc('/upload', '#page-content');
 	    $("li").removeClass("active");
 	    $("#upload-link").addClass("active");
 

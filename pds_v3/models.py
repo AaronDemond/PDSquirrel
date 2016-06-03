@@ -4,7 +4,6 @@ import subprocess
 import wave
 import os
 from django.contrib.auth.models import User
-from pds_v3.v_functions import clean_join,accept_input
 
 class Address(models.Model):
     street_address = models.CharField(max_length=255, blank=True, null=True)
@@ -103,8 +102,7 @@ class AppUser(models.Model):
 
 
     def save(self, *args, **kwargs):
-        if clean_join(self):
-            super(AppUser,self).save(*args, **kwargs)
+        super(AppUser,self).save(*args, **kwargs)
     def __str__(self):
         return self.user.username
 
@@ -160,8 +158,8 @@ class PdAudio(models.Model):
 
 
     def getMp3Location(self):
-        return self.audio.name
-        #return '%s.mp3' % self.audio.name
+        #return self.audio.name
+        return '%s.mp3' % self.audio.name
 
     def convertToMp3(self):
         call = 'lame %s %s.mp3' % (self.audio.name, self.audio.name)
@@ -246,6 +244,9 @@ class PdAttachment(models.Model):
     attachment = models.FileField(upload_to='attachments', blank=True, null=True)
     upload_date = models.DateTimeField(auto_now_add=True)
     mark_for_delete = models.BooleanField(default=False)
+
+    def filename(self):
+        return os.path.basename(self.attachment.name)
 
 
 class PdSessionEdit(models.Model):

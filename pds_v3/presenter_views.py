@@ -21,6 +21,11 @@ from django.forms.models import modelform_factory
 from forms import PdSessionForm
 
 
+def presenter_uploads(request):
+    subjects = Subject.objects.all()
+    recordings = PdAudio.objects.filter(appuser = request.user.profile, used = False, hidden = False)
+    context = {'subjects' : subjects, 'recordings' : recordings}
+    return render(request, 'v3/final/presenter-pages/final/upload.html', context)
 
 def getEditModel(request, id):
     pd = PdSession.objects.get(pk=id)
@@ -288,6 +293,7 @@ def dash(request, msg=False):
                     counter = 1 #file counter. 1 if pd audio, 0 if audio from client pc
                 else:
                     audio_file = request.FILES.get('audio_file', False)
+                    counter = 0
                     if not audio_file:
                         messages.add_message(request, messages.ERROR, 'Please upload a file')
                         return HttpResponseRedirect('/user/presenter/dash/?direct_to=upload')
@@ -477,8 +483,8 @@ def record(request):
         pda = PdAudio(name=name, audio=upload, appuser=au)
         pda.save()
 
-        #pda.convertToMp3()
-        #pda.mp3_location = pda.getMp3Location();
+        pda.convertToMp3()
+        pda.mp3_location = pda.getMp3Location();
 
         data_test = serializers.serialize("json", [pda]);
         return HttpResponse(data_test);

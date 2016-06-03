@@ -43,7 +43,7 @@
 
 
                 <div class="col-xs-12">
-                    <h3 class="my-page-header text-center">Create your PDSquirrel Account</h3>
+					<h3 class="my-page-header text-center">Create your PDSquirrel Account</h3>
                     <hr />
                 </div>
                 </div>
@@ -54,6 +54,7 @@
               </div>
               <div class="col-sm-6" id="form-container">
                 <form method = "post" action = "{% url 'join' %}" data-toggle="validator" class = "form-horizontal" id="joinform">
+					{% csrf_token %}
                     <div class="form-group" id="name">
                         <label for="first_name" class="col-sm-2 control-label">Name</label>
                         <div class="col-sm-5">
@@ -116,7 +117,7 @@
                           <div class="form-group has-error" id = "term-div" >
                             <div class="col-xs-1">
                               <input id="termbox" type="checkbox" name ="terms">
-                              <span class="help-block"></span>
+                              <span class="help-blck"></span>
                             </div>
                             <div class="col-xs-10 text-center">
                               <label id="darken" for="terms">

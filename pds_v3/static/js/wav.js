@@ -369,6 +369,7 @@ $("a").not('#infoLink, .download').click(function(e) {
 	    saved = true;
 	} catch (err) {
 	    console.log("error saving");
+		console.log(err);
 	}
 
   reset();
@@ -612,9 +613,9 @@ $("a").not('#infoLink, .download').click(function(e) {
 
 
 		// Creates wav blob from data view
-        //var blob = new Blob ( [ view ], { type : 'audio/wav' } );
+        var blob = new Blob ( [ view ], { type : 'audio/wav' } );
 		//
-		var blob = getMp3Blob();
+	//	var blob = getMp3Blob();
     	var fd = new FormData();
         var url = (window.URL || window.webkitURL).createObjectURL(blob);
     	var name = document.getElementById('name').value; // Should check name isnt used or empty
@@ -636,8 +637,6 @@ $("a").not('#infoLink, .download').click(function(e) {
 		console.log('loading.');
 
 
-		var mp3_url = window.URL.createObjectURL(mp3_blob);
-		console.log('MP3 URL: ', mp3_url);
 
 		var mc = document.getElementById('main-content');
 		mc.innerHTML = 'Saving, this may take a few moments..';

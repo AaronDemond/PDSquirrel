@@ -11,237 +11,238 @@
 {% block body %}
 
 <div id="main-content" class="container">
-
-<div class="modal fade bs-example-modal-lg" tabindex="-1" id="payment-modal" role="dialog" aria-labelledby="myLargeModalLabel">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-		<h3>{{ pd }}</h3>
-		<p id="payment-method" class="help-text">Select a payment method</h4>
-		<hr>
-		<form method="POST" id="payment-form" action="{% url 'payment-process' %}">
-
+	<div class="modal fade bs-example-modal-lg" tabindex="-1" id="payment-modal" role="dialog" aria-labelledby="myLargeModalLabel">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<h3>{{ pd }}</h3>
+				<p id="payment-method" class="help-text">Select a payment method</h4>
+				<hr>
+				<form method="POST" id="payment-form" action="{% url 'payment-process' %}">
 					{% csrf_token %}
-			<input type="hidden" name="pd_id" value="{{ pd.id }}">
-			<div id="new-card" class="row" >
-				<div class="col-xs-6">
-					<label for="new_card">Pay with a new card</label>
-					<input type="radio" id="n_card" name="new_card">
-				</div>
-				<div class="col-xs-6">
-					<label for"existing_card">Pay with existing card</label>
-					<input type="radio" id="e_card" name="existing_card">
+					<input type="hidden" name="pd_id" value="{{ pd.id }}">
+					<div id="new-card" class="row" >
+						<div class="col-xs-6">
+							<label for="new_card">Pay with a new card</label>
+							<input type="radio" id="n_card" name="new_card">
+						</div>
+						<div class="col-xs-6">
+							<label for"existing_card">Pay with existing card</label>
+							<input type="radio" id="e_card" name="existing_card">
 
-				</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-6" id="new_card_col">
+							<div class="col-lg-12">
+								<span class="payment-errors help-text"></span>
+							</div>
 
-			</div>
-			<div class="row">
-				<div class="col-lg-6" id="new_card_col">
-					<div class="col-lg-12">
-						<span class="payment-errors help-text"></span>
-					</div>
+							<div class="col-lg-12">
+								<label>Cardholder's Name</label>
+								<input type="text" class="form-control" data-stripe="number"/>
+							</div>
+							<div class="col-lg-12">
+								<label>Card Number</label>
+								<input type="text" class="form-control" data-stripe="number"/>
+							</div>
+							<div class="col-lg-3">
+								<label>CVC</label>
+								<input type="text" class="form-control" data-stripe="cvc"/>
+							</div>
+							<div class="col-lg-4">
+								<label> Exp Month (MM)</label>
+								<input type="text" class="form-control"  data-stripe="exp-month"/>
+							</div>
+							<div class="col-lg-5">
+								<label for="">Exp Year (YYYY)</label>
+								<input type="text" class="form-control" data-stripe="exp-year"/>
+							</div>
+						</div>
 
-					<div class="col-lg-12">
-						<label>Cardholder's Name</label>
-						<input type="text" class="form-control" data-stripe="number"/>
-					</div>
-					<div class="col-lg-12">
-						<label>Card Number</label>
-						<input type="text" class="form-control" data-stripe="number"/>
-					</div>
-					<div class="col-lg-3">
-						<label>CVC</label>
-						<input type="text" class="form-control" data-stripe="cvc"/>
-					</div>
-					<div class="col-lg-4">
-						<label> Exp Month (MM)</label>
-						<input type="text" class="form-control"  data-stripe="exp-month"/>
-					</div>
-					<div class="col-lg-5">
-						<label for="">Exp Year (YYYY)</label>
-						<input type="text" class="form-control" data-stripe="exp-year"/>
-					</div>
-				</div>
+						<div class="col-lg-6" id="existing_card_col">
+							<div class="input-group">
+								<label for="">Saved card</label>
+								<select class="form-control" name="saved_card">
+								{% for source in customer.sources.data %}
+								<option value="{{source.id}}">{{source.brand}} **** **** **** {{source.last4}} Expires on {{source.exp_year}}</option>
+								{% endfor %}
+								</select>
+							</div>
+						</div>
+						<div id="form-submit" class="col-lg-12">
+							<hr>
 
-				<div class="col-lg-6" id="existing_card_col">
-					<div class="input-group">
-						<label for="">Saved card</label>
-						<select class="form-control" name="saved_card">
-						{% for source in customer.sources.data %}
-						<option value="{{source.id}}">{{source.brand}} **** **** **** {{source.last4}} Expires on {{source.exp_year}}</option>
-						{% endfor %}
-						</select>
+							<button type="submit" class="btn btn-primary">Continue</button>
+							<button class="btn btn-default" id="cancel_btn_one">Cancel</button>
+						</div>
 					</div>
-				</div>
-				<div id="form-submit" class="col-lg-12">
-					<hr>
-
-					<button type="submit" class="btn btn-primary">Continue</button>
-					<button class="btn btn-default" id="cancel_btn_one">Cancel</button>
-				</div>
-			</div>
-		</form>
-
-    </div>
-  </div>
-</div>
-<div class="row">
-<div class="col-lg-10 col-lg-offset-1">
-
-	<div class="row">
-		<div class="col-lg-9 col-lg-offset-1">
-			<div class="msg-container">
-				{% if messages %}
-				{% for msg in messages %}
-					<div class="alert alert-{{msg.tags}} msg" role="alert">
-						<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-						{{msg}}
-					</div>
-				{% endfor %}
-				{% endif %}
+				</form>
 			</div>
 		</div>
 	</div>
-
-   <div class="row">
-      <div class="col-xs-12">
-        <h3>{{ pd }}</h3>
-		<hr>
-
-		<div class="col-sm-5" id="pres-img-container">
-			{% for presenter in pd.presenters.all %}
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="row">
+				<div class="col-xs-12">
+					<div class="msg-container">
+						{% if messages %}
+						{% for msg in messages %}
+							<div class="alert alert-{{msg.tags}} msg" role="alert">
+								<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+								{{msg}}
+							</div>
+						{% endfor %}
+						{% endif %}
+					</div>
+				</div>
+			</div> {# msg row #}
+			<div class="row">
+				<div class="col-sm-10 col-sm-offset-1">
+					<h3 id="page_title">{{ pd }}</h3>
+					<hr>
+				</div>
+				<div class="col-sm-10 col-sm-offset-1">
+					<div class="col-xs-12" style="padding: 0">
+						{% for presenter in pd.presenters.all %}
 						<img id ="session_pres_img" class="white-tile-img"
-						{# if no img uploaded by user, pull one of two placeholders #}
-						{# tested: no #}
-						{% if presenter.image %}
-						src="/static/presenter_pics/{{presenter.image_name}}"
-						{% else %}
+							{% if presenter.image %}
+							src="/static/presenter_pics/{{presenter.image_name}}"
+							{% else %}
 							{% if presenter.placeholder_type == 0 %}
 								src="{{presenter.female_placeholder}}"
 							{% elif presenter.placeholder_type == 1 %}
 								src="{{presenter.male_placeholder}}"
 							{% endif %}
+							{% endif %}>
+						{% endfor %}
+
+						<h4 class="pres_link">
+						{% for x in pd.presenters.all %} 
+						<a href="{% url 'presenter-detail' x.id %}"> {{x}}{% if x.credentials %}, {{x.credentials}} <br>{%endif%}
+						</a>
+						<p id="pres_firm">{{x.law_firm}}</p>
+						{% endfor %}
+						</h4>
+
+						<video id="MY_VIDEO_1" class="video-js vjs-default-skin" controls preload="auto" width="70%" height="20" poster="" data-setup="{}" style="margin-left: 15px; margin-bottom: 20px">
+							{% if own == 1 %}
+							<source src="{% url 'audio' pd.id %}" type='audio/mpeg'>
+							{% endif %}
+						<p class="vjs-no-js">To view this video please enable JavaScript
+						<a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
+						</video>
+					</div>
+				</div> {# end img/audio section #}
+				{% if own == 0 %}
+				<div class="col-sm-10 col-sm-offset-1">
+					<div class="col-xs-5" style="padding: 0px">
+						<hr>
+						
+						{% if user.is_authenticated %}
+						{% if own == 1 %}
+						<div>
+							<a class="btn btn-success btn-lg" href="{% url 'watch' pd.id %}" >Listen Now</a>
+						</div>
+						{% else %}
+						{% if user.profile.remaining_pd = 0 %}
+						<button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg"> Purchase for ${{pd.price}}</button>
+						{% else %}
+						<form id="c_form" action="{% url 'payment-process' %}" method ="POST">
+							{% csrf_token %}
+							<input type="hidden" name="use_credit">
+							<input class = "form-control" type="hidden" name="pd_id" value="{{pd.id}}" />
+							<div>
+							   <input class="btn btn-success" type="submit" value="Use Credit">
+							</div>
+						</form>
 						{% endif %}
-						>
-			{% endfor %}
-			<br>
-			<br>
-			<h4>
-				{% for x in pd.presenters.all %} <a href="{% url 'presenter-detail' x.id %}"> {{x}}{% if x.credentials %}, {{x.credentials}} <br>{%endif%}{% endfor %}</a>
-			</h4>
-		</div> <!-- end presenter image div -->
-		<div class="col-sm-7">
+						{% endif %}
+						{% else %}
+						<a class="btn btn-success" disabled="disabled">Sign in to Listen</a>
+						{% endif %} 				
+					</div>
+					<div class="col-xs-12" style="padding: 0px">
+						<div class="checkbox">
+							<label>
+								<input type="checkbox"> Inform me via email when this presenter releases content.
+							</label>
+						</div>
+					</div>
+				</div> {# end purchase row (really a col) #}
+				{% endif %}{# Only show any type of button if they do not own the session #}
 
-			<div class="row">
-				<div class="col-xs-12" id="description">
+				<div class="col-sm-6 col-sm-offset-1">
 					<h4>Description</h4>
-					<hr>
+					<p id="pd-description-small">{{pd.description|truncatewords:"35"}}</p>
+					<p id="pd-description-full" class="hidden">{{pd.description}}</p>
+					<a id="more-btn" style="float:right" onclick="showDescription()">Show More</a>
+				</div>
+				<div class="col-sm-4">
+					<table class = "table table-striped">
+						<h4>Details</h4>
+						<tr>
+						   <td>Release date</td>
+						   <td>{{ pd.release_date|remove_time}}</td>
+						</tr>
+						<tr>
+						   <td>Subject area(s)</td>
+						<td>
+							{% for a in pd.subject.all %}
+							{{a}}<br />
+							{% endfor %}
+						</td>
+						</tr>
+						<tr>
+						   <td>Language</td>
+						   <td>English</td>
+						</tr>
+						<tr>
+						   <td>Duration (minutes)</td>
+						   <td>{{pd.duration}}</td>
+						</tr>
+						<tr>
+						   <td>Price (GST/HST included)</td>
+						<td>${{ pd.price|show_cents }}</td>
+						</tr>
+						<tr>
+							<td>Unique number</td>
+							<td>100{{ pd.id }}15</td>
+						</tr>
+					</table>
+					<table class="table">
+						<tr>
+							<td>
+								<a href = "/pd{% url 'accred' pd.id %}{{request.user.profile.society.all.0.id}}/" target="_blank">CPD eligibility for your law society</a></td>
+							</td>
+						</tr>
+					</table>
+					{% if pd.attachments.all.count > 0 %}
+					<div class="col-xs-12">
+						<h4>Downloads</h4>
+						<div class="list-group">
+							{% if own == 1 %}
+							
+							{% for file in pd.attachments.all %}
+							<div class="list-group-item">
+								<p>{{file.filename}}
+									<a target="_blank" href="{% url 'attachment' file.id %}">Download</a>
+							   	</p>
+							</div>
+							{% endfor %}
+							{% else %}
 
-					{{pd.description}}
+							{% for file in pd.attachments.all %}
+							<div class="list-group-item">{{file.filename}}</div>
+							{% endfor %}
+
+							{% endif %}
+						</div>
+					</div>
+					{% endif %}
 				</div>
 			</div>
-
-			<div class="row"> {# Row within 7 col description section, for button #}
-				  <div class="col-xs-12">
-						<hr>
-					  {% if own == 1 %}
-					  <h4>Listen</h4>
-					  {% else %}
-					  <h4>Purchase</h4>
-					  {% endif %}
-
-
-					 {% if user.is_authenticated %}
-					 {% if own == 1 %}
-					 <div>
-						<a class="btn btn-success btn-lg" href="{% url 'watch' pd.id %}" >Listen Now</a>
-					 </div>
-					 {% else %}
-
-					 {% if user.profile.remaining_pd = 0 %}
-					 <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg">Purchase for ${{pd.price}}</button>
-					 <div class="checkbox">
-						<label>
-						<input type="checkbox"> Inform me via email when this presenter releases content.
-						</label>
-					 </div>
-
-					 {% else %}
-					 <form action="{% url 'payment-process' %}" method ="POST">
-						{% csrf_token %}
-						<input type="hidden" name="use_credit">
-						<input class = "form-control" type="hidden" name="pd_id" value="{{pd.id}}" />
-						<div>
-						   <input class="btn btn-success btn-lg" type="submit" value="Use Credit">
-						</div>
-					 </form>
-					 {% endif %}
-					 {% endif %}
-					 {% else %}
-					 <a class="btn btn-success btn-lg" disabled="disabled">Sign in to Listen</a>
-					 <div class="checkbox">
-						<label>
-						<input type="checkbox"> Inform me via email when this presenter releases content.
-						</label>
-					 </div>
-					 {% endif %}
-				  </div>
-			   </div>
-		</div>
-	  </div> {# end title/by_text/presenter image 12-col #}
-   </div> {# end row for top half. Includes img desctiption and listen now btn #}
-
-   <div id="session-details" class="row" >
-      <div class="col-sm-12 col-md-6 col-lg-6">
-         <h4>Session Details</h4>
-         <table class = "table table-striped">
-            <tr>
-               <td>Release date</td>
-               <td>{{ pd.release_date|remove_time}}</td>
-            </tr>
-            <tr>
-               <td>Subject area(s)</td>
-               <td>
-                  {% for a in pd.subject.all %}
-                  {{a}}<br />
-                  {% endfor %}
-               </td>
-            </tr>
-            <tr>
-               <td>Language</td>
-               <td>English</td>
-            </tr>
-            <tr>
-               <td>Duration (minutes)</td>
-               <td>{{pd.duration}}</td>
-            </tr>
-            <tr>
-               <td>Price (GST/HST included)</td>
-	       <td>${{ pd.price|show_cents }}</td>
-            </tr>
-	    <tr>
-	    	<td>Unique number</td>
-		<td>
-
-         100{{ pd.id }}15
-		</td>
-	    </tr>
-            <tr>
-            </tr>
-         </table>
-	<table class="table">
-		      <tr>
-		      	<td>
-
-			    <a href = "/pd{% url 'accred' pd.id %}{{request.user.profile.society.all.0.id}}/">Click here for CPD eligibility for your law society.</a></td>
-			</td>
-		      </tr>
-	      </table>
-      </div>
-
-   </div>
-
-</div>
-</div>
+		</div> {# end row for top half. Includes img desctiption and listen now btn #}
+	</div>
 </div>
 
 {% endblock %}

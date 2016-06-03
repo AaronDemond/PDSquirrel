@@ -1,10 +1,11 @@
 from django.shortcuts import render, HttpResponse, HttpResponseRedirect
+import os
 from itertools import chain
 import datetime
 from django.contrib import messages
 from django.core.mail import send_mail
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from pds_v3.models import PdSession, AppUser, LawSociety, LawSocietyOverride, Purchase, Subject, Presenter
+from pds_v3.models import PdSession, AppUser, LawSociety, LawSocietyOverride, Purchase, Subject, Presenter, PdAttachment
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.models import User
 from django.db import IntegrityError
@@ -13,6 +14,8 @@ import pdb; #pdb.set_trace()
 import json
 from pds_v3.forms import CaptchaForm
 import stripe
+
+
 
 
 #only root level url
@@ -180,24 +183,66 @@ def cap_refresh(request):
     page = t.render(c)
     return HttpResponse(page)
 
+
+def getAttachment(request, a_id):
+    attachment = PdAttachment.objects.get(id=a_id)
+    pd = attachment.pdsession_set.all()[0]
+
+    for purchase in request.user.profile.purchase_set.all():
+        if purchase.pdsession == pd:
+            name = attachment.filename()
+            response = HttpResponse()
+            response["Content-Disposition"] = "attachment; filename={0}".format(name)
+            response['X-Accel-Redirect'] = "/attachments/{0}".format(name)
+            return response
+
+    return HttpResponse('error')
+
+
+
+
+def getAudio(request, pd_id):
+    '''
+    If user owns the rights, will return the mp3 of a session
+    Call by: /audio/id
+    '''
+
+    pd = PdSession.objects.get(pk=pd_id)
+
+    if request.user.is_authenticated():
+        for purchase in Purchase.objects.filter(user=request.user.profile):
+            if pd == purchase.pdsession:
+                if pd.pdaudio:
+                    name = os.path.basename(pd.getAudioLocation())
+                else:
+                    name = os.path.basename(pd.getAudioLocation().url)
+
+                response = HttpResponse()
+                response["Content-Disposition"] = "attachment; filename={0}".format(name)
+                response['X-Accel-Redirect'] = "/content/{0}".format(name)
+                return response
+
+    print 'does not own'
+    return HttpResponse('You do not own this session')
+
+
+
+
 def detail(request, pd_id):
 
     pd = PdSession.objects.get(pk=pd_id)
+    own = 0
     if request.user.is_authenticated():
-        user_pd = Purchase.objects.filter(user=request.user.profile)
-        own = 0
-        for x in user_pd:
-            if pd == x.pdsession:
+        for purchase in Purchase.objects.filter(user=request.user.profile):
+            if purchase.pdsession == pd:
                 own = 1
-    else:
-        own = 0
 
     context = {'pd' : pd, 'own' : own}
 
     if request.user.is_authenticated():
         context['customer'] = stripe.Customer.retrieve(request.user.profile.stripe_id)
 
-    return render(request, 'v3/final/detail.html', context )
+    return render(request, 'v3/final/detail.html', context)
 
 
 

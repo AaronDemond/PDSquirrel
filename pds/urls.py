@@ -1,6 +1,6 @@
 from django.conf.urls import include, url
 from django.contrib import admin
-from pds_v3 import views, user_views, bootsnip_views, final_views, presenter_views, tmp_views, payment_views, ajax_views
+from pds_v3 import views, user_views, presenter_views, tmp_views, payment_views
 
 
 urlpatterns = [
@@ -29,7 +29,6 @@ urlpatterns = [
     url(r'^user/logout/$', user_views.logout_user, name="logout"),
     url(r'^login/$', user_views.login_landing, name="login-landing"),
     url(r'^debug/', views.debug, name="debug"),
-    url(r'^bootsnip/', bootsnip_views.bootsnip, name="bootsnip"),
     url(r'^payment-process/$', payment_views.payment_process, name="payment-process"),
     url(r'^accred/(?P<pd_id>\d+)/$', views.accred, name="accred"),
     url(r'^about/$', tmp_views.about, name="about"),
@@ -71,9 +70,11 @@ urlpatterns = [
 
 
     url(r'^edit/(?P<id>\d+)/$', presenter_views.edit, name="edit"),
-
-    url(r'^ajax-test/$', ajax_views.ajax_test, name="ajax-test"),
-
+    url(r'^upload/$', presenter_views.presenter_uploads, name="upload"),
     url(r'^analytics/$', presenter_views.analytics_report, name="analytics-report"),
+
+
+    url(r'^audio/(?P<pd_id>\d+)/$', views.getAudio, name="audio"),
+    url(r'^attachment/(?P<a_id>\d+)/$', views.getAttachment, name="attachment"),
 
 ]
