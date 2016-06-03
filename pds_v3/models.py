@@ -63,6 +63,11 @@ class Presenter(models.Model):
 
 
 
+
+
+
+
+
 class AppUser(models.Model):
     user = models.OneToOneField(User, related_name="profile")
     address = models.ForeignKey(Address, blank=True, null=True)
@@ -78,9 +83,6 @@ class AppUser(models.Model):
     has_card = models.BooleanField(default=False)
 
     increment_task_id = models.CharField(max_length=100, blank=True, null=True)
-
-
-
 
     @classmethod
     def create(cls,first_name,last_name, email, password, terms, society):
@@ -105,11 +107,6 @@ class AppUser(models.Model):
         super(AppUser,self).save(*args, **kwargs)
     def __str__(self):
         return self.user.username
-
-
-
-
-
 
 
 #ovverride societies
@@ -249,6 +246,7 @@ class PdAttachment(models.Model):
         return os.path.basename(self.attachment.name)
 
 
+
 class PdSessionEdit(models.Model):
     description = models.TextField(null=True, blank=True)
     audio_file = models.FileField(upload_to='audio_files', blank=True, null=True)
@@ -264,6 +262,8 @@ class PdSessionEdit(models.Model):
 
     class Meta:
         get_latest_by = "date"
+
+
 
 
 
@@ -295,6 +295,7 @@ class PdSession(models.Model):
     attachments = models.ManyToManyField(PdAttachment, blank=True)
     total_takes = models.IntegerField(default=0)
 
+
     def __str__(self):
         return self.name
 
@@ -310,6 +311,27 @@ class PdSession(models.Model):
 
     def save(self, *args, **kwargs):
         super(PdSession, self).save(*args, **kwargs)
+
+
+
+class Comment(models.Model):
+    message = models.TextField(null=True, blank=True)
+    user = models.ForeignKey(AppUser, blank=False, null=True)
+    pd = models.ForeignKey(PdSession, blank=False, null=True)
+    date = models.DateTimeField(auto_now_add=True, null=True)
+    parent = models.ForeignKey('Comment', blank=True, null=True)
+    is_removed = models.BooleanField(default=False)
+
+    def get_children(self):
+        return Comment.objects.filter(parent_id = self.id)
+
+    def __str__(self):
+        name = self.user.user.username
+        msg = self.message
+        if len(msg) > 10:
+            return "%s: %s..." % (name, msg[:20])
+        else:
+            return "%s: %s" % (name, msg)
 
 
 

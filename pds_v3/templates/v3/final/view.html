@@ -70,5 +70,104 @@
 	    </div>
 	{% endif %}
     </div>
-</div
+
+    <!-- comments -->
+    <div class="row">
+      <div name="comment-section" class="col-xs-10 col-xs-offset-1">
+        <div class="row">
+          <h3>Comments</h3>
+          <hr>
+        </div>
+        {% if comments %}
+        {% for comment in comments %}
+        <div class="comment row">
+          <div class="col-xs-12">
+            <div class="row comment-head">
+              {% if comment.user.is_presenter %}
+                <a class="presenter-link" href="{% url 'presenter-detail' comment.user.user.presenter.id %}"><b>{{ comment.user.user.first_name }} {{ comment.user.user.last_name }}</b></a>
+              {% else %}
+                <b>{{ comment.user.user.is_presenter }} {{ comment.user.user.first_name }} {{ comment.user.user.last_name }}</b>
+              {% endif %}
+              &nbsp;
+              <span class="muted">{{ comment.date|date }}</span>
+            </div>
+            <div class="row comment-body">
+              {{ comment.message }}
+            </div>
+            <div class="row comment-footer">
+              <button type="button" class="btn btn-link muted toggle-reply" >reply</button>
+              {% if comment.user.user == request.user or pd.presenters.all.0.user == request.user %}
+              <button type="button" class="btn btn-link muted delete" value="{{ comment.id }}">delete</button>
+              {% endif %}
+            </div>
+            <div class="row comment-reply hidden">
+              <div id="comment-reply-{{ comment.id }}" class="form-group">
+                <textarea name="reply-message" rows="2" class="form-control"></textarea>
+                <br>
+                <button name="reply-btn-{{ comment.id }}" type="button" class="btn btn-success pull-left" value="{{ comment.id }}">Comment</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        {% if comment.get_children %}
+        <!-- Replies -->
+        {% for reply in comment.get_children %}
+        <div class="reply row">
+          <div class="col-xs-10 col-xs-offset-2">
+            <div class="row comment-head">
+              {% if reply.user.is_presenter %}
+                <a class="presenter-link" href="{% url 'presenter-detail' reply.user.user.presenter.id %}"><b>{{ reply.user.user.first_name }} {{ reply.user.user.last_name }}</b></a>
+              {% else %}
+                <b>{{ reply.user.user.is_presenter }} {{ reply.user.user.first_name }} {{ reply.user.user.last_name }}</b>
+              {% endif %}
+              &nbsp;
+              <span class="muted">{{ reply.date|date }}</span>
+            </div>
+            <div class="row comment-body">
+              {{ reply.message }}
+            </div>
+            <div class="row comment-footer">
+              <button type="button" class="btn btn-link muted toggle-reply">reply</button>
+              {% if reply.user == request.user  or pd.presenters.all.0.user == request.user %}
+              <button type="button" class="btn btn-link muted delete" value="{{ reply.id }}">delete</button>
+              {% endif %}
+            </div>
+            <div class="row comment-reply hidden">
+              <div id="thread-reply-{{ reply.id }}" class="form-group">
+                <textarea name="reply-message" rows="2" class="form-control">@{{ reply.user.user.first_name }}{{ reply.user.user.last_name }}</textarea>
+                <br>
+                <button name="reply-btn-{{ reply.id }}" type="button" class="btn btn-success pull-left" value="{{ comment.id }}">Comment</button>
+              </div>
+            </div>
+           </div>
+          </div>
+          {% endfor %}
+          {% endif %}
+
+        {% endfor %}
+        {% endif %}
+          <div class="row">
+            <div class="form-group">
+              <label for="comment">Comment:</label>
+              <input type="hidden" id="pd_id" name="pd_id" value="{{ pd.id }}">
+              <textarea name="Message" rows="5" class="form-control"></textarea>
+              <br>
+              {% csrf_token %}
+              <button name="reply-btn" type="button" class="btn btn-success" value="0">Comment</button>
+            </div>
+          </div>
+
+        </div>
+    </div>
+
+
+
+
+
+</div>
 {% endblock %}
+{% block footer-content %}
+<script type="text/javascript" src="{% static 'js/user/view.js' %}"></script>
+{% endblock footer-content %}

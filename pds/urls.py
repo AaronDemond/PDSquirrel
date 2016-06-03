@@ -5,14 +5,14 @@ from pds_v3 import views, user_views, presenter_views, tmp_views, payment_views
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
-
    #Home Page
     url(r'^$', views.landing, name="home"),
     #Browse/Search Page
-
     url(r'^pd/$', views.browse, name="browse"),
     url(r'^pd/(?P<pd_id>\d+)/$', views.detail, name="detail"),
     url(r'^pd/session/(?P<pd_id>\d+)/$', views.watch, name="watch"),
+    url(r'^pd/session/comment/$', views.comment, name="comment"),
+    url(r'^pd/session/comment/delete/$', views.delete_comment, name="delete_comment"),
     url(r'^pd/accred/(?P<pd_id>\d+)/(?P<s_id>\d+)/$', views.accred, name="accred"),
     url(r'^pd/accred/(?P<pd_id>\d+)/$', views.accred, name="accred"),
     url(r'^browse/$', views.browse, name="browse"),

@@ -10,3 +10,26 @@
 #description {
   margin-top: 20px;
 }
+
+.presenter-link {
+  color: inherit;
+}
+
+.comment-head {
+  margin-bottom: 5px;
+}
+
+.comment, .reply {
+  margin-bottom: 8px;
+}
+
+.reply-container {
+  padding-left: 0px;
+}
+
+.toggle-reply, .delete {
+  padding-left: 0px;
+  padding-top: 0px;
+  padding-right: 0px;
+  margin-right: 6px;
+}

@@ -5,7 +5,7 @@ import datetime
 from django.contrib import messages
 from django.core.mail import send_mail
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from pds_v3.models import PdSession, AppUser, LawSociety, LawSocietyOverride, Purchase, Subject, Presenter, PdAttachment
+from pds_v3.models import PdSession, AppUser, LawSociety, LawSocietyOverride, Purchase, Subject, Presenter, PdAttachment, Comment
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.models import User
 from django.db import IntegrityError
@@ -313,11 +313,41 @@ def presenter_detail(request, p_id):
     context = {'name': name, 'bio': profile.bio, 'img': '/static/img/placeholder.png ', 'presenter': profile}
     return render(request, 'v3/final/presenter-landing.html', context)
 
+ # or user pd.presenters.all.0.user
+ # or comment.pd.presenters[0].user == user
 
+def delete_comment(request):
+    if request.POST:
+        comment_id = int(request.POST['comment_id'])
+        comment = Comment.objects.get(pk=comment_id)
+        presenter = comment.pd.presenters.all()[0]
+        if request.user == comment.user or presenter.user == request.user:
+            comment.delete()
+    return HttpResponse('Success')
+
+def comment(request):
+    if request.POST:
+        pd_id = int(request.POST['pd_id'])
+        reply_id = int(request.POST['reply_id'])
+        message = request.POST['msg']
+        user = request.user.profile
+        pd = PdSession.objects.get(pk=pd_id)
+
+        if message or not message.isspace():
+
+            if reply_id == 0:
+                comment = Comment(message=message, user=user, pd=pd)
+            else:
+                parent = Comment.objects.get(pk=reply_id)
+                comment = Comment(message=message, user=user, pd=pd, parent = parent)
+            comment.save()
+    return HttpResponse('Success')
 
 def watch(request, pd_id):
     pd = PdSession.objects.get(pk=pd_id)
-    context = {'pd': pd}
+    comments = Comment.objects.filter(pd_id = pd_id, parent__isnull = True)
+
+    context = {'pd': pd, 'comments': comments}
 
     #if user owns pd, show them and mark as 'complete' (viewed)
     for x in request.user.profile.purchase_set.all():
