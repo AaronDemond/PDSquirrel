@@ -1,22 +1,16 @@
 {% extends "v3/final/base/base.html" %}
 {% load staticfiles %}
+{% block header-metatags %}
+        <title>{{ presenter }}</title>
+        <meta name=”description” content='{{bio}}'>
+{% endblock header-metatags %}
+{% block header-content %}
+        <link rel="stylesheet" href="{% static 'css/user/presenter-landing.css' %}">
+{% endblock header-content %}
 {% block body %}
-<style>
-.credentials {
-    color: grey;
-    margin-top: 0px;
-}
-#pres-header h2 {
-	margin-top: 0px;
-
-}
-#pres-header h4 {
-	padding-bottom: 20px;
-}
-</style>
-<div id = "main-content" class="container" style="min-height: 800px;">
+<div id = "main-content" class="container">
     <div class="row">
-        <div class="col-xs-12 col-lg-10 col-lg-offset-1" style="margin-top: 20px">
+        <div class=" pres-container col-xs-12 col-lg-10 col-lg-offset-1">
         	<div class="row">
 				<div class="col-sm-4">
 					<img
@@ -31,10 +25,9 @@
 							src="{{presenter.male_placeholder}}"
 						{% endif %}
 					{% endif %}
-					style="margin-bottom: 20px; -webkit-box-shadow: 0 1px 1px rgba(0,0,0,0.15),-1px 0 0 rgba(0,0,0,0.03),1px 0 0 rgba(0,0,0,0.03),0 1px 0 rgba(0,0,0,0.12)"
-					alt="" width="90%" />
+					 id="presenter-img" alt=""/>
 					<br>
-					<ul style="list-style-type: none; padding-left: 10px">
+					<ul id="presenter-info">
 						<li>
 							<b>{{presenter.law_firm}}</b>
 						</li>
@@ -48,14 +41,14 @@
 						{% endif %}
 					</ul>
 				</div>
-                <div class="col-sm-8" id="pres-header">
+                <div class="col-sm-8">
 		    		<br>
-					<div style="padding-left: 15px; padding-right: 15px">
+					<div id ="pres-header">
 						<h2 class="name">{{ presenter }}</h2>
 						<h4 class="credentials">{% if presenter.credentials %}{{presenter.credentials}}{%endif%}</h4>
 					</div>
-					<div style="margin-top:20px; padding-top:10px;">
-						<p style="margin-left: 20px">{{bio}}</p>
+					<div id="pres-body">
+						<p>{{bio}}</p>
 					</div>
                 </div>
             </div>
