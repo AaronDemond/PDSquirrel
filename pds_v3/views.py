@@ -231,13 +231,14 @@ def getAudio(request, pd_id):
 def detail(request, pd_id):
 
     pd = PdSession.objects.get(pk=pd_id)
+    comments = Comment.objects.filter(pd_id = pd_id, parent__isnull = True)
     own = 0
     if request.user.is_authenticated():
         for purchase in Purchase.objects.filter(user=request.user.profile):
             if purchase.pdsession == pd:
                 own = 1
 
-    context = {'pd' : pd, 'own' : own}
+    context = {'pd' : pd, 'own' : own, 'comments': comments}
 
     if request.user.is_authenticated():
         context['customer'] = stripe.Customer.retrieve(request.user.profile.stripe_id)
