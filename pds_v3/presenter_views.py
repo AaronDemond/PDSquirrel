@@ -101,6 +101,7 @@ def analytics_report(request):
 
 
 def dash(request, msg=False):
+
     if request.user.profile.is_presenter == True:
         uploadform = PdSessionForm()
         context = {'msg' : msg }
@@ -269,6 +270,7 @@ def dash(request, msg=False):
 
                 return HttpResponseRedirect('/user/presenter/dash/?direct_to=sessions')
 
+
             #New upload
             form = PdSessionForm(request.POST, request.FILES)
             if form.is_valid():
@@ -280,8 +282,10 @@ def dash(request, msg=False):
 
                     return HttpResponseRedirect('/user/presenter/dash/?direct_to=sessions')
 
+
                 pd_description = request.POST['description']
                 subjects = request.POST.getlist('subject')
+
 
 
                 pdaud = request.POST.get('recording', False)
@@ -293,16 +297,18 @@ def dash(request, msg=False):
                     counter = 1 #file counter. 1 if pd audio, 0 if audio from client pc
                 else:
                     audio_file = request.FILES.get('audio_file', False)
+
+
                     counter = 0
                     if not audio_file:
                         messages.add_message(request, messages.ERROR, 'Please upload a file')
                         return HttpResponseRedirect('/user/presenter/dash/?direct_to=upload')
-                    elif not audio_file.name.lower().endswith(('.wav', '.mp3')):
-                        messages.add_message(request, messages.ERROR, 'Please upload the correct file type')
-                        return HttpResponseRedirect('/user/presenter/dash/?direct_to=upload')
+
 
                     new_session = PdSession(name=pd_name,description=pd_description, audio_file=audio_file, approved=False)
                     new_session.save()
+
+
 
 
                     #get length if it is mp3.. need to convert wav

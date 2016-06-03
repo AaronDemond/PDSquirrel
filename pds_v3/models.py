@@ -32,7 +32,7 @@ from pds_v3.managers import AppUserManager
 
 class Presenter(models.Model):
     user = models.OneToOneField(User, related_name="presenter")
-    date_approved = models.DateField()
+    date_approved = models.DateField(auto_now_add=True)
     bio = models.TextField(null=True, blank=True)
     credentials = models.TextField(null=True, blank=True)
     phone = models.CharField(null=True,blank=True,max_length=100)
