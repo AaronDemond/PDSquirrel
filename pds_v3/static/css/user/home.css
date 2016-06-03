@@ -68,6 +68,7 @@
 
 .subject_pic {
   height: 110px;
+  min-width: 140px;
 }
 
 .content_container {

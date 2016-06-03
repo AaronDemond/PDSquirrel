@@ -10,9 +10,9 @@
 {% block body %}
 <div id = "main-content" class="container">
     <div class="row">
-        <div class=" pres-container col-xs-12 col-lg-10 col-lg-offset-1">
+        <div class=" pres-container col-xs-12 col-sm-10 col-sm-offset-1">
         	<div class="row">
-				<div class="col-sm-4">
+				<div class="col-xs-4">
 					<img
 					{# if no img uploaded by user, pull one of two placeholders #}
 					{# tested: no #}
@@ -41,7 +41,7 @@
 						{% endif %}
 					</ul>
 				</div>
-                <div class="col-sm-8">
+                <div class="col-xs-8">
 		    		<br>
 					<div id ="pres-header">
 						<h2 class="name">{{ presenter }}</h2>
@@ -53,13 +53,29 @@
                 </div>
             </div>
 			<div class="row">
-				<div class="col-md-8 col-lg-6 col-xs-12">
+				<div class="col-xs-12">
 					<h4>Sessions by this presenter </h4>
 					<div class="list-group">
-						{% for x in presenter.pdsession_set.all %}
-					{% if x.approved %}
-						<a class="list-group-item" href="{% url 'detail' x.id %}">{{x.name}}</a>
-					{% endif %}
+						{% for pd in presenter.pdsession_set.all %}
+    					{% if pd.approved %}
+              <a href="{% url 'detail' pd.id %}">
+                <div class="list-group-item">
+                  <div class="row">
+                      <span class="pd-name">{{pd.name}}</span>
+                      &nbsp;
+                      <span class="muted pd-date">{{pd.release_date|date}}</span>
+                  </div>
+                  <div class="row">
+                    <div class="col-xs-4">
+                      <img src="/static/img/subject/{{ pd.subject.all.0.image_name }}" class="img-thumbnail subject_pic">
+                    </div>
+                    <div class="col-xs-8 pd-description">
+                      <p>{{ pd.description|truncatechars:350 }}</p>
+                    </div>
+                  </div>
+                </div>
+              </a>
+    					{% endif %}
 						{% endfor %}
 					</div>
 				</div>
