@@ -1,9 +1,5 @@
-// aria-expanded
-// write your own data-toggle later
 
-// comment url: /pd/session/comment/
-// delete url: /pd/session/comment/delete/
-
+//delete a comment
 $('.delete').click(function() {
   var comment_id = $(this).val();
   var csrf = $("input[name='csrfmiddlewaretoken']").val();
@@ -23,6 +19,26 @@ $('.delete').click(function() {
   });
 });
 
+// toggles the reply boxes
+$('.toggle-reply').click(function() {
+  var $comment_reply = $(this).parent('.comment-footer').siblings('.comment-reply')
+  $comment_reply.toggleClass('hidden');
+  $comment_reply_all = $('.comment-reply');
+  $comment_reply_all.not($comment_reply).addClass('hidden');
+  $comment_reply_all.children('.form-group').removeClass('has-error has-feedback');
+});
+
+// removes error on focus out if theirs text in the reply box
+$("textarea").focusout(function() {
+  var $curr = $(this); //$.trim(msg).length <= 0
+  var $form_group = $curr.parent('.form-group');
+  var msg = $curr.val();
+  if ($form_group.hasClass('has-error') && $.trim(msg).length > 0) {
+    $form_group.removeClass('has-error has-feedback');
+  }
+});
+
+// submit a comment
 $("button[name^='reply-btn']").click(function() {
   var $curr = $(this);
   var msg = $curr.siblings("textarea").val();
@@ -48,14 +64,3 @@ $("button[name^='reply-btn']").click(function() {
       });
   }
 });
-
-/*
-$("textarea").keypress(function(event) {
-  var key = event.which;
-  if (key == 13) {
-    event.preventDefault();
-    console.log("Text");
-    return false;
-  }
-});
-*/

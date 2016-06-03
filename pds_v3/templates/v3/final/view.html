@@ -83,7 +83,11 @@
         <div class="comment row">
           <div class="col-xs-12">
             <div class="row comment-head">
-              <b>{{ comment.user.user.first_name }} {{ comment.user.user.last_name }}</b>
+              {% if comment.user.is_presenter %}
+                <a class="presenter-link" href="{% url 'presenter-detail' comment.user.user.presenter.id %}"><b>{{ comment.user.user.first_name }} {{ comment.user.user.last_name }}</b></a>
+              {% else %}
+                <b>{{ comment.user.user.is_presenter }} {{ comment.user.user.first_name }} {{ comment.user.user.last_name }}</b>
+              {% endif %}
               &nbsp;
               <span class="muted">{{ comment.date|date }}</span>
             </div>
@@ -91,13 +95,13 @@
               {{ comment.message }}
             </div>
             <div class="row comment-footer">
-              <button type="button" class="btn btn-link muted toggle-reply" data-toggle="collapse" data-target="#comment-reply-{{ comment.id }}">reply</button>
+              <button type="button" class="btn btn-link muted toggle-reply" >reply</button>
               {% if comment.user.user == request.user or pd.presenters.all.0.user == request.user %}
               <button type="button" class="btn btn-link muted delete" value="{{ comment.id }}">delete</button>
               {% endif %}
             </div>
-            <div class="row comment-reply">
-              <div id="comment-reply-{{ comment.id }}" class="collapse form-group">
+            <div class="row comment-reply hidden">
+              <div id="comment-reply-{{ comment.id }}" class="form-group">
                 <textarea name="reply-message" rows="2" class="form-control"></textarea>
                 <br>
                 <button name="reply-btn-{{ comment.id }}" type="button" class="btn btn-success pull-left" value="{{ comment.id }}">Comment</button>
@@ -113,7 +117,11 @@
         <div class="reply row">
           <div class="col-xs-10 col-xs-offset-2">
             <div class="row comment-head">
-              <b>{{ reply.user.user.first_name }} {{ reply.user.user.last_name }}</b>
+              {% if reply.user.is_presenter %}
+                <a class="presenter-link" href="{% url 'presenter-detail' reply.user.user.presenter.id %}"><b>{{ reply.user.user.first_name }} {{ reply.user.user.last_name }}</b></a>
+              {% else %}
+                <b>{{ reply.user.user.is_presenter }} {{ reply.user.user.first_name }} {{ reply.user.user.last_name }}</b>
+              {% endif %}
               &nbsp;
               <span class="muted">{{ reply.date|date }}</span>
             </div>
@@ -121,15 +129,14 @@
               {{ reply.message }}
             </div>
             <div class="row comment-footer">
-              <button type="button" class="btn btn-link muted toggle-reply" data-toggle="collapse" data-target="#thread-reply-{{ reply.id }}">reply</button>
+              <button type="button" class="btn btn-link muted toggle-reply">reply</button>
               {% if reply.user == request.user  or pd.presenters.all.0.user == request.user %}
               <button type="button" class="btn btn-link muted delete" value="{{ reply.id }}">delete</button>
               {% endif %}
             </div>
-            <div class="row comment-reply">
-              <div id="thread-reply-{{ reply.id }}" class="collapse form-group">
-
-                <textarea name="reply-message" rows="2" class="form-control">@{{ reply.user.user.first_name }}{{ reply.user.user.last_name }} </textarea>
+            <div class="row comment-reply hidden">
+              <div id="thread-reply-{{ reply.id }}" class="form-group">
+                <textarea name="reply-message" rows="2" class="form-control">@{{ reply.user.user.first_name }}{{ reply.user.user.last_name }}</textarea>
                 <br>
                 <button name="reply-btn-{{ reply.id }}" type="button" class="btn btn-success pull-left" value="{{ comment.id }}">Comment</button>
               </div>

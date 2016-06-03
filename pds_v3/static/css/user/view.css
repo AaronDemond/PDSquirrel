@@ -11,6 +11,10 @@
   margin-top: 20px;
 }
 
+.presenter-link {
+  color: inherit;
+}
+
 .comment-head {
   margin-bottom: 5px;
 }
@@ -26,4 +30,6 @@
 .toggle-reply, .delete {
   padding-left: 0px;
   padding-top: 0px;
+  padding-right: 0px;
+  margin-right: 6px;
 }
