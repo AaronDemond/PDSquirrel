@@ -202,7 +202,9 @@
                     {{ comment.message }}
                   </div>
                   <div class="row comment-footer">
+                    {% if own == 1 or pd.presenters.all.0.user == request.user %}
                     <button type="button" class="btn btn-link muted toggle-reply" >reply</button>
+                    {% endif %}
                     {% if comment.user.user == request.user or pd.presenters.all.0.user == request.user %}
                     <button type="button" class="btn btn-link muted delete" value="{{ comment.id }}">delete</button>
                     {% endif %}
@@ -236,14 +238,16 @@
                     {{ reply.message }}
                   </div>
                   <div class="row comment-footer">
+                    {% if own == 1 or pd.presenters.all.0.user == request.user %}
                     <button type="button" class="btn btn-link muted toggle-reply">reply</button>
-                    {% if reply.user == request.user  or pd.presenters.all.0.user == request.user %}
+                    {% endif %}
+                    {% if reply.user.user == request.user  or pd.presenters.all.0.user == request.user %}
                     <button type="button" class="btn btn-link muted delete" value="{{ reply.id }}">delete</button>
                     {% endif %}
                   </div>
                   <div class="row comment-reply hidden">
                     <div id="thread-reply-{{ reply.id }}" class="form-group">
-                      <textarea name="reply-message" rows="2" class="form-control">@{{ reply.user.user.first_name }}{{ reply.user.user.last_name }}</textarea>
+                      <textarea name="reply-message" rows="2" class="form-control">@{{ reply.user.user.first_name }}{{ reply.user.user.last_name }} </textarea>
                       <br>
                       <button name="reply-btn-{{ reply.id }}" type="button" class="btn btn-success pull-left" value="{{ comment.id }}">Comment</button>
                     </div>
@@ -255,6 +259,8 @@
 
               {% endfor %}
               {% endif %}
+
+              {% if own == 1 or pd.presenters.all.0.user == request.user %}
                 <div class="row">
                   <div class="form-group">
                     <label for="comment">Comment:</label>
@@ -265,7 +271,7 @@
                     <button name="reply-btn" type="button" class="btn btn-success" value="0">Comment</button>
                   </div>
                 </div>
-
+              {% endif %}
               </div>
 
           <!-- End Comment Section -->

@@ -135,13 +135,35 @@ $('.delete').click(function() {
   });
 });
 
+$.fn.setCursorPosition = function (pos) {
+  this.each(function (index, elem) {
+    if (elem.setSelectionRange) {
+      elem.setSelectionRange(pos, pos);
+    } else if (elem.createTextRange) {
+      var range = elem.createTextRange();
+      range.collapse(true);
+      range.moveEnd('character', pos);
+      range.moveStart('character', pos);
+      range.select();
+    }
+  });
+  return this;
+};
+
 // toggles the reply boxes
 $('.toggle-reply').click(function() {
-  var $comment_reply = $(this).parent('.comment-footer').siblings('.comment-reply')
+  var $comment_reply = $(this).parent('.comment-footer').siblings('.comment-reply');
   $comment_reply.toggleClass('hidden');
   $comment_reply_all = $('.comment-reply');
   $comment_reply_all.not($comment_reply).addClass('hidden');
-  $comment_reply_all.children('.form-group').removeClass('has-error has-feedback');
+  $form_group = $comment_reply_all.children('.form-group');
+  $form_group.removeClass('has-error has-feedback');
+
+  $textarea = $comment_reply.children('.form-group').children("textarea");
+  var textarea_text = $textarea.text();
+  console.log("lol"+textarea_text);
+  $textarea.focus().val('').val(textarea_text);
+
 });
 
 // removes error on focus out if theirs text in the reply box

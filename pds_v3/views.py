@@ -313,27 +313,30 @@ def presenter_detail(request, p_id):
     context = {'name': name, 'bio': profile.bio, 'img': '/static/img/placeholder.png ', 'presenter': profile}
     return render(request, 'v3/final/presenter-landing.html', context)
 
- # or user pd.presenters.all.0.user
- # or comment.pd.presenters[0].user == user
 
 def delete_comment(request):
-    if request.POST:
+    if request.POST and request.user.is_authenticated:
         comment_id = int(request.POST['comment_id'])
         comment = Comment.objects.get(pk=comment_id)
         presenter = comment.pd.presenters.all()[0]
-        if request.user == comment.user or presenter.user == request.user:
+        if request.user == comment.user.user or presenter.user == request.user:
             comment.delete()
     return HttpResponse('Success')
 
+
 def comment(request):
-    if request.POST:
+    if request.POST and request.user.is_authenticated:
         pd_id = int(request.POST['pd_id'])
         reply_id = int(request.POST['reply_id'])
         message = request.POST['msg']
         user = request.user.profile
         pd = PdSession.objects.get(pk=pd_id)
+        user_owns = False
+        for purchase in Purchase.objects.filter(user=user):
+            if purchase.pdsession == pd:
+                user_owns = True
 
-        if message or not message.isspace():
+        if message or not message.isspace() and user_owns:
 
             if reply_id == 0:
                 comment = Comment(message=message, user=user, pd=pd)
