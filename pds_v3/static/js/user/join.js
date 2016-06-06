@@ -23,6 +23,9 @@ $('input, select').focusout(function() {
   } else if (curr_id == "email" && curr_val.search(/\S*@\S*\.\S*/)== -1) {
     error_text = "Please enter a valid email";
 
+  } else if (curr_id == "vemail" && curr_val.search(/\S*@\S*\.\S*/)== -1) {
+    error_text = "Please enter a valid email";
+
   } else if (curr_id == "email" && curr_val != $('#vemail').val()) {
      error_text = "Your email does not match";
 
@@ -30,6 +33,9 @@ $('input, select').focusout(function() {
     error_text = "Your email does not match";
 
   } else if (curr_id == "pass" && curr_val.length < 8) {
+    error_text = "You password needs to be atleast 8 characters";
+
+  } else if (curr_id == "vpass" && curr_val.length < 8) {
     error_text = "You password needs to be atleast 8 characters";
 
   } else if (curr_id == "pass" && curr_val != $('#vpass').val()) {
@@ -77,7 +83,7 @@ $('input, select').focusout(function() {
       vpass.parent("div").removeClass("has-error");
       vpass.parent("div").addClass("has-success has-feedback");
       vpass.next('.help-block').text(error_text);
-      
+
     } else if (curr_id == "vemail") {
       var email = $('#email');
       email.parent("div").removeClass("has-error");
