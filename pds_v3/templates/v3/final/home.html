@@ -50,6 +50,66 @@
     {% endfor %}
 
   </div>
+
+  <div class="row">
+
+      {% for cont in content %}
+      <a href="{% url 'detail' cont.id %}">
+        <div class="col-sm-3 col-xs-6 content_row">
+          <div class="featured_box content_container">
+            <img src="/static/img/subject/{{ cont.subject.all.0.image_name }}" class="img-thumbnail center-block subject_pic">
+            <div class="featured_title title">{{ cont.name }}</div>
+            <p class="content">{{ cont.description }}</p>
+          </div>
+
+      </div>
+    </a>
+    {% endfor %}
+
+  </div>
+  <div class="row">
+
+      {% for cont in content %}
+      <a href="{% url 'detail' cont.id %}">
+        <div class="col-sm-3 col-xs-6 content_row">
+          <div class="featured_box content_container_test">
+            <img src="/static/img/subject/{{ cont.subject.all.0.image_name }}" class="img-thumbnail center-block subject_pic">
+            <div class="featured_title cut_off">{{ cont.name }}</div>
+            <p class="content cut_off">{{ cont.presenters.all.0 }}</p>
+          </div>
+
+      </div>
+    </a>
+    {% endfor %}
+
+  </div>
 </div>
 
 {% endblock %}
+{% block footer-content %}
+<script type="text/javascript" src="{% static 'js/shared/jquery.dotdotdot.min.js' %}"></script>
+<script type="text/javascript">
+
+/*
+
+
+
+*/
+$(document).ready(function() {
+  $('.title').dotdotdot(
+    {
+      ellipsis: '...',
+      wrap: 'word',
+      fallbackToLetter: true,
+      height: 30
+    }
+  );
+  $('.content').dotdotdot({
+    ellipsis: '...',
+    wrap: 'word',
+    fallbackToLetter: true,
+    height: 100
+  });
+});
+</script>
+{% endblock footer-content %}
