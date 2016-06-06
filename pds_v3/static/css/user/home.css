@@ -55,10 +55,15 @@
     border: 1px solid #cfcfcf;
 }
 
+.content_row {
+  padding-left: 7.5px;
+  padding-right: 7.5px;
+}
+
 .featured_title {
     font-weight:bold;
     font-size:1.2em;
-	  padding:5px 0 5px 0;
+	  padding-top:5px;
 }
 
 .portrait {

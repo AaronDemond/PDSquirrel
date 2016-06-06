@@ -27,7 +27,7 @@
 
 
 <div id="main-content"  class="container" >
-  
+
 
   <div class="row">
     <h3 class="text-center">
@@ -38,11 +38,11 @@
 
       {% for cont in content %}
       <a href="{% url 'detail' cont.id %}">
-        <div class="col-sm-3 col-xs-6">
+        <div class="col-sm-3 col-xs-6 content_row">
           <div class="featured_box content_container">
             <img src="/static/img/subject/{{ cont.subject.all.0.image_name }}" class="img-thumbnail center-block subject_pic">
-            <div class="featured_title text-center">{{ cont.name|truncatechars:"30" }}</div>
-            <p>{{ cont.description|truncatechars:"60" }}</p>
+            <div class="featured_title">{{ cont.name|truncatechars:"35" }}</div>
+            <p>{{ cont.description|truncatechars:"95" }}</p>
           </div>
 
       </div>
