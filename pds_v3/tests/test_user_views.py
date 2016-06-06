@@ -33,6 +33,9 @@ class test_my_acc(TestCase):
         user.save()
         profile.save()
 
+    def test_browse(self):
+        c = Client()
+
 
 
     def test_my_acc_index(self):

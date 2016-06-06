@@ -36,7 +36,6 @@ def membership_information(request):
 
 
 def browse(request):
-    #pdb.set_trace()
 
     if request.POST:
         query = request.POST.get('query', None)
