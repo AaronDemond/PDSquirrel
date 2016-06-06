@@ -135,21 +135,6 @@ $('.delete').click(function() {
   });
 });
 
-$.fn.setCursorPosition = function (pos) {
-  this.each(function (index, elem) {
-    if (elem.setSelectionRange) {
-      elem.setSelectionRange(pos, pos);
-    } else if (elem.createTextRange) {
-      var range = elem.createTextRange();
-      range.collapse(true);
-      range.moveEnd('character', pos);
-      range.moveStart('character', pos);
-      range.select();
-    }
-  });
-  return this;
-};
-
 // toggles the reply boxes
 $('.toggle-reply').click(function() {
   var $comment_reply = $(this).parent('.comment-footer').siblings('.comment-reply');
@@ -161,7 +146,6 @@ $('.toggle-reply').click(function() {
 
   $textarea = $comment_reply.children('.form-group').children("textarea");
   var textarea_text = $textarea.text();
-  console.log("lol"+textarea_text);
   $textarea.focus().val('').val(textarea_text);
 
 });
