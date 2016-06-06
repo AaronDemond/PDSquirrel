@@ -2,7 +2,7 @@
 {% load staticfiles %}
 {% block header-metatags %}
         <title>{{ presenter }}</title>
-        <meta name=”description” content='{{bio}}'>
+        <meta name=”description” content='Learn more about the PDSquirrel presenter {{presenter}}'>
 {% endblock header-metatags %}
 {% block header-content %}
         <link rel="stylesheet" href="{% static 'css/user/presenter-landing.css' %}">
@@ -41,7 +41,7 @@
 						{% endif %}
 					</ul>
 				</div>
-                <div class="col-xs-8">
+                <div class="col-xs-8 info-container">
 		    		<br>
 					<div id ="pres-header">
 						<h2 class="name">{{ presenter }}</h2>
@@ -60,16 +60,16 @@
     					{% if pd.approved %}
               <a href="{% url 'detail' pd.id %}">
                 <div class="list-group-item">
-                  <div class="row">
+                  <div class="row pd-header">
                       <span class="pd-name">{{pd.name}}</span>
                       &nbsp;
                       <span class="muted pd-date">{{pd.release_date|date}}</span>
                   </div>
                   <div class="row">
-                    <div class="col-xs-4">
+                    <div class="col-sm-4">
                       <img src="/static/img/subject/{{ pd.subject.all.0.image_name }}" class="img-thumbnail subject_pic">
                     </div>
-                    <div class="col-xs-8 pd-description">
+                    <div class="col-sm-8 pd-description">
                       <p>{{ pd.description|truncatechars:350 }}</p>
                     </div>
                   </div>
