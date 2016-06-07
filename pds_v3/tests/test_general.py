@@ -30,15 +30,17 @@ class test_gen(TestCase):
         cls.presenter = Presenter(user=user)
         cls.presenter.save()
 
-        # -- Create a session
-        cls.pd = PdSession(name='test', description='desc', approved=False)
-        cls.pd.audio_file = File(open('audio_files/with_rec','r'))
-        cls.pd.save()
-
-
         # -- Create a subject
         cls.subject = Subject(name='sub')
         cls.subject.save()
+
+        # -- Create a session
+        cls.pd = PdSession(name='test', description='desc', approved=False, price=9.99)
+        cls.pd.audio_file = File(open('audio_files/with_rec','r'))
+        cls.pd.save()
+        cls.pd.subject.add(cls.subject)
+
+
 
 
 
@@ -82,6 +84,11 @@ class test_gen(TestCase):
 
 
 
+    def test_detail(self):
+        c = Client()
+        resp = c.get('/pd/1/')
+        self.assertEqual(resp.context['own'], 0)
+        self.assertContains(resp, 'Purchase', status_code=200)
 
     def test_user_exists(self):
         c = Client()

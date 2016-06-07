@@ -15,7 +15,7 @@
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
 				<h3>{{ pd }}</h3>
-				<p id="payment-method" class="help-text">Select a payment method</h4>
+				<p id="payment-method" class="help-text">Select a payment method</p>
 				<hr>
 				<form method="POST" id="payment-form" action="{% url 'payment-process' %}">
 					{% csrf_token %}
@@ -272,19 +272,19 @@
 
         </div>
 				<div class="col-sm-4">
+					<h4>Details</h4>
 					<table class = "table table-striped">
-						<h4>Details</h4>
 						<tr>
 						   <td>Release date</td>
 						   <td>{{ pd.release_date|remove_time}}</td>
 						</tr>
 						<tr>
 						   <td>Subject area(s)</td>
-						<td>
-							{% for a in pd.subject.all %}
-							{{a}}<br />
-							{% endfor %}
-						</td>
+							<td>
+								{% for a in pd.subject.all %}
+								{{a}}<br />
+								{% endfor %}
+							</td>
 						</tr>
 						<tr>
 						   <td>Language</td>
@@ -296,7 +296,7 @@
 						</tr>
 						<tr>
 						   <td>Price (GST/HST included)</td>
-						<td>${{ pd.price|show_cents }}</td>
+							<td>${{ pd.price|show_cents }}</td>
 						</tr>
 						<tr>
 							<td>Unique number</td>
@@ -335,7 +335,7 @@
 					{% endif %}
 				</div>
 			</div>
-		</div> {# end row for top half. Includes img desctiption and listen now btn #}
+		</div>
 	</div>
 </div>
 
