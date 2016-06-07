@@ -15,51 +15,51 @@
     <div class="row">
         <div class="col-xs-12">
             <div id = "account_options">
-                <div id="myModal" class="modal" role="dialog">
-                    <div class="modal-dialog">
-                        <!-- Modal content-->
-                        <div class="modal-content">
-                            <form action="{% url 'newcard' %}" method="POST" id="payment-form">
-                                <div class="row">
-                                    <div class="col-xs-12">
-					<h3>Payment Details</h3>
-                                        <hr>
-                                    </div>
-                                    <div class="col-sm-5">
-                                        <span class="payment-errors"></span>
-                                        <div class="input-group">
-                                            <label>Card Number</label>
-                                            <input type="text" class="form-control" size="20" data-stripe="number"/>
-                                        </div>
-                                        <div class="input-group">
-                                            <label>CVC</label>
-                                            <input type="text" class="form-control" size="4" data-stripe="cvc"/>
-                                        </div>
-                                        <div class="input-group">
-                                            <label> Expiration Month (MM)</label>
-                                            <input type="text" size="2" class="form-control"  data-stripe="exp-month"/>
-                                        </div>
-                                        <div class="input-group">
-                                            <label for="">Expiration Year (YYYY)</label>
-                                            <input type="text" size="4" class="form-control" data-stripe="exp-year"/>
-                                        </div>
-                                        {% csrf_token %}
-                                    </div>
-                                    <div class="col-sm-7">
-                                        <p>
-We use the services of Stripe, with which we have a merchant agreement, to receive and process
-					payments from our PD Squirrel members. None of your sensitive information is stored on our servers, instead it is encrypted and stored by entirely Stripe. This helps ensure your privacy. </p>
+              <div id="myModal" class="modal" role="dialog">
+                  <div class="modal-dialog">
+                      <!-- Modal content-->
+                      <div class="modal-content">
+                          <form action="{% url 'newcard' %}" method="POST" id="payment-form">
+                              <div class="row">
+                                  <div class="col-xs-12">
+              <h3>Payment Details</h3>
+                                      <hr>
+                                  </div>
+                                  <div class="col-sm-5">
+                                      <span class="payment-errors"></span>
+                                      <div class="input-group">
+                                          <label>Card Number</label>
+                                          <input type="text" class="form-control" size="20" data-stripe="number"/>
+                                      </div>
+                                      <div class="input-group">
+                                          <label>CVC</label>
+                                          <input type="text" class="form-control" size="4" data-stripe="cvc"/>
+                                      </div>
+                                      <div class="input-group">
+                                          <label> Expiration Month (MM)</label>
+                                          <input type="text" size="2" class="form-control"  data-stripe="exp-month"/>
+                                      </div>
+                                      <div class="input-group">
+                                          <label for="">Expiration Year (YYYY)</label>
+                                          <input type="text" size="4" class="form-control" data-stripe="exp-year"/>
+                                      </div>
+                                      {% csrf_token %}
+                                  </div>
+                                  <div class="col-sm-7">
+                                      <p>
+              We use the services of Stripe, with which we have a merchant agreement, to receive and process
+              payments from our PD Squirrel members. None of your sensitive information is stored on our servers, instead it is encrypted and stored by entirely Stripe. This helps ensure your privacy. </p>
 
-                                    </div>
-                                    <div class="col-xs-3 col-xs-offset-9">
-                                        <button type="submit" class="btn btn-success">Submit</button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                {% csrf_token %}
+                                  </div>
+                                  <div class="col-xs-3 col-xs-offset-9">
+                                      <button type="submit" class="btn btn-success">Submit</button>
+                                  </div>
+                              </div>
+                          </form>
+                      </div>
+                  </div>
+              </div>
+              {% csrf_token %}
 
                 <div class="container">
                     <div class="row">
