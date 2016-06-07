@@ -12,6 +12,8 @@ b {
 	line-height: 20px;
 }
 
+
+
 td {
   width: 200px !important;
 }
@@ -34,11 +36,11 @@ h3 {
   margin-top:10px;
 }
 
-#delete-card {
+.delete-card {
   clear: both;
   height: 55px;
 }
-#delete-card-form {
+.delete-card-form {
   float: left;
   margin-left: 10px;
 }
@@ -56,4 +58,22 @@ h3 {
 
 #btnholder {
   margin-top: 10px;
+}
+
+@media all and (max-width: 610px) {
+  #change-default-sub-container {
+    height: 160px;
+  }
+}
+
+@media all and (max-width: 665px) {
+  .delete-card {
+    height: 85px;
+  }
+}
+
+@media all and (max-width: 1200px) {
+  .account-header {
+    margin-left: 5px;
+  }
 }

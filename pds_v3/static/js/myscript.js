@@ -7,8 +7,12 @@ $(document).ready(function() {
 });
 
 function loadXMLDoc(url,div, direct_to) {
-	$.get(url, function( data ) {
-		$(div).html( data );
+	$.ajax( {
+		type: "GET",
+		url: url,
+		success: function(data) {
+			$(div).html( data );
+		}
 	});
     window.history.pushState("state", direct_to, "?direct_to=" + direct_to);
 }
