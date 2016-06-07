@@ -1,0 +1,100 @@
+
+
+.credentials {
+    color: grey;
+    margin-top: 0px;
+}
+#pres-header {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+#pres-header h2 {
+	margin-top: 0px;
+}
+
+.pd-date {
+  display: inline-block;
+  font-size: 13px;
+}
+
+.pd-header {
+  margin-left: 10px;
+}
+
+.pd-name {
+
+  font-size: 18px;
+}
+
+.pd-description {
+  margin-top: 5px;
+}
+
+#pres-header h4 {
+	padding-bottom: 20px;
+}
+
+.subject_pic {
+  margin-top: 10px;
+  height: 110px;
+  margin-bottom: 10px;
+  margin-left: 10px;
+}
+
+a > *  {
+  color: #333;
+
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+li > a:hover {
+  text-decoration: underline;
+}
+
+#pres-body {
+  margin-top:20px;
+  padding-top:10px;
+}
+
+#pres-body p {
+  margin-left: 15px;
+}
+
+.pres-container {
+  margin-top: 20px
+}
+
+#presenter-info {
+  list-style-type: none;
+  padding-left: 0px;
+}
+
+#presenter-img {
+  width: 90%;
+  margin-bottom: 20px;
+  min-width: 130px;
+  -webkit-box-shadow: 0 1px 1px rgba(0,0,0,0.15),-1px 0 0 rgba(0,0,0,0.03),1px 0 0 rgba(0,0,0,0.03),0 1px 0 rgba(0,0,0,0.12);
+}
+
+.list-group-item:hover {
+  box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.5);
+  -webkit-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+}
+
+.list-group-item {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+@media all and (min-width: 770px) {
+  .pd-description {
+    display: inline-block;
+  }
+}

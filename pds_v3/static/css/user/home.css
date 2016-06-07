@@ -68,17 +68,14 @@
 
 .subject_pic {
   height: 110px;
+  min-width: 140px;
 }
 
 .content_container {
   height: 260px;
 }
 
-@media all and (min-width: 770px) {
-  .featured_box:hover {
-    margin-top: 0.1px;
-  }
-}
+
 .featured_box:hover {
   box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.5);
   -webkit-transition: all 0.3s ease-in-out;
