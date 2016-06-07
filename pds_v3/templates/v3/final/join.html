@@ -76,7 +76,7 @@
                         </div>
                         <div class="visible-xs"><br></div>
                         <div class="col-sm-5">
-                            <input type="text" id="vemail" value="{{vemail}}" name = "vemail" class="form-control" placeholder="Retype Email">
+                            <input type="text" id="vemail" value="{{email}}" name = "vemail" class="form-control" placeholder="Retype Email">
                             <span class="help-block"></span>
                         </div>
                     </div>
@@ -105,7 +105,7 @@
                         <div id="societygroup" class=" col-sm-10">
                             {{form.society}}
                             <select name="society" class="form-control">
-                              <option value=""></option>
+                              <option value="{{society.id}}">{{society}}</option>
                             {% for x in societies %}
 		                          <option value={{x.id}}>{{x}}</option>
                             {% endfor %}
@@ -120,7 +120,7 @@
                     </div>
                           <div class="form-group has-error" id = "term-div" >
                             <div class="col-xs-1">
-                              <input id="termbox" type="checkbox" name ="terms">
+                              <input id="termbox" type="checkbox" name ="terms" {% if terms %}checked{% endif %}>
                               <span class="help-blck"></span>
                             </div>
                             <div class="col-xs-10 text-center">
