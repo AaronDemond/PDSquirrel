@@ -84,7 +84,7 @@
                             </div>
                         </div>
 						{% if sesh.approved %}
-						<a href="{% url 'watch' sesh.id %}">Listen</a>
+						<a href="{% url 'detail' sesh.id %}">Listen</a>
 						{% else %}
                         <a class=""  onclick="loadXMLDoc('{% url 'preview-session' sesh.id %}', '#page-content')">Preview</a>
 						{% endif %}
