@@ -18,8 +18,8 @@
 			<div class="col-lg-12">
 				<div class="alert alert-info">
 					<p>
-						Make changes to your session below. 
-						After saving, you have the opportunity to 
+						Make changes to your session below.
+						After saving, you have the opportunity to
 						preview your session, via the Sessions tab, before releasing.
 					</p>
 					<div class="row">
@@ -69,7 +69,7 @@
 						</div>
 					</div>
 				</div>
-				
+
 				{% if sesh.attachments.all %}
 				<div class="row">
 					<div class="col-lg-12">
@@ -89,7 +89,7 @@
 							</select>
 						</div>
 					</div>
-				</div>	
+				</div>
 				{% endif %}
 
 				<div class="row">
@@ -99,26 +99,26 @@
 								<label for="">Optional additional attachment(s)</label>
 								<input type="file" class="form-control" onclick="anotherFile()" name="file-upload-0">
 								<p class="help-block">
-									You may upload attachments 
+									You may upload attachments
 									to suppliment your PD Session, such as slides or other documents.
 								</p>
 							</div>
 						</div>
 						<input type="button" onclick="addAttachment()"
-							class="btn btn-primary hidden" id="addfile" 
+							class="btn btn-primary hidden" id="addfile"
 							style="margin-top:25px" value="Add another file" >
 						</input>
 					</div>
 				</div>
-				
+
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="checkbox">
 							<label>
 							<input type="checkbox" name="p-terms" value="true" required>
 								<p class="muted">
-									I confirm my continued agreement with the 
-									<a href="{% url 'presenter-terms' %}" 
+									I confirm my continued agreement with the
+									<a href="{% url 'presenter-terms' %}"
 										target="_blank">Presenter Terms and Condidtions.
 									</a>
 								</p>
@@ -131,7 +131,7 @@
 						<div class="control-group">
 							<div class="controls">
 								<input type="submit" value="Save Changes" class="btn btn-success">
-								<a class="btn btn-default" 
+								<a class="btn btn-default"
 									href="{% url 'presenter-dash' %}?direct_to=sessions">
 									Cancel
 								</a>

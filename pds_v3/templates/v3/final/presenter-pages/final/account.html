@@ -15,7 +15,7 @@
 <div class="row">
     <div class="col-lg-9 col-lg-offset-1">
     {% if presenter.bio %}
-    <h4>Use this page to change your bio information 
+    <h4>Use this page to change your bio information
 		<small><a href="{%url 'presenter-detail' presenter.id %}" target="_blank">(click here to see your existing bio page)</a></small>
 	</h4>
     {% else %}
@@ -27,20 +27,27 @@
 	<input type="hidden" name="edit-pres-public" value="1">
 	    <div class="row">
 			<div class="col-sm-6">
-				<label for="">Credentials</label>
-				<input type="text"class="form-control" name="credentials" value="{{presenter.credentials}}">
+				<div class="form-group">
+					<label for="credentials">Credentials</label>
+					<input type="text"class="form-control" name="credentials" value="{{presenter.credentials}}">
+				</div>
+				<div class="form-group">
+					<label for="public_email">Public Email</label>
+					<input type="text"class="form-control" name="public_email" value="{{presenter.public_email}}">
+				</div>
+				<div class="form-group">
+					<label for="url">URL</label>
+					<input type="text"class="form-control" name="url" value="{{presenter.url}}">
+				</div>
+
 			</div>
 			<div class="col-sm-6">
-				<label for="">Photo Placeholder</label>
+				<label for="placeholder_gender">Photo Placeholder</label>
 				<br>
 				<input {% if presenter.placeholder_type == 1 %} checked {% endif %} type="radio" name="placeholder_gender" value="male"> Male
 				<input {% if presenter.placeholder_type == 0 %} checked {% endif %}type="radio" name="placeholder_gender" value="female"> Female
 				<input {% if presenter.placeholder_type > 1 %} checked {% endif %} type="radio" name="placeholder_gender" value="upload"> Upload my Own
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-sm-6 col-sm-offset-6">
-				<label for="">Photo</label>
+				<label for="photo">Photo</label>
 				<input class="form-control" type="file" name="photo">
 				{% if presenter.image %}
 				<p class="help-text">
@@ -49,12 +56,13 @@
 				</p>
 				{% endif %}
 			</div>
-	    </div>
+		</div>
+
 		<div class="row">
 			<div class="col-lg-12">
 				<div class="control-group">
-					<label for="">Bio</label>
-					<textarea class="form-control"id="" name="bio" cols="30" rows="10">{{presenter.bio}}</textarea>
+					<label for="bio">Bio</label>
+					<textarea class="form-control" name="bio" cols="30" rows="10">{{presenter.bio}}</textarea>
 				</div>
 				<div class="control-group">
 					<input type="submit" class="btn btn-success submit-fix">

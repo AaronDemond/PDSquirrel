@@ -12,14 +12,14 @@
 <div class="container">
 <div class="row">
 		    <div class="col-lg-12 col-xs-12 hidden-xs" style="">
-			    <img  src="/static/img/brand5.png" class="brand-img hidden-xs" alt="">
+			    <img src="/static/img/brand6.PNG" class="brand-img hidden-xs" alt="">
 			    <div id="search-bar" class="input-group">
-                            <form  action ="{% url 'browse' %}" method ="POST" />
-				{% csrf_token %}
-			        <input type="text" name="query" placeholder="Search PDSquirrel. Go nuts on PD!" class="home-search form-control">
-				<button class="home-search-btn"><span id="search-icon" class="glyphicon glyphicon-search" ></span> </button>
-                                <input type="hidden" name="search_type" value="search">
-			    </form>
+            <form  action ="{% url 'browse' %}" method ="POST" />
+  				      {% csrf_token %}
+  			        <input type="text" name="query" placeholder="Search PDSquirrel. Go nuts on PD!" class="home-search form-control">
+			          <button class="home-search-btn"><span id="search-icon" class="glyphicon glyphicon-search" ></span> </button>
+                <input type="hidden" name="search_type" value="search">
+  			    </form>
 			    </div>
 		    </div>
 		</div>
@@ -27,29 +27,71 @@
 
 
 <div id="main-content"  class="container" >
-  
+
 
   <div class="row">
     <h3 class="text-center">
-      Featured Content
+      New Uploads
     </h3>
   </div>
+
   <div class="row">
 
       {% for cont in content %}
       <a href="{% url 'detail' cont.id %}">
-        <div class="col-sm-3 col-xs-6">
+        <div class="col-sm-3 col-xs-6 content_row">
           <div class="featured_box content_container">
             <img src="/static/img/subject/{{ cont.subject.all.0.image_name }}" class="img-thumbnail center-block subject_pic">
-            <div class="featured_title text-center">{{ cont.name|truncatechars:"30" }}</div>
-            <p>{{ cont.description|truncatechars:"60" }}</p>
+            <div class="featured_title title">{{ cont.name }}</div>
+            <p class="content">{{ cont.presenters.all.0 }}</p>
           </div>
+        </div>
+      </a>
+    {% endfor %}
 
-      </div>
-    </a>
+  </div>
+  <div class="row">
+    <h3 class="text-center">
+      Popular Content
+    </h3>
+  </div>
+
+  <div class="row">
+
+      {% for pop in popular %}
+      <a href="{% url 'detail' pop.id %}">
+        <div class="col-sm-3 col-xs-6 content_row">
+          <div class="featured_box content_container">
+            <img src="/static/img/subject/{{ pop.subject.all.0.image_name }}" class="img-thumbnail center-block subject_pic">
+            <div class="featured_title title">{{ pop.name }}</div>
+            <p class="content">{{ pop.presenters.all.0 }}</p>
+          </div>
+        </div>
+      </a>
     {% endfor %}
 
   </div>
 </div>
 
+
+</div>
+
 {% endblock %}
+{% block footer-content %}
+<script type="text/javascript" src="{% static 'js/shared/jquery.dotdotdot.min.js' %}"></script>
+<script type="text/javascript">
+/*
+    plugin to round of box titles
+*/
+$(document).ready(function() {
+  $('.title').dotdotdot(
+    {
+      ellipsis: '...',
+      wrap: 'word',
+      fallbackToLetter: true,
+      height: 50
+    }
+  );
+});
+</script>
+{% endblock footer-content %}

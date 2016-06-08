@@ -119,54 +119,97 @@ def join(request):
 
         first_name = request.POST["first_name"]
         last_name = request.POST["last_name"]
-        terms = request.POST["terms"]
-        email = request.POST["email"]
-        password = request.POST["password"]
-        society = int(request.POST["society"])
-        password = hashers.make_password(password)
+        terms = request.POST.get("terms", None)
 
-        context = {'first_name' : first_name, 'last_name' : last_name,
-                   'terms' : terms, 'email' : email}
+        email = request.POST["email"]
+        vemail = request.POST['vemail']
+        password = request.POST["password"]
+        vpassword = request.POST['password_verify']
+
+        society = request.POST.get("society", 0)
+        if not society:
+            society=0
+        else:
+            society = int(society)
+
+        if LawSociety.objects.filter(pk=society).exists():
+            return_society = LawSociety.objects.get(pk=society)
+            law_society_exists = True
+        else:
+            return_society = ""
+            law_society_exists = False
+
+        context = {
+            'first_name' : first_name,
+            'last_name' : last_name,
+            'terms' : terms,
+            'email' : email,
+            'society': return_society
+        }
+
         context["societies"] = LawSociety.objects.all()
         context["form"] = CaptchaForm()
         context["msg"] = []
         msg = []
         f = CaptchaForm(request.POST)
-        if f.is_valid():
 
-            if User.objects.filter(username=request.POST['email']).exists():
-                context['msg'].append({'type' :'danger', 'body' : "A user with that email address is already registered."})
-            if re.match('^\S*@\S*\.\S*', email) is None:
-                context['msg'].append({'type' :'danger', 'body' : "Please enter an email with a valid format."})
-            if not email:
-                context['msg'].append({'type' :'danger', 'body' :  'Please enter a email'})
-            if not password:
-                context['msg'].append({'type' :'danger', 'body' :  'Please enter a password'})
-            if len(password)<8:
-                context['msg'].append({'type' :'danger', 'body' :  'Please enter a password with a length of atleast 8 characters'})
-            else:
-                profile = AppUser.create(first_name=first_name,last_name=last_name, email=email,
-                                      password=password,terms=terms, society=society)
-                msg = "Welcome to PD Squirrel!\n\nPlease click on the following link to activate your membership account: http://pdsquirrel.ca/user/activate/%s\n\nThanks,\n\nThe PD Squirrel admin team" % (str(profile.user.id) + "/")
-                send_mail('PD Squirrel Activation', msg, 'noreply@pdsquirrel.ca', [profile.user.email], fail_silently=False)
+        if terms == None:
+            context['msg'].append({'type' :'danger', 'body' : 'Please check the terms and conditions.'})
 
-                send_mail('PD Squirrel Activation', msg, 'noreply@pdsquirrel.ca', ['demondsoftware@gmail.com'], fail_silently=False)
-                send_mail('PD Squirrel Activation', msg, 'noreply@pdsquirrel.ca', ['cdemond@cwdlaw.ca'], fail_silently=False)
+        elif not society:
+            context['msg'].append({'type' :'danger', 'body' : 'The Society you selected is not a valid Society.'})
 
-                context['msg'].append({'type' : 'success', 'body' : 'Thank you. We have sent a welcome email to you. '
-                                                                    'Click the link in that email to instantly activate '
-                                                                    'your account and open the sign-in page. You may close this page.'})
-                logout(request)
-                customer = stripe.Customer.create(email=email)
-                profile.stripe_id = customer.id
-                profile.save()
-                return render(request, 'v3/final/join-success.html', context)
+        elif not law_society_exists:
+            context['msg'].append({'type' :'danger', 'body' : 'The Society you selected is not a valid Society.'})
 
-        else:
+        elif last_name.isspace() or not last_name:
+            context['msg'].append({'type' :'danger', 'body' : 'Please enter a last name.'})
+
+        elif first_name.isspace() or not first_name:
+            context['msg'].append({'type' :'danger', 'body' : 'Please enter a first name.'})
+
+        elif not f.is_valid():
             context['msg'].append({'type' :'danger', 'body' : 'Incorrect captcha information.'})
 
+        elif User.objects.filter(username=request.POST['email']).exists():
+            context['msg'].append({'type' :'danger', 'body' : "A user with that email address is already registered."})
+
+        elif not email:
+            context['msg'].append({'type' :'danger', 'body' :  'Please enter an email'})
+
+        elif re.match('^\S*@\S*\.\S*', email) is None:
+            context['msg'].append({'type' :'danger', 'body' : "Your email format is invalid."})
+
+        elif email != vemail:
+            context['msg'].append({'type' :'danger', 'body' : "Your email does not match."})
+
+        elif password != vpassword:
+            context['msg'].append({'type' :'danger', 'body' : "Your password does not match."})
+
+        elif len(password)<8:
+            context['msg'].append({'type' :'danger', 'body' :  'Please enter a password with a length of atleast 8 characters'})
+
+        else:
+            password = hashers.make_password(password)
+            profile = AppUser.create(first_name=first_name,last_name=last_name, email=email,
+                                  password=password,terms=terms, society=society)
+            msg = "Welcome to PD Squirrel!\n\nPlease click on the following link to activate your membership account: http://pdsquirrel.ca/user/activate/%s\n\nThanks,\n\nThe PD Squirrel admin team" % (str(profile.user.id) + "/")
+            send_mail('PD Squirrel Activation', msg, 'noreply@pdsquirrel.ca', [profile.user.email], fail_silently=False)
+
+            send_mail('PD Squirrel Activation', msg, 'noreply@pdsquirrel.ca', ['demondsoftware@gmail.com'], fail_silently=False)
+            send_mail('PD Squirrel Activation', msg, 'noreply@pdsquirrel.ca', ['cdemond@cwdlaw.ca'], fail_silently=False)
+
+            context['msg'].append({'type' : 'success', 'body' : 'Thank you. We have sent a welcome email to you. '
+                                                                'Click the link in that email to instantly activate '
+                                                                'your account and open the sign-in page. You may close this page.'})
+            logout(request)
+            customer = stripe.Customer.create(email=email)
+            profile.stripe_id = customer.id
+            profile.save()
+            return render(request, 'v3/final/join-success.html', context)
 
     return render(request, 'v3/final/join.html', context)
+
 
 def dash(request):
     context = {}
