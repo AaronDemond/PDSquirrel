@@ -5,23 +5,27 @@
 }
 
 .home-search {
-    padding-right: 200px;
     position:relative;
     bottom: 180px;
     left: 110px;
-    width: 450px !important;
+    width: 400px !important;
 }
 
 #search-bar {
   position: absolute;
+  right: 80px;
+  margin-right: 40px;
+  margin-top: 75px;
 }
 
 #search-icon {
   padding-top: 2px;
   padding-bottom: 2px;
+
 }
 
 .home-search-btn {
+    margin-right: 25px;
     position: relative;
     bottom: 180px;
     width: 100px !important;
