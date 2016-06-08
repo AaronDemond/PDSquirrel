@@ -77,22 +77,9 @@
 }
 
 .content_container {
-  height: 260px;
+  height: 195px;
+  min-width: 150px;
 }
-
-/* FOR TESTING PURPOSES */
-
-.cut_off {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.content_container_test {
-  height: 177px;
-}
-
-/* End testing CSS */
 
 .featured_box:hover {
   box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.5);

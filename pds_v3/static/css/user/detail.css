@@ -12,9 +12,6 @@ float: left;
 	float: left;
 	margin-left:20px;
 }
-.pd_title {
-	float: left;
-}
 
 #page_title {
 	margin-bottom: 20px;
@@ -77,9 +74,6 @@ h4 {
   margin-bottom: 8px;
 }
 
-.reply-container {
-  padding-left: 0px;
-}
 
 .toggle-reply, .delete {
   padding-left: 0px;

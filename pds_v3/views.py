@@ -20,11 +20,13 @@ import stripe
 
 #only root level url
 def landing(request):
-    content = PdSession.objects.order_by('name')[0:4]
+    content = PdSession.objects.order_by('upload_date')[0:4]
+    popular = PdSession.objects.order_by('total_takes').reverse()[0:4]
     presenter = Presenter.objects.order_by('date_approved')[0:2]
     context = {
         'presenter': presenter,
-        'content': content
+        'content': content,
+        'popular': popular
     }
     return render(request, 'v3/final/home.html', context)
 

@@ -31,24 +31,8 @@
 
   <div class="row">
     <h3 class="text-center">
-      Featured Content
+      New Uploads
     </h3>
-  </div>
-  <div class="row">
-
-      {% for cont in content %}
-      <a href="{% url 'detail' cont.id %}">
-        <div class="col-sm-3 col-xs-6 content_row">
-          <div class="featured_box content_container">
-            <img src="/static/img/subject/{{ cont.subject.all.0.image_name }}" class="img-thumbnail center-block subject_pic">
-            <div class="featured_title">{{ cont.name|truncatechars:"35" }}</div>
-            <p>{{ cont.description|truncatechars:"95" }}</p>
-          </div>
-
-      </div>
-    </a>
-    {% endfor %}
-
   </div>
 
   <div class="row">
@@ -59,41 +43,45 @@
           <div class="featured_box content_container">
             <img src="/static/img/subject/{{ cont.subject.all.0.image_name }}" class="img-thumbnail center-block subject_pic">
             <div class="featured_title title">{{ cont.name }}</div>
-            <p class="content">{{ cont.description }}</p>
+            <p class="content">{{ cont.presenters.all.0 }}</p>
           </div>
-
-      </div>
-    </a>
+        </div>
+      </a>
     {% endfor %}
 
   </div>
   <div class="row">
+    <h3 class="text-center">
+      Popular Content
+    </h3>
+  </div>
 
-      {% for cont in content %}
-      <a href="{% url 'detail' cont.id %}">
+  <div class="row">
+
+      {% for pop in popular %}
+      <a href="{% url 'detail' pop.id %}">
         <div class="col-sm-3 col-xs-6 content_row">
-          <div class="featured_box content_container_test">
-            <img src="/static/img/subject/{{ cont.subject.all.0.image_name }}" class="img-thumbnail center-block subject_pic">
-            <div class="featured_title cut_off">{{ cont.name }}</div>
-            <p class="content cut_off">{{ cont.presenters.all.0 }}</p>
+          <div class="featured_box content_container">
+            <img src="/static/img/subject/{{ pop.subject.all.0.image_name }}" class="img-thumbnail center-block subject_pic">
+            <div class="featured_title title">{{ pop.name }}</div>
+            <p class="content">{{ pop.presenters.all.0 }}</p>
           </div>
-
-      </div>
-    </a>
+        </div>
+      </a>
     {% endfor %}
 
   </div>
+</div>
+
+
 </div>
 
 {% endblock %}
 {% block footer-content %}
 <script type="text/javascript" src="{% static 'js/shared/jquery.dotdotdot.min.js' %}"></script>
 <script type="text/javascript">
-
 /*
-
-
-
+    plugin to round of box titles
 */
 $(document).ready(function() {
   $('.title').dotdotdot(
@@ -101,15 +89,9 @@ $(document).ready(function() {
       ellipsis: '...',
       wrap: 'word',
       fallbackToLetter: true,
-      height: 30
+      height: 50
     }
   );
-  $('.content').dotdotdot({
-    ellipsis: '...',
-    wrap: 'word',
-    fallbackToLetter: true,
-    height: 100
-  });
 });
 </script>
 {% endblock footer-content %}
