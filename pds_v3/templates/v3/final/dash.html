@@ -26,7 +26,7 @@
                     <div id="pd-listing" class="row pdlisting">
 
                         <div class="col-xs-12">
-                            <h3><a href="{% url 'watch' pd.id %}">{{pd.name}}</a></h3>
+                            <h3><a href="{% url 'detail' pd.id %}">{{pd.name}}</a></h3>
                             <p>
                                 {% for b in pd.presenters.all %}
 				<a class="presenter-a" href = "{% url 'presenter-detail' b.id %}">{{ b }}, {{b.credentials}}</a>

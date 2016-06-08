@@ -10,7 +10,6 @@ urlpatterns = [
     #Browse/Search Page
     url(r'^pd/$', views.browse, name="browse"),
     url(r'^pd/(?P<pd_id>\d+)/$', views.detail, name="detail"),
-    url(r'^pd/session/(?P<pd_id>\d+)/$', views.watch, name="watch"),
     url(r'^pd/session/comment/$', views.comment, name="comment"),
     url(r'^pd/session/comment/delete/$', views.delete_comment, name="delete_comment"),
     url(r'^pd/accred/(?P<pd_id>\d+)/(?P<s_id>\d+)/$', views.accred, name="accred"),
@@ -65,7 +64,6 @@ urlpatterns = [
     url(r'^support/$', views.support_msg, name="support"),
 
     url(r'^record/$', presenter_views.record, name="record"),
-    url(r'^pd/session/(?P<pd_id>\d+)/$', views.watch, name="watch"),
     url(r'^record/(?P<r_id>\d+)/$', presenter_views.editRecording, name="edit-recording"),
 
 

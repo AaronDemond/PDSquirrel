@@ -348,25 +348,6 @@ def comment(request):
             comment.save()
     return HttpResponse('Success')
 
-def watch(request, pd_id):
-    pd = PdSession.objects.get(pk=pd_id)
-    comments = Comment.objects.filter(pd_id = pd_id, parent__isnull = True)
-
-    context = {'pd': pd, 'comments': comments}
-
-    #if user owns pd, show them and mark as 'complete' (viewed)
-    for x in request.user.profile.purchase_set.all():
-        if x.pdsession == pd:
-            x.completed = True; x.save()
-            return render(request, 'v3/final/view.html', context)
-
-    #if its a presenter, they may be previewing
-    if request.user.profile.is_presenter:
-        presenter = Presenter.objects.get(user=request.user)
-        if presenter in pd.presenters.all():
-            return render(request, 'v3/final/view.html', context)
-
-    return HttpResponse('Invalid Request')
 
 from .forms import UploadFileForm
 
