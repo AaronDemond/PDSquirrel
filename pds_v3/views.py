@@ -20,11 +20,13 @@ import stripe
 
 #only root level url
 def landing(request):
-    content = PdSession.objects.order_by('name')[0:4]
+    content = PdSession.objects.order_by('upload_date')[0:4]
+    popular = PdSession.objects.order_by('total_takes').reverse()[0:4]
     presenter = Presenter.objects.order_by('date_approved')[0:2]
     context = {
         'presenter': presenter,
-        'content': content
+        'content': content,
+        'popular': popular
     }
     return render(request, 'v3/final/home.html', context)
 
@@ -313,21 +315,20 @@ def presenter_detail(request, p_id):
     context = {'name': name, 'bio': profile.bio, 'img': '/static/img/placeholder.png ', 'presenter': profile}
     return render(request, 'v3/final/presenter-landing.html', context)
 
- # or user pd.presenters.all.0.user
- # or comment.pd.presenters[0].user == user
 
 def delete_comment(request):
-    if request.POST:
+    if request.POST and request.user.is_authenticated:
         comment_id = int(request.POST['comment_id'])
         comment = Comment.objects.get(pk=comment_id)
         presenter = comment.pd.presenters.all()[0]
-        if request.user == comment.user or presenter.user == request.user:
+        if request.user == comment.user.user or presenter.user == request.user:
             messages.success(request, 'Comment deleted')
             comment.delete()
     return HttpResponse('Success')
 
+
 def comment(request):
-    if request.POST:
+    if request.POST and request.user.is_authenticated:
         pd_id = int(request.POST['pd_id'])
         reply_id = int(request.POST['reply_id'])
         parent_id = int(request.POST['reply_id'])
@@ -335,8 +336,12 @@ def comment(request):
         message = request.POST['msg']
         user = request.user.profile
         pd = PdSession.objects.get(pk=pd_id)
+        user_owns = False
+        for purchase in Purchase.objects.filter(user=user):
+            if purchase.pdsession == pd:
+                user_owns = True
 
-        if message or not message.isspace():
+        if message or not message.isspace() and user_owns:
 
             if reply_id == 0:
                 comment = Comment(message=message, user=user, pd=pd)
@@ -356,25 +361,6 @@ def comment(request):
 
     #return HttpResponse('Success')
 
-def watch(request, pd_id):
-    pd = PdSession.objects.get(pk=pd_id)
-    comments = Comment.objects.filter(pd_id = pd_id, parent__isnull = True)
-
-    context = {'pd': pd, 'comments': comments}
-
-    #if user owns pd, show them and mark as 'complete' (viewed)
-    for x in request.user.profile.purchase_set.all():
-        if x.pdsession == pd:
-            x.completed = True; x.save()
-            return render(request, 'v3/final/view.html', context)
-
-    #if its a presenter, they may be previewing
-    if request.user.profile.is_presenter:
-        presenter = Presenter.objects.get(user=request.user)
-        if presenter in pd.presenters.all():
-            return render(request, 'v3/final/view.html', context)
-
-    return HttpResponse('Invalid Request')
 
 from .forms import UploadFileForm
 

@@ -5,15 +5,16 @@
 }
 
 .home-search {
-    padding-right: 200px;
     position:relative;
     bottom: 180px;
     left: 110px;
-    width: 450px !important;
+    width: 380px !important;
 }
 
 #search-bar {
   position: absolute;
+  margin-top: 75px;
+  margin-left: 350px;
 }
 
 #search-icon {
@@ -24,7 +25,7 @@
 .home-search-btn {
     position: relative;
     bottom: 180px;
-    width: 100px !important;
+    width: 90px !important;
     left: 120px;
     background-color: rgb(173, 216, 230);
     background-color:rgb(46, 141, 215);
@@ -42,7 +43,7 @@
 
 .brand-img {
     width: 100% !important;
-    margin-top: 30px;
+    margin-top: 25px;
     border: 5px solid white;
     -webkit-box-shadow: 0 1px 1px rgba(0,0,0,0.15),-1px 0 0 rgba(0,0,0,0.03),1px 0 0 rgba(0,0,0,0.03),0 1px 0 rgba(0,0,0,0.12) !important;
 
@@ -55,10 +56,15 @@
     border: 1px solid #cfcfcf;
 }
 
+.content_row {
+  padding-left: 7.5px;
+  padding-right: 7.5px;
+}
+
 .featured_title {
     font-weight:bold;
-    font-size:1.2em;
-	  padding:5px 0 5px 0;
+    font-size:1.1em;
+	  padding-top:5px;
 }
 
 .portrait {
@@ -72,9 +78,9 @@
 }
 
 .content_container {
-  height: 260px;
+  height: 195px;
+  min-width: 150px;
 }
-
 
 .featured_box:hover {
   box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.5);
@@ -90,3 +96,13 @@ a {
 a:hover {
   color: inherit;
 }
+/*
+@media all and (min-width: 1200px) {
+  #search-bar {
+    position: absolute;
+    right: 80px;
+    margin-right: 40px;
+    margin-top: 75px;
+  }
+}
+*/

@@ -201,6 +201,8 @@ def dash(request, msg=False):
                 from django.core.files import File
                 presenter.credentials = request.POST['credentials']
                 presenter.bio = request.POST['bio']
+                presenter.public_email = request.POST['public_email']
+                presenter.url = request.POST['url']
                 if 'clear_photo' in request.POST:
                     presenter.image = None
                 if request.FILES:

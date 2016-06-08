@@ -20,11 +20,10 @@
 		preload="auto" width="100%" height="100" poster="MY_VIDEO_POSTER.jpg"
 		data-setup="{}">
 				<source src="{% url 'audio' pd.id %}" type='audio/mpeg'>
-		<p class="vjs-no-js">To view this video please enable JavaScript 
+		<p class="vjs-no-js">To view this video please enable JavaScript
 		<a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
 	</video>
 	<h3>{{pd.name}}</h3>
-	<img src="" alt="">
 	<p>{{ pd.presenters.all|join:", "}}, {{presenter.credentials}}</p>
 	<h4>Description</h4>
 	<p>{{pd.description}}</p>
@@ -41,4 +40,3 @@
 	    </div>
 	{% endif %}
 </div>
-

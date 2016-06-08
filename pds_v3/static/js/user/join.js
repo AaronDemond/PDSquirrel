@@ -23,7 +23,19 @@ $('input, select').focusout(function() {
   } else if (curr_id == "email" && curr_val.search(/\S*@\S*\.\S*/)== -1) {
     error_text = "Please enter a valid email";
 
+  } else if (curr_id == "vemail" && curr_val.search(/\S*@\S*\.\S*/)== -1) {
+    error_text = "Please enter a valid email";
+
+  } else if (curr_id == "email" && curr_val != $('#vemail').val()) {
+     error_text = "Your email does not match";
+
+  } else if (curr_id == "vemail" && curr_val != $('#email').val()) {
+    error_text = "Your email does not match";
+
   } else if (curr_id == "pass" && curr_val.length < 8) {
+    error_text = "You password needs to be atleast 8 characters";
+
+  } else if (curr_id == "vpass" && curr_val.length < 8) {
     error_text = "You password needs to be atleast 8 characters";
 
   } else if (curr_id == "pass" && curr_val != $('#vpass').val()) {
@@ -45,11 +57,21 @@ $('input, select').focusout(function() {
     } else if (curr_id == "pass") {  // errors on pass and vpass on pass errors
       $("#vpass").parent('div').removeClass("has-success");
       $("#vpass").parent('div').addClass("has-error has-feedback");
+
+    } else if (curr_id == "vemail") {
+      $curr = $("#email");
+      $curr.parent('div').removeClass("has-success");
+      $curr.parent('div').addClass("has-error has-feedback");
+
+    } else if (curr_id == "email") {
+      $("#vemail").parent('div').removeClass("has-success");
+      $("#vemail").parent('div').addClass("has-error has-feedback");
     }
+
     $parent.removeClass("has-success");
     $parent.addClass("has-error has-feedback");
   } else  {
-    // syncing up password success
+    // syncing up password & email success
     if (curr_id == "vpass") {
       var pass = $('#pass');
       pass.parent("div").removeClass("has-error");
@@ -61,6 +83,18 @@ $('input, select').focusout(function() {
       vpass.parent("div").removeClass("has-error");
       vpass.parent("div").addClass("has-success has-feedback");
       vpass.next('.help-block').text(error_text);
+
+    } else if (curr_id == "vemail") {
+      var email = $('#email');
+      email.parent("div").removeClass("has-error");
+      email.parent("div").addClass("has-success has-feedback");
+      email.next('.help-block').text(error_text);
+
+    } else if (curr_id == "email") {
+      var vemail = $('#vemail');
+      vemail.parent("div").removeClass("has-error");
+      vemail.parent("div").addClass("has-success has-feedback");
+      vemail.next('.help-block').text(error_text);
     }
     $parent.removeClass("has-error");
     $parent.addClass("has-success has-feedback");
