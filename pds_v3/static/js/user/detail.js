@@ -116,7 +116,7 @@ function showDescription() {
 /*---------------------------*/
 
 //delete a comment
-$('.delete').click(function() {
+$(document).on("click", ".delete", function() {
   var comment_id = $(this).val();
   var csrf = $("input[name='csrfmiddlewaretoken']").val();
 
@@ -135,8 +135,17 @@ $('.delete').click(function() {
   });
 });
 
-// toggles the reply boxes
-$('.toggle-reply').click(function() {
+$(document).on("click", "#main-textarea", function() {
+	$(this).siblings("button").removeClass("hidden");
+	$('.comment-reply').addClass('hidden');
+});
+
+$(document).on("click", ".reply-textarea", function() {
+	$(this).siblings("button").removeClass("hidden");
+	$('#main-textarea').siblings("button").addClass("hidden");
+});
+
+$(document).on("click", ".toggle-reply", function() {
   var $comment_reply = $(this).parent('.comment-footer').siblings('.comment-reply')
   $comment_reply.toggleClass('hidden');
   $comment_reply_all = $('.comment-reply');
@@ -145,37 +154,58 @@ $('.toggle-reply').click(function() {
 });
 
 // removes error on focus out if theirs text in the reply box
-$("textarea").focusout(function() {
+$(document).on("focusout", "textarea", function() {
   var $curr = $(this);
   var $form_group = $curr.parent('.form-group');
   var msg = $curr.val();
   if ($form_group.hasClass('has-error') && $.trim(msg).length > 0) {
     $form_group.removeClass('has-error has-feedback');
   }
+
 });
 
+$(document).on('click', ".cancel-comment-btn", function cancelComment() {
+	var text_area = $(this).siblings("textarea");
+	$('.comment-reply').addClass('hidden');
+	$(this).siblings("button").addClass("hidden");
+	$(this).addClass("hidden");
+	text_area.val('');
+});
 // submit a comment
-$("button[name^='reply-btn']").click(function() {
+$(document).on("click", "button[name^='reply-btn']", function() {
   var $curr = $(this);
   var msg = $curr.siblings("textarea").val();
   var csrf = $("#pd_id").next().val();
   var pd_id = $("#pd_id").val();
   var reply_id = $curr.val();
+  var parent_id = $(this).attr("__parent");
   if ($.trim(msg).length <= 0) {
     $curr.parent(".form-group").addClass("has-error has-feedback");
   } else {
+
     var data = {
         msg: msg,
         reply_id: reply_id,
         pd_id: pd_id,
+		parent_id: parent_id,
         csrfmiddlewaretoken: csrf
      };
      $.ajax({
        type: "POST",
        url: "/pd/session/comment/",
        data: data,
-       success: function() {
-         location.reload();
+       success: function(comment_data) {
+
+			$curr.siblings("textarea").val('');
+
+			$('.comment-reply').addClass('hidden');
+		   if (typeof parent_id !== typeof undefined && parent_id !== false) {
+				visual_parent_row = $("#comment-" + reply_id + "-replys");
+				visual_parent_row.append(comment_data);
+			}	else {
+			   $('#comment-holder').prepend(comment_data);
+		   }
+
        }
       });
   }

@@ -1,0 +1,44 @@
+{% if comment.parent %}
+<div class="reply row" id="comment-{{comment.id}}">
+{% endif %}
+
+				{% if comment.parent %}
+                <div class="col-xs-10 col-xs-offset-2">
+				{% else %}
+				<div class="col-xs-12" id="comment-{{comment.id}}">
+				{% endif %}
+                  <div class="row comment-head">
+                    {% if user.profile.is_presenter %}
+                      <a class="presenter-link" href="{% url 'presenter-detail' user.presenter.id %}"><b>{{ user.first_name }} {{ user.last_name }}</b></a>
+                    {% else %}
+                      <b> {{user.first_name }} {{ user.last_name }}</b>
+                    {% endif %}
+                    &nbsp;
+                    <span class="muted">{{ comment.date|date }}</span>
+                  </div>
+                  <div class="row comment-body">
+                    {{ comment.message }}
+                  </div>
+                  <div class="row comment-footer">
+                    <button type="button" class="btn btn-link muted toggle-reply">reply</button>
+					{# Always show delete because it is always owned by poster #}
+                    <button type="button" class="btn btn-link muted delete" value="{{ comment.id }}">delete</button>
+                  </div>
+                  <div class="row comment-reply hidden">
+                    <div id="thread-reply-{{ comment.id }}" class="form-group">
+						<textarea name="reply-message" rows="2" class="form-control reply-textarea">@{{ comment.user.user.first_name }}{{ comment.user.user.last_name}} </textarea>
+					  <button name="reply-btn-{{ comment.id }}" __parent="{{comment.id}}" type="button" class="btn-small btn-primary submit-comment-btn hidden" value="{{ reply.id }}">Reply</button>
+
+						<button type="button" class="btn-small btn-default cancel-comment-btn hidden" value="0">Cancel</button>
+                    </div>
+                  </div>
+                 </div>
+                </div>
+{% if comment.parent %}
+</div>
+{% endif %}
+{% if not comment.parent %}
+<div id="comment-{{comment.id}}-replys">
+</div>
+{% endif %}
+

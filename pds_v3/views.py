@@ -230,7 +230,7 @@ def getAudio(request, pd_id):
 def detail(request, pd_id):
 
     pd = PdSession.objects.get(pk=pd_id)
-    comments = Comment.objects.filter(pd_id = pd_id, parent__isnull = True)
+    comments = Comment.objects.filter(pd_id = pd_id, parent__isnull = True).order_by('-date')
     own = 0
     if request.user.is_authenticated():
         for purchase in Purchase.objects.filter(user=request.user.profile):
@@ -322,6 +322,7 @@ def delete_comment(request):
         comment = Comment.objects.get(pk=comment_id)
         presenter = comment.pd.presenters.all()[0]
         if request.user == comment.user or presenter.user == request.user:
+            messages.success(request, 'Comment deleted')
             comment.delete()
     return HttpResponse('Success')
 
@@ -329,6 +330,8 @@ def comment(request):
     if request.POST:
         pd_id = int(request.POST['pd_id'])
         reply_id = int(request.POST['reply_id'])
+        parent_id = int(request.POST['reply_id'])
+        print parent_id
         message = request.POST['msg']
         user = request.user.profile
         pd = PdSession.objects.get(pk=pd_id)
@@ -337,11 +340,21 @@ def comment(request):
 
             if reply_id == 0:
                 comment = Comment(message=message, user=user, pd=pd)
+                comment.save()
+                reply_id = comment.id 
             else:
                 parent = Comment.objects.get(pk=reply_id)
                 comment = Comment(message=message, user=user, pd=pd, parent = parent)
-            comment.save()
-    return HttpResponse('Success')
+                comment.save()
+
+        reply = Comment.objects.get(pk=reply_id)
+        context = {
+                'comment': comment,
+                'reply': reply
+                }
+        return render(request, 'v3/final/ajax/comment-reply.html', context)
+
+    #return HttpResponse('Success')
 
 def watch(request, pd_id):
     pd = PdSession.objects.get(pk=pd_id)

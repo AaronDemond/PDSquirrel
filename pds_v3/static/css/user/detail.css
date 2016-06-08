@@ -87,3 +87,17 @@ h4 {
   padding-right: 0px;
   margin-right: 6px;
 }
+
+.submit-comment-btn, .cancel-comment-btn {
+	margin-top: 5px;
+	float: right;
+}
+
+.cancel-comment-btn {
+	margin-right: 5px;
+	height: 26px !important;
+}
+
+.comment-input {
+	border-radius: 0;
+}	

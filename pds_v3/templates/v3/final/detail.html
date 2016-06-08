@@ -177,102 +177,31 @@
 					<p id="pd-description-full" class="hidden">{{pd.description}}</p>
 					<a id="more-btn" style="float:right" onclick="showDescription()">Show More</a>
 
-          <!-- Start comment Section -->
-            <div name="comment-section" class="col-xs-12">
-              <div class="row">
-                <h4>Comments</h4>
-                <hr>
-              </div>
+					{% if pd.attachments.all.count > 0 %}
+					<h4>Downloads</h4>
+					<div class="list-group">
+						{% if own == 1 %}
 
-              {% if comments %}
-              {% for comment in comments %}
-              <!-- Comment -->
-              <div class="comment row">
-                <div class="col-xs-12">
-                  <div class="row comment-head">
-                    {% if comment.user.is_presenter %}
-                      <a class="presenter-link" href="{% url 'presenter-detail' comment.user.user.presenter.id %}"><b>{{ comment.user.user.first_name }} {{ comment.user.user.last_name }}</b></a>
-                    {% else %}
-                      <b>{{ comment.user.user.is_presenter }} {{ comment.user.user.first_name }} {{ comment.user.user.last_name }}</b>
-                    {% endif %}
-                    &nbsp;
-                    <span class="muted">{{ comment.date|date }}</span>
-                  </div>
-                  <div class="row comment-body">
-                    {{ comment.message }}
-                  </div>
-                  <div class="row comment-footer">
-                    <button type="button" class="btn btn-link muted toggle-reply" >reply</button>
-                    {% if comment.user.user == request.user or pd.presenters.all.0.user == request.user %}
-                    <button type="button" class="btn btn-link muted delete" value="{{ comment.id }}">delete</button>
-                    {% endif %}
-                  </div>
-                  <div class="row comment-reply hidden">
-                    <div id="comment-reply-{{ comment.id }}" class="form-group">
-                      <textarea name="reply-message" rows="2" class="form-control"></textarea>
-                      <br>
-                      <button name="reply-btn-{{ comment.id }}" type="button" class="btn btn-success pull-left" value="{{ comment.id }}">Comment</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
+						{% for file in pd.attachments.all %}
+						<div class="list-group-item">
+							<p>{{file.filename}}
+								<a target="_blank" href="{% url 'attachment' file.id %}">Download</a>
+							</p>
+						</div>
+						{% endfor %}
+						{% else %}
 
+						{% for file in pd.attachments.all %}
+						<div class="list-group-item">{{file.filename}}</div>
+						{% endfor %}
 
-              {% if comment.get_children %}
-              <!-- Replies -->
-              {% for reply in comment.get_children %}
-              <div class="reply row">
-                <div class="col-xs-10 col-xs-offset-2">
-                  <div class="row comment-head">
-                    {% if reply.user.is_presenter %}
-                      <a class="presenter-link" href="{% url 'presenter-detail' reply.user.user.presenter.id %}"><b>{{ reply.user.user.first_name }} {{ reply.user.user.last_name }}</b></a>
-                    {% else %}
-                      <b>{{ reply.user.user.is_presenter }} {{ reply.user.user.first_name }} {{ reply.user.user.last_name }}</b>
-                    {% endif %}
-                    &nbsp;
-                    <span class="muted">{{ reply.date|date }}</span>
-                  </div>
-                  <div class="row comment-body">
-                    {{ reply.message }}
-                  </div>
-                  <div class="row comment-footer">
-                    <button type="button" class="btn btn-link muted toggle-reply">reply</button>
-                    {% if reply.user == request.user  or pd.presenters.all.0.user == request.user %}
-                    <button type="button" class="btn btn-link muted delete" value="{{ reply.id }}">delete</button>
-                    {% endif %}
-                  </div>
-                  <div class="row comment-reply hidden">
-                    <div id="thread-reply-{{ reply.id }}" class="form-group">
-                      <textarea name="reply-message" rows="2" class="form-control">@{{ reply.user.user.first_name }}{{ reply.user.user.last_name }}</textarea>
-                      <br>
-                      <button name="reply-btn-{{ reply.id }}" type="button" class="btn btn-success pull-left" value="{{ comment.id }}">Comment</button>
-                    </div>
-                  </div>
-                 </div>
-                </div>
-                {% endfor %}
-                {% endif %}
+						{% endif %}
+					</div>	
+					{% endif %}
 
-              {% endfor %}
-              {% endif %}
-                <div class="row">
-                  <div class="form-group">
-                    <label for="comment">Comment:</label>
-                    <textarea name="Message" rows="4" class="form-control"></textarea>
-                    <br>
-                    <input type="hidden" id="pd_id" name="pd_id" value="{{ pd.id }}">
-                    {% csrf_token %}
-                    <button name="reply-btn" type="button" class="btn btn-success" value="0">Comment</button>
-                  </div>
-                </div>
-
-              </div>
-
-          <!-- End Comment Section -->
-
-        </div>
+        		</div>
+				
 				<div class="col-sm-4">
-					<h4>Details</h4>
 					<table class = "table table-striped">
 						<tr>
 						   <td>Release date</td>
@@ -310,30 +239,123 @@
 							</td>
 						</tr>
 					</table>
-					{% if pd.attachments.all.count > 0 %}
-					<div class="col-xs-12">
-						<h4>Downloads</h4>
-						<div class="list-group">
-							{% if own == 1 %}
-
-							{% for file in pd.attachments.all %}
-							<div class="list-group-item">
-								<p>{{file.filename}}
-									<a target="_blank" href="{% url 'attachment' file.id %}">Download</a>
-							   	</p>
-							</div>
-							{% endfor %}
-							{% else %}
-
-							{% for file in pd.attachments.all %}
-							<div class="list-group-item">{{file.filename}}</div>
-							{% endfor %}
-
-							{% endif %}
-						</div>
-					</div>
-					{% endif %}
 				</div>
+					
+				</div>
+
+
+				<script>
+				</script>
+          <!-- Start comment Section -->
+
+		  <div class="row">
+              <div class="col-xs-12 col-sm-10 col-sm-offset-1">
+                <h4>Comments</h4>
+              </div>
+            <div name="comment-section" id="comment-container" class="col-sm-6 col-sm-offset-1 col-xs-12">
+				<div class="col-xs-12">
+					<div class="row">
+					  <div class="form-group">
+						<textarea id="main-textarea" placeholder="Write a new comment here" name="Message" rows="3" class="form-control comment-input"></textarea>
+						<input type="hidden" id="pd_id" name="pd_id" value="{{ pd.id }}">
+						{% csrf_token %}
+						<button name="reply-btn" type="button" class="btn-small btn-primary submit-comment-btn hidden" value="0">Comment</button>
+						<button type="button" class="btn-small btn-default cancel-comment-btn hidden" value="0">Cancel</button>
+					  </div>
+
+					  <div class="row">
+					  	<div class="col-xs-12">
+					  		<hr>
+					  	</div>
+					  </div>
+					  
+					</div>
+                </div>
+
+			  <div id="comment-holder">
+              {% if comments %}
+
+              {% for comment in comments %}
+              <!-- Comment -->
+			  <div class="col-xs-12" id="comment-{{ comment.id }}">
+                  <div class="row comment-head">
+                    {% if comment.user.is_presenter %}
+                      <a class="presenter-link" href="{% url 'presenter-detail' comment.user.user.presenter.id %}"><b>{{ comment.user.user.first_name }} {{ comment.user.user.last_name }}</b></a>
+                    {% else %}
+                      <b>{{ comment.user.user.is_presenter }} {{ comment.user.user.first_name }} {{ comment.user.user.last_name }}</b>
+                    {% endif %}
+                    &nbsp;
+                    <span class="muted">{{ comment.date|date }}</span>
+                  </div>
+                  <div class="row comment-body">
+                    {{ comment.message }}
+                  </div>
+                  <div class="row comment-footer">
+                    <button type="button" class="btn btn-link muted toggle-reply" >reply</button>
+                    {% if comment.user.user == request.user or pd.presenters.all.0.user == request.user %}
+                    <button type="button" class="btn btn-link muted delete" value="{{ comment.id }}">delete</button>
+                    {% endif %}
+                  </div>
+                  <div class="row comment-reply hidden">
+                    <div id="comment-reply-{{ comment.id }}" class="form-group">
+                      <textarea name="reply-message" rows="2" class="form-control reply-textarea">@{{ comment.user.user.first_name }}{{ comment.user.user.last_name }} </textarea>
+					  <button name="reply-btn-{{ comment.id }}" type="button" class="btn-small btn-primary submit-comment-btn hidden" __parent="{{ comment.id }}" value="{{ comment.id }}">Reply</button>
+
+						<button type="button" class="btn-small btn-default cancel-comment-btn hidden" value="0">Cancel</button>
+                    </div>
+                  </div>
+                </div>
+
+			<div id="comment-{{comment.id}}-replys">
+              {% if comment.get_children %}
+              <!-- Replies -->
+              {% for reply in comment.get_children %}
+			  <div class="reply row" id="comment-{{ reply.id }}">
+				  <div class="col-xs-10 col-xs-offset-2">
+                  <div class="row comment-head">
+                    {% if reply.user.is_presenter %}
+                      <a class="presenter-link" href="{% url 'presenter-detail' reply.user.user.presenter.id %}"><b>{{ reply.user.user.first_name }} {{ reply.user.user.last_name }}</b></a>
+                    {% else %}
+                      <b>{{ reply.user.user.is_presenter }} {{ reply.user.user.first_name }} {{ reply.user.user.last_name }}</b>
+                    {% endif %}
+                    &nbsp;
+                    <span class="muted">{{ reply.date|date }}</span>
+                  </div>
+                  <div class="row comment-body">
+                    {{ reply.message }}
+                  </div>
+                  <div class="row comment-footer">
+                    <button type="button" class="btn btn-link muted toggle-reply">reply</button>
+                    {% if reply.user == request.user  or pd.presenters.all.0.user == request.user %}
+                    <button type="button" class="btn btn-link muted delete" value="{{ reply.id }}">delete</button>
+                    {% endif %}
+                  </div>
+                  <div class="row comment-reply hidden">
+                    <div id="thread-reply-{{ reply.id }}" class="form-group">
+                      <textarea name="reply-message" rows="2" class="form-control reply-textarea">@{{ reply.user.user.first_name }}{{ reply.user.user.last_name }} </textarea>
+					  <button name="reply-btn-{{ reply.id }}" type="button" class="btn-small btn-primary submit-comment-btn hidden" __parent="{{reply.id}}" value="{{ comment.id }}">Reply</button>
+
+						<button type="button" class="btn-small btn-default cancel-comment-btn hidden" value="0">Cancel</button>
+                    </div>
+                  </div>
+                 </div>
+                </div>
+                {% endfor %}
+                {% endif %}
+			</div> {# reply container #}
+
+              {% endfor %}
+
+              {% endif %}
+                
+				</div>
+
+              </div>
+
+		  </div>
+          <!-- End Comment Section -->
+
+				
 			</div>
 		</div>
 	</div>
