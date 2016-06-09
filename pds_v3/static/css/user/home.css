@@ -4,50 +4,97 @@
   padding-top: 0px;
 }
 
-.home-search {
-    position:relative;
-    bottom: 180px;
-    left: 110px;
-    width: 380px !important;
+
+#HomePageSearch div {
+	display: inline-block;
+}
+
+.submit {
+	padding-bottom: 50px;
+}
+#brand-div {
+	background: url('/static/img/brand6.PNG') top center no-repeat;
+	background-size: contain;
+	height: 400px;
+	margin-top: 20px;
 }
 
 #search-bar {
-  position: absolute;
-  margin-top: 75px;
-  margin-left: 350px;
+	margin-top: 250px;
+	margin-left: 50px;
 }
 
-#search-icon {
-  padding-top: 2px;
-  padding-bottom: 2px;
+@media screen and (max-width: 1200px) {
+	#brand-div {
+		height: 330px;
+	}
+	#search-bar {
+		margin-top: 220px;
+		margin-left: 90px;
+	}
 }
+
+@media screen and (max-width: 992px) {
+	#brand-div {
+		height: 250px;
+	}
+	#search-bar {
+		margin-top: 170px;
+		margin-left: 220px;
+	}
+}
+
+.home-search {
+	width: 400px !important;
+	margin-top:10px;
+}
+
+@media screen and (max-width: 768px) {
+	#brand-div {
+		height: 230px;
+		background-size: contain;
+	}
+	#search-bar {
+		margin-top: 130px;
+		margin-left: 0px !important;
+		float: right;
+	}
+	.home-search {
+		width: 300px !important;
+	}
+}
+
+@media screen and (max-width: 605px) {
+	#brand-div {
+		height: 175px;
+		background-size: contain;
+	}
+	#search-bar {
+		margin-top: 100px;
+		margin-left: 0px !important;
+		float: right;
+	}
+	.home-search {
+		width: 300px !important;
+	}
+}
+
 
 .home-search-btn {
-    position: relative;
-    bottom: 180px;
-    width: 90px !important;
-    left: 120px;
-    background-color: rgb(173, 216, 230);
-    background-color:rgb(46, 141, 215);
-    background-color: rgb(46, 215, 109);
+	height: 34px;
+	margin-bottom: 20px;
     background-color: rgb(72, 165, 107);
-
     border: 1px solid #6DBCBF !important;
     border: 1px solid black !important;
  -webkit-box-shadow: 0 1px 1px rgba(0,0,0,0.15),-1px 0 0 rgba(0,0,0,0.03),1px 0 0 rgba(0,0,0,0.03),0 1px 0 rgba(0,0,0,0.12) !important;
-
     color: white;
     font-size: 1.4em;
     width: 75px !important;
+	position: relative;
+	bottom:8px;
 }
 
-.brand-img {
-    width: 100% !important;
-    margin-top: 25px;
-    border: 5px solid white;
-    -webkit-box-shadow: 0 1px 1px rgba(0,0,0,0.15),-1px 0 0 rgba(0,0,0,0.03),1px 0 0 rgba(0,0,0,0.03),0 1px 0 rgba(0,0,0,0.12) !important;
 
-}
 
 .featured_box {
     background-color:#ffffff;
@@ -106,3 +153,5 @@ a:hover {
   }
 }
 */
+
+
