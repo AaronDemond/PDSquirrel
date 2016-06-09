@@ -24,6 +24,21 @@
 	margin-left: 50px;
 }
 
+
+.home-search-btn {
+	height: 34px;
+	margin-bottom: 20px;
+    background-color: rgb(72, 165, 107);
+    border: 1px solid #6DBCBF !important;
+    border: 1px solid black !important;
+ -webkit-box-shadow: 0 1px 1px rgba(0,0,0,0.15),-1px 0 0 rgba(0,0,0,0.03),1px 0 0 rgba(0,0,0,0.03),0 1px 0 rgba(0,0,0,0.12) !important;
+    color: white;
+    font-size: 1.4em;
+    width: 75px !important;
+	position: relative;
+	bottom:8px;
+}
+
 @media screen and (max-width: 1200px) {
 	#brand-div {
 		height: 330px;
@@ -57,6 +72,7 @@
 	#search-bar {
 		margin-top: 130px;
 		margin-left: 0px !important;
+		margin-right: 50px !important;
 		float: right;
 	}
 	.home-search {
@@ -70,30 +86,64 @@
 		background-size: contain;
 	}
 	#search-bar {
-		margin-top: 100px;
+		margin-top: 90px;
 		margin-left: 0px !important;
-		margin-right: 50px !important;
+		margin-right: 20px !important;
 		float: right;
 	}
 	.home-search {
-		width: 300px !important;
+		width: 350px !important;
+	}
+
+	.home-search-btn {
+		width: 50px !important;
+	}
+}
+
+@media screen and (max-width: 475px) {
+	#brand-div {
+		background: url('/static/img/brand6.PNG') top center no-repeat;
+		height: 130px;
+		background-size: contain;
+	}
+	#search-bar {
+		margin-top: 60px;
+		margin-left: 0px !important;
+		margin-right: 20px !important;
+		float: right;
+	}
+	.home-search {
+		width: 250px !important;
+	}
+
+	.home-search-btn {
+		width: 40px !important;
+	}
+}
+@media screen and (max-width: 370px) {
+	#brand-div {
+		height: 130px;
+		background: url('/static/img/brand6.PNG') top center no-repeat;
+		background-size: contain;
+	}
+	#search-bar {
+		margin-top: 50px;
+		margin-left: 0px !important;
+		margin-right: 0px !important;
+		float: right;
+	}
+	.home-search {
+		width: 200px !important;
+	}
+
+	.home-search-btn {
+		width: 40px !important;
 	}
 }
 
 
-.home-search-btn {
-	height: 34px;
-	margin-bottom: 20px;
-    background-color: rgb(72, 165, 107);
-    border: 1px solid #6DBCBF !important;
-    border: 1px solid black !important;
- -webkit-box-shadow: 0 1px 1px rgba(0,0,0,0.15),-1px 0 0 rgba(0,0,0,0.03),1px 0 0 rgba(0,0,0,0.03),0 1px 0 rgba(0,0,0,0.12) !important;
-    color: white;
-    font-size: 1.4em;
-    width: 75px !important;
-	position: relative;
-	bottom:8px;
-}
+
+
 
 
 
