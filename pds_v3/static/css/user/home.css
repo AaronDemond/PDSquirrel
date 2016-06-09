@@ -24,6 +24,11 @@
 	margin-left: 50px;
 }
 
+.home-search {
+	width: 400px !important;
+	margin-top:10px;
+}
+
 @media screen and (max-width: 1200px) {
 	#brand-div {
 		height: 330px;
@@ -44,38 +49,26 @@
 	}
 }
 
-.home-search {
-	width: 400px !important;
-	margin-top:10px;
+.search-sm-col {
+	height: 40px !important;
+}
+#search-bar-sm {
+	margin: 0 auto;
+	padding-top: 10px;
 }
 
 @media screen and (max-width: 768px) {
 	#brand-div {
-		height: 230px;
+		background: url('/static/img/brand6_small.PNG') top center no-repeat;
 		background-size: contain;
 	}
 	#search-bar {
 		margin-top: 130px;
-		margin-left: 0px !important;
 		float: right;
 	}
 	.home-search {
-		width: 300px !important;
-	}
-}
-
-@media screen and (max-width: 605px) {
-	#brand-div {
-		height: 175px;
-		background-size: contain;
-	}
-	#search-bar {
-		margin-top: 100px;
-		margin-left: 0px !important;
-		float: right;
-	}
-	.home-search {
-		width: 300px !important;
+		width: 400px !important;
+		margin: auto;
 	}
 }
 

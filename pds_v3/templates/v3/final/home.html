@@ -11,7 +11,7 @@
 <div class="container">
 	<div class="row">
 		<div class="col-lg-12 col-xs-12" id="brand-div">
-			<div class="row">
+			<div class="row hidden-xs">
 				<div class="col-xs-12 col-lg-6 col-lg-offset-5 col-md-offset-4">
 					<div id="search-bar" class="input-group">
 						<form  id="HomePageSearch" action ="{% url 'browse' %}"  method ="POST" />
@@ -29,8 +29,8 @@
 			</div>
 					
 		</div>
-		<div class="col-xs-12 hidden">
-			<div id="search-bar" class="input-group">
+		<div class="col-xs-12 hidden-sm hidden-md hidden-lg search-sm-col">
+			<div id="search-bar-sm" class="input-group">
 				<form  id="HomePageSearch" action ="{% url 'browse' %}"  method ="POST" />
 					{% csrf_token %}
 					<div class="input">
