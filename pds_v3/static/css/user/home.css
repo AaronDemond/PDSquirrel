@@ -13,7 +13,7 @@
 	padding-bottom: 50px;
 }
 #brand-div {
-	background: url('/static/img/brand7.png') top center no-repeat;
+	background: url('/static/img/brand7.resized.png') top center no-repeat;
 	background-size: contain;
 	height: 400px;
 	margin-top: 20px;
@@ -36,7 +36,7 @@
     font-size: 1.4em;
     width: 75px !important;
 	position: relative;
-	bottom:8px;
+	bottom:9px;
 }
 
 @media screen and (max-width: 1200px) {

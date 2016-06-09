@@ -209,19 +209,19 @@ def getAudio(request, pd_id):
     '''
 
     pd = PdSession.objects.get(pk=pd_id)
-
+    purchased_sessions = [purchase.pdsession for purchase in request.user.profile.purchase_set.all()]
+    created_sessions = request.user.presenter.pdsession_set.all()
     if request.user.is_authenticated():
-        for purchase in Purchase.objects.filter(user=request.user.profile):
-            if pd == purchase.pdsession:
-                if pd.pdaudio:
-                    name = os.path.basename(pd.getAudioLocation())
-                else:
-                    name = os.path.basename(pd.getAudioLocation().url)
+        if pd in purchased_sessions or pd in created_sessions:
+            if pd.pdaudio:
+                name = os.path.basename(pd.getAudioLocation())
+            else:
+                name = os.path.basename(pd.getAudioLocation().url)
 
-                response = HttpResponse()
-                response["Content-Disposition"] = "attachment; filename={0}".format(name)
-                response['X-Accel-Redirect'] = "/content/{0}".format(name)
-                return response
+            response = HttpResponse()
+            response["Content-Disposition"] = "attachment; filename={0}".format(name)
+            response['X-Accel-Redirect'] = "/content/{0}".format(name)
+            return response
 
     print 'does not own'
     return HttpResponse('You do not own this session')
@@ -234,9 +234,11 @@ def detail(request, pd_id):
     pd = PdSession.objects.get(pk=pd_id)
     comments = Comment.objects.filter(pd_id = pd_id, parent__isnull = True).order_by('-date')
     own = 0
+
+    purchased_sessions = [purchase.pdsession for purchase in request.user.profile.purchase_set.all()]
+    created_sessions = request.user.presenter.pdsession_set.all()
     if request.user.is_authenticated():
-        for purchase in Purchase.objects.filter(user=request.user.profile):
-            if purchase.pdsession == pd:
+        if pd in purchased_sessions or pd in created_sessions:
                 own = 1
 
     context = {'pd' : pd, 'own' : own, 'comments': comments}
