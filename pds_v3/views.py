@@ -209,10 +209,13 @@ def getAudio(request, pd_id):
     '''
 
     pd = PdSession.objects.get(pk=pd_id)
-    purchased_sessions = [purchase.pdsession for purchase in request.user.profile.purchase_set.all()]
-    created_sessions = request.user.presenter.pdsession_set.all()
+
+    owned_sessions = [purchase.pdsession for purchase in request.user.profile.purchase_set.all()]
+    if request.user.profile.is_presenter == True:
+        owned_sessions.append(request.user.presenter.pdsession_set.all())
+
     if request.user.is_authenticated():
-        if pd in purchased_sessions or pd in created_sessions:
+        if pd in owned_sessions:
             if pd.pdaudio:
                 name = os.path.basename(pd.getAudioLocation())
             else:
@@ -235,10 +238,12 @@ def detail(request, pd_id):
     comments = Comment.objects.filter(pd_id = pd_id, parent__isnull = True).order_by('-date')
     own = 0
 
-    purchased_sessions = [purchase.pdsession for purchase in request.user.profile.purchase_set.all()]
-    created_sessions = request.user.presenter.pdsession_set.all()
+    owned_sessions = [purchase.pdsession for purchase in request.user.profile.purchase_set.all()]
+    if request.user.profile.is_presenter == True:
+        owned_sessions.append(request.user.presenter.pdsession_set.all())
+
     if request.user.is_authenticated():
-        if pd in purchased_sessions or pd in created_sessions:
+        if pd in owned_sessions:
                 own = 1
 
     context = {'pd' : pd, 'own' : own, 'comments': comments}
