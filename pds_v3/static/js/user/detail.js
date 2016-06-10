@@ -35,6 +35,7 @@
 
     function stripeResponseHandler(status, response) {
       var $form = $('#payment-form');
+	  var $url = $form.attr('action');
 
       if (response.error) {
         // Show the errors on the form
