@@ -189,13 +189,17 @@ def getAttachment(request, a_id):
     attachment = PdAttachment.objects.get(id=a_id)
     pd = attachment.pdsession_set.all()[0]
 
-    for purchase in request.user.profile.purchase_set.all():
-        if purchase.pdsession == pd:
-            name = attachment.filename()
-            response = HttpResponse()
-            response["Content-Disposition"] = "attachment; filename={0}".format(name)
-            response['X-Accel-Redirect'] = "/attachments/{0}".format(name)
-            return response
+    owned_sessions = [purchase.pdsession for purchase in request.user.profile.purchase_set.all()]
+    if request.user.profile.is_presenter == True:
+        created_sessions = request.user.presenter.pdsession_set.all()
+        owned_sessions = list(chain(created_sessions, owned_sessions))
+
+    if pd in owned_sessions:
+        name = attachment.filename()
+        response = HttpResponse()
+        response["Content-Disposition"] = "attachment; filename={0}".format(name)
+        response['X-Accel-Redirect'] = "/attachments/{0}".format(name)
+        return response
 
     return HttpResponse('error')
 
@@ -212,7 +216,8 @@ def getAudio(request, pd_id):
 
     owned_sessions = [purchase.pdsession for purchase in request.user.profile.purchase_set.all()]
     if request.user.profile.is_presenter == True:
-        owned_sessions.append(request.user.presenter.pdsession_set.all())
+        created_sessions = request.user.presenter.pdsession_set.all()
+        owned_sessions = list(chain(created_sessions, owned_sessions))
 
     if request.user.is_authenticated():
         if pd in owned_sessions:
@@ -232,24 +237,28 @@ def getAudio(request, pd_id):
 
 
 
+from itertools import chain
 def detail(request, pd_id):
 
     pd = PdSession.objects.get(pk=pd_id)
     comments = Comment.objects.filter(pd_id = pd_id, parent__isnull = True).order_by('-date')
     own = 0
 
-    owned_sessions = [purchase.pdsession for purchase in request.user.profile.purchase_set.all()]
-    if request.user.profile.is_presenter == True:
-        owned_sessions.append(request.user.presenter.pdsession_set.all())
+    context = {'pd' : pd, 'comments': comments}
 
     if request.user.is_authenticated():
+        owned_sessions = [purchase.pdsession for purchase in request.user.profile.purchase_set.all()]
+        if request.user.profile.is_presenter == True:
+            created_sessions = request.user.presenter.pdsession_set.all()
+            owned_sessions = list(chain(created_sessions, owned_sessions))
+
         if pd in owned_sessions:
                 own = 1
 
-    context = {'pd' : pd, 'own' : own, 'comments': comments}
-
-    if request.user.is_authenticated():
         context['customer'] = stripe.Customer.retrieve(request.user.profile.stripe_id)
+
+    context['own'] = own
+
 
     return render(request, 'v3/final/detail.html', context)
 
