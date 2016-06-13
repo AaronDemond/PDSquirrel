@@ -27,10 +27,10 @@
 					</div>
 				</div>
 			</div>
-					
+
 		</div>
-		
-					
+
+
 	</div>
 </div>
 
@@ -46,7 +46,7 @@
   <div class="row">
 
       {% for cont in content %}
-      <a href="{% url 'detail' cont.id %}">
+      <a class="no-style-link" href="{% url 'detail' cont.id %}">
         <div class="col-sm-3 col-xs-6 content_row">
           <div class="featured_box content_container">
             <img src="/static/img/subject/{{ cont.subject.all.0.image_name }}" class="img-thumbnail center-block subject_pic">
@@ -67,7 +67,7 @@
   <div class="row">
 
       {% for pop in popular %}
-      <a href="{% url 'detail' pop.id %}">
+      <a class="no-style-link" href="{% url 'detail' pop.id %}">
         <div class="col-sm-3 col-xs-6 content_row">
           <div class="featured_box content_container">
             <img src="/static/img/subject/{{ pop.subject.all.0.image_name }}" class="img-thumbnail center-block subject_pic">
@@ -85,7 +85,7 @@
 <script type="text/javascript" src="{% static 'js/shared/jquery.dotdotdot.min.js' %}"></script>
 <script type="text/javascript">
 /*
-    plugin to round of box titles
+    plugin to round off box titles
 */
 $(document).ready(function() {
   $('.title').dotdotdot(

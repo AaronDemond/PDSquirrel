@@ -186,21 +186,17 @@
   transition: all 0.3s ease-in-out;
 }
 
+.no-style-link {
+  color: inherit;
+}
+.no-style-link:hover {
+  color: inherit;
+}
+/*
 a {
   color: inherit;
 }
 a:hover {
   color: inherit;
 }
-/*
-@media all and (min-width: 1200px) {
-  #search-bar {
-    position: absolute;
-    right: 80px;
-    margin-right: 40px;
-    margin-top: 75px;
-  }
-}
 */
-
-
