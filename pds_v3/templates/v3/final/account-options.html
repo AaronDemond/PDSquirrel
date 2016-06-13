@@ -19,36 +19,35 @@
             <form action="{% url 'newcard' %}" method="POST" id="payment-form">
                 <div class="row">
                     <div class="col-xs-12">
-<h3>Payment Details</h3>
-                        <hr>
+                        <h3>Payment Details</h3>
                     </div>
                     <div class="col-sm-5">
                         <span class="payment-errors"></span>
-                        <div class="input-group">
+                        <div class="form-group">
                             <label>Card Number</label>
-                            <input type="text" class="form-control" size="20" data-stripe="number"/>
+                            <input type="text" class="form-control" size="20" data-stripe="number" required/>
                         </div>
-                        <div class="input-group">
+                        <div class="form-group">
                             <label>CVC</label>
-                            <input type="text" class="form-control" size="4" data-stripe="cvc"/>
+                            <input type="text" class="form-control" size="4" data-stripe="cvc" required/>
                         </div>
-                        <div class="input-group">
+                        <div class="form-group">
                             <label> Expiration Month (MM)</label>
-                            <input type="text" size="2" class="form-control"  data-stripe="exp-month"/>
+                            <input type="text" size="2" class="form-control"  data-stripe="exp-month" required/>
                         </div>
-                        <div class="input-group">
+                        <div class="form-group">
                             <label for="">Expiration Year (YYYY)</label>
-                            <input type="text" size="4" class="form-control" data-stripe="exp-year"/>
+                            <input type="text" size="4" class="form-control" data-stripe="exp-year" required/>
                         </div>
                         {% csrf_token %}
                     </div>
                     <div class="col-sm-7">
                         <p>
 We use the services of Stripe, with which we have a merchant agreement, to receive and process
-payments from our PD Squirrel members. None of your sensitive information is stored on our servers, instead it is encrypted and stored by entirely Stripe. This helps ensure your privacy. </p>
+payments from our PD Squirrel members. None of your sensitive information is stored on our servers, instead it is encrypted and stored entirely by Stripe. This helps ensure your privacy. </p>
 
                     </div>
-                    <div class="col-xs-3 col-xs-offset-9">
+                    <div class="col-sm-2 col-sm-offset-10 col-xs-3 col-xs-offset-9">
                         <button type="submit" class="btn btn-success">Submit</button>
                     </div>
                 </div>
@@ -65,7 +64,7 @@ payments from our PD Squirrel members. None of your sensitive information is sto
 
     <!-- Error section -->
 
-    <div class="row">
+    <div class="row no-indent">
 			<div id="error-container" class="col-lg-10 col-lg-offset-1">
         {% if messages %}
 				{% for msg in messages %}
@@ -427,7 +426,7 @@ payments from our PD Squirrel members. None of your sensitive information is sto
                       <tr>
                         <td>
                           <div class="input-group">
-                          <input class="form-control" value = "" placeholder = "Current Password" type="password" id ="pass-box-1" name="pass_old" disabled>
+                          <input class="form-control" value = "" placeholder = "Current Password" type="password" id ="pass-box-1" name="pass_old" disabled required>
                             <span class="input-group-btn">
                               <button onclick="makePassVisible()" class="btn btn-default" type="button">
                                 <span class="glyphicon glyphicon-pencil pencil-icon-fix" aria-hidden="true"></span>
@@ -438,14 +437,15 @@ payments from our PD Squirrel members. None of your sensitive information is sto
                       </tr>
                       <tr>
                         <td id ="pass-confirm-td">
-                          <input class="form-control"  type="password" placeholder = "Type your new password" id ="pass-box-2" name="password_new" disabled>
-                        <span class="input-group-btn"></span>
+                        <span class="input-group-btn">
+                          <input class="form-control"  type="password" placeholder = "Type your new password" id ="pass-box-2" name="password_new" disabled required>
+                        </span>
                         </td>
                       </tr>
                       <tr>
                         <td id ="pass-confirm-td">
                           <div class="input-group">
-                            <input class="form-control"  type="password" placeholder = "Retype your new password" id ="pass-box-3" name="vpass" disabled>
+                            <input class="form-control"  type="password" placeholder = "Retype your new password" id ="pass-box-3" name="vpass" disabled required>
                             <span class="input-group-btn">
                               <input class="btn btn-success" value="Submit" type="submit">
                             </span>

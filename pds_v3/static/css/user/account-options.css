@@ -3,6 +3,11 @@ td {
   height: 20px;
   padding: 0px;
 }
+
+.no-indent {
+  margin-left: 0px;
+}
+
 b {
   font-size: 14px;
   line-height: auto;
