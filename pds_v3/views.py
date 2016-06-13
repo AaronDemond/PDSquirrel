@@ -338,7 +338,6 @@ def delete_comment(request):
         comment = Comment.objects.get(pk=comment_id)
         presenter = comment.pd.presenters.all()[0]
         if request.user == comment.user.user or presenter.user == request.user:
-            messages.success(request, 'Comment deleted')
             comment.delete()
     return HttpResponse('Success')
 

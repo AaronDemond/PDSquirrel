@@ -119,6 +119,7 @@ function showDescription() {
 //delete a comment
 $(document).on("click", ".delete", function() {
   var comment_id = $(this).val();
+  var del_btn = $(this);
   var csrf = $("input[name='csrfmiddlewaretoken']").val();
 
   data = {
@@ -131,7 +132,9 @@ $(document).on("click", ".delete", function() {
     url: "/pd/session/comment/delete/",
     data: data,
     success: function(data) {
-      location.reload();
+		$('#comment-' + comment_id).remove();
+		if (del_btn.parents('div.reply').length == 0)
+			$('#comment-' + comment_id + '-replies').remove();
     }
   });
 });
@@ -158,6 +161,9 @@ $(document).on("click", ".toggle-reply", function() {
   var textarea_text = $textarea.text();
   $textarea.focus().val('').val(textarea_text);
 
+  $('#main-comment-btn').addClass('hidden');
+  $('#main-comment-cancel-btn').addClass('hidden');
+
 });
 
 // removes error on focus out if theirs text in the reply box
@@ -174,10 +180,15 @@ $(document).on("focusout", "textarea", function() {
 $(document).on('click', ".cancel-comment-btn", function cancelComment() {
 	var text_area = $(this).siblings("textarea");
 	$('.comment-reply').addClass('hidden');
-	$(this).siblings("button").addClass("hidden");
-	$(this).addClass("hidden");
 	text_area.val('');
+
 });
+$(document).on('click', "#main-comment-cancel-btn", function cancelComment() {
+	$(this).siblings("button").addClass('hidden');
+	$(this).addClass('hidden');
+
+});
+
 // submit a comment
 $(document).on("click", "button[name^='reply-btn']", function() {
   var $curr = $(this);
@@ -202,12 +213,10 @@ $(document).on("click", "button[name^='reply-btn']", function() {
        url: "/pd/session/comment/",
        data: data,
        success: function(comment_data) {
-
 			$curr.siblings("textarea").val('');
-
 			$('.comment-reply').addClass('hidden');
 		   if (typeof parent_id !== typeof undefined && parent_id !== false) {
-				visual_parent_row = $("#comment-" + reply_id + "-replys");
+				visual_parent_row = $("#comment-" + reply_id + "-replies");
 				visual_parent_row.append(comment_data);
 			}	else {
 			   $('#comment-holder').prepend(comment_data);

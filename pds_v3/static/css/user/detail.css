@@ -1,6 +1,6 @@
 .pres_link {
 	float: left;
-	margin-left: 20px;
+	margin-left: 15px;
 }
 #player {
 	margin-left: 10px;
@@ -24,6 +24,12 @@
 	#player {
 		margin-left: 0px;
 		margin-bottom: 20px;
+	}
+	.pres_header {
+		padding-left: 0px !important;
+	}
+	.audio_player {
+		padding-left: 0px !important;
 	}
 }
 
