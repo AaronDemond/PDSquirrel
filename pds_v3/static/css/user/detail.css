@@ -2,6 +2,10 @@
 	float: left;
 	margin-left: 15px;
 }
+
+.pres_header {
+	overflow: auto;
+}
 #player {
 	margin-left: 10px;
 	margin-bottom: 15px;

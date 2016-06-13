@@ -9,7 +9,6 @@
 		if (document.getElementById('e_card').checked == true) {
 			event.preventDefault();
 			$form.find('button').prop('disabled', true);
-			console.log('existing card used');
 			$.ajax({
 				type: "POST",
 				url:	$url,
@@ -17,7 +16,6 @@
 			}).done(function(data) {
 				$form.append(data);
 			}).fail(function(data) {
-			console.log('failed');
 			});
 			return false;
 		}
@@ -44,7 +42,6 @@
       } else {
         // response contains id and card, which contains additional card details
         var token = response.id;
-		console.log(token);
         // Insert the token into the form so it gets submitted to the server
         $form.append($('<input type="hidden" name="stripeToken" />').val(token));
 
@@ -56,7 +53,6 @@
 		}).done(function(data) {
 			$form.append(data);
 		}).fail(function(data) {
-			console.log('failed');
 		});
       }
     };
@@ -132,7 +128,9 @@ $(document).on("click", ".delete", function() {
     url: "/pd/session/comment/delete/",
     data: data,
     success: function(data) {
+		// Remove comment
 		$('#comment-' + comment_id).remove();
+		// If not a child, then comment is a parent, so we remove its replies.
 		if (del_btn.parents('div.reply').length == 0)
 			$('#comment-' + comment_id + '-replies').remove();
     }
@@ -166,7 +164,7 @@ $(document).on("click", ".toggle-reply", function() {
 
 });
 
-// removes error on focus out if theirs text in the reply box
+// removes error on focus out if theres text in the reply box
 $(document).on("focusout", "textarea", function() {
   var $curr = $(this);
   var $form_group = $curr.parent('.form-group');
@@ -208,6 +206,7 @@ $(document).on("click", "button[name^='reply-btn']", function() {
 		parent_id: parent_id,
         csrfmiddlewaretoken: csrf
      };
+
      $.ajax({
        type: "POST",
        url: "/pd/session/comment/",
@@ -222,7 +221,7 @@ $(document).on("click", "button[name^='reply-btn']", function() {
 			   $('#comment-holder').prepend(comment_data);
 		   }
 
-       }
+       	}
       });
   }
 });
