@@ -59,12 +59,13 @@
 				<div class="col-xs-12 col-md-8 col-md-offset-2">
 				    <h4>Downloads</h4>
 				    <div class="list-group">
-					{% for file in pd.attachments.all %}
-					<a class="list-group-item" href="/{{file.attachment}}">{{file.attachment}}</a>
-
-						{% if file.mark_for_delete %}
-								---Marked for Deletion
-						{% endif %}
-					{% endfor %}
+					<div class="list-group">
+		    {% for file in pd.attachments.all %}
+			<a class="list-group-item" target="_blank" href="{% url 'attachment' file.id %}">{{file.attachment}}</a>
+		    {% endfor %}
+		</div>
 				    </div>
                                 </div>
+
+
+
