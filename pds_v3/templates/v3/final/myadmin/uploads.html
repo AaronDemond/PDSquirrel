@@ -4,9 +4,6 @@
         <title>PDsquirrel Admin Upload Approval</title>
         <meta name=”description” content='Admin page for monitoring PDSquirrel uploads'>
 {% endblock header-metatags %}
-{% block header-content %}
-        <script src="{% static 'js/myscript.js' %}"></script>
-{% endblock header-content %}
 {% block body %}
 <div id="main-content" class="container">
     <div class="row">
@@ -48,3 +45,6 @@
 
 
 {% endblock %}
+{% block footer-content %}
+<script src="{% static 'js/myscript.js' %}"></script>
+{% endblock footer-content %}

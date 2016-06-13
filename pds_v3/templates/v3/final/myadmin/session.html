@@ -1,11 +1,11 @@
 {% load staticfiles %}
-			<div class = "col-sm-12 col-md-8 col-md-offset-2">
-			    <form action="{% url 'upload-admin' %}" method="POST">
+			<div class = "col-xs-12">
+			    <form role="form" action="{% url 'upload-admin' %}" method="POST">
 				{% csrf_token %}
 				<input type="hidden" value="1" name="approve">
 				<input type="hidden" value="{{pd.id}}" name="pd">
-				
-			    <input type="Submit" value="Accept Session">
+
+			    <input type="submit" value="Accept Session"/>
 			    </form>
 			    <!--
 			    <form action="{% url 'upload-admin' %}" method="POST">
@@ -15,7 +15,7 @@
 			    <input type="Submit" value="Decline Session">
 			    </form>
 			    -->
-			    
+
                 <h3>{{pd.name}}</h3>
 
 				<video id="MY_VIDEO_1" class="video-js vjs-default-skin" controls
@@ -23,18 +23,15 @@
 					data-setup="{}">
 
 						<source src="/{{pd.getAudioLocation}}" type='audio/mpeg'>
-					<p class="vjs-no-js">To view this video please enable JavaScript 
+					<p class="vjs-no-js">To view this video please enable JavaScript
 					<a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
 			        </video>
-				
-			  	
+
+
 
 			</div>
-			<div class="col-xs-12 col-md-offset-2">
-				    <br />
-			</div>
 
-				<div class="col-md-offset-2 col-md-1 hidden-xs">
+				<div class="col-xs-1 hidden-xs">
 				    {% if pd.presenters.all|length < 2 %}
 				    {% for a in pd.presenters.all %}
 
@@ -45,18 +42,18 @@
 				    <img src="/media/{{pd.presenters.all.0.img}}" alt="" height="80px">
 				    {% endif %}
 				</div>
-				<div class="col-md-8 col-xs-12">
-					
-			<p style="margin-left: 30px">
+				<div class="col-xs-12">
+
+			<p>
 			{{ pd.presenters.all|join:", "}}, {{pd.presenters.all.0.credentials}}
 			</p>
 				<p>{{pd.release_date}}</p>
 				</div>
-				<div class="col-xs-12 col-md-8 col-md-offset-2">
+				<div class="col-xs-12">
 					<h4>Session description</h4>
 					<p>{{pd.description}}</p>
 				</div>
-				<div class="col-xs-12 col-md-8 col-md-offset-2">
+				<div class="col-xs-12">
 				    <h4>Downloads</h4>
 				    <div class="list-group">
 					{% for file in pd.attachments.all %}
