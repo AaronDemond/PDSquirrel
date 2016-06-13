@@ -11,6 +11,7 @@
 
 .my-footer a {
   color: #a3a3a3 !important;
+  white-space: nowrap;
 }
 
 #squirrel-inc {
