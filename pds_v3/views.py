@@ -241,6 +241,8 @@ from itertools import chain
 def detail(request, pd_id):
 
     pd = PdSession.objects.get(pk=pd_id)
+    if pd.suspended == True:
+        return HttpResponse("This session has been removed. Only users who have purchased the rights may still access it.");
     comments = Comment.objects.filter(pd_id = pd_id, parent__isnull = True).order_by('-date')
     own = 0
 
