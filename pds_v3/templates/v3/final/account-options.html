@@ -279,7 +279,7 @@ payments from our PD Squirrel members. None of your sensitive information is sto
   										<option value="{{card.id}}">{{ card.brand }} **** **** **** {{ card.last4 }} Expires: {{ card.exp_year }}</option>
   										{% endfor %}
   									</select>
-  									<input type="submit">
+  									<input type="submit" value="Submit">
                                           {% csrf_token %}
                                       </form>
   								<p>Current default: {{ customer.sources.data.0.brand }} **** **** **** {{ customer.sources.data.0.last4 }}</p>
