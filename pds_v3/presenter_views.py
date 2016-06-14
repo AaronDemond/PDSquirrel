@@ -403,6 +403,11 @@ def edit(request, id):
             description = request.POST['description']
             subjects = request.POST.getlist('subjects')
 
+            if not subjects:
+                messages.add_message(request, messages.ERROR, 'Please select a subject \
+                        for you PD session.')
+                return HttpResponseRedirect('/user/presenter/dash/?direct_to=sessions')
+
             #create the edit
             edit = PdSessionEdit(name=name, description=description)
             edit.save()
