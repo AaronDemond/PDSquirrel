@@ -48,7 +48,7 @@
 				<input {% if presenter.placeholder_type == 0 %} checked {% endif %}type="radio" name="placeholder_gender" value="female"> Female
 				<input {% if presenter.placeholder_type > 1 %} checked {% endif %} type="radio" name="placeholder_gender" value="upload"> Upload my Own
 				<label for="photo">Photo</label>
-				<input class="form-control" type="file" name="photo">
+				<input class="form-control file-input" type="file" name="photo">
 				{% if presenter.image %}
 				<p class="help-text">
 				Current File: <a target = "_blank" href="/static/presenter_pics/{{presenter.image_name}}">{{presenter.image_name}}</a>
