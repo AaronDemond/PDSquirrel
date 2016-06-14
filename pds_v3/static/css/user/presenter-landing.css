@@ -60,12 +60,19 @@ li > a:hover {
   padding-top:10px;
 }
 
+#xs-header {
+	margin-bottom: 15px;
+}
+#xs-header h2 {
+	margin-top: 0px;
+}
+
 #pres-body p {
   margin-left: 15px;
 }
 
 .pres-container {
-  margin-top: 20px
+	margin-top: 20px;
 }
 
 #presenter-info {
