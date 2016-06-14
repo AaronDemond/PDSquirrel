@@ -331,16 +331,16 @@ def accred(request, pd_id, s_id=1):
 
 from pds_v3 import models
 def presenter_detail(request, p_id):
-    profile = models.Presenter.objects.get(id=p_id)
+    presenter = models.Presenter.objects.get(id=p_id)
 
-    if profile.bio == '':
+    if presenter.bio == '':
         messages.info(request, 'This presenter has not completed their Biography page yet, check again soon.')
         return HttpResponseRedirect('/browse/')
 
-    name = profile
-    context = {'name': name, 'bio': profile.bio, 'img': '/static/img/placeholder.png ', 'presenter': profile}
+    name = presenter
+    context = {'name': name, 'bio': presenter.bio, 'img': '/static/img/placeholder.png ', 'presenter': presenter}
 
-    pd_list = request.user.presenter.pdsession_set.filter(suspended=False, approved=True)
+    pd_list = presenter.pdsession_set.filter(suspended=False, approved=True)
 
     if pd_list:
         paginator = Paginator(pd_list, 10)
