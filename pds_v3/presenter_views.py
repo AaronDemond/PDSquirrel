@@ -278,20 +278,30 @@ def dash(request, msg=False):
             if form.is_valid():
                 if 'name' in request.POST:
                     pd_name = request.POST['name']
+
                 else:
                     messages.add_message(request, messages.ERROR, 'Please provide a \
                                                 title.')
 
-                    return HttpResponseRedirect('/user/presenter/dash/?direct_to=sessions')
+                    return HttpResponseRedirect('/user/presenter/dash/?direct_to=upload')
 
 
                 pd_description = request.POST['description']
                 subjects = request.POST.getlist('subject')
 
+                if not subjects:
+                    messages.add_message(request, messages.ERROR, 'Please select at least one subject')
+                    return HttpResponseRedirect('/user/presenter/dash/?direct_to=upload')
+
+
 
 
                 pdaud = request.POST.get('recording', False)
                 if pdaud:
+                    if int(pdaud) == 0:
+                        messages.add_message(request, messages.ERROR, 'Please select a recording')
+                        return HttpResponseRedirect('/user/presenter/dash/?direct_to=upload')
+
                     pdaud = PdAudio.objects.get(pk=int(pdaud))
                     pdaud.used = True
                     pdaud.save();
@@ -302,7 +312,7 @@ def dash(request, msg=False):
 
 
                     counter = 0
-                    if not audio_file:
+                    if audio_file == False:
                         messages.add_message(request, messages.ERROR, 'Please upload a file')
                         return HttpResponseRedirect('/user/presenter/dash/?direct_to=upload')
 
@@ -310,7 +320,10 @@ def dash(request, msg=False):
                     new_session = PdSession(name=pd_name,description=pd_description, audio_file=audio_file, approved=False)
                     new_session.save()
 
-
+                    _name = audio_file.name.lower()
+                    if not _name.endswith('.mp3') or not _name.endswith('.wav'):
+                        messages.add_message(request, messages.ERROR, 'Please upload an MP3 or a WAV file')
+                        return HttpResponseRedirect('/user/presenter/dash/?direct_to=upload')
 
 
                     #get length if it is mp3.. need to convert wav
