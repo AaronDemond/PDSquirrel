@@ -305,6 +305,10 @@ class PdSession(models.Model):
         else:
             return self.audio_file
 
+    def getDescriptionWordCount(self):
+        return len(self.description.split())
+
+
     class Meta:
         verbose_name = "PD Session"
         verbose_name_plural = "PD Sessions"

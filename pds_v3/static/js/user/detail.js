@@ -9,7 +9,6 @@
 		if (document.getElementById('e_card').checked == true) {
 			event.preventDefault();
 			$form.find('button').prop('disabled', true);
-			console.log('existing card used');
 			$.ajax({
 				type: "POST",
 				url:	$url,
@@ -17,7 +16,6 @@
 			}).done(function(data) {
 				$form.append(data);
 			}).fail(function(data) {
-			console.log('failed');
 			});
 			return false;
 		}
@@ -44,7 +42,6 @@
       } else {
         // response contains id and card, which contains additional card details
         var token = response.id;
-		console.log(token);
         // Insert the token into the form so it gets submitted to the server
         $form.append($('<input type="hidden" name="stripeToken" />').val(token));
 
@@ -56,7 +53,6 @@
 		}).done(function(data) {
 			$form.append(data);
 		}).fail(function(data) {
-			console.log('failed');
 		});
       }
     };
@@ -119,6 +115,7 @@ function showDescription() {
 //delete a comment
 $(document).on("click", ".delete", function() {
   var comment_id = $(this).val();
+  var del_btn = $(this);
   var csrf = $("input[name='csrfmiddlewaretoken']").val();
 
   data = {
@@ -131,7 +128,11 @@ $(document).on("click", ".delete", function() {
     url: "/pd/session/comment/delete/",
     data: data,
     success: function(data) {
-      location.reload();
+		// Remove comment
+		$('#comment-' + comment_id).remove();
+		// If not a child, then comment is a parent, so we remove its replies.
+		if (del_btn.parents('div.reply').length == 0)
+			$('#comment-' + comment_id + '-replies').remove();
     }
   });
 });
@@ -158,9 +159,12 @@ $(document).on("click", ".toggle-reply", function() {
   var textarea_text = $textarea.text();
   $textarea.focus().val('').val(textarea_text);
 
+  $('#main-comment-btn').addClass('hidden');
+  $('#main-comment-cancel-btn').addClass('hidden');
+
 });
 
-// removes error on focus out if theirs text in the reply box
+// removes error on focus out if theres text in the reply box
 $(document).on("focusout", "textarea", function() {
   var $curr = $(this);
   var $form_group = $curr.parent('.form-group');
@@ -174,10 +178,15 @@ $(document).on("focusout", "textarea", function() {
 $(document).on('click', ".cancel-comment-btn", function cancelComment() {
 	var text_area = $(this).siblings("textarea");
 	$('.comment-reply').addClass('hidden');
-	$(this).siblings("button").addClass("hidden");
-	$(this).addClass("hidden");
 	text_area.val('');
+
 });
+$(document).on('click', "#main-comment-cancel-btn", function cancelComment() {
+	$(this).siblings("button").addClass('hidden');
+	$(this).addClass('hidden');
+
+});
+
 // submit a comment
 $(document).on("click", "button[name^='reply-btn']", function() {
   var $curr = $(this);
@@ -197,23 +206,22 @@ $(document).on("click", "button[name^='reply-btn']", function() {
 		parent_id: parent_id,
         csrfmiddlewaretoken: csrf
      };
+
      $.ajax({
        type: "POST",
        url: "/pd/session/comment/",
        data: data,
        success: function(comment_data) {
-
 			$curr.siblings("textarea").val('');
-
 			$('.comment-reply').addClass('hidden');
 		   if (typeof parent_id !== typeof undefined && parent_id !== false) {
-				visual_parent_row = $("#comment-" + reply_id + "-replys");
+				visual_parent_row = $("#comment-" + reply_id + "-replies");
 				visual_parent_row.append(comment_data);
 			}	else {
 			   $('#comment-holder').prepend(comment_data);
 		   }
 
-       }
+       	}
       });
   }
 });

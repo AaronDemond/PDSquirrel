@@ -24,11 +24,11 @@
         <div class="list-group">
             {% for sesh in pd %}
             <div class="list-group-item pd-upload" >
-                <div class="row">
+                <div class="row session">
                     <div class="col-lg-12">
 						<h4>{{sesh}}</h4>
                     </div>
-                    <div class="col-lg-6">
+                    <div class="col-sm-6">
                         <p class="muted">Uploaded {{sesh.upload_date}}
                             {% if sesh.last_edited %}
                             <br>Edited {{sesh.last_edited}}
@@ -77,8 +77,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-6 actions">
-                        <div class="row">
+                    <div class="col-sm-6 actions">
+                        <div class="row hidden-xs">
                             <div class="col-lg-12">
                                 &nbsp;
                             </div>

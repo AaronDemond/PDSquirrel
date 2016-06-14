@@ -241,6 +241,8 @@ from itertools import chain
 def detail(request, pd_id):
 
     pd = PdSession.objects.get(pk=pd_id)
+    if pd.suspended == True:
+        return HttpResponse("This session has been removed. Only users who have purchased the rights may still access it.");
     comments = Comment.objects.filter(pd_id = pd_id, parent__isnull = True).order_by('-date')
     own = 0
 
@@ -338,7 +340,6 @@ def delete_comment(request):
         comment = Comment.objects.get(pk=comment_id)
         presenter = comment.pd.presenters.all()[0]
         if request.user == comment.user.user or presenter.user == request.user:
-            messages.success(request, 'Comment deleted')
             comment.delete()
     return HttpResponse('Success')
 

@@ -57,7 +57,7 @@
 					<h4>Sessions by this presenter </h4>
 					<div class="list-group">
 						{% for pd in presenter.pdsession_set.all %}
-    					{% if pd.approved %}
+    					{% if pd.approved and pd.suspended != True %}
               <a href="{% url 'detail' pd.id %}">
                 <div class="list-group-item">
                   <div class="row pd-header">

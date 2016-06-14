@@ -193,7 +193,7 @@ def join(request):
             password = hashers.make_password(password)
             profile = AppUser.create(first_name=first_name,last_name=last_name, email=email,
                                   password=password,terms=terms, society=society)
-            msg = "Welcome to PD Squirrel!\n\nPlease click on the following link to activate your membership account: http://pdsquirrel.ca/user/activate/%s\n\nThanks,\n\nThe PD Squirrel admin team" % (str(profile.user.id) + "/")
+            msg = "Welcome to PD Squirrel!\n\nPlease click on the following link to activate your membership account: https://pdsquirrel.ca/user/activate/%s\n\nThanks,\n\nThe PD Squirrel admin team" % (str(profile.user.id) + "/")
             send_mail('PD Squirrel Activation', msg, 'noreply@pdsquirrel.ca', [profile.user.email], fail_silently=False)
 
             send_mail('PD Squirrel Activation', msg, 'noreply@pdsquirrel.ca', ['demondsoftware@gmail.com'], fail_silently=False)

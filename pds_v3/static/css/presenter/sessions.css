@@ -74,3 +74,7 @@
 #c-form {
 	float:left;
 }
+
+.session {
+	padding-bottom: 20px !important;
+}
