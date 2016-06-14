@@ -12,11 +12,11 @@
     	        {% csrf_token %}
     	        <div class="row" style="margin-bottom:20px">
     	            <div class="col-lg-3">
-    	                <label for="">Start (dd/mm/yyyy)</label>
+    	                <label class="date-label" for="">Start (dd/mm/yyyy)</label>
     	                <input type="date" name="start" class="form-control" value="{{start.year}}-{% if start.month < 10 %}0{% endif %}{{start.month}}-{% if start.day < 10%}0{%endif%}{{start.day}}">
     	            </div>
     	            <div class="col-lg-3">
-    	                <label for="">End (dd/mm/yyyy)</label>
+    	                <label class="date-label" for="">End (dd/mm/yyyy)</label>
     	                <input type="date" name="end" class="form-control" value="{{end.year}}-{% if end.month < 10 %}0{% endif %}{{end.month}}-{% if end.day < 10%}0{%endif%}{{end.day}}">
     	            </div>
     	            <div class="col-lg-2">
@@ -30,3 +30,12 @@
 	<div id="result">
 	</div>
 </div>
+
+<script type="text/javascript">
+  var isFirefox = typeof InstallTrigger !== 'undefined';
+  if (isFirefox) {
+    var labels = document.getElementsByClassName('date-label');
+    labels[0].innerHTML = "Start yyyy-mm-dd"
+    labels[1].innerHTML = "end yyyy-mm-dd"
+  }
+</script>
