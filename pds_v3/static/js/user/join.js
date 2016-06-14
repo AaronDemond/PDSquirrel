@@ -6,7 +6,7 @@ function ref(){
 
 
 
-$('input, select').focusout(function() {
+$('input, select').not("#inputEmail3, #login_password").focusout(function() {
   var $curr = $(this);
   var $parent = $(this).parent("div");
   var curr_id = $curr.attr('id');
