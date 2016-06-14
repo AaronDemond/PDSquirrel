@@ -339,6 +339,30 @@ def presenter_detail(request, p_id):
 
     name = profile
     context = {'name': name, 'bio': profile.bio, 'img': '/static/img/placeholder.png ', 'presenter': profile}
+
+    pd_list = request.user.presenter.pdsession_set.filter(suspended=False, approved=True)
+
+    if pd_list:
+        paginator = Paginator(pd_list, 10)
+
+        page = request.GET.get('page')
+        try:
+            pd = paginator.page(page)
+        except PageNotAnInteger:
+            pd = paginator.page(1)
+        except EmptyPage:
+            pd = paginator.page(paginator.num_pages)
+        search_type = 'search'
+
+        if pd_list:
+            page_range = range(1,pd.paginator.num_pages + 1)
+        else:
+            pd = False
+            page_range = range(False)
+
+        context['pd_list'] = pd
+        context['range'] = page_range
+
     return render(request, 'v3/final/presenter-landing.html', context)
 
 
