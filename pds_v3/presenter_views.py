@@ -205,15 +205,11 @@ def dash(request, msg=False):
                 presenter.url = request.POST['url']
                 if 'clear_photo' in request.POST:
                     presenter.image = None
+                    presenter.placeholder_type = 1;
                 if request.FILES:
                     presenter.image = request.FILES['photo']
                     presenter.placeholder_type = 2;
-                else:
-                    # 0=female 1=male
-                    if request.POST['placeholder_gender'] == "male":
-                        presenter.placeholder_type = 1;
-                    elif request.POST['placeholder_gender'] == "female":
-                        presenter.placeholder_type = 0;
+
                 presenter.save()
                 messages.add_message(request, messages.SUCCESS,
                         'Account successfully updated.')
