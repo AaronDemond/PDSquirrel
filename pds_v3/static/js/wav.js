@@ -104,22 +104,21 @@ $("a").not('#infoLink, .download').click(function(e) {
     var $timer= document.getElementById('timer');
     var clocktimer;
 
-    function pad(num, size) {
-    	var s = "0000" + num;
-    	return s.substr(s.length - size);
-    }
-
     function formatTime(time) {
-    	var m = s = ms = 0;
-    	var newTime = '';
+      var m = s = 0;
+      var newTime = '';
 
-    	m = Math.floor( time / (60 * 1000) );
+      m = Math.floor( time / (60 * 1000) );
     	time = time % (60 * 1000);
     	s = Math.floor( time / 1000 );
-    	ms = time % 1000;
 
-    	newTime =  pad(m, 2) + ':' + pad(s, 2) + ':' + pad(ms, 3);
-    	return newTime;
+      newTime =  pad(m) + ':' + pad(s);
+      return newTime;
+    }
+
+    function pad(num) {
+    	var s = "0" + num;
+    	return s.substr(s.length - 2);
     }
 
     function update() {
@@ -127,7 +126,7 @@ $("a").not('#infoLink, .download').click(function(e) {
     }
 
     function start() {
-    	clocktimer = setInterval("update()", 1);
+    	clocktimer = setInterval(update, 1000);
     	recorder_timer.start();
     }
 
@@ -224,7 +223,7 @@ $("a").not('#infoLink, .download').click(function(e) {
     }
 
     function showData(url, audio_clip_name){
-	/* This function is called when load chosen file btn clicked. 
+	/* This function is called when load chosen file btn clicked.
 	 * Loads wav url into editor, only tested with our wavs. */
 
 		if (allowing_mic == true ) {
@@ -300,8 +299,8 @@ $("a").not('#infoLink, .download').click(function(e) {
 			lcfinal = [];
 			rcfinal = [];
 
-			/* Creates an array of float32arrays, each 2048 bytes (buffer size) in 
-			 * length, this is used because trimming edits the raw left and right 
+			/* Creates an array of float32arrays, each 2048 bytes (buffer size) in
+			 * length, this is used because trimming edits the raw left and right
 			 * channels before flattening. */
 			for (var i=0; i < (allSamples.length / 4096); i++) {
 				f32a = new Float32Array(lc.slice(i*2048, (i+1) * 2048));
