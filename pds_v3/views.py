@@ -5,7 +5,7 @@ import datetime
 from django.contrib import messages
 from django.core.mail import send_mail
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from pds_v3.models import PdSession, AppUser, LawSociety, LawSocietyOverride, Purchase, Subject, Presenter, PdAttachment, Comment
+from pds_v3.models import PdSession, AppUser, LawSociety, LawSocietyOverride, Purchase, Subject, Presenter, PdAttachment, Comment, PdAudio
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.models import User
 from django.db import IntegrityError
@@ -203,13 +203,22 @@ def getAttachment(request, a_id):
 
     return HttpResponse('error')
 
+def getRecordingMp3(request, audio_id):
+    pdaudio = PdAudio.objects.get(pk=audio_id)
+    owned_recordings = request.user.profile.pdaudio_set.all()
+    if pdaudio in owned_recordings:
+        name = os.path.basename(pdaudio.getMp3Location())
+        print name
 
+        response = HttpResponse()
+        response["Content-Disposition"] = "attachment; filename={0}".format(name)
+        response['X-Accel-Redirect'] = "/content/{0}".format(name)
+        return response
 
 
 def getAudio(request, pd_id):
     '''
     If user owns the rights, will return the mp3 of a session
-    Call by: /audio/id
     '''
 
     pd = PdSession.objects.get(pk=pd_id)
@@ -237,7 +246,6 @@ def getAudio(request, pd_id):
 
 
 
-from itertools import chain
 def detail(request, pd_id):
 
     pd = PdSession.objects.get(pk=pd_id)
