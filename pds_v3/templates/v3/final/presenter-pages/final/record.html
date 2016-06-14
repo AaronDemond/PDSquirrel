@@ -105,7 +105,7 @@
 		<tr id ="rec-{{rec.id}}">
 		    <td class="recording_name">{{rec}}</td>
 		    <td>
-			<a class="download btn btn-default" href="/{{rec.getMp3Location}}" download="{{rec}}.mp3" target="_blank">Download </a>
+				<a class="download btn btn-default" href="{% url 'recording' rec.id %}" download="{{rec}}.mp3" target="_blank">Download </a>
 			<button class="btn btn-default" onclick="delAudio('{{rec.id}}')">Delete</button>
 		    </td>
 	        </tr>

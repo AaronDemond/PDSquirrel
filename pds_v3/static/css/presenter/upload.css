@@ -5,6 +5,10 @@ label {
 	margin-bottom: 20px;
 }
 
+.file-input {
+	height: auto;
+}
+
 .small2 {
   position: absolute;
   height: 100px;

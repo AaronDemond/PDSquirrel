@@ -10,9 +10,15 @@
 {% block body %}
 <div id = "main-content" class="container">
     <div class="row">
-        <div class=" pres-container col-xs-12 col-sm-10 col-sm-offset-1">
+        <div class="pres-container col-xs-12 col-sm-10 col-sm-offset-1">
         	<div class="row">
-				<div class="col-xs-4">
+				<div id="xs-header" class="col-xs-12 hidden-sm hidden-md hidden-lg">
+					<h2 class="name">{{ presenter }}</h2>
+					<h4 class="credentials">{% if presenter.credentials %}{{presenter.credentials}}{%endif%}</h4>
+					<hr>
+					
+				</div>
+				<div class="col-xs-4 col-sm-3">
 					<img
 					{# if no img uploaded by user, pull one of two placeholders #}
 					{# tested: no #}
@@ -41,46 +47,93 @@
 						{% endif %}
 					</ul>
 				</div>
-                <div class="col-xs-8 info-container">
+                <div class="col-xs-7 col-sm-9 info-container hidden-xs">
 		    		<br>
 					<div id ="pres-header">
 						<h2 class="name">{{ presenter }}</h2>
 						<h4 class="credentials">{% if presenter.credentials %}{{presenter.credentials}}{%endif%}</h4>
 					</div>
-					<div id="pres-body">
+					<div id="pres-body" class="hidden-xs">
 						<p>{{bio}}</p>
 					</div>
                 </div>
+				<div class="col-xs-12 hidden-md hidden-sm hidden-lg">
+					<p>{{bio}}</p>
+				</div>
             </div>
 			<div class="row">
 				<div class="col-xs-12">
 					<h4>Sessions by this presenter </h4>
 					<div class="list-group">
-						{% for pd in presenter.pdsession_set.all %}
-    					{% if pd.approved and pd.suspended != True %}
-              <a href="{% url 'detail' pd.id %}">
-                <div class="list-group-item">
-                  <div class="row pd-header">
-                      <span class="pd-name">{{pd.name}}</span>
-                      &nbsp;
-                      <span class="muted pd-date">{{pd.release_date|date}}</span>
-                  </div>
-                  <div class="row">
-                    <div class="col-sm-4">
-                      <img src="/static/img/subject/{{ pd.subject.all.0.image_name }}" class="img-thumbnail subject_pic">
-                    </div>
-                    <div class="col-sm-8 pd-description">
-                      <p>{{ pd.description|truncatechars:350 }}</p>
-                    </div>
-                  </div>
-                </div>
-              </a>
-    					{% endif %}
-						{% endfor %}
+					{% for pd in pd_list %}
+					  <a href="{% url 'detail' pd.id %}">
+						<div class="list-group-item">
+						  <div class="row pd-header">
+							  <span class="pd-name">{{pd.name}}</span>
+							  &nbsp;
+							  <span class="muted pd-date">{{pd.release_date|date}}</span>
+						  </div>
+						  <div class="row">
+							<div class="col-sm-4">
+							  <img src="/static/img/subject/{{ pd.subject.all.0.image_name }}" class="img-thumbnail subject_pic">
+							</div>
+							<div class="col-sm-8 pd-description">
+							  <p>{{ pd.description|truncatechars:350 }}</p>
+							</div>
+						  </div>
+						</div>
+					  </a>
+					{% endfor %}
 					</div>
 				</div>
 			</div>
         </div>
     </div>
+	<div id="browse-footer" class="container" >
+		<div class="row">
+			<div class="col-xs-12 col-lg-8 col-lg-offset-1">
+				<hr>
+				<p id="results">More results</p>
+				<nav>
+					<ul class="pagination">
+				{% if pd_list.has_previous %}
+					<li>
+					  <a href="?page={{ pd_list.previous_page_number }}" aria-label="Previous">
+						<span aria-hidden="true">&laquo;</span>
+					  </a>
+					</li>
+				{% else %}
+					<li class="disabled">
+
+					  <a href="" aria-label="Previous">
+						<span aria-hidden="true">&laquo;</span>
+					  </a>
+					</li>
+				{% endif %}
+				{% if range %}
+					{% for x in range %}
+					<li {% if x == pd_list.number %} class="active" {% endif %}><a href="?page={{x}}">{{x}}</a></li>
+					{% endfor %}
+				{% endif %}
+							{% if pd_list.has_next %}
+					<li>
+
+					  <a href="?page={{ pd_list.next_page_number }}" aria-label="Next">
+						<span aria-hidden="true">&raquo;</span>
+					  </a>
+					</li>
+				{% else %}
+					<li>
+
+					  <a href="" aria-label="Next">
+						<span aria-hidden="true">&raquo;</span>
+					  </a>
+					</li>
+					{% endif %}
+					</ul>
+				</nav>
+			</div>
+		</div>
+	</div>
 </div>
 {% endblock %}

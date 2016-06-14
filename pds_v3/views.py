@@ -5,7 +5,7 @@ import datetime
 from django.contrib import messages
 from django.core.mail import send_mail
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from pds_v3.models import PdSession, AppUser, LawSociety, LawSocietyOverride, Purchase, Subject, Presenter, PdAttachment, Comment
+from pds_v3.models import PdSession, AppUser, LawSociety, LawSocietyOverride, Purchase, Subject, Presenter, PdAttachment, Comment, PdAudio
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.models import User
 from django.db import IntegrityError
@@ -203,13 +203,22 @@ def getAttachment(request, a_id):
 
     return HttpResponse('error')
 
+def getRecordingMp3(request, audio_id):
+    pdaudio = PdAudio.objects.get(pk=audio_id)
+    owned_recordings = request.user.profile.pdaudio_set.all()
+    if pdaudio in owned_recordings:
+        name = os.path.basename(pdaudio.getMp3Location())
+        print name
 
+        response = HttpResponse()
+        response["Content-Disposition"] = "attachment; filename={0}".format(name)
+        response['X-Accel-Redirect'] = "/content/{0}".format(name)
+        return response
 
 
 def getAudio(request, pd_id):
     '''
     If user owns the rights, will return the mp3 of a session
-    Call by: /audio/id
     '''
 
     pd = PdSession.objects.get(pk=pd_id)
@@ -237,7 +246,6 @@ def getAudio(request, pd_id):
 
 
 
-from itertools import chain
 def detail(request, pd_id):
 
     pd = PdSession.objects.get(pk=pd_id)
@@ -331,6 +339,30 @@ def presenter_detail(request, p_id):
 
     name = profile
     context = {'name': name, 'bio': profile.bio, 'img': '/static/img/placeholder.png ', 'presenter': profile}
+
+    pd_list = request.user.presenter.pdsession_set.filter(suspended=False, approved=True)
+
+    if pd_list:
+        paginator = Paginator(pd_list, 10)
+
+        page = request.GET.get('page')
+        try:
+            pd = paginator.page(page)
+        except PageNotAnInteger:
+            pd = paginator.page(1)
+        except EmptyPage:
+            pd = paginator.page(paginator.num_pages)
+        search_type = 'search'
+
+        if pd_list:
+            page_range = range(1,pd.paginator.num_pages + 1)
+        else:
+            pd = False
+            page_range = range(False)
+
+        context['pd_list'] = pd
+        context['range'] = page_range
+
     return render(request, 'v3/final/presenter-landing.html', context)
 
 
