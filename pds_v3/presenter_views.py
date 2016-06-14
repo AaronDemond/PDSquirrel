@@ -317,7 +317,7 @@ def dash(request, msg=False):
                     new_session.save()
 
                     _name = audio_file.name.lower()
-                    if not _name.endswith('.mp3') or not _name.endswith('.wav'):
+                    if not (_name.endswith('.mp3') or _name.endswith('.wav')):
                         messages.add_message(request, messages.ERROR, 'Please upload an MP3 or a WAV file')
                         return HttpResponseRedirect('/user/presenter/dash/?direct_to=upload')
 
