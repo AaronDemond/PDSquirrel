@@ -222,9 +222,12 @@ $("a").not('#infoLink, .download').click(function(e) {
 		alert('getUserMedia not supported in this browser.');
     }
 
+    // edit function currently REMOVED. can be re-added
+
+    /*
     function showData(url, audio_clip_name){
-	/* This function is called when load chosen file btn clicked.
-	 * Loads wav url into editor, only tested with our wavs. */
+	//   This function is called when load chosen file btn clicked.
+	//   Loads wav url into editor, only tested with our wavs.
 
 		if (allowing_mic == true ) {
 			if (saved == false) {
@@ -263,6 +266,7 @@ $("a").not('#infoLink, .download').click(function(e) {
 
 			}
 		}
+    */
 
 		function loaded(evt) {
 			var buffer = reader.result; // buffer of raw wav file data
@@ -484,7 +488,7 @@ $("a").not('#infoLink, .download').click(function(e) {
 
 		} else { // Record clicked
 			if (allowing_mic == false){
-				getPerm();
+				getPerm(); //What happend to this function...
 			}
 	    	if (aud_name.value == "") {
 				alert("Please enter a name for your recording first");
@@ -613,7 +617,11 @@ $("a").not('#infoLink, .download').click(function(e) {
 
 		// Creates wav blob from data view
         var blob = new Blob ( [ view ], { type : 'audio/wav' } );
-		//
+        /*
+        alert(blob.size+" bytes");
+        if (blob.size > 524288000) // 500 MiB <- limit in chrome
+          console.log("uh oh...");
+		*/
 	//	var blob = getMp3Blob();
     	var fd = new FormData();
         var url = (window.URL || window.webkitURL).createObjectURL(blob);
