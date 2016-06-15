@@ -8,7 +8,7 @@
         <link rel="stylesheet" href="{% static 'css/user/login-new.css' %}">
 {% endblock header-content %}
 {% block body %}
-<div class="container" id="activate-container">
+<div class="main-content" id="activate-container">
 
     	<div class="row" id="activate-row">
             <div class="col-xs-12">
@@ -24,7 +24,7 @@
 							<div class="msg-container">
                 {% if messages %}
                 {% for msg in messages %}
-                <div class="alert alert-{{msg.tags}} msg" role="alert">
+                <div class="alert alert-{{msg.tags}} msg" role="alert"
 									<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 									{{msg|safe|escape}}
 								 </div>

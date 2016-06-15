@@ -249,8 +249,6 @@ def getAudio(request, pd_id):
 def detail(request, pd_id):
 
     pd = PdSession.objects.get(pk=pd_id)
-    if pd.suspended == True:
-        return HttpResponse("This session has been removed. Only users who have purchased the rights may still access it.");
     comments = Comment.objects.filter(pd_id = pd_id, parent__isnull = True).order_by('-date')
     own = 0
 
@@ -265,10 +263,12 @@ def detail(request, pd_id):
         if pd in owned_sessions:
                 own = 1
 
-        context['customer'] = stripe.Customer.retrieve(request.user.profile.stripe_id)
 
+        context['customer'] = stripe.Customer.retrieve(request.user.profile.stripe_id)
     context['own'] = own
 
+    if pd.suspended == True and own == 0:
+        return HttpResponse("This session has been removed. Only users who have purchased the rights may access it.");
 
     return render(request, 'v3/final/detail.html', context)
 
