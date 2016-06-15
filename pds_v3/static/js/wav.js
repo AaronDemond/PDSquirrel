@@ -50,7 +50,8 @@ $("a").not('#infoLink, .download').click(function(e) {
 	}
 
 	// Close audio context, otherwise page gets incredibly slow and recordings lag.
-	if (page =='recorder' && this.id != 'refresh_link') {
+  //  && this.id != 'refresh_link'
+  if (page =='recorder') {
 	    try {
 		context.close();
 		page = null;
@@ -149,7 +150,7 @@ $("a").not('#infoLink, .download').click(function(e) {
 
     // Script global vars
     var container = document.getElementById('main-content');
-    var refresh_link = document.getElementById('refresh_link');
+    //var refresh_link = document.getElementById('refresh_link');
     var outputElement = document.getElementById('output');
     var audio_player = document.getElementById("player");
     var page = 'recorder';
@@ -266,7 +267,7 @@ $("a").not('#infoLink, .download').click(function(e) {
 
 			}
 		}
-    */
+
 
 		function loaded(evt) {
 			var buffer = reader.result; // buffer of raw wav file data
@@ -302,10 +303,11 @@ $("a").not('#infoLink, .download').click(function(e) {
 			}
 			lcfinal = [];
 			rcfinal = [];
-
+      */
 			/* Creates an array of float32arrays, each 2048 bytes (buffer size) in
 			 * length, this is used because trimming edits the raw left and right
 			 * channels before flattening. */
+       /*
 			for (var i=0; i < (allSamples.length / 4096); i++) {
 				f32a = new Float32Array(lc.slice(i*2048, (i+1) * 2048));
 				lcfinal.push(f32a);
@@ -328,7 +330,7 @@ $("a").not('#infoLink, .download').click(function(e) {
 			loading_alert.className = 'hidden';
 		} // End of loaded function
 
-    } // End of show data function
+  } */ // End of show data function
 
     /* set start and end values for selection. */
     function setStartMark(){
@@ -659,8 +661,8 @@ $("a").not('#infoLink, .download').click(function(e) {
 			console.log(this_audio[0]); // fields_obj, model_str, pk_id
 			pda_obj = this_audio[0]
 			console.log(pda_obj.fields);
-			alert("Upload Successful");
-			refresh_link.click();
+			alert("Upload Successful"); // live it should be https://www.pdsquirrel.ca/user/presenter/dash/?direct_to=recorder
+      window.location.href = "http://127.0.0.1:8000/user/presenter/dash/?direct_to=recorder";
 			outputElement.innerHTML = "Upload complete, It will appear below when you revisit this page";
 			},
 			error: function(data) {
