@@ -22,6 +22,8 @@ function disableLinks() {
 /* Used to apply a confirmation message to links that navigate a user
    away from the record tab. Call this function when 'saved' becomes false */
 	
+	
+	// When drop down is clicked, keep active styling on record tab
 	drop_down_links = $(".dropdown-toggle");
 	for (var i=0; i<drop_down_links.length; i++){
 		link = drop_down_links[i]
@@ -32,14 +34,37 @@ function disableLinks() {
 			}, 100);
 		}
 	}
+	
 
 	var links = $("a").not('#infoLink, .download, .del-btn, .dropdown-toggle');
 	for (var i=0; i<links.length; i++){
-		action = links[i].onclick;
 		links[i].onclick = null;
 		links[i].onclick = function (e) { 
+
+			// User given choice to stay on page or discard changes and continue
 			if(confirm('Warning! Your unsaved audio file will be lost. Continue anyway?')) {
-				action; 
+
+				// If they continue, and link is a pres hub link, 
+				// gather its meta data and send an ajax request 
+				if ($(this).hasClass('pres-link')) {
+					url = $(this).attr('_url');
+					direct_to = $(this).attr('_direct_to');
+					target_div = '#page-content';
+					loadXMLDoc(url, target_div, direct_to);
+
+					// Reset links back to original onclick, so there is no confirmation
+					// of navigation once they have moved from the record tab
+					for (var j=0; j<links.length; j++) {
+						links[j].onclick = null;
+						links[j].onclick = function (e) {
+							_url = $(this).attr('_url');
+							_direct_to = $(this).attr('_direct_to');
+							loadXMLDoc(_url, target_div, _direct_to);
+						}
+					} 
+				} // End if pres link
+
+			// User wants to save, keep them on current page and underline recorder
 			} else {
 				clicked = $(this);
 				setTimeout( function () { 
@@ -49,9 +74,9 @@ function disableLinks() {
 				e.preventDefault();
 			}
 				
-		}
-	}
-}
+		} // End first onclick
+	} // End initial for loop
+} // End disableLinks function
 
 
     // stopwatch

@@ -19,13 +19,13 @@
 			<div class="row">
 				<div class="col-lg-12">
 					<ul class="nav nav-tabs">
-						<li class="active" id="dash-link" ><a onclick="loadXMLDoc('/user/presenter/dash/?landing', '#page-content', 'dash')">Dash</a></li>
-						<li id="analytics-link"><a onclick="loadXMLDoc('/user/presenter/dash/?analytics', '#page-content', 'analytics')">Analytics</a></li>
-						<li id="info-link"><a onclick="loadXMLDoc('/user/presenter/dash/?myaccount', '#page-content', 'info')">Bio</a></li>
-						<li id="private-info-link"><a onclick="loadXMLDoc('/user/presenter/dash/?myinfo', '#page-content', 'private' )">Personal</a></li>
-						<li id="sessions-link"> <a onclick="loadXMLDoc('/user/presenter/dash/?mysessions', '#page-content', 'sessions')">Sessions</a></li>
-						<li id="upload-link"><a onclick="loadXMLDoc('/upload/' , '#page-content', 'upload')">Upload</a></li>
-						<li id="record-link"><a onclick="loadXMLDoc('/record/' , '#page-content', 'recorder')">Record</a></li>
+						<li class="active" id="dash-link" ><a class="pres-link" _url='/user/presenter/dash/?landing' _direct_to='dash' onclick="loadXMLDoc('/user/presenter/dash/?landing', '#page-content', 'dash')">Dash</a></li>
+						<li id="analytics-link"><a class="pres-link" _url='/user/presenter/dash/?analytics' _direct_to='analytics' onclick="loadXMLDoc('/user/presenter/dash/?analytics', '#page-content', 'analytics')">Analytics</a></li>
+						<li id="info-link"><a class="pres-link" _url='/user/presenter/dash/?myaccount' _direct_to='info' onclick="loadXMLDoc('/user/presenter/dash/?myaccount', '#page-content', 'info')">Bio</a></li>
+						<li id="private-info-link"><a class="pres-link" _url='/user/presenter/dash/?myinfo' _direct_to='private' onclick="loadXMLDoc('/user/presenter/dash/?myinfo', '#page-content', 'private' )">Personal</a></li>
+						<li id="sessions-link"> <a class="pres-link" _url='/user/presenter/dash/?mysessions' _direct_to='sessions' onclick="loadXMLDoc('/user/presenter/dash/?mysessions', '#page-content', 'sessions')">Sessions</a></li>
+						<li id="upload-link"><a class="pres-link" _url='/upload/', _direct_to='upload' onclick="loadXMLDoc('/upload/' , '#page-content', 'upload')">Upload</a></li>
+						<li id="record-link"><a class="pres-link" _url='/record/' _direct_to='recorder' onclick="loadXMLDoc('/record/' , '#page-content', 'recorder')">Record</a></li>
 					</ul>
 				</div>
 			</div>
