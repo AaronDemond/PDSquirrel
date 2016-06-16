@@ -21,8 +21,7 @@ function delAudio(id) {
 function disableLinks() {
 /* Used to apply a confirmation message to links that navigate a user
    away from the record tab. Call this function when 'saved' becomes false */
-	
-	
+
 	// When drop down is clicked, keep active styling on record tab
 	drop_down_links = $(".dropdown-toggle");
 	for (var i=0; i<drop_down_links.length; i++){
@@ -67,7 +66,7 @@ function disableLinks() {
 			// User wants to save, keep them on current page and underline recorder
 			} else {
 				clicked = $(this);
-				setTimeout( function () { 
+				setTimeout( function () {
 					$('#record-link').addClass('active');
 					clicked.parent().removeClass('active');
 				}, 100 );
@@ -238,9 +237,12 @@ function disableLinks() {
 		alert('getUserMedia not supported in this browser.');
     }
 
+    // edit function currently REMOVED. can be re-added
+
+    /*
     function showData(url, audio_clip_name){
-	/* This function is called when load chosen file btn clicked.
-	 * Loads wav url into editor, only tested with our wavs. */
+	//   This function is called when load chosen file btn clicked.
+	//   Loads wav url into editor, only tested with our wavs.
 
 		if (allowing_mic == true ) {
 			if (saved == false) {
@@ -280,6 +282,7 @@ function disableLinks() {
 			}
 		}
 
+
 		function loaded(evt) {
 			var buffer = reader.result; // buffer of raw wav file data
 
@@ -314,10 +317,11 @@ function disableLinks() {
 			}
 			lcfinal = [];
 			rcfinal = [];
-
+      */
 			/* Creates an array of float32arrays, each 2048 bytes (buffer size) in
 			 * length, this is used because trimming edits the raw left and right
 			 * channels before flattening. */
+       /*
 			for (var i=0; i < (allSamples.length / 4096); i++) {
 				f32a = new Float32Array(lc.slice(i*2048, (i+1) * 2048));
 				lcfinal.push(f32a);
@@ -340,7 +344,7 @@ function disableLinks() {
 			loading_alert.className = 'hidden';
 		} // End of loaded function
 
-    } // End of show data function
+  } */ // End of show data function
 
     /* set start and end values for selection. */
     function setStartMark(){
@@ -500,7 +504,7 @@ function disableLinks() {
 
 		} else { // Record clicked
 			if (allowing_mic == false){
-				getPerm();
+				getPerm(); //What happend to this function...
 			}
 	    	if (aud_name.value == "") {
 				alert("Please enter a name for your recording first");
@@ -630,7 +634,11 @@ function disableLinks() {
 
 		// Creates wav blob from data view
         var blob = new Blob ( [ view ], { type : 'audio/wav' } );
-		//
+        /*
+        alert(blob.size+" bytes");
+        if (blob.size > 524288000) // 500 MiB <- limit in chrome
+          console.log("uh oh...");
+		*/
 	//	var blob = getMp3Blob();
     	var fd = new FormData();
         var url = (window.URL || window.webkitURL).createObjectURL(blob);

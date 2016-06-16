@@ -142,7 +142,7 @@ def dash(request, msg=False):
 
 
         if presenter is not None:
-            context['pd'] = PdSession.objects.filter(presenters=presenter,suspended=False).order_by('-upload_date', 'name')
+            context['pd'] = PdSession.objects.filter(presenters=presenter).order_by('-upload_date', 'name')
             earnings = 0
         if request.POST:
 
