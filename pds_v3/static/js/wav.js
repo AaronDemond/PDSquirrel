@@ -1,21 +1,4 @@
 
-/*
-
-   Script notes
-   ============
-
-   [refactor]
-
-	Needs to be refactored. Too intertwined. Need to properly setup git, then fork this and try to refactor?
-   Script should be broken down into sections. Anything not directly related to the recorder should be moved outside the script tag?
-   Idk though because some of the things, for example the link click, depend on variables initilied within the script tag. Although I think
-   they stay loaded in memory until the page refreshes? I am not sure.
-
-
-*/
-
-
-
 function delAudio(id) {
 // Removes Audio on server and removes html listing
     tr_listing = document.getElementById('rec-'+id);
@@ -35,31 +18,40 @@ function delAudio(id) {
 }
 
 
-$("a").not('#infoLink, .download').click(function(e) {
- // When a link is clicked, confirm twice if the user wants to Save changes.
-  if (saved == false && page == 'recorder' && audio_player.src.startsWith('blob') ) {
-	    confirmation = confirm("Save changes first?");
-	    if (confirmation) {
-		    saveRecording();
-	    } else {
-		confirmation = confirm("Are you sure? Press OK to save changes before leaving, otherwise this recording will be lost.");
-		if (confirmation) {
-		    saveRecording();
+function disableLinks() {
+/* Used to apply a confirmation message to links that navigate a user
+   away from the record tab. Call this function when 'saved' becomes false */
+	
+	drop_down_links = $(".dropdown-toggle");
+	for (var i=0; i<drop_down_links.length; i++){
+		link = drop_down_links[i]
+		action = link.onclick;
+		link.onclick = function (e) {
+			setTimeout( function () {
+				$('#record-link').addClass('active');
+			}, 100);
 		}
-	    }
 	}
 
-	// Close audio context, otherwise page gets incredibly slow and recordings lag.
-	if (page =='recorder' && this.id != 'refresh_link') {
-	    try {
-		context.close();
-		page = null;
-	    } catch(er) {
-		console.log(er);
-	    }
-	    console.log(e);
+	var links = $("a").not('#infoLink, .download, .del-btn, .dropdown-toggle');
+	for (var i=0; i<links.length; i++){
+		action = links[i].onclick;
+		links[i].onclick = null;
+		links[i].onclick = function (e) { 
+			if(confirm('Warning! Your unsaved audio file will be lost. Continue anyway?')) {
+				action; 
+			} else {
+				clicked = $(this);
+				setTimeout( function () { 
+					$('#record-link').addClass('active');
+					clicked.parent().removeClass('active');
+				}, 100 );
+				e.preventDefault();
+			}
+				
+		}
 	}
-});
+}
 
 
     // stopwatch
@@ -149,7 +141,6 @@ $("a").not('#infoLink, .download').click(function(e) {
 
     // Script global vars
     var container = document.getElementById('main-content');
-    var refresh_link = document.getElementById('refresh_link');
     var outputElement = document.getElementById('output');
     var audio_player = document.getElementById("player");
     var page = 'recorder';
@@ -361,17 +352,17 @@ $("a").not('#infoLink, .download').click(function(e) {
 		}
 	  });
 
-    if (!confirmed) {
-    	return false;
-    } try {
-	    createWavBlob();
-	    saved = true;
-	} catch (err) {
-	    console.log("error saving");
-		console.log(err);
-	}
+		if (!confirmed) {
+			return false;
+		} try {
+			createWavBlob();
+			saved = true;
+		} catch (err) {
+			console.log("error saving");
+			console.log(err);
+		}
 
-  reset();
+  		reset();
     }
 
     /* Helper functions */
@@ -426,13 +417,13 @@ $("a").not('#infoLink, .download').click(function(e) {
 
 	// Makes sure player doesnt exceed end time
 	ct = setInterval(checkTime, 50);
-    	function checkTime() {
-    	    if (audio_player.currentTime > ebox.value) {
-        		window.clearInterval(ct);
-        		audio_player.pause();
-    	    }
-    	}
-    }
+	function checkTime() {
+		if (audio_player.currentTime > ebox.value) {
+			window.clearInterval(ct);
+			audio_player.pause();
+		}
+	}
+   }
 
 
 
@@ -491,6 +482,7 @@ $("a").not('#infoLink, .download').click(function(e) {
 				return false;
 			}
 			saved = false;
+			disableLinks();
 
 			// get length of recording, in case its imported and just to keep it accurate
 			var time = isNaN(audio_player.duration) ? 0 : Math.round(audio_player.duration * 1000);
@@ -652,7 +644,7 @@ $("a").not('#infoLink, .download').click(function(e) {
 			pda_obj = this_audio[0]
 			console.log(pda_obj.fields);
 			alert("Upload Successful");
-			refresh_link.click();
+			window.location.replace("/user/presenter/dash/?direct_to=recorder");
 			outputElement.innerHTML = "Upload complete, It will appear below when you revisit this page";
 			},
 			error: function(data) {
