@@ -179,7 +179,7 @@
 					<p id="pd-description-small">{{pd.description|truncatewords:"35"}}</p>
 					<p id="pd-description-full" class="hidden">{{pd.description}}</p>
 					{% if pd.getDescriptionWordCount > 35 %}
-					<a id="more-btn" style="float:right" onclick="showDescription()">Show More</a>
+					<a id="more-btn" class="pull-right" onclick="showDescription()">Show More</a>
 					{% endif %}
 
 					{% if pd.attachments.all.count > 0 %}
@@ -241,7 +241,7 @@
 					<table class="table">
 						<tr>
 							<td>
-								<a href = "/pd{% url 'accred' pd.id %}{{request.user.profile.society.all.0.id}}/" target="_blank">CPD eligibility for your law society</a></td>
+								<a href = "/pd{% url 'accred' pd.id %}{{request.user.profile.society.all.0.id}}" target="_blank">CPD eligibility for your law society</a></td>
 							</td>
 						</tr>
 					</table>
