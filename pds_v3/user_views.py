@@ -16,10 +16,6 @@ import json, uuid, random, string, stripe, urllib, re
 import stripe
 stripe.api_key = "sk_test_Rxq0kWwzxNPQfOSCEsAjVd7e"
 
-'''
-Any method with ajax appended to its name will return a boolean value based on the inputs given.
-I should write tests for these too.
-'''
 
 from django.contrib.auth import authenticate, login, logout
 
@@ -32,7 +28,7 @@ def activate(request, link_id):
     user.is_active = True
     user.save()
     context = {'msg' : []}
-    context['msg'].append({'type' : 'success', 'body' : 'Account activation successful. Thanks for choosing us, and weclome to PD Squirrel.<br>We have credited your account with one free member credit that may be used for any PD Session of your choice. <br><br>Sign in below to browse, choose and listen.'})
+    context['msg'].append({'type' : 'success', 'body' : 'Account activation successful. Sign in below using your email address. Thanks for choosing us, and weclome to PD Squirrel.<br>We have credited your account with one free member credit that may be used for any PD Session of your choice.'})
     return render(request, 'v3/final/login-new.html', context)
 
 def login_user(request):
@@ -193,7 +189,7 @@ def join(request):
             password = hashers.make_password(password)
             profile = AppUser.create(first_name=first_name,last_name=last_name, email=email,
                                   password=password,terms=terms, society=society)
-            msg = "Welcome to PD Squirrel!\n\nPlease click on the following link to activate your membership account: https://pdsquirrel.ca/user/activate/%s\n\nThanks,\n\nThe PD Squirrel admin team" % (str(profile.user.id) + "/")
+            msg = "Hello " + first_name + " " + last_name + ", and welcome to PD Squirrel!\n\nPlease click on the following link and use your email address to activate your membership account: https://pdsquirrel.ca/user/activate/%s\n\nThanks,\nThe PD Squirrel admin team" % (str(profile.user.id) + "/")
             send_mail('PD Squirrel Activation', msg, 'noreply@pdsquirrel.ca', [profile.user.email], fail_silently=False)
 
             send_mail('PD Squirrel Activation', msg, 'noreply@pdsquirrel.ca', ['demondsoftware@gmail.com'], fail_silently=False)

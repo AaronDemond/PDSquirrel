@@ -5,4 +5,8 @@ label {
 .submit-fix {
   margin-top: 10px; }
 
+  input {
+	  height: auto;
+  }
+
 /*# sourceMappingURL=presenter-hub.css.map */
