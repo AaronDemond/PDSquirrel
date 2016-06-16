@@ -47,15 +47,19 @@
 										Awaiting your release
 									{% endif %}
                                 {% elif sesh.edited %}
-									{% if sesh.approved %}
+									{% if sesh.suspended %}
+										Removed
+									{% elif sesh.approved %}
 										Listed
 									{% else %}
 										Session processing
-									{%endif %}
+									{% endif %}
                                 {% elif sesh.approved == False %}
 									Session processing
+																{% elif sesh.suspended %}
+																	Removed
                                 {% else %}
-									Listed
+																	Listed
                                 {% endif %}
                                 <a class="status-link" onclick="showStatus({{sesh.id}}, this)">(info ▾)</a>
                             </p>
@@ -69,6 +73,10 @@
                                 <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 67%;">
                                     <span class="sr-only">2/3 Complete</span>
                                 </div>
+																{% elif sesh.suspended %}
+																<div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 100%;">
+																		<span class="sr-only">Removed</span>
+																</div>
                                 {% elif sesh.approved %}
                                 <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 100%;">
                                     <span class="sr-only">Complete</span>
@@ -89,8 +97,10 @@
                         <a class=""  onclick="loadXMLDoc('{% url 'preview-session' sesh.id %}', '#page-content')">Preview</a>
 						{% endif %}
                         <a class="" onclick="loadXMLDoc('{% url 'edit' sesh.id %}', '#page-content')">Edit</a>
+												{% if sesh.suspended == False %}
                         <a class="suspend-link" onclick="showRemove({{sesh.id}}, this)" >Remove ▾</a>
-                        {% if sesh.presenter_approved == False %}
+												{% endif %}
+												{% if sesh.presenter_approved == False %}
                         <form action="{% url 'presenter-dash' %}" method="POST" style="float: left; margin-right: 5px;">
                             {% csrf_token %}
                             <input type="hidden" name="session_id" value="{{sesh.id}}">
@@ -203,7 +213,11 @@
 
                             {% elif sesh.approved == False %}
                             <p>Thank you for releasing this PD Session to us. Once reviewed and accepted by us, in accordance with our Presenter terms and conditions, it will be listed on the Site and offered to all PD Squirrel members.</p>
-                            {% else %}
+														{% elif sesh.suspended %}
+														<p>
+															This PD Session has been removed by you. It is no longer listed on PDsquirrel and cannot be purchased.
+														</p>
+														{% else %}
 <p>
     This PD Session has been released by you and accepted by us. It is now listed on the Site and
 
