@@ -322,19 +322,23 @@ def dash(request, msg=False):
                         return HttpResponseRedirect('/user/presenter/dash/?direct_to=upload')
 
 
-                    #get length if it is mp3.. need to convert wav
+
+                    # get an MP3 object (mutagen lib)
                     if audio_file.name.lower().endswith(('.mp3')):
-                        song = MP3(new_session.audio_file.name)
-                        seconds = song.info.length
-                        m, s = divmod(seconds, 60)
-                        h, m = divmod(m, 60)
-                        new_session.duration = "%02d:%02d" % (m, s)
-                        new_session.save()
+                        mp3_obj = MP3(new_session.audio_file.name)
                     else:
                         subprocess.call(('lame --preset insane %s' % new_session.audio_file.name), shell=True)
                         new_path = new_session.audio_file.name[:-3] + 'mp3'
+                        mp3_obj = MP3(new_path)
                         new_session.audio_file = new_path
                         new_session.save()
+
+                    # get the duration
+                    seconds = mp3_obj.info.length
+                    m, s = divmod(seconds, 60)
+                    h, m = divmod(m, 60)
+                    new_session.duration = "%02d:%02d" % (m, s)
+                    new_session.save()
 
                 new_session.save()
                 for sub_id in subjects:
