@@ -34,7 +34,7 @@ function disableLinks() {
 	}
 	
 
-	var links = $("a").not('#infoLink, .download, .del-btn, .dropdown-toggle');
+	var links = $("a").not('#infoLink, .download, .del-btn, .dropdown-toggle, #dl');
 	for (var i=0; i<links.length; i++){
 		links[i].onclick = null;
 		links[i].onclick = function (e) { 
@@ -209,6 +209,7 @@ function disableLinks() {
     var editing = null;
     var edited_name = null;
     var allowing_mic = false;
+	var local_download_url = null;
 
 	function getMp3Blob() {
 		all_data = new Float32Array(leftBuffer);
@@ -276,7 +277,7 @@ function disableLinks() {
 	  var confirmed = true;
 	  $(".recording_name").each(function() {
 		if ($(this).text() == filename) {
-		  if (!confirm("A file already has that name are you sure you wanna overwrite it?")) {
+		  if (!confirm("A file already has that name are you sure you want to overwrite it?")) {
 			confirmed= false;
 		  }
 		}
@@ -297,8 +298,8 @@ function disableLinks() {
 
     /* Helper functions */
     function clearRange() {
-	ebox.value = 0;
-	sbox.value = 0;
+		ebox.value = 0;
+		sbox.value = 0;
     }
 
     function delete_curr_audio() {
@@ -524,6 +525,7 @@ function disableLinks() {
 	// Create wav url & download link
         var blob = new Blob ( [ view ], { type : 'audio/wav' } );
         var url = (window.URL || window.webkitURL).createObjectURL(blob);
+		local_download_url = url;
         $('#player').attr("src" , url);
         $('#dl').attr("href", url);
     }
@@ -561,9 +563,13 @@ function disableLinks() {
 		console.log('loading.');
 
 
-
 		var mc = document.getElementById('main-content');
-		mc.innerHTML = 'Saving, this may take a few moments..';
+		var page_content = document.getElementById('page-content');
+
+		page_content.innerHTML = '<div class="col-lg-10 col-lg-offset-1" >Saving, this may take a few moments.. </div>';
+		local_download_url = url;
+
+
 		$.ajax({
 			type: 'POST',
 			url: '/record/',
@@ -571,18 +577,22 @@ function disableLinks() {
 			processData: false,
 			contentType: false,
 			success: function(data) {
-			// If POST succesfull, return json for that rec.
-			var this_audio = JSON.parse(data);
-			console.log(this_audio[0]); // fields_obj, model_str, pk_id
-			pda_obj = this_audio[0]
-			console.log(pda_obj.fields);
-			alert("Upload Successful");
-			window.location.replace("/user/presenter/dash/?direct_to=recorder");
-			outputElement.innerHTML = "Upload complete, It will appear below when you revisit this page";
+				// If POST succesfull, return json for that rec.
+				var this_audio = JSON.parse(data);
+				console.log(this_audio[0]); // fields_obj, model_str, pk_id
+				pda_obj = this_audio[0]
+				console.log(pda_obj.fields);
+				alert("Upload Successful");
+				window.location.replace("/user/presenter/dash/?direct_to=recorder");
 			},
 			error: function(data) {
 			// Note: debug this by displaying data. It will display django error message.
-				alert("Error saving file. We recommend you download this file so it isn't lost.");
+				alert("Error uploading audio file. We recommend you download this file using the link below, otherwise it will be lost.");
+				// Display download link to wav
+				page_content.innerHTML ='<div class="col-lg-10 col-lg-offset-1" ><a href="' +
+				   	local_download_url + '" download="' + 
+					name + 
+					'.wav" >Click here to download audio</a></div>';
 			}
 		});
     }
