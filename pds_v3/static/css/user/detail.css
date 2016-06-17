@@ -127,4 +127,11 @@ h4 {
 
 .comment-input {
 	border-radius: 0;
-}	
+}
+
+/* Firefox override on comments buttons because they are different sizes */
+@-moz-document url-prefix() {
+	.cancel-comment-btn {
+		height: 24px !important;
+	}
+}
