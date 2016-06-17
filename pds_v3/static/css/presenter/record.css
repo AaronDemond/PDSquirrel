@@ -5,4 +5,11 @@
 }
 label {
     color: rgb(113, 113, 113);
+		padding-left: 0px !important;
+		padding-right: 0px !important;
+	}
+}
+
+.input-group-style {
+	padding: 0px;
 }
