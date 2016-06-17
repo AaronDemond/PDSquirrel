@@ -3,7 +3,26 @@
 {# NOTE: if this page is not working, re dump this script at bottom: #}
 <script src="{% static 'js/presenter/record.js' %}"></script>
 <script src="/static/js/wav.js"></script> {# recorder script #}
+<link rel="stylesheet" href="{% static 'css/presenter/record.css' %}">
+<div class="main col-lg-10 col-lg-offset-1 hidden" id="loader"> 
+		<div class="small1">
+			<div class="small ball smallball1"></div>
+			<div class="small ball smallball2"></div>
+			<div class="small ball smallball3"></div>
+			<div class="small ball smallball4"></div>
+		</div>
+		<div class="small2">
+			<div class="small ball smallball5"></div>
+			<div class="small ball smallball6"></div>
+			<div class="small ball smallball7"></div>
+			<div class="small ball smallball8"></div>
+		</div>
+		<div class="bigcon">
+			<div class="big ball"></div>
+		</div>
+	</div>
 <div class="col-lg-9 col-lg-offset-1" id="container">
+
 	<h4>Record a new session <small><a class="status-link" onclick="showInfo(this)" id="infoLink">(info ▾)</a></small></h4>
 	<hr>
     <div class="row">
@@ -94,6 +113,8 @@
 	    </div>
 	</div>
     </div>
+	
+
     <div class="row">
         <div class="col-lg-12" style="margin-top: 30px">
 		<hr>
@@ -116,4 +137,5 @@
             <div id="debug"></div>
         </div>
     </div>
+
 </div>

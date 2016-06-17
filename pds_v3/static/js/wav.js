@@ -558,15 +558,15 @@ function disableLinks() {
     	fd.append('name', name);
 
 		// Post to server. Alert on failure.
-		// TODO local file editing.. maybe
-
-		console.log('loading.');
-
-
 		var mc = document.getElementById('main-content');
 		var page_content = document.getElementById('page-content');
+		var container = document.getElementById('container');
 
-		page_content.innerHTML = '<div class="col-lg-10 col-lg-offset-1" >Saving, this may take a few moments.. </div>';
+		// Show loader
+		$('#loader').removeClass('hidden');
+		container.innerHTML = '';
+
+		//get url for download if post fails
 		local_download_url = url;
 
 
@@ -581,13 +581,12 @@ function disableLinks() {
 				var this_audio = JSON.parse(data);
 				console.log(this_audio[0]); // fields_obj, model_str, pk_id
 				pda_obj = this_audio[0]
-				console.log(pda_obj.fields);
 				alert("Upload Successful");
 				window.location.replace("/user/presenter/dash/?direct_to=recorder");
 			},
 			error: function(data) {
-			// Note: debug this by displaying data. It will display django error message.
 				alert("Error uploading audio file. We recommend you download this file using the link below, otherwise it will be lost.");
+
 				// Display download link to wav
 				page_content.innerHTML ='<div class="col-lg-10 col-lg-offset-1" ><a href="' +
 				   	local_download_url + '" download="' + 
