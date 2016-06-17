@@ -1,4 +1,3 @@
-
 function delAudio(id) {
 // Removes Audio on server and removes html listing
     tr_listing = document.getElementById('rec-'+id);
@@ -43,6 +42,16 @@ function disableLinks() {
 			// User given choice to stay on page or discard changes and continue
 			if(confirm('Warning! Your unsaved audio file will be lost. Continue anyway?')) {
 
+
+				// Clear recording data and close the audio context
+				pauseClick();
+				audio_player.pause();
+				audio_player.src = '';
+				reset();
+				leftchannel = [];
+				rightchannel = [];
+				context.close();
+
 				// If they continue, and link is a pres hub link, 
 				// gather its meta data and send an ajax request 
 				if ($(this).hasClass('pres-link')) {
@@ -50,6 +59,7 @@ function disableLinks() {
 					direct_to = $(this).attr('_direct_to');
 					target_div = '#page-content';
 					loadXMLDoc(url, target_div, direct_to);
+
 
 					// Reset links back to original onclick, so there is no confirmation
 					// of navigation once they have moved from the record tab
@@ -72,9 +82,8 @@ function disableLinks() {
 				}, 100 );
 				e.preventDefault();
 			}
-				
-		} // End first onclick
-	} // End initial for loop
+		}
+	}
 } // End disableLinks function
 
 
@@ -237,115 +246,7 @@ function disableLinks() {
 		alert('getUserMedia not supported in this browser.');
     }
 
-    // edit function currently REMOVED. can be re-added
-
-    /*
-    function showData(url, audio_clip_name){
-	//   This function is called when load chosen file btn clicked.
-	//   Loads wav url into editor, only tested with our wavs.
-
-		if (allowing_mic == true ) {
-			if (saved == false) {
-				if(!confirm('Continue? You will lose unsaved work.')) {
-					return false;
-				}
-			}
-
-			aud_name.value = audio_clip_name;
-			edited_name = audio_clip_name;
-			editing = true;
-
-			saved = false;
-
-			//var url = '/audio_files/blob_KIC6c8L';
-			var req = new XMLHttpRequest();
-			req.responseType = "arraybuffer";
-			var reader = null;
-			var debug = document.getElementById('debug');
-			req.open('GET', url, true);
-			req.send();
-
-			// Give loading feedback. TODO: sub in blue wheel
-			audio_player.hidden = true;
-			pause_btn.disabled = true;
-			rec_btn.disabled = true;
-			save_btn.disabled = true;
-			loading_alert.className = '';
-
-			req.onload = function(e) {
-
-				fileblob = new Blob([req.response], {type : "audio/wav"});
-				reader = new FileReader();
-				reader.readAsArrayBuffer(fileblob);
-				reader.onload = loaded;
-
-			}
-		}
-
-
-		function loaded(evt) {
-			var buffer = reader.result; // buffer of raw wav file data
-
-			var localview = new DataView(buffer);
-			var fmt_chunk_size = localview.getUint32(16, true); // size, in bytes, of fmt data chunk.
-			var header_chunk_size = 28 + fmt_chunk_size; // in bytes, of the header. Typically 44
-			var lc = [];
-
-			// Number of samples. Sample is 32 bits long. (Two 16 bit audio samples)
-			num_samples = localview.getUint32(40, true); // Number of samples
-
-			console.log("header_chunk_size: ");
-			console.log(header_chunk_size);
-
-			("buffer byte length");
-			console.log(buffer.byteLength);
-
-			// Determin how much to take off of buffer. it must fit perfectly for Int16Array
-			var adjusted_length;
-			if (buffer.byteLength % 2 != 0) {
-				adjusted_length = buffer.byteLength - (header_chunk_size + 1);
-			} else {
-				adjusted_length = buffer.byteLength - header_chunk_size
-			}
-			adjusted_length = adjusted_length / 2;
-			var allSamples = new Int16Array(buffer, header_chunk_size, adjusted_length);
-			console.log(allSamples);
-
-			// Gets all sampled data, converts it to a float32
-			for (var k=0; k < allSamples.length / 2; k++){
-				lc[k] = allSamples[k*2] / 0x7FFF;
-			}
-			lcfinal = [];
-			rcfinal = [];
-      */
-			/* Creates an array of float32arrays, each 2048 bytes (buffer size) in
-			 * length, this is used because trimming edits the raw left and right
-			 * channels before flattening. */
-       /*
-			for (var i=0; i < (allSamples.length / 4096); i++) {
-				f32a = new Float32Array(lc.slice(i*2048, (i+1) * 2048));
-				lcfinal.push(f32a);
-				rcfinal.push(f32a);
-			}
-
-			// Flatten and build wav
-			leftchannel = lcfinal;
-			rightchannel = rcfinal;
-			var leftBuffer = mergeBuffers(leftchannel, 0);
-			var rightBuffer = mergeBuffers(rightchannel, 0);
-			interleaved = interleave(leftBuffer, rightBuffer);
-			buildLocalWav();
-
-
-			audio_player.hidden = false;
-			pause_btn.disabled = false;
-			rec_btn.disabled = false;
-			save_btn.disabled = false;
-			loading_alert.className = 'hidden';
-		} // End of loaded function
-
-  } */ // End of show data function
-
+  
     /* set start and end values for selection. */
     function setStartMark(){
         sbox.value = audio_player.currentTime.toFixed(2);
@@ -395,7 +296,6 @@ function disableLinks() {
     }
 
     /* Helper functions */
-    // Clear range
     function clearRange() {
 	ebox.value = 0;
 	sbox.value = 0;
