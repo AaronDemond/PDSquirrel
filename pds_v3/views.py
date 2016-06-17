@@ -194,7 +194,7 @@ def getAttachment(request, a_id):
         created_sessions = request.user.presenter.pdsession_set.all()
         owned_sessions = list(chain(created_sessions, owned_sessions))
 
-    if pd in owned_sessions:
+    if pd in owned_sessions or request.user.is_superuser:
         name = attachment.filename()
         response = HttpResponse()
         response["Content-Disposition"] = "attachment; filename={0}".format(name)
@@ -206,7 +206,7 @@ def getAttachment(request, a_id):
 def getRecordingMp3(request, audio_id):
     pdaudio = PdAudio.objects.get(pk=audio_id)
     owned_recordings = request.user.profile.pdaudio_set.all()
-    if pdaudio in owned_recordings:
+    if pdaudio in owned_recordings or request.user.is_superuser:
         name = os.path.basename(pdaudio.getMp3Location())
         print name
 
@@ -229,7 +229,7 @@ def getAudio(request, pd_id):
         owned_sessions = list(chain(created_sessions, owned_sessions))
 
     if request.user.is_authenticated():
-        if pd in owned_sessions:
+        if pd in owned_sessions or request.user.is_superuser:
             if pd.pdaudio:
                 name = os.path.basename(pd.getAudioLocation())
             else:
@@ -263,8 +263,11 @@ def detail(request, pd_id):
         if pd in owned_sessions:
                 own = 1
 
-
         context['customer'] = stripe.Customer.retrieve(request.user.profile.stripe_id)
+
+    if request.user.is_superuser:
+        own = 1
+
     context['own'] = own
 
     if pd.suspended == True and own == 0:
