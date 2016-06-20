@@ -1,7 +1,7 @@
 .timebox {
 	padding-bottom: 3px;
 	width: 70px;
-	height: 30px;
+	height: 34px;
 }
 label {
     color: rgb(113, 113, 113);
@@ -14,7 +14,7 @@ label {
 }
 
  #loader {
-	margin-top: 100px;	
+	margin-top: 100px;
  }
 
 .small2 {
@@ -147,5 +147,3 @@ label {
 transform: scale(1);
      background-color: #46b9ff;
   }
-
-
