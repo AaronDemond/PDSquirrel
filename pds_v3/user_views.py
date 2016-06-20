@@ -47,9 +47,11 @@ def login_user(request):
         else:
             return HttpResponse("user not active")
     else:
-        context = { 'msg' : []}
-        context['msg'].append({'type' : 'da'})
-        return HttpResponse("incorrect sign-in credentials")
+        if 'type' in request.POST:
+            messages.error(request, 'Incorrect login credentials')
+            return render(request, 'v3/final/login-new.html')
+        else:
+            return HttpResponse("incorrect sign-in credentials")
 
 def logout_user(request):
     logout(request)
