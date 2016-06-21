@@ -63,13 +63,17 @@ float: left;
 #session-details {
 	margin-top:20px
 }
+
+#confirm-purchase-btn {
+	margin-left: 10px;
+}
 table {
 	line-height: normal;
 	font-size: 14px;
 }
-
 #form-submit {
   margin-top: 20px;
+  padding-left: 30px;
 }
 
 #new-card {

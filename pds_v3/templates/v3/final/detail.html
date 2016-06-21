@@ -15,8 +15,8 @@
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
 				<h3>{{ pd }}</h3>
-				<p id="payment-method" class="help-text">Select a payment method</p>
 				<hr>
+				<h4>Select a payment method</h4>
 				<form method="POST" id="payment-form" action="{% url 'payment-process' %}">
 					{% csrf_token %}
 					<input type="hidden" name="pd_id" value="{{ pd.id }}">
@@ -70,10 +70,10 @@
 							</div>
 						</div>
 						<div id="form-submit" class="col-lg-12">
-							<hr>
 
 							<button type="submit" class="btn btn-primary">Continue</button>
 							<button class="btn btn-default" id="cancel_btn_one">Cancel</button>
+							<hr>
 						</div>
 					</div>
 				</form>
