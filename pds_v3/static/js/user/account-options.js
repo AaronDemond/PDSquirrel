@@ -136,3 +136,11 @@ $(".memsubmit").click(function() {
 function memsubform() {
     $("#memform").submit();
 }
+
+$('#cancel_btn').click(function(e) {
+	$('#myModal').modal('toggle');
+	$("form#payment-form :input").each( function() {
+		$(this).val('');
+	});
+
+});
