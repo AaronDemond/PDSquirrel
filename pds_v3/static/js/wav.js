@@ -222,12 +222,14 @@ function disableLinks() {
 		return mp3_blob;
 	}
 
+/* before page is unloaded creates a pop-up
+
     onbeforeunload = function() {
       if (!saved) {
         return 'Warning! Your unsaved audio file will be lost.';
       }
     }
-
+*/
     audio_player.ondurationchange = function() {
       var time = isNaN(audio_player.duration) ? 0 : Math.round(audio_player.duration * 1000);
       recorder_timer.set_time(time);
