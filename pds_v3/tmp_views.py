@@ -6,9 +6,11 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.models import User
 from pds_v3.models import PdSession, AppUser, LawSociety, LawSocietyOverride, Purchase
 
+"""
+# Page merged into
 def about(request):
     return render(request, 'v3/final/about.html')
-
+"""
 def learn(request):
     return render(request, 'v3/final/learn.html')
 

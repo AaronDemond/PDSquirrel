@@ -12,7 +12,7 @@ function delAudio(id) {
 	      alert("success");
 	      outputElement.innerHTML = "Audio succesfully deleted";
 	  },
-	});
+	})
     }
 }
 
@@ -32,12 +32,12 @@ function disableLinks() {
 			}, 100);
 		}
 	}
-	
+
 
 	var links = $("a").not('#infoLink, .download, .del-btn, .dropdown-toggle, #dl');
 	for (var i=0; i<links.length; i++){
 		links[i].onclick = null;
-		links[i].onclick = function (e) { 
+		links[i].onclick = function (e) {
 
 			// User given choice to stay on page or discard changes and continue
 			if(confirm('Warning! Your unsaved audio file will be lost. Continue anyway?')) {
@@ -52,8 +52,8 @@ function disableLinks() {
 				rightchannel = [];
 				context.close();
 
-				// If they continue, and link is a pres hub link, 
-				// gather its meta data and send an ajax request 
+				// If they continue, and link is a pres hub link,
+				// gather its meta data and send an ajax request
 				if ($(this).hasClass('pres-link')) {
 					url = $(this).attr('_url');
 					direct_to = $(this).attr('_direct_to');
@@ -70,7 +70,7 @@ function disableLinks() {
 							_direct_to = $(this).attr('_direct_to');
 							loadXMLDoc(_url, target_div, _direct_to);
 						}
-					} 
+					}
 				} // End if pres link
 
 			// User wants to save, keep them on current page and underline recorder
@@ -208,7 +208,6 @@ function disableLinks() {
     var saved = null;
     var editing = null;
     var edited_name = null;
-    var allowing_mic = false;
 	var local_download_url = null;
 
 	function getMp3Blob() {
@@ -223,8 +222,14 @@ function disableLinks() {
 		return mp3_blob;
 	}
 
+/* before page is unloaded creates a pop-up
 
-
+    onbeforeunload = function() {
+      if (!saved) {
+        return 'Warning! Your unsaved audio file will be lost.';
+      }
+    }
+*/
     audio_player.ondurationchange = function() {
       var time = isNaN(audio_player.duration) ? 0 : Math.round(audio_player.duration * 1000);
       recorder_timer.set_time(time);
@@ -247,7 +252,7 @@ function disableLinks() {
 		alert('getUserMedia not supported in this browser.');
     }
 
-  
+
     /* set start and end values for selection. */
     function setStartMark(){
         sbox.value = audio_player.currentTime.toFixed(2);
@@ -404,10 +409,7 @@ function disableLinks() {
 			outputElement.innerHTML = '';
 
 		} else { // Record clicked
-			if (allowing_mic == false){
-				getPerm(); //What happend to this function...
-			}
-	    	if (aud_name.value == "") {
+    	if (aud_name.value == "") {
 				alert("Please enter a name for your recording first");
 				return false;
 			}
@@ -589,8 +591,8 @@ function disableLinks() {
 
 				// Display download link to wav
 				page_content.innerHTML ='<div class="col-lg-10 col-lg-offset-1" ><a href="' +
-				   	local_download_url + '" download="' + 
-					name + 
+				   	local_download_url + '" download="' +
+					name +
 					'.wav" >Click here to download audio</a></div>';
 			}
 		});
@@ -633,8 +635,6 @@ function disableLinks() {
     }
 
     function success(e){
-		allowing_mic = true; //Only check for microphone if this flag is off. first time rec btn clicked.
-		console.log(allowing_mic);
 
 		/* creates audio context, which provides info such as sample rate and access to the source
 		stream */

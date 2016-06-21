@@ -236,7 +236,7 @@ def dash(request, msg=False):
             if 'suspend-request' in request.POST:
                 pd = PdSession.objects.get(pk=request.POST['session_id'])
                 messages.add_message(request, messages.SUCCESS, 'Session Removed')
-                if pd.presenter_approved == False:
+                if pd.approved == False:
                     pd.delete()
                 else:
                     pd.suspended = True

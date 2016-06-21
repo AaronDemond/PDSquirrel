@@ -4,6 +4,9 @@ label {
 .control-group {
 	margin-bottom: 20px;
 }
+.ctrl-group-tight {
+	margin-bottom: 0px;
+}
 
 .file-input {
 	height: auto;
