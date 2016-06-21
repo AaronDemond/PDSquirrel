@@ -301,6 +301,7 @@ def dash(request, msg=False):
                     pdaud = PdAudio.objects.get(pk=int(pdaud))
                     pdaud.used = True
                     pdaud.save();
+                    mp3_obj = MP3(pdaud.getMp3Location())
                     new_session = PdSession(name=pd_name,description=pd_description, pdaudio=pdaud, approved=False)
                     counter = 1 #file counter. 1 if pd audio, 0 if audio from client pc
                 else:
@@ -333,12 +334,12 @@ def dash(request, msg=False):
                         new_session.audio_file = new_path
                         new_session.save()
 
-                    # get the duration
-                    seconds = mp3_obj.info.length
-                    m, s = divmod(seconds, 60)
-                    h, m = divmod(m, 60)
-                    new_session.duration = "%02d:%02d" % (m, s)
-                    new_session.save()
+                # get the duration
+                seconds = mp3_obj.info.length
+                m, s = divmod(seconds, 60)
+                h, m = divmod(m, 60)
+                new_session.duration = "%02d:%02d" % (m, s)
+                new_session.save()
 
                 new_session.save()
                 for sub_id in subjects:
