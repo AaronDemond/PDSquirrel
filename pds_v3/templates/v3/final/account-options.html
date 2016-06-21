@@ -118,7 +118,10 @@ payments from our PD Squirrel members. None of your sensitive information is sto
                 <td>{{user.profile.date_joined|remove_time}}</td>
             </tr>
             <tr>
-                <td class='col1'>My cards <a onclick="showPaymentInfo()">(more information)</a></td>
+                <td class='col1'>My cards <a onclick="showPaymentInfo()">(more information)</a>
+					<br>
+					<a onclick="showStripeInformation()">Payment proccessing information</a>
+				</td>
                 <td id="card-cell">
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Add Card</button>
 										<hr>
@@ -141,6 +144,17 @@ payments from our PD Squirrel members. None of your sensitive information is sto
             </table>
 
             <!-- More Information -->
+<div class="alert alert-info hidden" id="stripe-info">
+	<p>Stripe information</p>
+
+                <div class="row">
+                    <div class="col-xs-12">
+                        <p class="pull-right">
+                            <button id="showPayment" class="btn btn-default" onclick="showStripeInformation()" >Cancel</button>
+                        </p>
+                    </div>
+                </div>
+            </div>
 
 						<div class="alert alert-info hidden" id="payment-info">
 								<p>

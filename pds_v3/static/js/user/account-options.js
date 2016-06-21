@@ -93,6 +93,19 @@ function showPaymentInfo() {
   $('#change-membership').addClass('hidden');
   $('#membership-type-info').addClass('hidden');
   $('#payment-info').toggleClass('hidden');
+  $('#stripe-info').addClass('hidden');
+}
+
+function showStripeInformation() {
+  $('#change-default').addClass('hidden');
+  $("#btnholder").empty();
+  $('#credit-info').addClass('hidden');
+  $('#change-membership').addClass('hidden');
+  $('#membership-type-info').addClass('hidden');
+  $('#payment-info').addClass('hidden');
+  $('#stripe-info').toggleClass('hidden');
+
+
 }
 function showChangeDefault() {
   $('#change-membership').addClass('hidden');
@@ -100,6 +113,7 @@ function showChangeDefault() {
   $('#payment-info').addClass('hidden');
   $('#credit-info').addClass('hidden');
   $('#change-default').toggleClass('hidden');
+  $('#stripe-info').addClass('hidden');
 
 }
 function showCreditInfo() {
@@ -109,6 +123,7 @@ function showCreditInfo() {
   $('#membership-type-info').addClass('hidden');
   $('#payment-info').addClass('hidden');
   $('#credit-info').toggleClass('hidden');
+  $('#stripe-info').addClass('hidden');
 }
 function showChangeMembership() {
   $('#change-default').addClass('hidden');
@@ -117,6 +132,7 @@ function showChangeMembership() {
   $('#membership-type-info').addClass('hidden');
   $('#credit-info').addClass('hidden');
   $('#change-membership').toggleClass('hidden');
+  $('#stripe-info').addClass('hidden');
 }
 function showMembershipTypeInfo() {
   $('#change-default').addClass('hidden');
@@ -125,6 +141,7 @@ function showMembershipTypeInfo() {
   $('#credit-info').addClass('hidden');
   $('#change-membership').addClass('hidden');
   $('#membership-type-info').toggleClass('hidden');
+  $('#stripe-info').addClass('hidden');
 
 }
 
