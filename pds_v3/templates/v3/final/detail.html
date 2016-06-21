@@ -221,18 +221,22 @@
 								{% endfor %}
 							</td>
 						</tr>
+            {% if own != 1 %}
 						<tr>
 						   <td>Language</td>
 						   <td>English</td>
 						</tr>
+            {% endif %}
 						<tr>
 						   <td>Duration (minutes)</td>
 						   <td>{{pd.duration}}</td>
 						</tr>
+            {% if own != 1 %}
 						<tr>
 						   <td>Price (GST/HST included)</td>
 							<td>${{ pd.price|show_cents }}</td>
 						</tr>
+            {% endif %}
 						<tr>
 							<td>Unique number</td>
 							<td>100{{ pd.id }}15</td>
