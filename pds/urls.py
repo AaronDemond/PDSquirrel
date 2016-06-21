@@ -74,6 +74,7 @@ urlpatterns = [
 
     url(r'^audio/(?P<pd_id>\d+)/$', views.getAudio, name="audio"),
     url(r'^recording/(?P<audio_id>\d+)/$', views.getRecordingMp3, name="recording"),
+    url(r'^wav/(?P<audio_id>\d+)/$', views.getRecordingWav, name="recording-wav"),
     url(r'^attachment/(?P<a_id>\d+)/$', views.getAttachment, name="attachment"),
 
 ]

@@ -413,8 +413,8 @@ def edit(request, id):
 
 
             #gather post data
-            name = pd.name # Do not allow editing titles
             description = request.POST['description']
+            name = request.POST.get('name', pd.name)
             subjects = request.POST.getlist('subjects')
 
             if not subjects:
@@ -461,6 +461,7 @@ def edit(request, id):
             # An edit now directly updates the model
             # Consider saving the original ..?
             #pd.subject = edit.subjects.all()
+            pd.name = edit.name
             pd.description = edit.description
             pd.save()
             messages.success(request,'Edit successful.')
@@ -472,6 +473,7 @@ def edit(request, id):
             edit = pd.edits.latest('date')
             pd.name=edit.name
             pd.description=edit.description
+
             context['session_subjects'] = edit.subjects.all()
             context['sesh'] = pd
             context['edit'] = edit
