@@ -677,6 +677,7 @@ function disableLinks() {
 				var this_audio = JSON.parse(data);
 				console.log(this_audio[0]); // fields_obj, model_str, pk_id
 				pda_obj = this_audio[0]
+				context.close();
 				alert("Upload Successful");
 				window.location.replace("/user/presenter/dash/?direct_to=recorder");
 			},
