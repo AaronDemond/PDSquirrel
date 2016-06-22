@@ -70,10 +70,12 @@
 					<label for="radio">Choose audio file upload method</label>
 					<div class="radio" name="radio">
 						<label>
-							<input id="upload" type="radio" name="upload">Upload From Computer
+							<input id="upload" type="radio" name="upload">
+							Upload From Computer
 						</label>
 						<label>
-							<input id="online" checked="true" type="radio" name="upload">Select upload from online your recordings
+							<input id="online" checked="true" type="radio" name="upload">
+							Select upload file from online recordings
 						</label>
 					</div>
 				</div>
@@ -86,7 +88,7 @@
 		    </div>
 		    <div class="col-lg-7">
 				<div class="control-group ctrl-group-tight">
-					<label>Select from your online recordings</label>
+					<label>Select upload file from online recordings</label>
 					<select id="online_input" class="form-control" name="recording">
 						<option value="0" selected></option>
 						{% for x in recordings %}
@@ -102,6 +104,14 @@
 		<div class="row">
 			<div class="col-lg-12">
 				<hr>
+				<div class="checkbox" style="margin-bottom:20px;">
+					<label>
+						<input type="checkbox" name="disable_comments" value="true">
+						<b>Disable comments on your PDsession</b>
+					</label>
+				</div>
+
+
 		    </div>
 		    <div class="col-lg-5">
 				<div id="file-upload-container">

@@ -94,6 +94,17 @@
 
 				<div class="row">
 					<div class="col-lg-12">
+						<div class="checkbox" style="margin-bottom:10px; margin-top: 10px;">
+							<label>
+								<input type="checkbox" name="disable_comments" value="true" {% if sesh.comments_disabled %}checked{% endif %}>
+								<b>Disable comments on your PDsession</b>
+							</label>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-lg-12">
 						<div id="file-upload-container">
 							<div class="control-group">
 								<label for="">Optional additional attachment(s)</label>

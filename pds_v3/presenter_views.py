@@ -285,6 +285,11 @@ def dash(request, msg=False):
                 pd_description = request.POST['description']
                 subjects = request.POST.getlist('subject')
 
+                if 'disable_comments' not in request.POST:
+                    disable_comments = False
+                else:
+                    disable_comments = True
+
                 if not subjects:
                     messages.add_message(request, messages.ERROR, 'Please select at least one subject')
                     return HttpResponseRedirect('/user/presenter/dash/?direct_to=upload')
@@ -302,7 +307,7 @@ def dash(request, msg=False):
                     pdaud.used = True
                     pdaud.save();
                     mp3_obj = MP3(pdaud.getMp3Location())
-                    new_session = PdSession(name=pd_name,description=pd_description, pdaudio=pdaud, approved=False)
+                    new_session = PdSession(name=pd_name,description=pd_description, pdaudio=pdaud, approved=False, comments_disabled=disable_comments)
                     counter = 1 #file counter. 1 if pd audio, 0 if audio from client pc
                 else:
                     audio_file = request.FILES.get('audio_file', False)
@@ -409,13 +414,15 @@ def edit(request, id):
                         Terms and Conditions before editing content.')
                 return HttpResponseRedirect('/user/presenter/dash/?direct_to=sessions')
 
-
-
-
             #gather post data
             name = pd.name # Do not allow editing titles
             description = request.POST['description']
             subjects = request.POST.getlist('subjects')
+
+            if 'disable_comments' not in request.POST:
+                disable_comments = False
+            else:
+                disable_comments = True
 
             if not subjects:
                 messages.add_message(request, messages.ERROR, 'Please select a subject \
@@ -423,7 +430,7 @@ def edit(request, id):
                 return HttpResponseRedirect('/user/presenter/dash/?direct_to=sessions')
 
             #create the edit
-            edit = PdSessionEdit(name=name, description=description)
+            edit = PdSessionEdit(name=name, description=description, comments_disabled = disable_comments)
             edit.save()
 
             # If there was a previous edit, use its data
@@ -462,6 +469,7 @@ def edit(request, id):
             # Consider saving the original ..?
             #pd.subject = edit.subjects.all()
             pd.description = edit.description
+            pd.comments_disabled = edit.comments_disabled
             pd.save()
             messages.success(request,'Edit successful.')
 
