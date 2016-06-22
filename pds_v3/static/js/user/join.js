@@ -17,8 +17,10 @@ $('input, select').not("#inputEmail3, #login_password").focusout(function() {
   if(curr_val=="") {
     if ($curr.prop('tagName') =='SELECT')
       error_text = "Please select a value";
-    else
+    else {
       error_text = "Please enter a value";
+    }
+
 
   } else if (curr_id == "email" && curr_val.search(/\S*@\S*\.\S*/)== -1) {
     error_text = "Please enter a valid email";
@@ -26,10 +28,10 @@ $('input, select').not("#inputEmail3, #login_password").focusout(function() {
   } else if (curr_id == "vemail" && curr_val.search(/\S*@\S*\.\S*/)== -1) {
     error_text = "Please enter a valid email";
 
-  } else if (curr_id == "email" && curr_val != $('#vemail').val()) {
+  } else if (curr_id == "email" && curr_val != $('#vemail').val() && $('#vemail').val() != "") {
      error_text = "Your email does not match";
 
-  } else if (curr_id == "vemail" && curr_val != $('#email').val()) {
+  } else if (curr_id == "vemail" && curr_val != $('#email').val() && $('#email').val() != "") {
     error_text = "Your email does not match";
 
   } else if (curr_id == "pass" && curr_val.length < 8) {
@@ -38,10 +40,10 @@ $('input, select').not("#inputEmail3, #login_password").focusout(function() {
   } else if (curr_id == "vpass" && curr_val.length < 8) {
     error_text = "You password needs to be atleast 8 characters";
 
-  } else if (curr_id == "pass" && curr_val != $('#vpass').val()) {
+  } else if (curr_id == "pass" && curr_val != $('#vpass').val() && $('#vpass').val() != "") {
      error_text = "Your password does not match";
 
-  } else if (curr_id == "vpass" && curr_val != $('#pass').val()) {
+  } else if (curr_id == "vpass" && curr_val != $('#pass').val() && $('#pass').val() != "") {
     error_text = "Your password does not match";
 
   } else { // no errors found
