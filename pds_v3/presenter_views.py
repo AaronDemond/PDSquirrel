@@ -200,6 +200,7 @@ def dash(request, msg=False):
             if 'edit-pres-public' in request.POST:
                 from django.core.files import File
                 presenter.credentials = request.POST['credentials']
+                presenter.law_firm = request.POST['law_firm']
                 presenter.bio = request.POST['bio'].lstrip()
                 presenter.public_email = request.POST['public_email']
                 presenter.url = request.POST['url']
@@ -217,7 +218,6 @@ def dash(request, msg=False):
 
             if 'edit-pres-private' in request.POST:
                 presenter.phone = request.POST['number']
-                presenter.law_firm = request.POST['law_firm']
                 presenter.save()
                 messages.add_message(request, messages.SUCCESS,
                     'Account successfully updated.')
