@@ -346,7 +346,6 @@ def dash(request, msg=False):
                 new_session.duration = "%02d:%02d" % (m, s)
                 new_session.save()
 
-                new_session.save()
                 for sub_id in subjects:
                     subject = Subject.objects.get(pk=sub_id)
                     new_session.subject.add(subject)

@@ -423,8 +423,8 @@ function disableLinks() {
 
     // Preview range selection
     function pselection(){
-      var start = sbox.value;
-      var end = ebox.value;
+      var start = parseInt(sbox.value);
+      var end = parseInt(ebox.value);
 
       if(! $.isNumeric(start)) {
         alert("incorrect start range value");
@@ -545,8 +545,8 @@ function disableLinks() {
     // Trims selection by editing the channel data, to nearest 2048 byte buffer
     function trimSelection(){
 
-        var start = document.getElementById('start-mark').value;
-        var end = document.getElementById('end-mark').value;
+        var start = parseInt(document.getElementById('start-mark').value);
+        var end = parseInt(document.getElementById('end-mark').value);
 
          if(! $.isNumeric(start)) {
            alert("incorrect start range value");
