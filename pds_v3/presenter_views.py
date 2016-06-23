@@ -200,7 +200,7 @@ def dash(request, msg=False):
             if 'edit-pres-public' in request.POST:
                 from django.core.files import File
                 presenter.credentials = request.POST['credentials']
-                presenter.bio = request.POST['bio']
+                presenter.bio = request.POST['bio'].lstrip()
                 presenter.public_email = request.POST['public_email']
                 presenter.url = request.POST['url']
                 if 'clear_photo' in request.POST:
