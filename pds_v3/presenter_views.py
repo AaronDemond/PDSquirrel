@@ -307,7 +307,7 @@ def dash(request, msg=False):
                     pdaud.used = True
                     pdaud.save();
                     mp3_obj = MP3(pdaud.getMp3Location())
-                    new_session = PdSession(name=pd_name,description=pd_description, pdaudio=pdaud, approved=False, comments_disabled=disable_comments)
+                    new_session = PdSession(name=pd_name,description=pd_description, pdaudio=pdaud, approved=False, presenter_approved=True, comments_disabled=disable_comments)
                     counter = 1 #file counter. 1 if pd audio, 0 if audio from client pc
                 else:
                     audio_file = request.FILES.get('audio_file', False)
