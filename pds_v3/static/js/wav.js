@@ -677,7 +677,7 @@ function disableLinks() {
 				var this_audio = JSON.parse(data);
 				console.log(this_audio[0]); // fields_obj, model_str, pk_id
 				pda_obj = this_audio[0]
-				alert("Upload Successful");
+				alert("Save Successful, your file can now be uploaded as a session on the upload tab.");
 				window.location.replace("/user/presenter/dash/?direct_to=recorder");
 			},
 			error: function(data) {

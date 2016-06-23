@@ -110,5 +110,7 @@ $('#joinform').submit(function() {
     $('#darken').siblings('.help-block').text("Please check the agreement");
     return false;
   }
+  $('#form-container').addClass('hidden');
+  $('#loader').removeClass('hidden');
   $('#submit').prop('disabled', true);
 });
