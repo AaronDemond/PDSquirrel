@@ -184,6 +184,7 @@ function disableLinks() {
     var rec_btn = document.getElementById('record_button');
     var pause_btn = document.getElementById('pause_button');
     var save_btn = document.getElementById('save_button');
+    var delete_btn = document.getElementById('delete');
     var indicatior = document.getElementById('ind');
     var leftchannel = [];
     var rightchannel = [];
@@ -276,6 +277,7 @@ function disableLinks() {
 				pause_btn.disabled = true;
 				rec_btn.disabled = true;
 				save_btn.disabled = true;
+        delete_btn.disabled = true;
 				loading_alert.className = '';
 				req.onload = function(e) {
 					fileblob = new Blob([req.response], {type : "audio/wav"});
@@ -341,6 +343,7 @@ function disableLinks() {
 				pause_btn.disabled = false;
 				rec_btn.disabled = false;
 				save_btn.disabled = false;
+        delete_btn.disabled = false;
 				loading_alert.className = 'hidden';
 			} // End of loaded function
 
@@ -490,6 +493,7 @@ function disableLinks() {
 			preview.disabled = false;
 			rec_btn.disabled = false;
 			save_btn.disabled = false;
+      delete_btn.disabled = false;
 			leftBuffer = mergeBuffers(leftchannel, recordingLength);
 			rightBuffer = mergeBuffers(rightchannel, recordingLength);
 
@@ -529,6 +533,7 @@ function disableLinks() {
 			preview.disabled = true;
 			rec_btn.disabled = true;
 			save_btn.disabled = true;
+      delete_btn.disabled = true;
 			// finds offset to be used when inserting recorded audio into an exisiting wav file
 			// Divides by 2048 because channel data is stored in arrays of float32arrays.
 			// float arrays are 2048 in length, as decided by the buffer size. Lower buffer size
