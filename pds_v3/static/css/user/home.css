@@ -13,7 +13,8 @@
 	padding-bottom: 50px;
 }
 #brand-div {
-	background: url('/static/img/brand7.resized.png') top center no-repeat;
+	background: url('/static/img/brand8_no_color.resized.png') top center no-repeat;
+	background: url('/static/img/brand8.resized.png') top center no-repeat;
 	background-size: contain;
 	height: 400px;
 	margin-top: 20px;

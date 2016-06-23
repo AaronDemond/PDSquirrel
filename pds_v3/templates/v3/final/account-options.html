@@ -25,19 +25,19 @@
                         <span class="payment-errors"></span>
                         <div class="form-group">
                             <label>Card Number</label>
-                            <input type="text" class="form-control" size="20" data-stripe="number" required/>
+                            <input type="text" class="form-control" size="20" data-stripe="number" required>
                         </div>
                         <div class="form-group">
                             <label>CVC</label>
-                            <input type="text" class="form-control" size="4" data-stripe="cvc" required/>
+                            <input type="text" class="form-control" size="4" data-stripe="cvc" required>
                         </div>
                         <div class="form-group">
                             <label> Expiration Month (MM)</label>
-                            <input type="text" size="2" class="form-control"  data-stripe="exp-month" required/>
+                            <input type="text" size="2" class="form-control"  data-stripe="exp-month" required>
                         </div>
                         <div class="form-group">
                             <label for="">Expiration Year (YYYY)</label>
-                            <input type="text" size="4" class="form-control" data-stripe="exp-year" required/>
+                            <input type="text" size="4" class="form-control" data-stripe="exp-year" required>
                         </div>
                         {% csrf_token %}
                     </div>
@@ -47,14 +47,18 @@ We use the services of Stripe, with which we have a merchant agreement, to recei
 payments from our PD Squirrel members. None of your sensitive information is stored on our servers, instead it is encrypted and stored entirely by Stripe. This helps ensure your privacy. </p>
 
                     </div>
-                    <div class="col-sm-2 col-sm-offset-10 col-xs-3 col-xs-offset-9">
+                    <div class="col-lg-12" id="card-input-buttons">
                         <button type="submit" class="btn btn-success">Submit</button>
+						<button type="button" class="btn btn-default" id="cancel_btn">Cancel</button>
                     </div>
                 </div>
             </form>
+
         </div>
     </div>
 </div>
+
+
 {% csrf_token %}
 
 <!-- Account options content -->
@@ -114,7 +118,10 @@ payments from our PD Squirrel members. None of your sensitive information is sto
                 <td>{{user.profile.date_joined|remove_time}}</td>
             </tr>
             <tr>
-                <td class='col1'>My cards <a onclick="showPaymentInfo()">(more information)</a></td>
+                <td class='col1'>My cards <a onclick="showPaymentInfo()">(more information)</a>
+					<br>
+					<a onclick="showStripeInformation()">Payment proccessing information</a>
+				</td>
                 <td id="card-cell">
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Add Card</button>
 										<hr>
@@ -137,6 +144,17 @@ payments from our PD Squirrel members. None of your sensitive information is sto
             </table>
 
             <!-- More Information -->
+<div class="alert alert-info hidden" id="stripe-info">
+	<p>Stripe information</p>
+
+                <div class="row">
+                    <div class="col-xs-12">
+                        <p class="pull-right">
+                            <button id="showPayment" class="btn btn-default" onclick="showStripeInformation()" >Cancel</button>
+                        </p>
+                    </div>
+                </div>
+            </div>
 
 						<div class="alert alert-info hidden" id="payment-info">
 								<p>

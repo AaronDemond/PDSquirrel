@@ -15,8 +15,8 @@
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
 				<h3>{{ pd }}</h3>
-				<p id="payment-method" class="help-text">Select a payment method</p>
 				<hr>
+				<h4>Select a payment method</h4>
 				<form method="POST" id="payment-form" action="{% url 'payment-process' %}">
 					{% csrf_token %}
 					<input type="hidden" name="pd_id" value="{{ pd.id }}">
@@ -70,10 +70,10 @@
 							</div>
 						</div>
 						<div id="form-submit" class="col-lg-12">
-							<hr>
 
 							<button type="submit" class="btn btn-primary">Continue</button>
 							<button class="btn btn-default" id="cancel_btn_one">Cancel</button>
+							<hr>
 						</div>
 					</div>
 				</form>
@@ -239,7 +239,7 @@
             {% endif %}
 						<tr>
 							<td>Unique number</td>
-							<td>100{{ pd.id }}15</td>
+							<td>100{{ pd.id }}16</td>
 						</tr>
 					</table>
 					<table class="table">
@@ -301,7 +301,7 @@
                     {% if comment.user.is_presenter %}
                       <a class="presenter-link" href="{% url 'presenter-detail' comment.user.user.presenter.id %}"><b>{{ comment.user.user.first_name }} {{ comment.user.user.last_name }}</b></a>
                     {% else %}
-                      <b>{{ comment.user.user.is_presenter }} {{ comment.user.user.first_name }} {{ comment.user.user.last_name }}</b>
+                      <b>{{ comment.user.user.first_name }} {{ comment.user.user.last_name }}</b>
                     {% endif %}
                     &nbsp;
                     <span class="muted">{{ comment.date|date }}</span>
@@ -319,7 +319,7 @@
                   </div>
                   <div class="row comment-reply hidden">
                     <div id="comment-reply-{{ comment.id }}" class="form-group">
-                      <textarea name="reply-message" rows="2" class="form-control reply-textarea">@{{ comment.user.user.first_name }}{{ comment.user.user.last_name }} </textarea>
+                      <textarea name="reply-message" rows="2" class="form-control reply-textarea"></textarea>
 					  <button name="reply-btn-{{ comment.id }}" type="button" class="btn-small btn-primary submit-comment-btn" __parent="{{ comment.id }}" value="{{ comment.id }}">Reply</button>
 
 						<button type="button" class="btn-small btn-default cancel-comment-btn" value="0">Cancel</button>

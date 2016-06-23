@@ -1,5 +1,5 @@
 <div id="p_conf">
-	<h3>Purchase Confirmation</h3>
+	<h4>Confirm Purchase</h4>
 	<table class="table">
 		<tr>
 			<td>Title</td>
@@ -29,9 +29,10 @@
 		{% else %}
 		<input type="hidden" name="source_id" value="{{source.id}}">
 		{% endif %}
-		<input type="submit" class="btn btn-success" value="Confirm Purchase">
-
+	
+		<input type="submit" class="btn btn-success" id="confirm-purchase-btn" value="Confirm Purchase">
 		<button class="btn btn-default" id="cancel_btn_two">Cancel</button>
+	
 	</form>
 </div>
 <script>

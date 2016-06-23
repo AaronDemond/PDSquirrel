@@ -1,4 +1,5 @@
 {% extends "v3/final/base/base.html" %}
+{% load pds_extras %}
 {% load staticfiles %}
 {% block header-metatags %}
         <title>PDSquirrel Library</title>
@@ -38,7 +39,7 @@
                                 <b>Subject area(s):</b>
                                 {{pd.subject.all|join:", "}}
                                 <!--	<b>Duration: </b> {{ pd.duration }} -->
-                                <b> Release Date: </b> {{pd.release_date }}
+                                <b> Release Date: </b> {{pd.release_date|remove_time }}
                                 <b> Duration: </b> 12:00
                             </span>
                             </p>

@@ -415,8 +415,8 @@ def edit(request, id):
                 return HttpResponseRedirect('/user/presenter/dash/?direct_to=sessions')
 
             #gather post data
-            name = pd.name # Do not allow editing titles
             description = request.POST['description']
+            name = request.POST.get('name', pd.name)
             subjects = request.POST.getlist('subjects')
 
             if 'disable_comments' not in request.POST:
@@ -468,6 +468,7 @@ def edit(request, id):
             # An edit now directly updates the model
             # Consider saving the original ..?
             #pd.subject = edit.subjects.all()
+            pd.name = edit.name
             pd.description = edit.description
             pd.comments_disabled = edit.comments_disabled
             pd.save()
@@ -480,6 +481,7 @@ def edit(request, id):
             edit = pd.edits.latest('date')
             pd.name=edit.name
             pd.description=edit.description
+
             context['session_subjects'] = edit.subjects.all()
             context['sesh'] = pd
             context['edit'] = edit

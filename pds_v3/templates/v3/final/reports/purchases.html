@@ -63,7 +63,7 @@ td {
 						<th>Taken</th>
 						<th>Cost</th>
 						<th>HST</th>
-						<th>Net cost</th>
+						<th>Total Cost</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -71,7 +71,7 @@ td {
 					<tr>
 
 						<td>{{purchase.pdsession.name}}</td>
-						<td>{{purchase.date}}</td>
+						<td>{{purchase.date|remove_time}}</td>
 						<td>{% if purchase.completed %}Yes{%else%}No{%endif%}</td>
 
 						{% if purchase.credit_used %}
