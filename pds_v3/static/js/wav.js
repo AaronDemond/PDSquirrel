@@ -6,10 +6,9 @@ function delAudio(id) {
 	tr_listing.remove();
 	$.ajax({
 	  type: "POST",
-	  url: "https://www.pdsquirrel.ca/record/",
+	  url: "/record/",
 	  data: {"del" : 1 , "aud_id" : id},
 	  success: function(e) {
-	      alert("success");
 	      outputElement.innerHTML = "Audio succesfully deleted";
 	  },
 	})
@@ -17,63 +16,69 @@ function delAudio(id) {
 }
 
 
+function enableLinks() {
+	/* -Removes any confirmation message about saving audio
+	   -Reinstantiates the ajax calls on pres hub links */
+	
+	onbeforeunload = null;
+
+	var links = $("a").not('#infoLink, .download, .del-btn, .dropdown-toggle, #dl');
+	var target_div = '#page-content';
+
+	for (var j=0; j<links.length; j++) {
+		links[j].onclick = null;
+
+		if ($(links[j]).hasClass('pres-link')) {
+
+			links[j].onclick = function (e) {
+				_url = $(this).attr('_url');
+				_direct_to = $(this).attr('_direct_to');
+				loadXMLDoc(_url, target_div, _direct_to);
+			}
+		}
+	}
+}
+
+
 function disableLinks() {
 /* Used to apply a confirmation message to links that navigate a user
    away from the record tab. Call this function when 'saved' becomes false */
 
-	// When drop down is clicked, keep active styling on record tab
-	drop_down_links = $(".dropdown-toggle");
-	for (var i=0; i<drop_down_links.length; i++){
-		link = drop_down_links[i]
-		action = link.onclick;
-		link.onclick = function (e) {
-			setTimeout( function () {
-				$('#record-link').addClass('active');
-			}, 100);
-		}
+	onbeforeunload = function() { 
+		return 'Warning! Your unsaved audio file will be lost.';
 	}
 
-
-	var links = $("a").not('#infoLink, .download, .del-btn, .dropdown-toggle, #dl');
+	// Ignore links that do not reload the page/tab
+	var links = $(".pres-link");
 	for (var i=0; i<links.length; i++){
+
+		// Overwrite links with confirmation
 		links[i].onclick = null;
 		links[i].onclick = function (e) {
 
-			// User given choice to stay on page or discard changes and continue
+			// Confirm navigation
 			if(confirm('Warning! Your unsaved audio file will be lost. Continue anyway?')) {
 
-
-				// Clear recording data and close the audio context
+				// Clear recording data
 				pauseClick();
 				audio_player.pause();
 				audio_player.src = '';
 				reset();
 				leftchannel = [];
 				rightchannel = [];
-				context.close();
 
-				// If they continue, and link is a pres hub link,
-				// gather its meta data and send an ajax request
+				// Navigate to selected tab
 				if ($(this).hasClass('pres-link')) {
 					url = $(this).attr('_url');
 					direct_to = $(this).attr('_direct_to');
 					target_div = '#page-content';
 					loadXMLDoc(url, target_div, direct_to);
+				}
+				
+				// Remove navigation warnings
+				enableLinks();
 
-
-					// Reset links back to original onclick, so there is no confirmation
-					// of navigation once they have moved from the record tab
-					for (var j=0; j<links.length; j++) {
-						links[j].onclick = null;
-						links[j].onclick = function (e) {
-							_url = $(this).attr('_url');
-							_direct_to = $(this).attr('_direct_to');
-							loadXMLDoc(_url, target_div, _direct_to);
-						}
-					}
-				} // End if pres link
-
-			// User wants to save, keep them on current page and underline recorder
+			// Prevent navigation, keep active styling on record link
 			} else {
 				clicked = $(this);
 				setTimeout( function () {
@@ -84,7 +89,7 @@ function disableLinks() {
 			}
 		}
 	}
-} // End disableLinks function
+} // End function
 
 
     // stopwatch
@@ -223,14 +228,8 @@ function disableLinks() {
 		return mp3_blob;
 	}
 
-/* before page is unloaded creates a pop-up
 
-    onbeforeunload = function() {
-      if (!saved) {
-        return 'Warning! Your unsaved audio file will be lost.';
-      }
-    }
-*/
+
     audio_player.ondurationchange = function() {
       var time = isNaN(audio_player.duration) ? 0 : Math.round(audio_player.duration * 1000);
       recorder_timer.set_time(time);
@@ -417,6 +416,7 @@ function disableLinks() {
           leftchannel = [];
           rightchannel = [];
           outputElement.innerHTML = "Click record to begin capturing audio";
+		  enableLinks();
         }
       }
 
