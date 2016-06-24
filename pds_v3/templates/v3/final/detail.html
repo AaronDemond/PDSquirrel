@@ -228,7 +228,7 @@
 						</tr>
             {% endif %}
 						<tr>
-						   <td>Duration (minutes)</td>
+						   <td>Duration (mm:ss)</td>
 						   <td>{{pd.duration}}</td>
 						</tr>
             {% if own != 1 %}
@@ -256,7 +256,15 @@
 				<script>
 				</script>
           <!-- Start comment Section -->
+{% if pd.comments_disabled %}
+<div class="row">
+  <div class="col-xs-12 col-sm-10 col-sm-offset-1">
+    <p><span class="glyphicon glyphicon-ban-circle text-danger"></span> Comments disabled for this PD session</p>
+    <hr>
+  </div>
+</div>
 
+{% else %}
   {% if own == 1 or pd.presenters.all.0.user == request.user %}
 		  <div class="row">
               <div class="col-xs-12 col-sm-10 col-sm-offset-1">
@@ -375,6 +383,7 @@
           <!-- End Comment Section -->
 
 				{% endif %}
+      {% endif %}
 			</div>
 		</div>
 	</div>

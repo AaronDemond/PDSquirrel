@@ -52,7 +52,29 @@
                 <h4 class="text-center sub-header">Listen, Learn and Develop with sessions from PDSquirrel</h4>
                 <img class="center-block img-responsive learn-img" src="{% static 'img/learn/on_device.png' %}" alt="">
               </div>
+
+              <div class="col-sm-6 hidden" id="loader">
+                <div class="main col-lg-10 col-lg-offset-1">
+                		<div class="small1">
+                			<div class="small ball smallball1"></div>
+                			<div class="small ball smallball2"></div>
+                			<div class="small ball smallball3"></div>
+                			<div class="small ball smallball4"></div>
+                		</div>
+                		<div class="small2">
+                			<div class="small ball smallball5"></div>
+                			<div class="small ball smallball6"></div>
+                			<div class="small ball smallball7"></div>
+                			<div class="small ball smallball8"></div>
+                		</div>
+                		<div class="bigcon">
+                			<div class="big ball"></div>
+                		</div>
+                	</div>
+              </div>
+
               <div class="col-sm-6" id="form-container">
+
                 <form method = "post" action = "{% url 'join' %}" data-toggle="validator" class = "form-horizontal" id="joinform">
 					{% csrf_token %}
                     <div class="form-group" id="name">

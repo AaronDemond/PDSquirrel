@@ -256,6 +256,7 @@ class PdSessionEdit(models.Model):
     approved = models.BooleanField(default=False)
     presenter_approved = models.BooleanField(default=False)
     attachments = models.ManyToManyField(PdAttachment, blank=True)
+    comments_disabled = models.BooleanField(default = False)
 
     def __str__(self):
         return self.name
@@ -294,6 +295,7 @@ class PdSession(models.Model):
     locked = models.BooleanField(default = False)
     attachments = models.ManyToManyField(PdAttachment, blank=True)
     total_takes = models.IntegerField(default=0)
+    comments_disabled = models.BooleanField(default = False)
 
 
     def __str__(self):

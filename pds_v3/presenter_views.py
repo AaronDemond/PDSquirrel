@@ -200,7 +200,8 @@ def dash(request, msg=False):
             if 'edit-pres-public' in request.POST:
                 from django.core.files import File
                 presenter.credentials = request.POST['credentials']
-                presenter.bio = request.POST['bio']
+                presenter.law_firm = request.POST['law_firm']
+                presenter.bio = request.POST['bio'].lstrip()
                 presenter.public_email = request.POST['public_email']
                 presenter.url = request.POST['url']
                 if 'clear_photo' in request.POST:
@@ -217,7 +218,6 @@ def dash(request, msg=False):
 
             if 'edit-pres-private' in request.POST:
                 presenter.phone = request.POST['number']
-                presenter.law_firm = request.POST['law_firm']
                 presenter.save()
                 messages.add_message(request, messages.SUCCESS,
                     'Account successfully updated.')
@@ -285,6 +285,11 @@ def dash(request, msg=False):
                 pd_description = request.POST['description']
                 subjects = request.POST.getlist('subject')
 
+                if 'disable_comments' not in request.POST:
+                    disable_comments = False
+                else:
+                    disable_comments = True
+
                 if not subjects:
                     messages.add_message(request, messages.ERROR, 'Please select at least one subject')
                     return HttpResponseRedirect('/user/presenter/dash/?direct_to=upload')
@@ -302,7 +307,7 @@ def dash(request, msg=False):
                     pdaud.used = True
                     pdaud.save();
                     mp3_obj = MP3(pdaud.getMp3Location())
-                    new_session = PdSession(name=pd_name,description=pd_description, pdaudio=pdaud, approved=False)
+                    new_session = PdSession(name=pd_name,description=pd_description, pdaudio=pdaud, approved=False, presenter_approved=True, comments_disabled=disable_comments)
                     counter = 1 #file counter. 1 if pd audio, 0 if audio from client pc
                 else:
                     audio_file = request.FILES.get('audio_file', False)
@@ -341,7 +346,6 @@ def dash(request, msg=False):
                 new_session.duration = "%02d:%02d" % (m, s)
                 new_session.save()
 
-                new_session.save()
                 for sub_id in subjects:
                     subject = Subject.objects.get(pk=sub_id)
                     new_session.subject.add(subject)
@@ -409,13 +413,15 @@ def edit(request, id):
                         Terms and Conditions before editing content.')
                 return HttpResponseRedirect('/user/presenter/dash/?direct_to=sessions')
 
-
-
-
             #gather post data
             description = request.POST['description']
             name = request.POST.get('name', pd.name)
             subjects = request.POST.getlist('subjects')
+
+            if 'disable_comments' not in request.POST:
+                disable_comments = False
+            else:
+                disable_comments = True
 
             if not subjects:
                 messages.add_message(request, messages.ERROR, 'Please select a subject \
@@ -423,7 +429,7 @@ def edit(request, id):
                 return HttpResponseRedirect('/user/presenter/dash/?direct_to=sessions')
 
             #create the edit
-            edit = PdSessionEdit(name=name, description=description)
+            edit = PdSessionEdit(name=name, description=description, comments_disabled = disable_comments)
             edit.save()
 
             # If there was a previous edit, use its data
@@ -463,6 +469,7 @@ def edit(request, id):
             #pd.subject = edit.subjects.all()
             pd.name = edit.name
             pd.description = edit.description
+            pd.comments_disabled = edit.comments_disabled
             pd.save()
             messages.success(request,'Edit successful.')
 

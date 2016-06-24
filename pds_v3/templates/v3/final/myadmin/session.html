@@ -16,54 +16,55 @@
 			    </form>
 			    -->
 
-                <h3>{{pd.name}}</h3>
+					<div class="row">
+						<div class="col-lg-9 col-lg-offset-1">
+							<h3>{{pd.name}}</h3>
+						<video id="MY_VIDEO_1" class="video-js vjs-default-skin" controls
+							preload="auto" width="100%" height="60"
+							data-setup="{}">
+									<source src="{% url 'audio' pd.id %}" type='audio/mpeg'>
+							<p class="vjs-no-js">To view this video please enable JavaScript
+							<a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
+						</video>
 
-				<video id="MY_VIDEO_1" class="video-js vjs-default-skin" controls
-					preload="auto" width="100%" height="150" poster="MY_VIDEO_POSTER.jpg"
-					data-setup="{}">
+						<h4>Description</h4>
+						<p>{{pd.description}}</p>
 
+						<table class = "table table-striped">
+							<tr>
+								<td>Upload Date</td>
+								<td>{{pd.upload_date}}</td>
+							</tr>
+							<tr>
+								 <td>Subject area(s)</td>
+								<td>
+									{% for a in pd.subject.all %}
+									{{a}}<br />
+									{% endfor %}
+								</td>
+							</tr>
+							<tr>
+								 <td>Duration (mm:ss)</td>
+								 <td>{{pd.duration}}</td>
+							</tr>
+							<tr>
+								<td>Comments Disabled</td>
+								<td>{{pd.comments_disabled}}</td>
+							</tr>
 
-						<source src="{% url 'audio' pd.id %}" type='audio/mpeg'>
-					<p class="vjs-no-js">To view this video please enable JavaScript
-					<a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
-			        </video>
-
-
-
-			</div>
-
-				<div class="col-xs-1 hidden-xs">
-				    {% if pd.presenters.all|length < 2 %}
-				    {% for a in pd.presenters.all %}
-
-				    <img src="{% static 'img/speaker-placeholder-male.png' %}" alt=""  height ="80px">
-
-				    {% endfor %}
-				    {% else %}
-				    <img src="/media/{{pd.presenters.all.0.img}}" alt="" height="80px">
-				    {% endif %}
-				</div>
-				<div class="col-xs-12">
-
-			<p>
-			{{ pd.presenters.all|join:", "}}, {{pd.presenters.all.0.credentials}}
-			</p>
-				<p>{{pd.release_date}}</p>
-				</div>
-				<div class="col-xs-12">
-					<h4>Session description</h4>
-					<p>{{pd.description}}</p>
-				</div>
-				<div class="col-xs-12">
-				    <h4>Downloads</h4>
-				    <div class="list-group">
-					<div class="list-group">
-		    {% for file in pd.attachments.all %}
-			<a class="list-group-item" target="_blank" href="{% url 'attachment' file.id %}">{{file.attachment}}</a>
-		    {% endfor %}
-		</div>
-				    </div>
-                                </div>
+						</table>
 
 
+						</div>
 
+						{% if pd.attachments.all.count > 0 %}
+								<div class="col-lg-9 col-lg-offset-1">
+							<h4>Downloads</h4>
+							<div class="list-group">
+									{% for file in pd.attachments.all %}
+								<a class="list-group-item" target="_blank" href="{% url 'attachment' file.id %}">{{file.attachment}}</a>
+									{% endfor %}
+							</div>
+								</div>
+						{% endif %}
+					</div>
