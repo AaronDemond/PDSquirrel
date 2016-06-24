@@ -14,5 +14,8 @@ function loadXMLDoc(url,div, direct_to) {
 			$(div).html( data );
 		}
 	});
+	if (typeof context !== 'undefined' && context.state === "running" ) {
+			context.close();
+	}
     window.history.pushState("state", direct_to, "?direct_to=" + direct_to);
 }
