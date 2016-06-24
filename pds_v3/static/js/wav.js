@@ -374,19 +374,7 @@ function disableLinks() {
 			return false;
 	   }
 
-	  var filename = $('#name').val();
-	  var confirmed = true;
-	  $(".recording_name").each(function() {
-		if ($(this).text() == filename) {
-		  if (!confirm("A file already has that name are you sure you want to overwrite it?")) {
-			confirmed= false;
-		  }
-		}
-	  });
-
-		if (!confirmed) {
-			return false;
-		} try {
+		try {
 			createWavBlob();
 			saved = true;
 		} catch (err) {
@@ -684,6 +672,7 @@ function disableLinks() {
 				pda_obj = this_audio[0]
 				context.close();
 				alert("Save Successful, your file can now be uploaded as a session on the upload tab.");
+				onbeforeunload = null;
 				window.location.replace("/user/presenter/dash/?direct_to=recorder");
 			},
 			error: function(data) {
