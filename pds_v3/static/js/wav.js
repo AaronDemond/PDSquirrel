@@ -17,6 +17,23 @@ function delAudio(id) {
 }
 
 
+function enableLinks() {
+	var links = $("a").not('#infoLink, .download, .del-btn, .dropdown-toggle, #dl');
+	var target_div = '#page-content';
+
+	for (var j=0; j<links.length; j++) {
+		links[j].onclick = null;
+		if ($(links[j]).hasClass('pres-link')) {
+
+			_url = $(this).attr('_url');
+			_direct_to = $(this).attr('_direct_to');
+
+			links[j].onclick = function (e) {
+				loadXMLDoc(_url, target_div, _direct_to);
+			}
+		}
+	}
+}
 function disableLinks() {
 /* Used to apply a confirmation message to links that navigate a user
    away from the record tab. Call this function when 'saved' becomes false */
@@ -223,14 +240,15 @@ function disableLinks() {
 		return mp3_blob;
 	}
 
-/* before page is unloaded creates a pop-up
 
+/*
     onbeforeunload = function() {
       if (!saved) {
-        return 'Warning! Your unsaved audio file will be lost.';
+        return 'Warning! Your unsaved audio file will be lost. !!!!!!!!!!!!!!!!';
       }
     }
 */
+
     audio_player.ondurationchange = function() {
       var time = isNaN(audio_player.duration) ? 0 : Math.round(audio_player.duration * 1000);
       recorder_timer.set_time(time);
@@ -417,6 +435,7 @@ function disableLinks() {
           leftchannel = [];
           rightchannel = [];
           outputElement.innerHTML = "Click record to begin capturing audio";
+		  enableLinks();
         }
       }
 
