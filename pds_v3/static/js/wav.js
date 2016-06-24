@@ -18,19 +18,22 @@ function delAudio(id) {
 
 
 function enableLinks() {
+	/* -Removes any confirmation message about saving audio
+	   -Reinstantiates the ajax calls on pres hub links */
+
 	var links = $("a").not('#infoLink, .download, .del-btn, .dropdown-toggle, #dl');
 	var target_div = '#page-content';
 
 	for (var j=0; j<links.length; j++) {
 		links[j].onclick = null;
-		if ($(links[j]).hasClass('pres-link')) {
 
+		if ($(links[j]).hasClass('pres-link')) {
 			_url = $(this).attr('_url');
 			_direct_to = $(this).attr('_direct_to');
-
 			links[j].onclick = function (e) {
 				loadXMLDoc(_url, target_div, _direct_to);
 			}
+
 		}
 	}
 }
@@ -38,21 +41,12 @@ function disableLinks() {
 /* Used to apply a confirmation message to links that navigate a user
    away from the record tab. Call this function when 'saved' becomes false */
 
-	// When drop down is clicked, keep active styling on record tab
-	drop_down_links = $(".dropdown-toggle");
-	for (var i=0; i<drop_down_links.length; i++){
-		link = drop_down_links[i]
-		action = link.onclick;
-		link.onclick = function (e) {
-			setTimeout( function () {
-				$('#record-link').addClass('active');
-			}, 100);
-		}
-	}
 
-
+	// Ignore links that do not travel from record page
 	var links = $("a").not('#infoLink, .download, .del-btn, .dropdown-toggle, #dl');
 	for (var i=0; i<links.length; i++){
+
+		// Remove previous onclick and overwrite with confirmation
 		links[i].onclick = null;
 		links[i].onclick = function (e) {
 
