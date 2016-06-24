@@ -19,7 +19,7 @@ function delAudio(id) {
 function enableLinks() {
 	/* -Removes any confirmation message about saving audio
 	   -Reinstantiates the ajax calls on pres hub links */
-	
+
 	onbeforeunload = null;
 
 	var links = $("a").not('#infoLink, .download, .del-btn, .dropdown-toggle, #dl');
@@ -44,7 +44,7 @@ function disableLinks() {
 /* Used to apply a confirmation message to links that navigate a user
    away from the record tab. Call this function when 'saved' becomes false */
 
-	onbeforeunload = function() { 
+	onbeforeunload = function() {
 		return 'Warning! Your unsaved audio file will be lost.';
 	}
 
@@ -74,7 +74,7 @@ function disableLinks() {
 					target_div = '#page-content';
 					loadXMLDoc(url, target_div, direct_to);
 				}
-				
+
 				// Remove navigation warnings
 				enableLinks();
 
@@ -397,7 +397,7 @@ function disableLinks() {
 
         pauseClick();
 
-        if (confirm("Are you sure you want to delete your current recording?")) {
+        if (confirm("Are you sure you want to delete the audio currently in the recorder?")) {
           audio_player.pause();
           audio_player.src = '';
           reset();
