@@ -3,13 +3,12 @@ function delAudio(id) {
     tr_listing = document.getElementById('rec-'+id);
     confirmed = confirm("Are you sure you wish to delete this recording? (It will not affect any uploaded sessions)");
     if (confirmed) {
-	tr_listing.remove();
 	$.ajax({
 	  type: "POST",
 	  url: "/record/",
 	  data: {"del" : 1 , "aud_id" : id},
 	  success: function(e) {
-	      outputElement.innerHTML = "Audio succesfully deleted";
+			tr_listing.remove();
 	  },
 	})
     }

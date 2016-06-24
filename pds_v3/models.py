@@ -396,7 +396,7 @@ class Notice(models.Model):
 
 class MembershipPaymentRecord(models.Model):
     user = models.ForeignKey(AppUser, blank=True)
-    ammount = models.FloatField(blank=True, null=True)
+    amount = models.FloatField(blank=True, null=True)
     date = models.DateTimeField(auto_now_add=True)
     method = models.CharField(max_length=200, blank=True, null=True)
     success = models.BooleanField(blank=True)
