@@ -510,22 +510,23 @@ def record(request):
         au = request.user.profile #appuser
         upload = request.FILES['data']
         name = request.POST['name']
+        pdaudio_id = request.POST.get('pdaudio_id', False)
+        print pdaudio_id
 
-        # If recording exists, overwrite its wav and convert to mp3
-        audio_to_overwrite = PdAudio.objects.filter(name=name, appuser=au)
-        if len(audio_to_overwrite) > 0:
-            audio_to_overwrite[0].audio = upload
-            audio_to_overwrite[0].save()
-            audio_to_overwrite[0].convertToMp3()
-            data_test = serializers.serialize("json", [audio_to_overwrite[0]]);
+        if pdaudio_id:
+            audio_to_overwrite = PdAudio.objects.get(pk=pdaudio_id)
+            audio_to_overwrite.audio = upload
+            audio_to_overwrite.save()
+            audio_to_overwrite.convertToMp3()
+            resp = serializers.serialize("json", [audio_to_overwrite]);
         else:
             pda = PdAudio(name=name, audio=upload, appuser=au)
             pda.save()
             pda.convertToMp3()
-            pda.mp3_location = pda.getMp3Location(); #TODO safely remove this line
-            data_test = serializers.serialize("json", [pda]);
+            #pda.mp3_location = pda.getMp3Location(); #TODO safely remove this line
+            resp = serializers.serialize("json", [pda]);
 
-        return HttpResponse(data_test);
+        return HttpResponse(resp);
 
     else:
 

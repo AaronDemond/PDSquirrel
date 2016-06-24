@@ -215,6 +215,7 @@ function disableLinks() {
     var editing = null;
     var edited_name = null;
 	var local_download_url = null;
+	var current_edit_id = false
 
 	function getMp3Blob() {
 		all_data = new Float32Array(leftBuffer);
@@ -252,9 +253,12 @@ function disableLinks() {
 		alert('getUserMedia not supported in this browser.');
     }
 
-	 function showData(url, audio_clip_name){
+	 function showData(url, audio_clip_name, pdaudio_id){
 		//   This function is called when load chosen file btn clicked.
 		//   Loads wav url into editor, only tested with our wavs.
+				
+				current_edit_id = pdaudio_id
+
 				if (saved == false) {
 					if(!confirm('Continue? You will lose unsaved work.')) {
 						return false;
@@ -645,6 +649,10 @@ function disableLinks() {
     	fd.append('data', blob, name);
 		fd.append('upload', 'true');
     	fd.append('name', name);
+
+		// If user is editing a session, post its id
+		if (current_edit_id !== false)
+			fd.append('pdaudio_id', current_edit_id);
 
 		// Post to server. Alert on failure.
 		var mc = document.getElementById('main-content');
