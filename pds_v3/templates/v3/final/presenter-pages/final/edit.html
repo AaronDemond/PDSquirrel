@@ -39,9 +39,10 @@
 							<label class="control-label" for="name" >Title</label>
 							<div class="controls">
 								{% if sesh.presenter_approved == True %} {# Only allow title edits before presenter has released session #}
-								<input id="name" name="name" value="{{sesh.name}}" disabled type="text" placeholder="" class="form-control" required="">
+								<input id="name" name="name" value="{{sesh.name}}" type="text" placeholder="" class="form-control" required="" disabled>
 								{% else %}
 								<input id="name" name="name" value="{{sesh.name}}"  type="text" placeholder="f3rffefw" class="form-control" required="">
+
 								{% endif %}
 							</div>
 						</div>
