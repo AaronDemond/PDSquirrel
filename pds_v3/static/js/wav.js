@@ -35,23 +35,20 @@ function enableLinks() {
 				_direct_to = $(this).attr('_direct_to');
 				loadXMLDoc(_url, target_div, _direct_to);
 			}
-
 		}
 	}
 }
 
-onbeforeunload = function() {
-  if (saved === false) {
-	return 'Warning! Your unsaved audio file will be lost.';
-  }
-}
 
 function disableLinks() {
 /* Used to apply a confirmation message to links that navigate a user
    away from the record tab. Call this function when 'saved' becomes false */
 
+	onbeforeunload = function() { 
+		return 'Warning! Your unsaved audio file will be lost.';
+	}
+
 	// Ignore links that do not reload the page/tab
-	var links = $("a").not('#infoLink, .download, .del-btn, .dropdown-toggle, #dl');
 	var links = $(".pres-link");
 	for (var i=0; i<links.length; i++){
 
@@ -69,7 +66,6 @@ function disableLinks() {
 				reset();
 				leftchannel = [];
 				rightchannel = [];
-
 
 				// Navigate to selected tab
 				if ($(this).hasClass('pres-link')) {
