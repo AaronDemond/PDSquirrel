@@ -507,11 +507,10 @@ def record(request):
 
     if 'upload' in request.POST:
         #wav binary
-        au = request.user.profile #appuser
+        au = request.user.profile
         upload = request.FILES['data']
         name = request.POST['name']
         pdaudio_id = request.POST.get('pdaudio_id', False)
-        print pdaudio_id
 
         if pdaudio_id:
             audio_to_overwrite = PdAudio.objects.get(pk=pdaudio_id)
@@ -523,7 +522,6 @@ def record(request):
             pda = PdAudio(name=name, audio=upload, appuser=au)
             pda.save()
             pda.convertToMp3()
-            #pda.mp3_location = pda.getMp3Location(); #TODO safely remove this line
             resp = serializers.serialize("json", [pda]);
 
         return HttpResponse(resp);

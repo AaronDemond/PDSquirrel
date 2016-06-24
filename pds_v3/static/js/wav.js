@@ -257,7 +257,9 @@ function disableLinks() {
 		//   This function is called when load chosen file btn clicked.
 		//   Loads wav url into editor, only tested with our wavs.
 				
-				current_edit_id = pdaudio_id
+				current_edit_id = pdaudio_id;
+				enableLinks();
+
 
 				if (saved == false) {
 					if(!confirm('Continue? You will lose unsaved work.')) {
@@ -267,7 +269,6 @@ function disableLinks() {
 				aud_name.value = audio_clip_name;
 				edited_name = audio_clip_name;
 				editing = true;
-				saved = false;
 				//var url = '/audio_files/blob_KIC6c8L';
 				var req = new XMLHttpRequest();
 				req.responseType = "arraybuffer";
@@ -280,7 +281,7 @@ function disableLinks() {
 				pause_btn.disabled = true;
 				rec_btn.disabled = true;
 				save_btn.disabled = true;
-        delete_btn.disabled = true;
+        		delete_btn.disabled = true;
 				loading_alert.className = '';
 				req.onload = function(e) {
 					fileblob = new Blob([req.response], {type : "audio/wav"});
@@ -346,7 +347,7 @@ function disableLinks() {
 				pause_btn.disabled = false;
 				rec_btn.disabled = false;
 				save_btn.disabled = false;
-        delete_btn.disabled = false;
+        		delete_btn.disabled = false;
 				loading_alert.className = 'hidden';
 			} // End of loaded function
 
@@ -397,21 +398,23 @@ function disableLinks() {
 
     function delete_curr_audio() {
 
-      if (!isNaN(audio_player.duration)) {
+		if (!isNaN(audio_player.duration)) {
 
-        pauseClick();
+			// If del confirm
+			if (confirm("Are you sure you want to delete the audio currently in the recorder?")) {
 
-        if (confirm("Are you sure you want to delete the audio currently in the recorder?")) {
-          audio_player.pause();
-          audio_player.src = '';
-          reset();
-          leftchannel = [];
-          rightchannel = [];
-          outputElement.innerHTML = "Click record to begin capturing audio";
-		  enableLinks();
-        }
-      }
+				// Clear data
+				audio_player.pause();
+				audio_player.src = '';
+				reset();
+				leftchannel = [];
+				rightchannel = [];
 
+				// Initial page state
+				saved = true;
+				enableLinks();
+			}
+		}
     }
     // Ensure its playing
     function isPlaying(player) { return !audio_player.paused; }
@@ -485,7 +488,7 @@ function disableLinks() {
 			preview.disabled = false;
 			rec_btn.disabled = false;
 			save_btn.disabled = false;
-      delete_btn.disabled = false;
+      		delete_btn.disabled = false;
 			leftBuffer = mergeBuffers(leftchannel, recordingLength);
 			rightBuffer = mergeBuffers(rightchannel, recordingLength);
 
@@ -525,7 +528,7 @@ function disableLinks() {
 			preview.disabled = true;
 			rec_btn.disabled = true;
 			save_btn.disabled = true;
-      delete_btn.disabled = true;
+      		delete_btn.disabled = true;
 			// finds offset to be used when inserting recorded audio into an exisiting wav file
 			// Divides by 2048 because channel data is stored in arrays of float32arrays.
 			// float arrays are 2048 in length, as decided by the buffer size. Lower buffer size
