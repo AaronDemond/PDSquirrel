@@ -2,6 +2,7 @@ from django.db import models
 import random
 import subprocess
 import wave
+import contextlib
 import os
 from django.contrib.auth.models import User
 
@@ -153,6 +154,15 @@ class PdAudio(models.Model):
     hidden = models.BooleanField(default=False, blank=True)
     used = models.BooleanField(default=False, blank=True)
 
+    def getDuration(self):
+        fname = self.audio.name
+        with contextlib.closing(wave.open(fname, 'r')) as f:
+            frames = f.getnframes()
+            rate = f.getframerate()
+            duration = frames / float(rate)
+            m = int(duration / 60)
+            s = int(duration % 60)
+            return "%02d:%02d" % (m,s)
 
     def getMp3Location(self):
         #return self.audio.name

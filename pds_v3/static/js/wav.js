@@ -253,7 +253,7 @@ function disableLinks() {
 	 function showData(url, audio_clip_name, pdaudio_id){
 		//   This function is called when load chosen file btn clicked.
 		//   Loads wav url into editor, only tested with our wavs.
-				
+
 				current_edit_id = pdaudio_id;
 				enableLinks();
 
@@ -363,7 +363,10 @@ function disableLinks() {
     /* send wav to server */
     function saveRecording() {
 
-
+    if (isNaN(audio_player.duration)) {
+      alert("Their is no audio currently in the recorder to save");
+      return false;
+    }
 
 		if (edited_name == aud_name.value) {
 			if(!confirm("Are you sure you wish to save changes to '" + edited_name + "'? You may change the name to save it as a new audio recording")) {
@@ -398,7 +401,7 @@ function disableLinks() {
 		if (!isNaN(audio_player.duration)) {
 
 			// If del confirm
-			if (confirm("Are you sure you want to delete the audio currently in the recorder?")) {
+			if (confirm("Are you sure you want to clear the audio currently in the recorder?")) {
 
 				// Clear data
 				audio_player.pause();
@@ -418,13 +421,13 @@ function disableLinks() {
 
     // Preview range selection
     function pselection(){
-      var start = parseInt(sbox.value);
-      var end = parseInt(ebox.value);
+      var start = parseFloat(sbox.value);
+      var end = parseFloat(ebox.value);
 
-      if(! $.isNumeric(start)) {
+      if(! $.isNumeric(sbox.value)) {
         alert("incorrect start range value");
         return;
-      } else if (! $.isNumeric(end)) {
+      } else if (! $.isNumeric(ebox.value)) {
         alert("incorrect end range value");
         return;
       } else if (end <= start) {
@@ -556,13 +559,13 @@ function disableLinks() {
     // Trims selection by editing the channel data, to nearest 2048 byte buffer
     function trimSelection(){
 
-        var start = parseInt(document.getElementById('start-mark').value);
-        var end = parseInt(document.getElementById('end-mark').value);
+        var start = parseFloat(sbox.value);
+        var end = parseFloat(ebox.value);
 
-         if(! $.isNumeric(start)) {
+         if(! $.isNumeric(sbox.value)) {
            alert("incorrect start range value");
            return;
-         } else if (! $.isNumeric(end)) {
+         } else if (! $.isNumeric(ebox.value)) {
            alert("incorrect end range value");
            return;
          } else if (end <= start) {
