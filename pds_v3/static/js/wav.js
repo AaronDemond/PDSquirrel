@@ -205,8 +205,6 @@ function disableLinks() {
     var outputString;
     var view;
     var channel_offset = null;
-	var leftBuffer = mergeBuffers(leftchannel, 0);
-	var rightBuffer = mergeBuffers(rightchannel, 0);
     var mode = null;
     var audio_proccess_counter = 0;
     var lastSelectedTime = 0;
@@ -466,13 +464,19 @@ function disableLinks() {
 		}
     }
 
-    /* Toggle recording. Data is fed to left and right chanels, in the correct position. */
+    /* Toggle recording. Data is fed to left and 
+	 * right chanels, in the correct position. */
+
     function recordToggle(e) {
 		if (recording == true) { // Pause clicked
 
-			recording = false;
+			// Clear old data
+			(window.URL || window.webkitURL).revokeObjectURL(local_download_url);
+			view = null;
+			interleaved = null;
 
-			stop();
+			recording = false; // onaudioprocess
+			stop(); // Stopwatch
 
 			var trim = document.getElementById('trim');
 			var preview = document.getElementById('preview');
@@ -480,18 +484,20 @@ function disableLinks() {
 			var start_set = document.getElementById('start_set');
 			var end_set = document.getElementById('end_set');
 
-			start_set.disabled=false;
-			end_set.disabled=false;
+			start_set.disabled = false;
+			end_set.disabled = false;
 
-			trim.disabled=false;
+			trim.disabled = false;
 			preview.disabled = false;
 			rec_btn.disabled = false;
 			save_btn.disabled = false;
       		delete_btn.disabled = false;
+
+			// float32arrays
 			leftBuffer = mergeBuffers(leftchannel, recordingLength);
 			rightBuffer = mergeBuffers(rightchannel, recordingLength);
-
 			interleaved = interleave(leftBuffer, rightBuffer);
+
 			buildLocalWav();
 
 			audio_player.currentTime = lastSelectedTime;
@@ -501,10 +507,16 @@ function disableLinks() {
 			outputElement.innerHTML = '';
 
 		} else { // Record clicked
-    	if (aud_name.value == "") {
+    		if (aud_name.value == "") {
 				alert("Please enter a name for your recording first");
 				return false;
 			}
+
+			// Clear old data
+			(window.URL || window.webkitURL).revokeObjectURL(local_download_url);
+			view = null;
+			interleaved = null;
+
 			saved = false;
 			disableLinks();
 
@@ -522,12 +534,12 @@ function disableLinks() {
 			start_set.disabled=true;
 			end_set.disabled=true;
 
-
 			trim.disabled=true;
 			preview.disabled = true;
 			rec_btn.disabled = true;
 			save_btn.disabled = true;
       		delete_btn.disabled = true;
+
 			// finds offset to be used when inserting recorded audio into an exisiting wav file
 			// Divides by 2048 because channel data is stored in arrays of float32arrays.
 			// float arrays are 2048 in length, as decided by the buffer size. Lower buffer size
@@ -556,8 +568,8 @@ function disableLinks() {
          } else if (end <= start) {
     			alert("incorrect range");
     			return;
-    		} else if (start<0) {
-    		  alert("incorrect start time");
+		} else if (start<0) {
+		  alert("incorrect start time");
           return;
         }
 
@@ -611,13 +623,13 @@ function disableLinks() {
         var index = 44; // Length of file header
         var volume = 1;
 
-	// Multiplies by volume
+		// Multiplies by volume and adds to wav view
         for (var i = 0; i < lng; i++) {
             view.setInt16(index, interleaved[i] * (0x7FFF * volume), true);
             index += 2;
         }
 
-	// Create wav url & download link
+		// Create wav url & download link
         var blob = new Blob ( [ view ], { type : 'audio/wav' } );
         var url = (window.URL || window.webkitURL).createObjectURL(blob);
 		local_download_url = url;
@@ -631,12 +643,6 @@ function disableLinks() {
 
 		// Creates wav blob from data view
         var blob = new Blob ( [ view ], { type : 'audio/wav' } );
-        /*
-        alert(blob.size+" bytes");
-        if (blob.size > 524288000) // 500 MiB <- limit in chrome
-          console.log("uh oh...");
-		*/
-	//	var blob = getMp3Blob();
     	var fd = new FormData();
         var url = (window.URL || window.webkitURL).createObjectURL(blob);
     	var name = document.getElementById('name').value; // Should check name isnt used or empty
