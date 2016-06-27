@@ -255,7 +255,7 @@ function disableLinks() {
 	 function showData(url, audio_clip_name, pdaudio_id){
 		//   This function is called when load chosen file btn clicked.
 		//   Loads wav url into editor, only tested with our wavs.
-				
+
 				current_edit_id = pdaudio_id;
 				enableLinks();
 
@@ -420,13 +420,13 @@ function disableLinks() {
 
     // Preview range selection
     function pselection(){
-      var start = parseInt(sbox.value);
-      var end = parseInt(ebox.value);
+      var start = parseFloat(sbox.value);
+      var end = parseFloat(ebox.value);
 
-      if(! $.isNumeric(start)) {
+      if(! $.isNumeric(sbox.value)) {
         alert("incorrect start range value");
         return;
-      } else if (! $.isNumeric(end)) {
+      } else if (! $.isNumeric(ebox.value)) {
         alert("incorrect end range value");
         return;
       } else if (end <= start) {
@@ -544,13 +544,13 @@ function disableLinks() {
     // Trims selection by editing the channel data, to nearest 2048 byte buffer
     function trimSelection(){
 
-        var start = parseInt(document.getElementById('start-mark').value);
-        var end = parseInt(document.getElementById('end-mark').value);
+        var start = parseFloat(sbox.value);
+        var end = parseFloat(ebox.value);
 
-         if(! $.isNumeric(start)) {
+         if(! $.isNumeric(sbox.value)) {
            alert("incorrect start range value");
            return;
-         } else if (! $.isNumeric(end)) {
+         } else if (! $.isNumeric(ebox.value)) {
            alert("incorrect end range value");
            return;
          } else if (end <= start) {
