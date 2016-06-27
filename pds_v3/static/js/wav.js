@@ -365,7 +365,10 @@ function disableLinks() {
     /* send wav to server */
     function saveRecording() {
 
-
+    if (isNaN(audio_player.duration)) {
+      alert("Their is no audio currently in the recorder to save");
+      return false;
+    }
 
 		if (edited_name == aud_name.value) {
 			if(!confirm("Are you sure you wish to save changes to '" + edited_name + "'? You may change the name to save it as a new audio recording")) {

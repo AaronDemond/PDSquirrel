@@ -66,7 +66,7 @@
 				<button onclick="recordToggle()" class="btn btn-danger" id = "record_button">Record</button>
 				<button onclick = "pauseClick()" class="btn btn-default" id = "pause_button">Pause</button>
 				<button id = "save_button"  class="btn btn-default" onclick="saveRecording('/upload/')">Save</button>
-				<button id="delete" onclick="delete_curr_audio()" class="btn btn-default">Delete</button>
+				<button id="delete" onclick="delete_curr_audio()" class="btn btn-default">Clear</button>
 
 
 				<br>
@@ -142,7 +142,7 @@
 		    <td class="recording_name">{{rec}}</td>
 		    <td>
 				{#<a class="download btn btn-default" href="{% url 'recording' rec.id %}" download="{{rec}}.mp3" target="_blank">Download </a> #}
-			<button class="btn btn-default del-btn" onclick="delAudio('{{rec.id}}')">Clear</button>
+			<button class="btn btn-default del-btn" onclick="delAudio('{{rec.id}}')">Delete</button>
 			{#<button class="btn btn-default" onclick="showData('/{{rec.audio.name}}', '{{rec}}')">Edit</button> #}
 			<button class="btn btn-default" onclick="showData('/wav/{{rec.pk}}', '{{rec}}', '{{rec.pk}}')">Edit</button>
 		    </td>
