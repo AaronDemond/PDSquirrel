@@ -142,10 +142,13 @@
 		    <td class="recording_name">{{rec}}</td>
 		    <td>
 				{#<a class="download btn btn-default" href="{% url 'recording' rec.id %}" download="{{rec}}.mp3" target="_blank">Download </a> #}
-			<button class="btn btn-default del-btn" onclick="delAudio('{{rec.id}}')">Delete</button>
+			<button class="btn btn-default del-btn" onclick="delAudio('{{rec.id}}')">Clear</button>
 			{#<button class="btn btn-default" onclick="showData('/{{rec.audio.name}}', '{{rec}}')">Edit</button> #}
 			<button class="btn btn-default" onclick="showData('/wav/{{rec.pk}}', '{{rec}}', '{{rec.pk}}')">Edit</button>
 		    </td>
+				<td>
+					{{ rec.getDuration }}
+				</td>
 	        </tr>
 		{% endfor %}
 	  </table>
@@ -157,4 +160,3 @@
     </div>
 
 </div>
- 

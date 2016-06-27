@@ -400,7 +400,7 @@ function disableLinks() {
 		if (!isNaN(audio_player.duration)) {
 
 			// If del confirm
-			if (confirm("Are you sure you want to delete the audio currently in the recorder?")) {
+			if (confirm("Are you sure you want to clear the audio currently in the recorder?")) {
 
 				// Clear data
 				audio_player.pause();
