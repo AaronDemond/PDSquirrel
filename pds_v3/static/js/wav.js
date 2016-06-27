@@ -559,6 +559,11 @@ function disableLinks() {
     // Trims selection by editing the channel data, to nearest 2048 byte buffer
     function trimSelection(){
 
+		// Clear old data
+		(window.URL || window.webkitURL).revokeObjectURL(local_download_url);
+		view = null;
+		interleaved = null;
+
         var start = parseFloat(sbox.value);
         var end = parseFloat(ebox.value);
 
@@ -761,6 +766,7 @@ function disableLinks() {
 		dispatched and how many sample-frames need to be processed each call.
 		Lower values for buffer size will result in a lower (better) latency.
 		Higher values will be necessary to avoid audio breakup and glitches */
+
 		var bufferSize = 2048;
 		recorder = context.createScriptProcessor(bufferSize, 2, 2);
 
