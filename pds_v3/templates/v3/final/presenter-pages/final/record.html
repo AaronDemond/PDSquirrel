@@ -23,7 +23,7 @@
 	</div>
 <div class="col-lg-9 col-lg-offset-1" id="container">
 
-	<h4>Record a new session <small><a class="status-link" onclick="showInfo(this)" id="infoLink">(info ▾)</a></small></h4>
+	<h4>Record a session <small><a class="status-link" onclick="showInfo(this)" id="infoLink">(info ▾)</a></small></h4>
 	<hr>
     <div class="row">
         <div class="col-lg-9 col-lg-offset-1"></div>
@@ -53,7 +53,7 @@
     </div>
     <div class="row">
 		<div class="col-lg-6">
-			<label for="name">Recording Name</label>
+			<label for="name">Recording name</label>
 			<input type="text" placeholder="Enter a name for your audio clip" class="form-control" id="name">
 		</div>
 		<div class="col-lg-12">
@@ -61,15 +61,17 @@
 		</div>
     </div>
     <div class="row">
-			<div class="col-lg-6">
-				<div>Total length of recording: <span id='timer'>00:00</span></div>
+			<div class="col-xs-6">
+				<label>Controls:</label>
+				<br>
 				<button onclick="recordToggle()" class="btn btn-danger" id = "record_button">Record</button>
 				<button onclick = "pauseClick()" class="btn btn-default" id = "pause_button">Pause</button>
 				<button id = "save_button"  class="btn btn-default" onclick="saveRecording('/upload/')">Save</button>
 				<button id="delete" onclick="delete_curr_audio()" class="btn btn-default">Clear</button>
-
-
-				<br>
+			</div>
+			<div class="col-xs-6">
+				<label>Status:</label>
+				<div>Total length of recording: <span id='timer'>00:00</span></div>
 				<div style="float: left; margin-bottom: 20px; margin-top: 5px" id="output" style="font-weight: bold">
 					<p>Click record to begin capturing audio.</p>
 				</div>
@@ -134,7 +136,7 @@
     <div class="row">
         <div class="col-lg-12" style="margin-top: 30px">
 		<hr>
-	    <h4>My Audio Clips</h4>
+	    <h4>My Recordings</h4>
 	    {% if audio_recordings %}
 	    <table id="clips_table" class="table table-striped">
 		{% for rec in audio_recordings %}

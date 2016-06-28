@@ -29,8 +29,8 @@
 <div class="col-sm-6" style="padding-left: 0px; margin-top: 10px;">
 	<table class = "table table-striped">
 		<tr>
-			<td>Upload Date</td>
-			<td>{{pd.upload_date}}</td>
+			<td>Upload date</td>
+			<td>{{pd.upload_date|date:"N j, Y"}}</td>
 		</tr>
 		<tr>
 			 <td>Subject area(s)</td>
@@ -46,7 +46,7 @@
 		</tr>
 		<tr>
 			<td>Comments Disabled</td>
-			<td>{{pd.comments_disabled}}</td>
+			<td>{% if pd.comments_disabled %}Yes{% else %}No{% endif %}</td>
 		</tr>
 
 	</table>
