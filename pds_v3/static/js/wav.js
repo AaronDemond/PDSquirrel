@@ -212,7 +212,8 @@ function disableLinks() {
     var editing = null;
     var edited_name = null;
 	var local_download_url = null;
-	var current_edit_id = false
+	var current_edit_id = false;
+  var audio_blob = null;
 
 	function getMp3Blob() {
 		all_data = new Float32Array(leftBuffer);
@@ -467,7 +468,7 @@ function disableLinks() {
 		}
     }
 
-    /* Toggle recording. Data is fed to left and 
+    /* Toggle recording. Data is fed to left and
 	 * right chanels, in the correct position. */
 
     function recordToggle(e) {
@@ -555,6 +556,45 @@ function disableLinks() {
         }
     }
 
+    //testing new optomized trim function
+    function trimSelection_test() {
+
+      /*
+        get data from interleaved data
+        slice out users selection
+        create blob from that
+        slice( 1, -1 )
+        splice array = array from 1 index till length-1 index
+      */
+      //     length in bytes /
+      // (interleaved.byteLength-5.5) / (sampleRate * 4) / 2;
+      var start = parseFloat(sbox.value);
+      var end = parseFloat(ebox.value);
+
+       if(! $.isNumeric(sbox.value)) {
+         alert("incorrect start range value");
+         return;
+       } else if (! $.isNumeric(ebox.value)) {
+         alert("incorrect end range value");
+         return;
+       } else if (end <= start) {
+        alert("incorrect range");
+        return;
+      } else if (start<0) {
+        alert("incorrect start time");
+        return;
+      }
+      start_index = ((start / 2) * sampleRate + 5.5) / 4;
+      end_index = ((end / 2) * sampleRate + 5.5) / 4;
+      interleaved = interleaved.slice(start_index, -end_index);
+
+      if (start == 0 && end >= audio_player.duration) {
+        reset();
+      }
+        buildLocalWav();
+      clearRange();
+    }
+
 
     // Trims selection by editing the channel data, to nearest 2048 byte buffer
     function trimSelection(){
@@ -576,8 +616,8 @@ function disableLinks() {
          } else if (end <= start) {
     			alert("incorrect range");
     			return;
-		} else if (start<0) {
-		  alert("incorrect start time");
+    		} else if (start<0) {
+    		  alert("incorrect start time");
           return;
         }
 
@@ -610,22 +650,22 @@ function disableLinks() {
 
         // RIFF
         writeUTFBytes(view, 0, 'RIFF');
-        view.setUint32(4, 44 + interleaved.length * 2, true);
+        view.setUint32(4, 44 + interleaved.length * 2, true); //Size of the file
         writeUTFBytes(view, 8, 'WAVE');
 
         // FMT
         writeUTFBytes(view, 12, 'fmt ');
         view.setUint32(16, 16, true);
-        view.setUint16(20, 1, true);
-        view.setUint16(22, 2, true);
-        view.setUint32(24, sampleRate, true);
-        view.setUint32(28, sampleRate * 4, true);
-        view.setUint16(32, 4, true);
-        view.setUint16(34, 16, true);
+        view.setUint16(20, 1, true);              // PCM
+        view.setUint16(22, 2, true);              // 2 channels
+        view.setUint32(24, sampleRate, true);     // Sample Rate (number of samples per second)
+        view.setUint32(28, sampleRate * 4, true); // Sample Rate * bits per sample * Channels
+        view.setUint16(32, 4, true);              // bits per sample * Channels
+        view.setUint16(34, 16, true);             // Bit per Sample
 
         // data sub-chunk
-        writeUTFBytes(view, 36, 'data');
-        view.setUint32(40, interleaved.length * 2, true);
+        writeUTFBytes(view, 36, 'data');                  //Marks The beginning of the data secion
+        view.setUint32(40, interleaved.length * 2, true); //Size of the data section
 
         var lng = interleaved.length;
         var index = 44; // Length of file header
@@ -635,7 +675,11 @@ function disableLinks() {
         for (var i = 0; i < lng; i++) {
             view.setInt16(index, interleaved[i] * (0x7FFF * volume), true);
             index += 2;
-        }
+        }                       // ( bytes/s ) * ( bytes )
+        var wav_length_in_secs = (interleaved.byteLength-5.5) / (sampleRate * 4) / 2;
+        console.log("calculated recording length "+ wav_length_in_secs);
+        console.log("array length " + interleaved.length);
+        console.log("byte length "+interleaved.byteLength);
 
 		// Create wav url & download link
         var blob = new Blob ( [ view ], { type : 'audio/wav' } );
@@ -643,6 +687,7 @@ function disableLinks() {
 		local_download_url = url;
         $('#player').attr("src" , url);
         $('#dl').attr("href", url);
+        audio_blob = blob;
     }
 
 
@@ -739,6 +784,7 @@ function disableLinks() {
       }
       return result;
     }
+
 
     function writeUTFBytes(view, offset, string){
       var lng = string.length;
