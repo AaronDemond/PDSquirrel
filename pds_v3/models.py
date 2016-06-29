@@ -267,6 +267,7 @@ class PdSessionEdit(models.Model):
     presenter_approved = models.BooleanField(default=False)
     attachments = models.ManyToManyField(PdAttachment, blank=True)
     comments_disabled = models.BooleanField(default = False)
+    allow_email_notification_on_comment = models.BooleanField(default = False)
 
     def __str__(self):
         return self.name
@@ -306,6 +307,7 @@ class PdSession(models.Model):
     attachments = models.ManyToManyField(PdAttachment, blank=True)
     total_takes = models.IntegerField(default=0)
     comments_disabled = models.BooleanField(default = False)
+    allow_email_notification_on_comment = models.BooleanField(default = False)
 
 
     def __str__(self):

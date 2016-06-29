@@ -236,7 +236,7 @@ def getRecordingMp3(request, audio_id):
 
 def getAudio(request, pd_id):
     '''
-    If user owns the rights to the PdSession, this will return a 
+    If user owns the rights to the PdSession, this will return a
     direct link to the corrisponding mp3.
     '''
 
@@ -414,10 +414,18 @@ def comment(request):
 
         if message or not message.isspace() and user_owns:
 
+            if pd.allow_email_notification_on_comment:
+                presenter = pd.presenters.all()[0]
+                msg = "Hello, " + presenter.user.first_name + ".\n\n"+ user.first_name +" "+ user.last_name+" posted the comment \n\'"+message+"\'\n" \
+                                                        "\nOn your PD session titled "+ pd.name +". You can prevent further notifications such as this "\
+                                                        "one by unclicking enable comments on notification when editing the current session in the" \
+                                                        " session tab of the presenter hub\n\nPD Squirrel admin team."
+                send_mail('User Comment Notification', msg, 'noreply@pdsquirrel.ca', [user.email], fail_silently=False)
+
             if reply_id == 0:
                 comment = Comment(message=message, user=user, pd=pd)
                 comment.save()
-                reply_id = comment.id 
+                reply_id = comment.id
             else:
                 parent = Comment.objects.get(pk=reply_id)
                 comment = Comment(message=message, user=user, pd=pd, parent = parent)
@@ -462,8 +470,6 @@ def upload(request):
 def download_example(request):
     return HttpResponse
 
-
-from django.core.mail import send_mail
 
 def support_msg(request):
     if request.POST:
