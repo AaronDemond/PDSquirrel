@@ -416,11 +416,11 @@ def comment(request):
 
             if pd.allow_email_notification_on_comment:
                 presenter = pd.presenters.all()[0]
-                msg = "Hello, " + presenter.user.user.first_name + ".\n\n"+ user.first_name +" "+ user.last_name+" posted the comment \n\'"+message+"\'\n" \
-                                                        "\nOn your PD session titled "+ pd.name +". You can prevent further notifications such as this " \
+                msg = "Hello, "+presenter.user.first_name+" "+presenter.user.last_name+".\n\n"+request.user.first_name+" "+request.user.last_name+" posted the " \
+                                                        "comment\n\'"+message+"\'\nOn your PD session titled "+pd.name+". You can prevent further notifications such as this " \
                                                         "one by unclicking enable comments on notification when editing the current session in the" \
                                                         " session tab of the presenter hub\n\nPD Squirrel admin team."
-                send_mail('User Comment Notification', msg, 'noreply@pdsquirrel.ca', [user.email], fail_silently=False)
+                send_mail('User Comment Notification', msg, 'admin@pdsquirrel.ca', [presenter.user.email], fail_silently=False)
 
             if reply_id == 0:
                 comment = Comment(message=message, user=user, pd=pd)
