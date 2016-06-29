@@ -1,3 +1,9 @@
+.preview-col {
+	height: 50px;
+}
+.preview-col video {
+	margin-top: 20px;
+}
 .actions button, .actions a {
 	float: left;
 	margin-right: 5px;

@@ -26,7 +26,11 @@
             <div class="list-group-item pd-upload" >
                 <div class="row session">
                     <div class="col-lg-12">
+						{% if sesh.approved %}
+						<a href="{% url 'detail' sesh.id %}"><h4>{{sesh}}</h4></a>
+						{% else %}
 						<h4>{{sesh}}</h4>
+						{% endif %}
                     </div>
                     <div class="col-sm-6">
                         <p class="muted">Uploaded {{ sesh.upload_date }} {# |date:"N j, Y" #}
@@ -91,11 +95,7 @@
                                 &nbsp;
                             </div>
                         </div>
-						{% if sesh.approved %}
-						<a href="{% url 'detail' sesh.id %}">Listen</a>
-						{% else %}
-                        <a class=""  onclick="loadXMLDoc('{% url 'preview-session' sesh.id %}', '#page-content')">Listen</a>
-						{% endif %}
+						<a class="preview-link" onclick="previewAudio({{sesh.id}}, this)">Preview ▾</a>
                         <a class="" onclick="loadXMLDoc('{% url 'edit' sesh.id %}', '#page-content')">Edit</a>
 												{% if sesh.suspended == False %}
                         <a class="suspend-link" onclick="showRemove({{sesh.id}}, this)" >Remove ▾</a>
@@ -148,6 +148,8 @@
                         </form>
                     </div>
                 </div>
+				<div class="row preview-bar" id="preview-{{sesh.id}}">
+				</div>
                 <div class="row hidden status-bar" id="status-{{sesh.id}}" style="margin-top: 20px;">
                     <div class="col-lg-12">
                         <div class="alert alert-info">

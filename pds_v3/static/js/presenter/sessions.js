@@ -22,6 +22,7 @@ function hideCancelBar() {
 function showStatus(id, infolink) {
 	hideCancelBar();
 	hideSuspend();
+	hidePreview();
 
 	if ($(infolink).text() ==  '(info ▴)') {
 		hideStatus();
@@ -35,10 +36,68 @@ function showStatus(id, infolink) {
 
 }
 
+function hidePreview() {
+	// removes all preview contents from page and
+	// puts link at proper state
+
+	$('.preview-link').text('Preview ▾');
+	$(".preview-bar").each(function() {
+			$(this).empty();
+	});
+}
+
+function previewAudio(id, preview_link) {
+	/* fills preview container with audio and toggles
+	 * button arrow text */
+
+
+	// Hide other drop downs
+	hideCancelBar();
+	hideStatus();
+	hideSuspend();
+
+	// id of the row to insert audio
+	var row_id = "#preview-" + id;
+
+	// Formatted audio template to insert
+	var html = `
+		<div class="col-lg-12 preview-col">
+		<video id="player" class="video-js vjs-default-skin" controls preload="auto" width="100%" height="20" poster="" data-setup="{}">
+			<source src="/audio/${id}" type='audio/mpeg'>
+			</video>
+
+		</div>
+			`;
+
+	// Clear audio elements from page
+	$(".preview-bar").each(function() {
+		$(this).empty();
+	});
+
+	// Change arrow to closed state on all other links
+	$(".preview-link").each(function() {
+		if ( !$(this).is($(preview_link)) ) {
+			$(this).text('Preview ▾');
+		} 
+	});
+
+	// Toggle state of arrow in clicked preview button 
+	if ($(preview_link).text() == 'Preview ▾' ) {
+		$(preview_link).text('Preview ▴');
+		$(row_id).append(html);
+
+	} else {
+		$(preview_link).text('Preview ▾');
+		$(row_id).empty();
+
+	}
+
+}
 
 function showRemove(id, suslink) {
     hideCancelBar();
 		hideStatus();
+		hidePreview();
 
     if ($(suslink).text() == 'Remove ▴') {
 		hideSuspend();
@@ -54,6 +113,7 @@ function showRemove(id, suslink) {
 function showSuspendCancel(id, suslink) {
     hideSuspend();
 	hideStatus();
+	hidePreview();
 
     if ($(suslink).text() == 'Cancel removal ▴') {
 		hideCancelBar();
