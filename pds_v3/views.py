@@ -1,4 +1,5 @@
 from django.shortcuts import render, HttpResponse, HttpResponseRedirect
+from .forms import UploadFileForm
 import os
 from itertools import chain
 import datetime
@@ -422,9 +423,8 @@ def comment(request):
                                                         "one by unclicking enable comments on notification when editing the current session in the" \
                                                         " session tab of the presenter hub.\n\nPD Squirrel admin team."
                 subject = 'User Comment Notification'
-
-                # Sets up email to be sent in another thread and is non blocking
-                tasks.sendMail.apply_async([request.user.email,subject,msg])
+                # Sets up email to be handled by task manager and is non blocking
+                tasks.sendMail.apply_async([presenter.user.email,subject,msg])
 
             if reply_id == 0:
                 comment = Comment(message=message, user=user, pd=pd)
@@ -445,7 +445,6 @@ def comment(request):
     #return HttpResponse('Success')
 
 
-from .forms import UploadFileForm
 
 
 
