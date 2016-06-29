@@ -374,11 +374,10 @@ function disableLinks() {
 			return false;
 			}
 		}
-
-	    if (aud_name.value == "") {
-			alert("Please enter a name for the recording");
-			return false;
-	   }
+    if (aud_name.value == "") {
+      alert("Please enter a name for your recording before you save.");
+      return false;
+    }
 
 		try {
 			createWavBlob();
@@ -511,10 +510,6 @@ function disableLinks() {
 			outputElement.innerHTML = '';
 
 		} else { // Record clicked
-    		if (aud_name.value == "") {
-				alert("Please enter a name for your recording first");
-				return false;
-			}
 
 			// Clear old data
 			(window.URL || window.webkitURL).revokeObjectURL(local_download_url);
@@ -693,6 +688,7 @@ function disableLinks() {
 				console.log(this_audio[0]); // fields_obj, model_str, pk_id
 				pda_obj = this_audio[0]
 				context.close();
+        $('#loader').addClass('hidden');
 				alert("Save Successful, your file can now be uploaded as a session on the upload tab.");
 				onbeforeunload = null;
 				window.location.replace("/user/presenter/dash/?direct_to=recorder");

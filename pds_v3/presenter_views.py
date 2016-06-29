@@ -285,6 +285,11 @@ def dash(request, msg=False):
                 pd_description = request.POST['description']
                 subjects = request.POST.getlist('subject')
 
+                if 'allow_email_notification_on_comment' in request.POST:
+                    allow_email_notification_on_comment = True
+                else:
+                    allow_email_notification_on_comment = False
+
                 if 'disable_comments' in request.POST:
                     disable_comments = False
                 else:
@@ -307,7 +312,7 @@ def dash(request, msg=False):
                     pdaud.used = True
                     pdaud.save();
                     mp3_obj = MP3(pdaud.getMp3Location())
-                    new_session = PdSession(name=pd_name,description=pd_description, pdaudio=pdaud, approved=False, presenter_approved=True, comments_disabled=disable_comments)
+                    new_session = PdSession(name=pd_name,description=pd_description, pdaudio=pdaud, approved=False, presenter_approved=True, comments_disabled=disable_comments, allow_email_notification_on_comment = allow_email_notification_on_comment)
                     counter = 1 #file counter. 1 if pd audio, 0 if audio from client pc
                 else:
                     audio_file = request.FILES.get('audio_file', False)
@@ -418,6 +423,11 @@ def edit(request, id):
             name = request.POST.get('name', pd.name)
             subjects = request.POST.getlist('subjects')
 
+            if 'allow_email_notification_on_comment' in request.POST:
+                allow_email_notification_on_comment = True
+            else:
+                allow_email_notification_on_comment = False
+
             if 'disable_comments' in request.POST:
                 disable_comments = False
             else:
@@ -429,7 +439,7 @@ def edit(request, id):
                 return HttpResponseRedirect('/user/presenter/dash/?direct_to=sessions')
 
             #create the edit
-            edit = PdSessionEdit(name=name, description=description, comments_disabled = disable_comments)
+            edit = PdSessionEdit(name=name, description=description, comments_disabled = disable_comments, allow_email_notification_on_comment = allow_email_notification_on_comment)
             edit.save()
 
             # If there was a previous edit, use its data
@@ -469,6 +479,7 @@ def edit(request, id):
             #pd.subject = edit.subjects.all()
             pd.name = edit.name
             pd.description = edit.description
+            pd.allow_email_notification_on_comment = edit.allow_email_notification_on_comment
             pd.comments_disabled = edit.comments_disabled
             pd.save()
             messages.success(request,'Edit successful.')
