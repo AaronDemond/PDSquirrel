@@ -195,7 +195,6 @@ function disableLinks() {
     var interleaved = [];
     var recorder = null;
     var recording = false;
-    var recordingLength = 0;
     var volume = null;
     var audioInput = null;
     var sampleRate = null;
@@ -213,7 +212,7 @@ function disableLinks() {
     var edited_name = null;
 	var local_download_url = null;
 	var current_edit_id = false;
-  var audio_blob = null;
+  	var audio_blob = null;
 
 	function getMp3Blob() {
 		all_data = new Float32Array(leftBuffer);
@@ -498,8 +497,8 @@ function disableLinks() {
       		delete_btn.disabled = false;
 
 			// float32arrays
-			leftBuffer = mergeBuffers(leftchannel, recordingLength);
-			rightBuffer = mergeBuffers(rightchannel, recordingLength);
+			leftBuffer = mergeBuffers(leftchannel);
+			rightBuffer = mergeBuffers(rightchannel);
 			interleaved = interleave(leftBuffer, rightBuffer);
 
 			buildLocalWav();
@@ -552,93 +551,46 @@ function disableLinks() {
         }
     }
 
-    //testing new optomized trim function
-    function trimSelection() {
 
-      /*
-        get data from interleaved data
-        slice out users selection
-        create blob from that
-        slice( 1, -1 )
-        splice array = array from 1 index till length-1 index
-      */
-      //     length in bytes /
-      // (interleaved.byteLength-5.5) / (sampleRate * 4) / 2;
-      var start = parseFloat(sbox.value);
-      var end = parseFloat(ebox.value);
+    function trimSelection(){
+		/* Removes audio within selection, rebuilds wav */
 
-       if(! $.isNumeric(sbox.value)) {
-         alert("incorrect start range value");
-         return;
-       } else if (! $.isNumeric(ebox.value)) {
-         alert("incorrect end range value");
-         return;
-       } else if (end <= start) {
-        alert("incorrect range");
-        return;
-      } else if (start<0) {
-        alert("incorrect start time");
-        return;
-      }
-      var start_index = Math.round(((start * 2) * sampleRate + 5.5) / 4);
-      var end_index = Math.round(((end * 2) * sampleRate + 5.5) / 4);
-      var s_time = (start_index*4-5.5) / (sampleRate * 4) / 2
-      var e_time = (end_index*4-5.5) / (sampleRate * 4) / 2
-      console.log("start index: "+start_index+" start time: "+s_time);
-      console.log("end index: "+end_index+" end time: "+e_time);
-      interleaved = interleaved.slice(start_index, -end_index);
-
-      if (start == 0 && end >= audio_player.duration) {
-        reset();
-      }
-        buildLocalWav();
-      clearRange();
-    }
-
-
-    // Trims selection by editing the channel data, to nearest 2048 byte buffer
-    function t(){
-
-		// Clear old data
-		(window.URL || window.webkitURL).revokeObjectURL(local_download_url);
-		view = null;
-		interleaved = null;
-
+		// Start and end in seconds
         var start = parseFloat(sbox.value);
         var end = parseFloat(ebox.value);
+		
+		// Cleanup 
+        if (start == 0 && end >= audio_player.duration) delete_curr_audio();
+		(window.URL || window.webkitURL).revokeObjectURL(local_download_url);
+		view = null;
 
-         if(! $.isNumeric(sbox.value)) {
-           alert("incorrect start range value");
-           return;
-         } else if (! $.isNumeric(ebox.value)) {
-           alert("incorrect end range value");
-           return;
-         } else if (end <= start) {
-    			alert("incorrect range");
-    			return;
-    		} else if (start<0) {
-    		  alert("incorrect start time");
-          return;
-        }
+		// Check start&end are valid
+		if(! $.isNumeric(sbox.value)) {
+			alert("incorrect start range value");
+			return;
+		} else if (! $.isNumeric(ebox.value)) {
+			alert("incorrect end range value");
+			return;
+		} else if (end <= start) {
+			alert("incorrect range");
+			return;
+		} else if (start<0) {
+			alert("incorrect start time");
+			return;
+		}
 
+		// extract sections around trim
+		front = interleaved.slice(0, parseInt(start * sampleRate * 2));
+		back = interleaved.slice(parseInt(end * sampleRate * 2), interleaved.length);
 
-		// Remove raw data from left and right channels
-        var length = (end - start) * sampleRate;
-        leftchannel.splice(parseInt((start * sampleRate) / 2048),parseInt(length /2048));
-        rightchannel.splice(parseInt((start * sampleRate) / 2048),parseInt(length /2048));
-        recordingLength -= parseInt(length/2);
+		// combine sections as a typed array
+		interleaved = new Float32Array(front.length + back.length);
+		interleaved.set(front);
+		interleaved.set(back, front.length);
 
-        // combines data and builds wav
-        var leftBuffer = mergeBuffers(leftchannel, recordingLength);
-        var rightBuffer = mergeBuffers(rightchannel, recordingLength);
-        interleaved = interleave(leftBuffer, rightBuffer); // Should probably edit this instead of channel data, but it gave issues earlier.
-
-        // bugfix for when you trim the whole thing the recording timer wasn't reseting
-        if (start == 0 && end >= audio_player.duration) {
-          reset();
-        }
-          buildLocalWav();
-		    clearRange();
+		// create wave blob & cleanup
+		buildLocalWav();
+		clearRange();
 
     }
 
@@ -675,11 +627,7 @@ function disableLinks() {
         for (var i = 0; i < lng; i++) {
             view.setInt16(index, interleaved[i] * (0x7FFF * volume), true);
             index += 2;
-        }                       // ( bytes/s ) * ( bytes )
-        var wav_length_in_secs = (interleaved.byteLength-5.5) / (sampleRate * 4) / 2;
-        console.log("calculated recording length "+ wav_length_in_secs);
-        console.log("array length " + interleaved.length);
-        console.log("byte length "+interleaved.byteLength);
+        }
 
 		// Create wav url & download link
         var blob = new Blob ( [ view ], { type : 'audio/wav' } );
@@ -774,7 +722,7 @@ function disableLinks() {
     }
 
     // Flattens array of 32bitarrays
-    function mergeBuffers(channelBuffer, recordingLength){
+    function mergeBuffers(channelBuffer){
       var result = new Float32Array(channelBuffer.length * 2048);
       var offset = 0;
       var lng = channelBuffer.length;
@@ -827,8 +775,6 @@ function disableLinks() {
 			leftchannel.splice(channel_offset + audio_proccess_counter, 0, (new Float32Array(left)));
 			rightchannel.splice(channel_offset + audio_proccess_counter, 0, (new Float32Array(right)));
 			audio_proccess_counter += 1;
-
-			recordingLength += bufferSize; // Probably not needed
 
         }
         volume.connect (recorder);
