@@ -1,8 +1,12 @@
 from __future__ import absolute_import
 from celery import shared_task
 import stripe, datetime
+from django.core.mail import send_mail
 
-
+@shared_task
+def sendMail(send_to, subject, msg):
+    send_mail(subject, msg, 'admin@pdsquirrel.ca', [send_to], fail_silently=False)
+    
 
 @shared_task
 def incrementCredits(user, amount):
