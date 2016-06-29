@@ -242,11 +242,12 @@ function disableLinks() {
 
     // If webcam available, request permission. Display Error message elsewise.
     if (navigator.getUserMedia){
-		navigator.getUserMedia({audio:true},
-	    success,
-	    function(e) {
-	    	alert('Error capturing audio.');
-		});
+  		navigator.getUserMedia({audio:true},
+  	    success,
+  	    function(e) {
+  	    	alert('Error capturing audio.');
+          console.log(e);
+  		});
     } else {
 		alert('getUserMedia not supported in this browser.');
     }
@@ -557,7 +558,7 @@ function disableLinks() {
     }
 
     //testing new optomized trim function
-    function trimSelection_test() {
+    function trimSelection() {
 
       /*
         get data from interleaved data
@@ -584,8 +585,12 @@ function disableLinks() {
         alert("incorrect start time");
         return;
       }
-      start_index = ((start / 2) * sampleRate + 5.5) / 4;
-      end_index = ((end / 2) * sampleRate + 5.5) / 4;
+      var start_index = Math.round(((start * 2) * sampleRate + 5.5) / 4);
+      var end_index = Math.round(((end * 2) * sampleRate + 5.5) / 4);
+      var s_time = (start_index*4-5.5) / (sampleRate * 4) / 2
+      var e_time = (end_index*4-5.5) / (sampleRate * 4) / 2
+      console.log("start index: "+start_index+" start time: "+s_time);
+      console.log("end index: "+end_index+" end time: "+e_time);
       interleaved = interleaved.slice(start_index, -end_index);
 
       if (start == 0 && end >= audio_player.duration) {
@@ -597,7 +602,7 @@ function disableLinks() {
 
 
     // Trims selection by editing the channel data, to nearest 2048 byte buffer
-    function trimSelection(){
+    function t(){
 
 		// Clear old data
 		(window.URL || window.webkitURL).revokeObjectURL(local_download_url);

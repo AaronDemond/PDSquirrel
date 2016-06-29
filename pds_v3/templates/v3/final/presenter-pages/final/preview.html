@@ -45,8 +45,8 @@
 			 <td>{{pd.duration}}</td>
 		</tr>
 		<tr>
-			<td>Comments Disabled</td>
-			<td>{% if pd.comments_disabled %}Yes{% else %}No{% endif %}</td>
+			<td>Comments Enabled</td>
+			<td>{% if not pd.comments_disabled %}Yes{% else %}No{% endif %}</td>
 		</tr>
 
 	</table>
