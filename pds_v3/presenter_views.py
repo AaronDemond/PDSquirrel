@@ -285,7 +285,7 @@ def dash(request, msg=False):
                 pd_description = request.POST['description']
                 subjects = request.POST.getlist('subject')
 
-                if 'disable_comments' not in request.POST:
+                if 'disable_comments' in request.POST:
                     disable_comments = False
                 else:
                     disable_comments = True
@@ -418,7 +418,7 @@ def edit(request, id):
             name = request.POST.get('name', pd.name)
             subjects = request.POST.getlist('subjects')
 
-            if 'disable_comments' not in request.POST:
+            if 'disable_comments' in request.POST:
                 disable_comments = False
             else:
                 disable_comments = True

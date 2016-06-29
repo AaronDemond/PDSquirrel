@@ -18,7 +18,7 @@
     <div class="col-lg-9 col-lg-offset-1">
     	{% csrf_token %}
 	    <fieldset>
-		<h4>Use this page to upload a new PD session <small><a class="status-link" onclick="showInfo(this)" id="infoLink">(info ▾)</a></small></h4>
+		<h4>Upload a PD session <small><a class="status-link" onclick="showInfo(this)" id="infoLink">(info ▾)</a></small></h4>
 		<div class="row hidden" id="info-row">
 		    <div class="col-lg-12">
 		        <div class="alert alert-info">
@@ -40,7 +40,7 @@
 							<div class="control-group">
 					<label for="name" >Session title</label>
 					<div class="controls">
-						<input id="name" name="name" type="text" placeholder="Enter a title for your session." class="form-control" value="{{title}}" required="">
+						<input id="name" name="name" type="text" placeholder="Enter a title for the session." class="form-control" value="{{title}}" required="">
 			    	</div>
 					</div>
 				</div>
@@ -65,6 +65,7 @@
 			</div>
 		</div>
 		<div class="row">
+			{% comment %}
 			<div class="col-lg-12">
 				<div class="control-group">
 					<label for="radio">Choose audio file upload method</label>
@@ -80,23 +81,37 @@
 					</div>
 				</div>
 			</div>
+			{% endcomment %}
+			<div class="col-lg-7">
+			<div class="control-group ctrl-group-tight">
+				<div class="radio" style="margin-bottom: 10px;">
+					<label>
+						<input id="online" checked="true" type="radio" name="upload">
+						Select upload file from online recordings
+					</label>
+				</div>
+
+				<select id="online_input" class="form-control" name="recording">
+					<option value="0" selected></option>
+					{% for x in recordings %}
+					<option value="{{x.id}}">{{x}}</option>
+					{% endfor %}
+				</select>
+			</div>
+			</div>
 		    <div class="col-lg-5">
 				<div class="control-group ctrl-group-tight">
-					<label for="">Upload from computer</label>
+					<div class="radio" style="margin-bottom: 10px;">
+						<label>
+							<input id="upload" type="radio" name="upload">
+							Upload from computer
+						</label>
+					</div>
+
 					<input disabled="true" id="upload_input" type="file" class="form-control file-input" name="audio_file">
 				</div>
 		    </div>
-		    <div class="col-lg-7">
-				<div class="control-group ctrl-group-tight">
-					<label>Select upload file from online recordings</label>
-					<select id="online_input" class="form-control" name="recording">
-						<option value="0" selected></option>
-						{% for x in recordings %}
-						<option value="{{x.id}}">{{x}}</option>
-						{% endfor %}
-					</select>
-				</div>
-		    </div>
+
 				<div class="col-lg-12">
 					<p class="help-block">(Required) Select the audio file of your PD Session for upload. It should be in MP3 or WAV format.</p>
 				</div>
@@ -106,8 +121,8 @@
 				<hr>
 				<div class="checkbox" style="margin-bottom:20px;">
 					<label>
-						<input type="checkbox" name="disable_comments" value="true">
-						<b>Disable comments on your PDsession</b>
+						<input type="checkbox" name="disable_comments" value="true" checked>
+						<b>Enable comments on your PDsession</b>
 					</label>
 				</div>
 

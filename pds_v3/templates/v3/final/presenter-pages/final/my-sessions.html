@@ -33,7 +33,7 @@
 						{% endif %}
                     </div>
                     <div class="col-sm-6">
-                        <p class="muted">Uploaded {{sesh.upload_date}}
+                        <p class="muted">Uploaded {{ sesh.upload_date }} {# |date:"N j, Y" #}
                             {% if sesh.last_edited %}
                             <br>Edited {{sesh.last_edited}}
                             {% endif %}
@@ -96,7 +96,6 @@
                             </div>
                         </div>
 						<a class="preview-link" onclick="previewAudio({{sesh.id}}, this)">Preview ▾</a>
-
                         <a class="" onclick="loadXMLDoc('{% url 'edit' sesh.id %}', '#page-content')">Edit</a>
 												{% if sesh.suspended == False %}
                         <a class="suspend-link" onclick="showRemove({{sesh.id}}, this)" >Remove ▾</a>
@@ -218,7 +217,7 @@
 </p>
 
                             {% elif sesh.approved == False %}
-                            <p>Thank you for releasing this PD Session to us. Once reviewed and accepted by us, in accordance with our Presenter terms and conditions, it will be listed on the Site and offered to all PD Squirrel members.</p>
+                            <p>Thank you for releasing this PD Session to us. Once processed, it will be listed on the Site and offered to all PD Squirrel members.</p>
 
 														{% else %}
 <p>
