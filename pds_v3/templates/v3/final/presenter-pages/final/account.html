@@ -28,7 +28,7 @@
 	    <div class="row">
 			<div class="col-sm-6">
 				<div class="form-group">
-					<label for="public_email">Public Email</label>
+					<label for="public_email">Email</label>
 					<input type="text"class="form-control" name="public_email" value="{{presenter.public_email}}">
 				</div>
 				<div class="form-group">
@@ -43,7 +43,7 @@
 					<input type="text"class="form-control" name="credentials" value="{{presenter.credentials}}">
 				</div>
 				<div class="form-group">
-					<label for="public_email">Law or accounting Firm</label>
+					<label for="public_email">Law or accounting firm</label>
 					<input type="text"class="form-control" name="law_firm" value="{{presenter.law_firm}}">
 				</div>
 			</div>
@@ -70,8 +70,13 @@
 			<div class="col-lg-12">
 				<div class="control-group">
 					<label for="bio">Bio</label><small class="muted"> (Required for your presenter page to appear)</small>
-					<textarea class="form-control" name="bio" cols="30" rows="10">{{presenter.bio}}</textarea>
+					<textarea class="form-control" name="bio" cols="30" rows="6">{{presenter.bio}}</textarea>
 				</div>
+
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-12">
 				<div class="control-group">
 					<input type="submit" class="btn btn-success submit-fix" value="Submit">
 					<a class="btn btn-default submit-fix" href="{% url 'presenter-dash' %}">Cancel</a>

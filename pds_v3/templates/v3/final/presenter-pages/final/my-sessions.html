@@ -29,7 +29,7 @@
 						<h4>{{sesh}}</h4>
                     </div>
                     <div class="col-sm-6">
-                        <p class="muted">Uploaded {{ sesh.upload_date|date:"N j, Y" }}
+                        <p class="muted">Uploaded {{ sesh.upload_date }} {# |date:"N j, Y" #}
                             {% if sesh.last_edited %}
                             <br>Edited {{sesh.last_edited}}
                             {% endif %}
