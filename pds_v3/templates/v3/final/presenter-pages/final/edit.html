@@ -1,5 +1,7 @@
 {% load staticfiles %}
 	<script src="{% static 'js/presenter/edit.js' %}"></script>
+	<script src="{% static 'js/presenter/form_helpers.js' %}"></script>
+	<link rel="stylesheet" href="{% static 'css/presenter/presenter-hub.css' %}">
 
 <div class="row">
 	<div class="col-xs-9 col-lg-offset-1">
@@ -99,16 +101,16 @@
 
 				<div class="row">
 					<div class="col-lg-12">
-						<div class="checkbox" style="margin-bottom:10px; margin-top: 10px;">
+						<div class="checkbox" id="enable_comments" style="margin-bottom:10px; margin-top: 10px;">
 							<label>
-								<input type="checkbox" name="disable_comments" value="true" {% if not sesh.comments_disabled %}checked{% endif %}>
-								<b>Enable comments on your PDsession</b>
+								<input type="checkbox" id="comment_chk" name="disable_comments" value="true" {% if not sesh.comments_disabled %}checked{% endif %}>
+								<b>Enable comments on your PD session</b>
 							</label>
 						</div>
-						<div class="checkbox" style="margin-bottom:10px; margin-top: 10px;">
+						<div class="checkbox" id="enable_comment_notifications_div" style="margin-bottom:10px;">
 							<label>
-								<input type="checkbox" name="allow_email_notification_on_comment" value="true" {% if sesh.allow_email_notification_on_comment %}checked{% endif %}>
-								<b>Enable email notifications when a user leaves a comment on your PD session</b>
+								<input id="notification_comment_chk" type="checkbox" name="allow_email_notification_on_comment" value="true" {% if sesh.allow_email_notification_on_comment %}checked{% endif %}>
+								Email me each time a user leaves a comment on your PD session
 							</label>
 						</div>
 

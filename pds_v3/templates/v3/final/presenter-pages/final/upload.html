@@ -2,6 +2,7 @@
 <link rel="stylesheet" href="{% static 'css/presenter/presenter-hub.css' %}">
 <link rel="stylesheet" href="{% static 'css/presenter/upload.css' %}">
 <script src="{% static 'js/presenter/upload.js' %}"></script>
+<script src="{% static 'js/presenter/form_helpers.js' %}"></script>
 
 <div class="row">
 		<div class="col-lg-9 col-lg-offset-1">
@@ -116,24 +117,25 @@
 					<p class="help-block">(Required) Select the audio file of your PD Session for upload. It should be in MP3 or WAV format.</p>
 				</div>
 		</div>
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="checkbox" id="enable_comments" style="margin-bottom:10px; margin-top: 10px;">
+							<label>
+								<input type="checkbox" id="comment_chk" name="disable_comments" value="true" {% if not sesh.comments_disabled %}checked{% endif %}>
+								<b>Enable comments on your PD session</b>
+							</label>
+						</div>
+						<div class="checkbox" id="enable_comment_notifications_div" style="margin-bottom:10px;">
+							<label>
+								<input id="notification_comment_chk" type="checkbox" name="allow_email_notification_on_comment" value="true" {% if sesh.allow_email_notification_on_comment %}checked{% endif %}>
+								Email me each time a user leaves a comment on your PD session
+							</label>
+						</div>
+
+					</div>
+				</div>
 		<div class="row">
-			<div class="col-lg-12">
-				<hr>
-				<div class="checkbox" style="margin-bottom:20px;">
-					<label>
-						<input type="checkbox" name="allow_email_notification_on_comment" value="true">
-						<b>Enable email notifications when a user leaves a comment on your PD session</b>
-					</label>
-				</div>
-				<div class="checkbox" style="margin-bottom:20px;">
-					<label>
-						<input type="checkbox" name="disable_comments" value="true" checked>
-						<b>Enable comments on your PDsession</b>
-					</label>
-				</div>
-
-
-		    </div>
+			
 		    <div class="col-lg-5">
 				<div id="file-upload-container">
 					<div class="control-group">

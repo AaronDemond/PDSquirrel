@@ -1,3 +1,4 @@
+
 function showInfo(infolink){
 	row_id = "#info-row";
 		$(row_id).toggleClass("hidden");
