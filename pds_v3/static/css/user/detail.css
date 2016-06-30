@@ -9,6 +9,7 @@
 #player {
 	margin-left: 10px;
 	margin-bottom: 15px;
+	display: block;
 }
 
 @media screen and (max-width: 992px) {
