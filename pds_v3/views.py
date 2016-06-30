@@ -432,7 +432,7 @@ def comment(request):
                                                         " session tab of the presenter hub.\n\nPD Squirrel admin team."
                 subject = 'User Comment Notification'
                 # Sets up email to be handled by task manager and is non blocking
-                tasks.sendMail.apply_async([presenter.user.email,subject,msg])
+                tasks.sendMail.apply_async([[presenter.user.email], subject, msg])
 
             if reply_id == 0:
                 comment = Comment(message=message, user=user, pd=pd)
