@@ -18,7 +18,15 @@ from pds_v3.forms import CaptchaForm
 import stripe
 
 
+def handler404(request):
+    response = render_to_response('v3/final/404.html', {}, context_instance=RequestContext(request))
+    response.status_code = 404
+    return response
 
+def handler500(request):
+    response = render_to_response('v3/final/500.html', {}, context_instance=RequestContext(request))
+    response.status_code = 500
+    return response
 
 #only root level url
 def landing(request):

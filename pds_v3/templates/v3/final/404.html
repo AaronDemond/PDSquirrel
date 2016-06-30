@@ -1,1 +1,29 @@
-404 page linked
+{% extends "v3/final/base/base.html" %}
+{% load staticfiles %}
+{% block header-metatags %}
+        <title>PDSquirrel About</title>
+        <meta name=”description” content='PD Squirrel 404 Page.'>
+{% endblock header-metatags %}
+{% block body %}
+
+
+<div class="container" id="main-content">
+    <div class="row">
+    		    <div class="col-lg-10 col-lg-offset-1">
+    		    	<h3 class="my-page-header">404 error</h3>
+
+			<hr>
+
+
+
+<p>
+Sorry, this page doesn't exist.
+</p>
+
+
+
+    		    </div>
+                </div>
+</div>
+
+{% endblock %}
