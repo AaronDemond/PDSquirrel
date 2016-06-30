@@ -26,6 +26,20 @@ label {
   left: 50%;
   transform: translate(-50%, -50%);
 }
+#output {
+	padding: 20px;
+	padding-top: 25px;
+	font-weight: bold;
+	font-size: 17px;
+	text-align: center
+
+}
+.output-paused {
+	background-color: #d9edf7;
+}
+.output-recording {
+	background-color: #f2dede;
+}
 
 .small1 {
   position: absolute;

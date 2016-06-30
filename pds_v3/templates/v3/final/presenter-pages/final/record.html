@@ -68,12 +68,13 @@
 				<button onclick = "pauseClick()" class="btn btn-default" id = "pause_button">Pause</button>
 				<button id = "save_button"  class="btn btn-default" onclick="saveRecording('/upload/')">Save</button>
 				<button id="delete" onclick="delete_curr_audio()" class="btn btn-default">Clear</button>
+
+				<div style="margin-top: 20px;">Total length of recording: <span id='timer'>00:00</span></div>
 			</div>
 			<div class="col-xs-6">
 				<label>Status</label>
-				<div>Total length of recording: <span id='timer'>00:00</span></div>
-				<div style="float: left; margin-bottom: 20px; margin-top: 5px" id="output" style="font-weight: bold">
-					<p>Click record to begin capturing audio.</p>
+				<div id="output" class="output-paused">
+					<p class="text-center">Click record to begin capturing audio.</p>
 				</div>
 			</div>
     </div>
@@ -82,7 +83,8 @@
 			<div class="col-lg-12">
 
 				<hr>
-				<h4>Trim Function <small><a class="status-link" {# onclick="showInfo(this)" #} id="triminfo">(info ▾)</a></small></h4>
+				<h4 style="margin-bottom: 15px">Trim Function <small><a class="status-link" {# onclick="showInfo(this)" #} id="triminfo">(info ▾)</a></small></h4>
+
 				<form class="form-inline" role="form" onsubmit="return false;">
 					<div class="form-group">
 						<label>Start Time</label>

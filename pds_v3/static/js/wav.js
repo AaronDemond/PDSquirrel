@@ -460,7 +460,7 @@ function disableLinks() {
 		if (recording == true) {
 			recordToggle();
 
-			outputElement.innerHTML = "Recording Paused";
+			outputElement.innerHTML = "<p>Recording Paused</p>";
 		} else {
 			if (isPlaying(audio_player)) {
 			audio_player.pause();
@@ -473,6 +473,9 @@ function disableLinks() {
 
     function recordToggle(e) {
 		if (recording == true) { // Pause clicked
+
+			$(outputElement).addClass('output-paused');
+			$(outputElement).removeClass('output-recording');
 
 			// Clear old data
 			(window.URL || window.webkitURL).revokeObjectURL(local_download_url);
@@ -511,6 +514,8 @@ function disableLinks() {
 			outputElement.innerHTML = '';
 
 		} else { // Record clicked
+			$(outputElement).addClass('output-recording');
+			$(outputElement).removeClass('output-paused');
 
 			// Clear old data
 			(window.URL || window.webkitURL).revokeObjectURL(local_download_url);
@@ -548,7 +553,7 @@ function disableLinks() {
 			audio_proccess_counter = 0;
 			lastSelectedTime = audio_player.currentTime;
 			recording = true;
-			outputElement.innerHTML = 'Recording now...';
+			outputElement.innerHTML = '<p>Recording now...</p>';
         }
     }
 
