@@ -12,10 +12,10 @@ def sendMail(send_to, subject, msg):
 def incrementCredits(user, amount):
     ''' Checks User obj has an active plan, if so, adds credits.
         The initial time is given when a new subscription is created,
-        afterwhich rollover is called each time to gather the new 
+        afterwhich rollover is called each time to gather the new
         deposit time.
     '''
-        
+
     # If user has active plan
     user.profile.refresh_from_db()
     customer = stripe.Customer.retrieve(id=user.profile.stripe_id)
@@ -28,7 +28,7 @@ def incrementCredits(user, amount):
                 user.profile.save()
 
                 # Allow time for new charge to go through,
-                # at which point rollover gathers the new end date 
+                # at which point rollover gathers the new end date
                 # and sets up another deposit for that time
                 wait_period = datetime.datetime.now() + datetime.timedelta(hours=2)
                 rolloverSubscription.apply_async((user, amount),eta=wait_period)
@@ -61,11 +61,7 @@ def rolloverSubscription(user, amount):
                 end_time_obj = end_time_obj + datetime.timedelta(hours=3)
 
                 # Add task id to user
-                #print 'Scheduled credit deposit for: ' + user.username 
+                #print 'Scheduled credit deposit for: ' + user.username
                 t = incrementCredits.apply_async((user, amount), eta=end_time_obj)
                 user.profile.increment_task_id = t.id
                 user.profile.save()
-
-                
-
-

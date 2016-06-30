@@ -243,9 +243,10 @@ function disableLinks() {
     if (navigator.getUserMedia){
   		navigator.getUserMedia({audio:true},
   	    success,
-  	    function(e) {
+  	    function(err) {
   	    	alert('Error capturing audio.');
-          console.log(e);
+          console.log(err.name);
+          console.log(err);
   		});
     } else {
 		alert('getUserMedia not supported in this browser.');
@@ -558,8 +559,8 @@ function disableLinks() {
 		// Start and end in seconds
         var start = parseFloat(sbox.value);
         var end = parseFloat(ebox.value);
-		
-		// Cleanup 
+
+		// Cleanup
         if (start == 0 && end >= audio_player.duration) delete_curr_audio();
 		(window.URL || window.webkitURL).revokeObjectURL(local_download_url);
 		view = null;

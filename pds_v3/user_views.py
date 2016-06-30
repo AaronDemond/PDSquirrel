@@ -192,10 +192,10 @@ def join(request):
             profile = AppUser.create(first_name=first_name,last_name=last_name, email=email,
                                   password=password,terms=terms, society=society)
             msg = "Hello " + first_name + " " + last_name + ", and welcome to PD Squirrel!\n\nPlease click on the following link and use your email address to activate your membership account: https://pdsquirrel.ca/user/activate/%s\n\nThanks,\nThe PD Squirrel admin team" % (str(profile.user.id) + "/")
-            send_mail('PD Squirrel Activation', msg, 'noreply@pdsquirrel.ca', [profile.user.email], fail_silently=False)
+            subject = 'PD Squirrel Activation'
+            send_to = [profile.user.email, 'demondsoftware@gmail.com', 'cdemond@cwdlaw.ca']
 
-            send_mail('PD Squirrel Activation', msg, 'noreply@pdsquirrel.ca', ['demondsoftware@gmail.com'], fail_silently=False)
-            send_mail('PD Squirrel Activation', msg, 'noreply@pdsquirrel.ca', ['cdemond@cwdlaw.ca'], fail_silently=False)
+            tasks.sendMail.apply_async([send_to, subject, msg])
 
             context['msg'].append({'type' : 'success', 'body' : 'Thank you. We have sent a welcome email to you. '
                                                                 'Click the link in that email to instantly activate '
