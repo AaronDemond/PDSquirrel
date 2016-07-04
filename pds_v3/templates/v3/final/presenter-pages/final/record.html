@@ -83,8 +83,17 @@
 			<div class="col-lg-12">
 
 				<hr>
-				<h4 style="margin-bottom: 15px">Trim Function <small><a class="status-link" {# onclick="showInfo(this)" #} id="triminfo">(info ▾)</a></small></h4>
-
+				<h4 style="margin-bottom: 15px">Trim Function <small><a id="trimbtn" class="status-link" onclick="showTrimInfo(this)">(info ▾)</a></small></h4>
+				<div class="row hidden" id="triminfo">
+					<div class="alert alert-info">
+						<p>
+						Trim function info
+						</p>
+						<div class="row">
+							<div class="col-lg-12"><button class="btn btn-default pull-right" onclick="closeTrim()">Close</button></div>
+						</div>
+					</div>
+				</div>
 				<form class="form-inline" role="form" onsubmit="return false;">
 					<div class="form-group">
 						<label>Start Time</label>
