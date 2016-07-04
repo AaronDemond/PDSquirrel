@@ -29,3 +29,7 @@
 .right-plack {
   float: right;
 }
+
+table {
+  margin-bottom: 0px !important; /* Overwrites bootstrap */
+}
