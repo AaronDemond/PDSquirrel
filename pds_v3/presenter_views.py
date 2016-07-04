@@ -242,8 +242,12 @@ def dash(request, msg=False):
                     pd.save()
                     messages.add_message(request, messages.SUCCESS, 'Session Removed from listing. Users who have previously purchased this session will still have access, and you may still make changes.')
                 else:
+                    # Delete and make available the audio for re-upload
                     pd.delete()
                     messages.add_message(request, messages.SUCCESS, 'Session permanently deleted')
+                    if bool(pd.pdaudio):
+                        pd.pdaudio.used = False
+                        pd.pdaudio.save()
                 return HttpResponseRedirect('/user/presenter/dash/?direct_to=sessions')
 
             if 'suspend-cancel' in request.POST:
