@@ -232,18 +232,24 @@ def dash(request, msg=False):
                 messages.add_message(request, messages.INFO, 'Your edit has been removed.')
                 return HttpResponseRedirect('/user/presenter/dash/?direct_to=sessions')
 
-            #request pd be suspended
+            # request removal of session
+            # If it has purchases, unlist it (suspend) otherwise delete.
             if 'suspend-request' in request.POST:
                 pd = PdSession.objects.get(pk=request.POST['session_id'])
-                messages.add_message(request, messages.SUCCESS, 'Session Removed')
-                if pd.approved == False:
-                    pd.delete()
-                else:
+                if pd.purchase_set.exists():
                     pd.suspended = True
                     pd.suspend_reason = request.POST['reason']
                     pd.save()
-
+                    messages.add_message(request, messages.SUCCESS, 'Session Removed from listing. Users who have previously purchased this session will still have access, and you may still make changes.')
+                else:
+                    # Delete and make available the audio for re-upload
+                    pd.delete()
+                    messages.add_message(request, messages.SUCCESS, 'Session permanently deleted')
+                    if bool(pd.pdaudio):
+                        pd.pdaudio.used = False
+                        pd.pdaudio.save()
                 return HttpResponseRedirect('/user/presenter/dash/?direct_to=sessions')
+
             if 'suspend-cancel' in request.POST:
                 pd = PdSession.objects.get(pk=request.POST['session_id'])
                 pd.suspend_request = False
