@@ -195,6 +195,7 @@ function disableLinks() {
     var interleaved = [];
     var recorder = null;
     var recording = false;
+    var recordingLength = 0;
     var volume = null;
     var audioInput = null;
     var sampleRate = null;
@@ -211,8 +212,7 @@ function disableLinks() {
     var editing = null;
     var edited_name = null;
 	var local_download_url = null;
-	var current_edit_id = false;
-  	var audio_blob = null;
+	var current_edit_id = false
 
 	function getMp3Blob() {
 		all_data = new Float32Array(leftBuffer);
@@ -241,13 +241,11 @@ function disableLinks() {
 
     // If webcam available, request permission. Display Error message elsewise.
     if (navigator.getUserMedia){
-  		navigator.getUserMedia({audio:true},
-  	    success,
-  	    function(err) {
-  	    	alert('Error capturing audio.');
-          console.log(err.name);
-          console.log(err);
-  		});
+		navigator.getUserMedia({audio:true},
+	    success,
+	    function(e) {
+	    	alert('Error capturing audio.');
+		});
     } else {
 		alert('getUserMedia not supported in this browser.');
     }
@@ -375,10 +373,11 @@ function disableLinks() {
 			return false;
 			}
 		}
-    if (aud_name.value == "") {
-      alert("Please enter a name for your recording before you save.");
-      return false;
-    }
+
+	    if (aud_name.value == "") {
+			alert("Please enter a name for the recording");
+			return false;
+	   }
 
 		try {
 			createWavBlob();
@@ -460,7 +459,7 @@ function disableLinks() {
 		if (recording == true) {
 			recordToggle();
 
-			outputElement.innerHTML = "<p>Recording Paused</p>";
+			outputElement.innerHTML = "Recording Paused";
 		} else {
 			if (isPlaying(audio_player)) {
 			audio_player.pause();
@@ -468,14 +467,11 @@ function disableLinks() {
 		}
     }
 
-    /* Toggle recording. Data is fed to left and
+    /* Toggle recording. Data is fed to left and 
 	 * right chanels, in the correct position. */
 
     function recordToggle(e) {
 		if (recording == true) { // Pause clicked
-
-			$(outputElement).addClass('output-paused');
-			$(outputElement).removeClass('output-recording');
 
 			// Clear old data
 			(window.URL || window.webkitURL).revokeObjectURL(local_download_url);
@@ -501,8 +497,8 @@ function disableLinks() {
       		delete_btn.disabled = false;
 
 			// float32arrays
-			leftBuffer = mergeBuffers(leftchannel);
-			rightBuffer = mergeBuffers(rightchannel);
+			leftBuffer = mergeBuffers(leftchannel, recordingLength);
+			rightBuffer = mergeBuffers(rightchannel, recordingLength);
 			interleaved = interleave(leftBuffer, rightBuffer);
 
 			buildLocalWav();
@@ -514,8 +510,10 @@ function disableLinks() {
 			outputElement.innerHTML = '';
 
 		} else { // Record clicked
-			$(outputElement).addClass('output-recording');
-			$(outputElement).removeClass('output-paused');
+    		if (aud_name.value == "") {
+				alert("Please enter a name for your recording first");
+				return false;
+			}
 
 			// Clear old data
 			(window.URL || window.webkitURL).revokeObjectURL(local_download_url);
@@ -553,50 +551,54 @@ function disableLinks() {
 			audio_proccess_counter = 0;
 			lastSelectedTime = audio_player.currentTime;
 			recording = true;
-			outputElement.innerHTML = '<p>Recording now...</p>';
+			outputElement.innerHTML = 'Recording now...';
         }
     }
 
 
+    // Trims selection by editing the channel data, to nearest 2048 byte buffer
     function trimSelection(){
-		/* Removes audio within selection, rebuilds wav */
 
-		// Start and end in seconds
+		// Clear old data
+		(window.URL || window.webkitURL).revokeObjectURL(local_download_url);
+		view = null;
+		interleaved = null;
+
         var start = parseFloat(sbox.value);
         var end = parseFloat(ebox.value);
 
-		// Cleanup
-        if (start == 0 && end >= audio_player.duration) delete_curr_audio();
-		(window.URL || window.webkitURL).revokeObjectURL(local_download_url);
-		view = null;
-
-		// Check start&end are valid
-		if(! $.isNumeric(sbox.value)) {
-			alert("incorrect start range value");
-			return;
-		} else if (! $.isNumeric(ebox.value)) {
-			alert("incorrect end range value");
-			return;
-		} else if (end <= start) {
-			alert("incorrect range");
-			return;
+         if(! $.isNumeric(sbox.value)) {
+           alert("incorrect start range value");
+           return;
+         } else if (! $.isNumeric(ebox.value)) {
+           alert("incorrect end range value");
+           return;
+         } else if (end <= start) {
+    			alert("incorrect range");
+    			return;
 		} else if (start<0) {
-			alert("incorrect start time");
-			return;
-		}
+		  alert("incorrect start time");
+          return;
+        }
 
-		// extract sections around trim
-		front = interleaved.slice(0, parseInt(start * sampleRate * 2));
-		back = interleaved.slice(parseInt(end * sampleRate * 2), interleaved.length);
 
-		// combine sections as a typed array
-		interleaved = new Float32Array(front.length + back.length);
-		interleaved.set(front);
-		interleaved.set(back, front.length);
+		// Remove raw data from left and right channels
+        var length = (end - start) * sampleRate;
+        leftchannel.splice(parseInt((start * sampleRate) / 2048),parseInt(length /2048));
+        rightchannel.splice(parseInt((start * sampleRate) / 2048),parseInt(length /2048));
+        recordingLength -= parseInt(length/2);
 
-		// create wave blob & cleanup
-		buildLocalWav();
-		clearRange();
+        // combines data and builds wav
+        var leftBuffer = mergeBuffers(leftchannel, recordingLength);
+        var rightBuffer = mergeBuffers(rightchannel, recordingLength);
+        interleaved = interleave(leftBuffer, rightBuffer); // Should probably edit this instead of channel data, but it gave issues earlier.
+
+        // bugfix for when you trim the whole thing the recording timer wasn't reseting
+        if (start == 0 && end >= audio_player.duration) {
+          reset();
+        }
+          buildLocalWav();
+		    clearRange();
 
     }
 
@@ -608,22 +610,22 @@ function disableLinks() {
 
         // RIFF
         writeUTFBytes(view, 0, 'RIFF');
-        view.setUint32(4, 44 + interleaved.length * 2, true); //Size of the file
+        view.setUint32(4, 44 + interleaved.length * 2, true);
         writeUTFBytes(view, 8, 'WAVE');
 
         // FMT
         writeUTFBytes(view, 12, 'fmt ');
         view.setUint32(16, 16, true);
-        view.setUint16(20, 1, true);              // PCM
-        view.setUint16(22, 2, true);              // 2 channels
-        view.setUint32(24, sampleRate, true);     // Sample Rate (number of samples per second)
-        view.setUint32(28, sampleRate * 4, true); // Sample Rate * bits per sample * Channels
-        view.setUint16(32, 4, true);              // bits per sample * Channels
-        view.setUint16(34, 16, true);             // Bit per Sample
+        view.setUint16(20, 1, true);
+        view.setUint16(22, 2, true);
+        view.setUint32(24, sampleRate, true);
+        view.setUint32(28, sampleRate * 4, true);
+        view.setUint16(32, 4, true);
+        view.setUint16(34, 16, true);
 
         // data sub-chunk
-        writeUTFBytes(view, 36, 'data');                  //Marks The beginning of the data secion
-        view.setUint32(40, interleaved.length * 2, true); //Size of the data section
+        writeUTFBytes(view, 36, 'data');
+        view.setUint32(40, interleaved.length * 2, true);
 
         var lng = interleaved.length;
         var index = 44; // Length of file header
@@ -641,7 +643,6 @@ function disableLinks() {
 		local_download_url = url;
         $('#player').attr("src" , url);
         $('#dl').attr("href", url);
-        audio_blob = blob;
     }
 
 
@@ -694,7 +695,6 @@ function disableLinks() {
 				console.log(this_audio[0]); // fields_obj, model_str, pk_id
 				pda_obj = this_audio[0]
 				context.close();
-        $('#loader').addClass('hidden');
 				alert("Save Successful, your file can now be uploaded as a session on the upload tab.");
 				onbeforeunload = null;
 				window.location.replace("/user/presenter/dash/?direct_to=recorder");
@@ -728,7 +728,7 @@ function disableLinks() {
     }
 
     // Flattens array of 32bitarrays
-    function mergeBuffers(channelBuffer){
+    function mergeBuffers(channelBuffer, recordingLength){
       var result = new Float32Array(channelBuffer.length * 2048);
       var offset = 0;
       var lng = channelBuffer.length;
@@ -739,7 +739,6 @@ function disableLinks() {
       }
       return result;
     }
-
 
     function writeUTFBytes(view, offset, string){
       var lng = string.length;
@@ -781,6 +780,8 @@ function disableLinks() {
 			leftchannel.splice(channel_offset + audio_proccess_counter, 0, (new Float32Array(left)));
 			rightchannel.splice(channel_offset + audio_proccess_counter, 0, (new Float32Array(right)));
 			audio_proccess_counter += 1;
+
+			recordingLength += bufferSize; // Probably not needed
 
         }
         volume.connect (recorder);
