@@ -12,16 +12,8 @@
 
     	<div class="row" id="activate-row">
             <div class="col-xs-12">
-                <!--spits out messages from msg dict (type, body, title) -->
-                {% for m in msg %}
-                    <div class="col-xs-12">
-                        <div class="alert alert-{{m.type}}" role="alert">
-													<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                            {{m.body|safe}}
-                        </div>
-                    </div>
-                {% endfor %}
 							<div class="msg-container">
+
                 {% if messages %}
                 {% for msg in messages %}
                 <div class="alert alert-{{msg.tags}} msg" role="alert">

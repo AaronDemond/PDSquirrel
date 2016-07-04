@@ -71,6 +71,7 @@ class Presenter(models.Model):
 
 class AppUser(models.Model):
     user = models.OneToOneField(User, related_name="profile")
+    activation_key = models.CharField(max_length=100, blank=True, null=True)
     address = models.ForeignKey(Address, blank=True, null=True)
     date_joined = models.DateTimeField(auto_now_add=True)
     society = models.ManyToManyField(LawSociety,blank=True)
