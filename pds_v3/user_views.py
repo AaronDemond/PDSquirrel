@@ -1,4 +1,5 @@
 from django.shortcuts import render, HttpResponse, HttpResponseRedirect
+import string, hashlib, random
 from django.contrib.auth import  hashers
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.models import User
@@ -24,12 +25,18 @@ def login_landing(request):
     return render(request, 'v3/final/login-new.html')
 
 def activate(request, link_id):
-    user = User.objects.get(pk=link_id)
-    user.is_active = True
-    user.save()
-    context = {'msg' : []}
-    context['msg'].append({'type' : 'success', 'body' : 'Account activation successful. Sign in below using your email address. Thanks for choosing us, and weclome to PD Squirrel.<br>We have credited your account with one free member credit that may be used for any PD Session of your choice.'})
-    return render(request, 'v3/final/login-new.html', context)
+    try:
+        profile = AppUser.objects.get(activation_key=link_id)
+        if profile.user.is_active:
+            messages.success(request, 'This account is already activated, login below.')
+        else:
+            profile.user.is_active = True
+            profile.user.save()
+            messages.success(request, 'Account activation successful. Sign in below using your email address. Thanks for choosing us, and weclome to PD Squirrel.<br><br>We have credited your account with one free member credit that may be used for any PD Session of your choice.')
+    except:
+        messages.error(request, 'Account not found. Please check the link for errors.')
+
+    return render(request, 'v3/final/login-new.html')
 
 def login_user(request):
     username = request.POST['username']
@@ -191,7 +198,15 @@ def join(request):
             password = hashers.make_password(password)
             profile = AppUser.create(first_name=first_name,last_name=last_name, email=email,
                                   password=password,terms=terms, society=society)
-            msg = "Hello " + first_name + " " + last_name + ", and welcome to PD Squirrel!\n\nPlease click on the following link and use your email address to activate your membership account: https://pdsquirrel.ca/user/activate/%s\n\nThanks,\nThe PD Squirrel admin team" % (str(profile.user.id) + "/")
+            # Create activation key
+            s = ''
+            for i in range(12): s += string.lowercase[random.randint(0,25)]
+            s += str(email)
+            activation_key = hashlib.sha256(s).hexdigest()
+            profile.activation_key = activation_key
+            profile.save()
+
+            msg = "Hello " + first_name + " " + last_name + ", and welcome to PD Squirrel!\n\nPlease click on the following link and use your email address to activate your membership account: https://pdsquirrel.ca/user/activate/%s\n\nThanks,\nThe PD Squirrel admin team" % (str(activation_key) + "/")
             subject = 'PD Squirrel Activation'
             send_to = [profile.user.email, 'demondsoftware@gmail.com', 'cdemond@cwdlaw.ca']
 
