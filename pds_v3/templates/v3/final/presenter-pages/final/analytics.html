@@ -11,15 +11,15 @@
     	    <form id="analytics-form" action="{% url 'analytics-report' %}" method="POST">
     	        {% csrf_token %}
     	        <div class="row" style="margin-bottom:20px">
-    	            <div class="col-lg-3">
+    	            <div class="col-lg-3 col-xs-6">
     	                <label class="date-label" for="">Start (dd/mm/yyyy)</label>
     	                <input type="date" name="start" class="form-control" value="{{start.year}}-{% if start.month < 10 %}0{% endif %}{{start.month}}-{% if start.day < 10%}0{%endif%}{{start.day}}">
     	            </div>
-    	            <div class="col-lg-3">
+    	            <div class="col-lg-3 col-xs-6">
     	                <label class="date-label" for="">End (dd/mm/yyyy)</label>
     	                <input type="date" name="end" class="form-control" value="{{end.year}}-{% if end.month < 10 %}0{% endif %}{{end.month}}-{% if end.day < 10%}0{%endif%}{{end.day}}">
     	            </div>
-    	            <div class="col-lg-2">
+    	            <div class="col-lg-2 col-xs-4">
     	                <input type="hidden" name="date-rng">
     	                <input type="submit" style="margin-top: 25px" class="btn btn-success" onclick="$('#analytics-report').removeClass('hidden')" value="Generate report">
     	            </div>
