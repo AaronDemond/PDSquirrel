@@ -212,7 +212,9 @@ function disableLinks() {
     var editing = null;
     var edited_name = null;
 	var local_download_url = null;
-	var current_edit_id = false
+	var current_edit_id = false;
+  var mic_available = true;
+  var time_cap_timer = null;
 
 	function getMp3Blob() {
 		all_data = new Float32Array(leftBuffer);
@@ -244,10 +246,12 @@ function disableLinks() {
 		navigator.getUserMedia({audio:true},
 	    success,
 	    function(e) {
+        mic_available = false;
 	    	alert('Error capturing audio.');
 		});
     } else {
-		alert('getUserMedia not supported in this browser.');
+      mic_available = false;
+		  alert('getUserMedia not supported in this browser.');
     }
 
 	 function showData(url, audio_clip_name, pdaudio_id){
@@ -481,6 +485,8 @@ function disableLinks() {
 			recording = false; // onaudioprocess
 			stop(); // Stopwatch
 
+      clearTimeout(time_cap_timer);
+
 			var trim = document.getElementById('trim');
 			var preview = document.getElementById('preview');
 
@@ -510,10 +516,11 @@ function disableLinks() {
 			outputElement.innerHTML = '';
 
 		} else { // Record clicked
-    		if (aud_name.value == "") {
-				alert("Please enter a name for your recording first");
-				return false;
-			}
+
+      if (!mic_available) {
+        alert('Mic not available please ensure that your mic is plugged in');
+        return;
+      }
 
 			// Clear old data
 			(window.URL || window.webkitURL).revokeObjectURL(local_download_url);
@@ -525,7 +532,19 @@ function disableLinks() {
 
 			// get length of recording, in case its imported and just to keep it accurate
 			var time = isNaN(audio_player.duration) ? 0 : Math.round(audio_player.duration * 1000);
-			// set start time as length of recording
+
+      if (time >= 1200000) {
+        alert("You have reached the 20 minute maximum limit for the recorder");
+        return;
+      }
+      outputElement.innerHTML = 'Recording now...';
+      // Timeout to cap user at 20min
+
+      if (time < 1440000)
+        time_cap_timer = setTimeout(minute_warning, 1440000-time, time); // time till 19 minute
+      else
+        minute_warning(time);
+      // set start time as length of recording
 			recorder_timer.set_time(time);
 			start();
 
@@ -551,10 +570,22 @@ function disableLinks() {
 			audio_proccess_counter = 0;
 			lastSelectedTime = audio_player.currentTime;
 			recording = true;
-			outputElement.innerHTML = 'Recording now...';
+
         }
     }
 
+    function minute_warning(time) {
+      var cap_time_in=60000
+      if (time >= 1440000) {
+        cap_time_in = 60000 - (time - 1440000)
+      }
+      outputElement.innerHTML = 'WARNING your recording will automaticly stop at 20 minutes.';
+      clearTimeout(time_cap_timer);
+      time_cap_timer = setTimeout(function() {
+        pauseClick();
+        outputElement.innerHTML = "Recording limit reached";
+      }, cap_time_in); // 1 min
+    }
 
     // Trims selection by editing the channel data, to nearest 2048 byte buffer
     function trimSelection(){
@@ -755,6 +786,7 @@ function disableLinks() {
 		context = new audioContext();
 		sampleRate = context.sampleRate;
 		volume = context.createGain();
+    mic_available = true;
 
 		// creates an audio node from the microphone incoming stream
 		audioInput = context.createMediaStreamSource(e);
