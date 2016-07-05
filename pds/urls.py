@@ -1,7 +1,6 @@
-from django.conf.urls import include, url
+from django.conf.urls import include, url, handler404, handler500, handler403, handler400
 from django.contrib import admin
 from pds_v3 import views, user_views, presenter_views, tmp_views, payment_views
-
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
@@ -78,3 +77,8 @@ urlpatterns = [
     url(r'^attachment/(?P<a_id>\d+)/$', views.getAttachment, name="attachment"),
 
 ]
+
+handler404 = 'pds_v3.views.handler404'
+handler500 = 'pds_v3.views.handler500'
+handler403 = 'pds_v3.views.handler403'
+handler400 = 'pds_v3.views.handler400'
