@@ -1,4 +1,4 @@
-{% extends "v3/final/base/base.html" %}
+.{% extends "v3/final/base/base.html" %}
 {% load staticfiles %}
 {% load pds_extras %}
 {% block header-metatags %}
@@ -44,7 +44,7 @@ td {
 				<tr>
 					<td class="td-1">Date report generated</td>
 					<td>
-			{% now "jS F Y H:i" %}
+			{% now "jS F Y" %}
 					</td>
 				</tr>
 			</table>
@@ -60,7 +60,7 @@ td {
 					<tr>
 						<th>Title</th>
 						<th>Date Purchased</th>
-						<th>Taken</th>
+						{# <th>Taken</th> #}
 						<th>Cost</th>
 						<th>HST</th>
 						<th>Total Cost</th>
@@ -72,7 +72,7 @@ td {
 
 						<td>{{purchase.pdsession.name}}</td>
 						<td>{{purchase.date|remove_time}}</td>
-						<td>{% if purchase.completed %}Yes{%else%}No{%endif%}</td>
+						{# <td>{% if purchase.completed %}Yes{%else%}No{%endif%}</td> #}
 
 						{% if purchase.credit_used %}
 						<td>Credit Used</td>
