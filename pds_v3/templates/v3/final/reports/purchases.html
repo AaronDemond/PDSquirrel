@@ -1,4 +1,4 @@
-{% extends "v3/final/base/base.html" %}
+.{% extends "v3/final/base/base.html" %}
 {% load staticfiles %}
 {% load pds_extras %}
 {% block header-metatags %}
@@ -72,7 +72,7 @@ td {
 
 						<td>{{purchase.pdsession.name}}</td>
 						<td>{{purchase.date|remove_time}}</td>
-						<td>{% if purchase.completed %}Yes{%else%}No{%endif%}</td>
+						{# <td>{% if purchase.completed %}Yes{%else%}No{%endif%}</td> #}
 
 						{% if purchase.credit_used %}
 						<td>Credit Used</td>
