@@ -32,7 +32,7 @@ def activate(request, link_id):
         else:
             profile.user.is_active = True
             profile.user.save()
-            messages.success(request, 'Account activation successful. Sign in below using your email address. Thanks for choosing us, and weclome to PD Squirrel.<br><br>We have credited your account with one free member credit that may be used for any PD Session of your choice.')
+            messages.success(request, 'Account activation successful. Sign in below using your email address. Thanks for choosing us, and welcome to PD Squirrel.<br><br>We have credited your account with one free member credit that may be used for any PD Session of your choice.')
     except:
         messages.error(request, 'Account not found. Please check the link for errors.')
 

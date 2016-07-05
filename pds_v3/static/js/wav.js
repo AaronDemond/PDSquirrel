@@ -467,7 +467,7 @@ function disableLinks() {
 		}
     }
 
-    /* Toggle recording. Data is fed to left and 
+    /* Toggle recording. Data is fed to left and
 	 * right chanels, in the correct position. */
 
     function recordToggle(e) {
