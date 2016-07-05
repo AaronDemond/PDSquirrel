@@ -13,17 +13,14 @@
 <div class="container" id="main-content">
     <div class="row">
     	    <div class="col-lg-10 col-lg-offset-1">
-			<h3 class="my-page-header">About us</h3>
+			<h3 class="my-page-header">Learn more about us</h3>
 			<hr>
 
 		    <div class="row">
 			<div class="col-lg-12">
-        <p>
-          PD Squirrel offers topical professional development audio sessions to Canadian lawyers and accountants. All our PD sessions are presented by lawyers and accountants with valuable knowledge, insight and skill in their practice areas.
-        </p>
-        <p>
-          Join PD Squirrel today at no cost, and receive one free session. As a Standard member, you only pay for the individual sessions you take. For more value, upgrade to Premium membership and receive multiple sessions for a monthly fee.
-        </p>
+			    <p>
+				PD Squirrel offers topical professional development audio sessions to Canadian lawyers and accountants. All our PD sessions are presented by lawyers and accountants with valuable knowledge, insight and skill in their practice areas.</p>
+				</p> <p>Join PD Squirrel today at no cost, and receive one free session. As a Standard member, you only pay for the individual sessions you take. For more value, upgrade to Premium membership and receive multiple sessions for a monthly fee.</p>
 			<table class="table">
 				<tr>
 					<th>Standard membership</th>
@@ -32,44 +29,42 @@
 				<tr>
 					<td>
 						<ul>
-							<li>Free to join plus you receive one free session.</li>
-              <li>New members automatically become Standard members.</li>
-              <li>No monthly cost.</li>
-							<li>$9.99 per session you take.</li>
-              <li>All taken sessions are kept in your personal PD library for your unlimited desktop, tablet and mobile access.</li>
-              <li>You may upgrade to Premium at any time from you Account Options page.</li>
+							<li>Free, new accounts receive one free session</li>
+							<li>$7.99 per session</li>
+							<li>Unlimited desktop, tablet and mobile access to purchased sessions</li>
 						</ul>
 					</td>
 					<td>
 						<ul>
-							<li>$29.99 Monthly.</li>
-							<li>8 session credits per month.</li>
-              <li>Each credit for any PD session chosen by you.</li>
-              <li>Monthly cycle starts when you become a Premium member and runs to the same day of the next month.</li>
-              <li>All taken sessions are kept in your personal PD library for your unlimited desktop, tablet and mobile access.</li>
-              <li>You may change back to Standard at any time from your Account Options page (and all your taken PD sessions stay in your PD library for continued unlimited access).</li>
+							<li>$29.99 Monthly</li>
+							<li>8 sessions (credits) per month</li>
+							<li>Unlimited desktop, tablet and mobile access to purchased sessions</li>
+							<li>Cancel easily at any time</li>
 						</ul>
 					</td>
 				</tr>
 			</table>
-      <small class="muted">PD Squirrel membership is subject to our <a href="{% url 'terms' %}">terms and conditions</a></small>
-      <br>
-      <br>
-      <br>
-      <p>
-        You must be a Canadian lawyer to become a PD Squirrel member and access the PD sessions. Membership account creation requires only your name and your email used for your particular law society or provincial accounting body.
-      </p>
-      <p class="text-center">
-      <b>
-        <a href="{% url 'join' %}">
-            Join today and go nuts on professional development!
-        </a>
-      </b>
-      </p>
+			{% if user.is_authenticated %}
+			<p class="text-center">Select "<i>change membership</i>" on your <a href="{% url 'options' %}">account options page</a> to become a premium member. </p>
+			{% else %}
+       <p class="text-center">
+       <b>
+         <a href="{% url 'join' %}">
+             Join today and go nuts on professional development!
+         </a>
+       </b><br>
+	   </p>
+       <p class="muted">
+         You must be a Canadian lawyer to become a PD Squirrel member and access the PD sessions. Membership account creation requires only your name and your email used for your particular law society or provincial accounting body.
+       </p>
+       
+			{% endif %}
 
 
-		    </div>
-      </div>
+
+
+
+		    </div></div>
 
 		    <hr>
 		    <div class="row hidden-md hidden-sm hidden-lg" id="mobile_learn">
@@ -106,7 +101,7 @@
 		          <img class="plack right-plack"  src="{% static 'img/learn/watch.png' %}" alt="Listen">
 		        </div>
 		    </div>
-		    <div class="row">
+ <div class="row">
 		        <div class="col-lg-12">
               <hr>
 			    <p>
@@ -115,6 +110,7 @@
 
 			</div>
 		    </div>
+		    
 
 
 
