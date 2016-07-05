@@ -50,7 +50,6 @@ function previewAudio(id, preview_link) {
 	/* fills preview container with audio and toggles
 	 * button arrow text */
 
-
 	// Hide other drop downs
 	hideCancelBar();
 	hideStatus();

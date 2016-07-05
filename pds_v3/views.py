@@ -221,7 +221,6 @@ def getRecordingWav(request, audio_id):
     owned_recordings = request.user.profile.pdaudio_set.all()
     if pdaudio in owned_recordings or request.user.is_superuser:
         name = os.path.basename(pdaudio.audio.name)
-        print name
 
     response = HttpResponse()
     response["Content-Disposition"] = "attachment; filename={0}".format(name)
@@ -236,7 +235,6 @@ def getRecordingMp3(request, audio_id):
     owned_recordings = request.user.profile.pdaudio_set.all()
     if pdaudio in owned_recordings or request.user.is_superuser:
         name = os.path.basename(pdaudio.getMp3Location())
-        print name
 
         response = HttpResponse()
         response["Content-Disposition"] = "attachment; filename={0}".format(name)

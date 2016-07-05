@@ -1,3 +1,48 @@
+function previewAudio(id, preview_link) {
+	/* fills preview container with audio and toggles
+	 * button arrow text */
+
+
+	// id of the row to insert audio
+	var row_id = "#preview-" + id;
+
+	// Formatted audio template to insert
+	var html = `
+		<div class="col-lg-12 preview-col">
+		<video id="player" style="margin-top:20px" class="video-js vjs-default-skin" controls preload="auto" width="100%" height="20" poster="" data-setup="{}">
+			<source src="/recording/${id}" type='audio/mpeg'>
+			</video>
+
+		</div>
+			`;
+
+	// Clear audio elements from page
+	$(".preview-bar").each(function() {
+		$(this).empty();
+	});
+
+	// Change arrow to closed state on all other links
+	$(".preview-link").each(function() {
+		if ( !$(this).is($(preview_link)) ) {
+			$(this).text('Listen ⏵');
+		} 
+	});
+
+	// Toggle state of arrow in clicked preview button 
+	if ($(preview_link).text() == 'Listen ⏵' ) {
+		$(row_id).append(html);
+		$(preview_link).text('Listen ⏴');
+
+
+	} else {
+		$(preview_link).text('Listen ⏵');
+		$(preview_link).text('Listen ⏵');
+		$(row_id).empty();
+
+	}
+
+}
+
 function delAudio(id) {
 // Removes Audio on server and removes html listing
     tr_listing = document.getElementById('rec-'+id);
@@ -21,7 +66,7 @@ function enableLinks() {
 
 	onbeforeunload = null;
 
-	var links = $("a").not('#infoLink, .download, .del-btn, .dropdown-toggle, #dl');
+	var links = $("a").not('#infoLink, .download, .listen, .del-btn, .dropdown-toggle, #dl');
 	var target_div = '#page-content';
 
 	for (var j=0; j<links.length; j++) {
