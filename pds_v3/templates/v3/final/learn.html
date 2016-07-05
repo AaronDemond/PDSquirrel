@@ -18,22 +18,9 @@
 
 		    <div class="row">
 			<div class="col-lg-12">
-			    <p class="muted">
-		          At PD Squirrel we provide continuing professional development to Canadian lawyers.  Our sessions are concise, topical audio presentations, created by Canadian professionals among the best in their field.  The sessions at PD Squirrel can be used to meet the continuing professional development obligations of your law society, and assist you day to day with your practice.
-            </p>
-
-<p class="muted">
-			  Join PD Squirrel today at no cost, and receive one free session. As a Standard member, you only pay for the individual sessions you take. For more value, upgrade to Premium membership and receive multiple sessions for a monthly fee.
-			  As a PD Squirrel member, you always have instant access to excellent PD. Just browse, choose, and listen.
-			  </p>
-        <p class="muted">
-        You must be a Canadian lawyer to create a PD Squirrel account and access the PD sessions.  Account
-        creation requires only name and your email used for your particular law society.  Join today. </p>
-        <p class="muted">
-  This site is owned and operated by PD Squirrel Inc., a Canadian federally incorporated company owned
-  by lawyer Charles W. Demond, LL.B, CPA.  Charles has practiced corporate, tax and estate law for more
-  than fifteen years, the last 12 of which have been though his own firm CWD Law Incorporated.
-  </p>
+			    <p>
+				PD Squirrel offers topical professional development audio sessions to Canadian lawyers and accountants. All our PD sessions are presented by lawyers and accountants with valuable knowledge, insight and skill in their practice areas.</p>
+				</p> <p>Join PD Squirrel today at no cost, and receive one free session. As a Standard member, you only pay for the individual sessions you take. For more value, upgrade to Premium membership and receive multiple sessions for a monthly fee.</p>
 			<table class="table">
 				<tr>
 					<th>Standard membership</th>
@@ -60,8 +47,17 @@
 			{% if user.is_authenticated %}
 			<p class="text-center">Select "<i>change membership</i>" on your <a href="{% url 'options' %}">account options page</a> to become a premium member. </p>
 			{% else %}
-			<p class="text-center">Once you have created a free account, you may visit your account options page to upgrade to a premium membership.</p>
-
+       <p class="text-center">
+       <b>
+         <a href="{% url 'join' %}">
+             Join today and go nuts on professional development!
+         </a>
+       </b><br>
+	   </p>
+       <p class="muted">
+         You must be a Canadian lawyer to become a PD Squirrel member and access the PD sessions. Membership account creation requires only your name and your email used for your particular law society or provincial accounting body.
+       </p>
+       
 			{% endif %}
 
 
@@ -105,58 +101,16 @@
 		          <img class="plack right-plack"  src="{% static 'img/learn/watch.png' %}" alt="Listen">
 		        </div>
 		    </div>
-		    <div class="row"> <!-- Pricing row -->
+ <div class="row">
 		        <div class="col-lg-12">
-			    <hr>
-			    <h4 class="text-center">Pricing</h4>
-			    <hr>
+              <hr>
 			    <p>
-				Join PD Squirrel today for free with just your name and email.  You receive one free session credit when
-
-				you join PD Squirrel for the first time.
+				    This site is owned and operated by PD Squirrel Inc., a Canadian company. The president and principal owner of the company is lawyer Charles W. Demond, LL.B, CPA. Charles has practiced corporate, tax and estate law for more than fifteen years, the last 12 of which have been though his own firm CWD Law Incorporated.
 			    </p>
 
-			    <p>
-				Every new PD Squirrel member automatically becomes a Standard member.  You may upgrade to
-
-				Premium membership at any time with a few clicks.
-			    </p>
-
-			    <p>
-				Standard PD Squirrel member – No monthly fee.  You pay only for each session you take.  Our prices
-
-				include any applicable GST/HST.  Any PD session you take is kept in your personal PD library for
-
-				unlimited future access.
-			    </p>
-
-			    <p>
-				Premium PD Squirrel member – For a monthly fee of just $29.99 (GST/HST included), you are entitled to
-
-				take your choice of any eight (8) sessions during the monthly cycle.  Your monthly cycle starts on the day
-
-				you become a premium member and runs to the same day of the following month.  Any PD session you
-
-				take is kept in your personal PD library for unlimited future access.  You may convert back to Standard
-
-				membership at any time without penalty and without losing the PD sessions from your personal library.
-			    </p>
-
-			    <p>
-				Both Standard and Premium members have access to our report generator to help you keep track of
-
-				your PD.
-			    </p>
-
-			    <p>
-			    <b>
-				<a href="{% url 'join' %}">
-				    Join today and go nuts on professional development!
-				</a>
-			    </b>
-			    </p>
 			</div>
 		    </div>
+		    
 
 
 
