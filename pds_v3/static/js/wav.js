@@ -504,7 +504,7 @@ function disableLinks() {
 		if (recording == true) {
 			recordToggle();
 
-			outputElement.innerHTML = "Recording Paused";
+			outputElement.innerHTML = "<p>Recording Paused</p>";
 		} else {
 			if (isPlaying(audio_player)) {
 			audio_player.pause();
@@ -517,6 +517,10 @@ function disableLinks() {
 
     function recordToggle(e) {
 		if (recording == true) { // Pause clicked
+
+			outputElement.innerHTML = "<p>Recording Paused</p>";
+			$(outputElement).addClass('output-paused');
+ 			$(outputElement).removeClass('output-recording');
 
 			// Clear old data
 			(window.URL || window.webkitURL).revokeObjectURL(local_download_url);
@@ -552,13 +556,11 @@ function disableLinks() {
 			/* Interval used because wav file takes slight time to build
 			otherwise NaN is displayed because there is no wav source
 			getDur is a function to get length of wav file  */
-			outputElement.innerHTML = '';
 
 		} else { // Record clicked
-    		if (aud_name.value == "") {
-				alert("Please enter a name for your recording first");
-				return false;
-			}
+			outputElement.innerHTML = '<p>Recording now...</p>';
+			$(outputElement).addClass('output-recording');
+ 			$(outputElement).removeClass('output-paused');
 
 			// Clear old data
 			(window.URL || window.webkitURL).revokeObjectURL(local_download_url);
@@ -596,7 +598,6 @@ function disableLinks() {
 			audio_proccess_counter = 0;
 			lastSelectedTime = audio_player.currentTime;
 			recording = true;
-			outputElement.innerHTML = 'Recording now...';
         }
     }
 
@@ -740,6 +741,7 @@ function disableLinks() {
 				console.log(this_audio[0]); // fields_obj, model_str, pk_id
 				pda_obj = this_audio[0]
 				context.close();
+				$('#loader').empty();
 				alert("Save Successful, your file can now be uploaded as a session on the upload tab.");
 				onbeforeunload = null;
 				window.location.replace("/user/presenter/dash/?direct_to=recorder");
