@@ -77,7 +77,6 @@ def membership_information(request):
 
 
 
-
 def browse(request):
 
     if request.POST:
