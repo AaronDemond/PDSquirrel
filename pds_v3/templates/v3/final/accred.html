@@ -2,7 +2,7 @@
 {% load staticfiles %}
 {% block header-metatags %}
         <title>PDSquirrel {{ pd.name }}s accreditation</title>
-        <meta name=”description” content='Learn about {{ pd.name }}s accreditation'>
+        <meta name=”description” content='Learn about accreditation'>
 {% endblock header-metatags %}
 {% block body %}
 <div id="main-content" class="container">
@@ -11,7 +11,7 @@
     <div class="row">
         <div class="col-xs-12 ">
 
-	<a href="{% url 'detail' pd.id %}">Back to session details</a>
+	<a href="{% url 'detail' pd.id %}">Back to session</a>
             <h2>{{pd.name}}</h2>
             <hr>
         </div>

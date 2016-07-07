@@ -10,4 +10,13 @@
 
 .indent {
   margin-left: 15px;
+
+}
+
+#contact {
+  margin-top: 20px;
+}
+
+#info-box-row {
+  margin-bottom: 0px !important;
 }
