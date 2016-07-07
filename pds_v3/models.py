@@ -286,7 +286,7 @@ class PdSession(models.Model):
     description = models.TextField(null=True, blank=True)
     subject = models.ManyToManyField(Subject, blank=True)
     audio_file = models.FileField(upload_to='audio_files')
-    pdaudio = models.ForeignKey(PdAudio, null=True, blank=False)
+    pdaudio = models.ForeignKey(PdAudio, null=True, blank=True)
     upload_date = models.DateTimeField(auto_now_add=True, null=True)
     release_date = models.DateTimeField(auto_now_add=True, blank=True)
     price = models.FloatField(null=True, blank=True)
