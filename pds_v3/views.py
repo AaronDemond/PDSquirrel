@@ -41,12 +41,10 @@ def handler500(request):
 #only root level url
 def landing(request):
     content = PdSession.objects.order_by('upload_date')[0:4]
-    popular = PdSession.objects.order_by('total_takes').reverse()[0:4]
-    presenter = Presenter.objects.order_by('date_approved')[0:2]
+    subjects = Subject.objects.all()
     context = {
-        'presenter': presenter,
         'content': content,
-        'popular': popular
+        'subjects': subjects
     }
     return render(request, 'v3/final/home.html', context)
 

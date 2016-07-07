@@ -35,48 +35,57 @@
 </div>
 
 
-<div id="main-content"  class="container" >
+<div id="main-content"  class="container" style="min-height: 283px; padding-bottom: 50px;" >
 
-  <div class="row">
+  <div class="row" style="margin-top: 15px;">
     <h3 class="text-center">
-		Get Started Now
+  		Get Started
     </h3>
+
   </div>
 
-  <div class="row">
+  <div class="row " style="margin-bottom: 15px;">
 
       {% for cont in content %}
-      <a class="no-style-link" href="{% url 'detail' cont.id %}">
-        <div class="col-sm-3 col-xs-6 content_row">
-          <div class="featured_box content_container">
-            <img src="/static/img/subject/{{ cont.subject.all.0.image_name }}" class="img-thumbnail center-block subject_pic">
-            <div class="featured_title title">{{ cont.name }}</div>
-            <p class="content">{{ cont.presenters.all.0 }}</p>
+
+        <div class="col-sm-3 col-xs-6 profile">
+          <div class="img-box">
+            <a class="no-style-link" href="{% url 'detail' cont.id %}">
+              <img src="/static/img/subject/{{ cont.subject.all.0.image_name }}" class="img-responsive">
+            </a>
           </div>
+          <a class="no-style-link" href="#"><small class="muted" style="text-align: right; width: 100%; display: block;">{{ cont.subject.all.0.name }}</small></a>
+          <a class="no-style-link" href="{% url 'detail' cont.id %}">
+            <h4>{{ cont.name }}</h4>
+          </a>
+          <a class="no-style-link" href="{% url 'detail' cont.id %}">
+            <p>{{ cont.presenters.all.0 }}</p>
+          </a>
         </div>
-      </a>
+
     {% endfor %}
 
   </div>
+  <hr width="90%" style="margin-top: 35px;margin-bottom: 10px;">
   <div class="row">
     <h3 class="text-center">
-      Popular Content
+      Browse By Subject
     </h3>
+
   </div>
 
   <div class="row">
 
-      {% for pop in popular %}
-      <a class="no-style-link" href="{% url 'detail' pop.id %}">
-        <div class="col-sm-3 col-xs-6 content_row">
-          <div class="featured_box content_container">
-            <img src="/static/img/subject/{{ pop.subject.all.0.image_name }}" class="img-thumbnail center-block subject_pic">
-            <div class="featured_title title">{{ pop.name }}</div>
-            <p class="content">{{ pop.presenters.all.0 }}</p>
-          </div>
-        </div>
-      </a>
-    {% endfor %}
+    <div class="col-xs-12 text-center">
+      {% for subject in subjects %}
+        <h4 style="display: inline-block;"><a href="#" style="color:#7b9651;">{{ subject }}</a></h4>
+        {% if not forloop.last %}
+          <h4 style="display: inline-block; color: #c3b969;">&nbsp;|&nbsp;</h4>
+        {% endif %}
+      {% endfor %}
+
+    </div>
+
 
   </div>
 </div>
