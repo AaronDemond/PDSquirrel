@@ -53,11 +53,11 @@ def landing(request):
 
     court = PdSession.objects.filter(name='Court\'s authority to rectify land title issues in Ontario')
     if court.exists():
-        court.append(court[0])
+        content.append(court[0])
 
     cbca = PdSession.objects.filter(name='CBCA vs the Nova Scotia Companies Act')
     if cbca.exists():
-        cbca.append(court[0])
+        content.append(court[0])
 
     i=0
     while len(content) < 4:
