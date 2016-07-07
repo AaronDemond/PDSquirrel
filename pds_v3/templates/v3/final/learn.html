@@ -30,23 +30,20 @@
 					<td>
 						<ul>
 							<li>Free, new accounts receive one free session</li>
-							<li>$7.99 per session</li>
+							<li>$9.99 per session</li>
 							<li>Unlimited desktop, tablet and mobile access to purchased sessions</li>
 						</ul>
 					</td>
 					<td>
 						<ul>
 							<li>$29.99 Monthly</li>
-							<li>8 sessions (credits) per month</li>
+							<li>6 sessions (credits) per month</li>
 							<li>Unlimited desktop, tablet and mobile access to purchased sessions</li>
 							<li>Cancel easily at any time</li>
 						</ul>
 					</td>
 				</tr>
 			</table>
-			{% if user.is_authenticated %}
-			<p class="text-center">Select "<i>change membership</i>" on your <a href="{% url 'options' %}">account options page</a> to become a premium member. </p>
-			{% else %}
        <p class="text-center">
        <b>
          <a href="{% url 'join' %}">
@@ -57,8 +54,6 @@
        <p class="muted">
          You must be a Canadian lawyer to become a PD Squirrel member and access the PD sessions. Membership account creation requires only your name and your email used for your particular law society or provincial accounting body.
        </p>
-
-			{% endif %}
 
 
 
@@ -105,7 +100,7 @@
 		        <div class="col-lg-12">
               <hr>
 			    <p>
-				    This site is owned and operated by PD Squirrel Inc., a Canadian company. The president and principal owner of the company is lawyer Charles W. Demond, LL.B, CPA. Charles has practiced corporate, tax and estate law for more than fifteen years, the last 12 of which have been though his own firm CWD Law Incorporated.
+				    This site is owned and operated by PD Squirrel Inc., a Canadian company. The president and principal owner of the company is lawyer Charles W. Demond, LL.B, CPA. Charles has practiced corporate, tax and estate law for more than fifteen years, more than a decade of which have been though his own firm CWD Law Incorporated.
 			    </p>
 
 			</div>
