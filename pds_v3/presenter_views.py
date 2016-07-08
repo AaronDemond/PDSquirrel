@@ -374,8 +374,7 @@ def dash(request, msg=False):
                 msg = request.user.username + ' has uploaded and released a new session'
                 send_mail('new upload/release' , msg , 'support@pdsquirrel.ca', ['admin@pdsquirrel.ca'], fail_silently=False)
 
-                messages.add_message(request, messages.INFO, "Thank you for uploading your PD Session, titled '%s'. \
-                        Click below to preview and release." % new_session)
+                messages.add_message(request, messages.INFO, "Thank you for uploading your PD Session, titled '%s'." % new_session)
 
                 return HttpResponseRedirect('/user/presenter/dash/?direct_to=sessions')
             else:
