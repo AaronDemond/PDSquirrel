@@ -205,16 +205,16 @@ def join(request):
             activation_key = hashlib.sha256(s).hexdigest()
             profile.activation_key = activation_key
             profile.save()
-
-            msg = "Hello " + first_name + " " + last_name + ", and welcome to PD Squirrel!\n\nPlease click on the following link and use your email address to activate your membership account: https://pdsquirrel.ca/user/activate/%s\n\nThanks,\nThe PD Squirrel admin team" % (str(activation_key) + "/")
-            subject = 'PD Squirrel Activation'
+# Please click on the following link and use your email address to activate your membership account: https://pdsquirrel.ca/user/activate/%s\n\nThanks,\nThe PD Squirrel admin team" % (str(activation_key) + "/"
+            msg = "Hello " + first_name + " " + last_name + ", and welcome to PD Squirrel!\n\n We are currently in a beta where we are working directly with presenters to get the best possible content on PD Squirrel.\n"
+            msg += " If you are one of the presenters in the beta a member of the PD Squirrel team will confirm this and send you an account activation link.\n"
+            msg += " If you are not in our presenter beta you'll receive an account activation email once we go live."
+            subject = 'PD Squirrel Account Creation'
             send_to = [profile.user.email, 'demondsoftware@gmail.com', 'cdemond@cwdlaw.ca']
 
             tasks.sendMail.apply_async([send_to, subject, msg])
 
-            context['msg'].append({'type' : 'success', 'body' : 'Thank you. We have sent a welcome email to you. '
-                                                                'Click the link in that email to instantly activate '
-                                                                'your account and open the sign-in page. You may close this page.'})
+            context['msg'].append({'type' : 'success', 'body' : 'Thank you. We have sent a welcome email to you. You may close this page.'})
             logout(request)
             customer = stripe.Customer.create(email=email)
             profile.stripe_id = customer.id
