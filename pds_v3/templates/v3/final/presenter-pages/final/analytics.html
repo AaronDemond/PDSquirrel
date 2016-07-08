@@ -6,7 +6,10 @@
 <div class="analytics-container">
     <div class="row" id="analytics-date">
         <div class="col-lg-9 col-lg-offset-1">
-    	    <h4 style="margin-bottom: 0">Analytics</h4>
+    	    <h4 style="margin-bottom: 0">Analytics
+            <small class="text-danger">This tab is presently for illustration only &ndash; earnings are not actual</small>
+          </h4>
+
     	    <hr style="margin-top: 10px">
     	    <form id="analytics-form" action="{% url 'analytics-report' %}" method="POST">
     	        {% csrf_token %}

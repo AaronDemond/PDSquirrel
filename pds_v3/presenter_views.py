@@ -213,7 +213,7 @@ def dash(request, msg=False):
 
                 presenter.save()
                 messages.add_message(request, messages.SUCCESS,
-                        'Account successfully updated.')
+                        'Presenter page successfully updated.')
                 return HttpResponseRedirect('/user/presenter/dash/?direct_to=info')
 
             if 'edit-pres-private' in request.POST:
