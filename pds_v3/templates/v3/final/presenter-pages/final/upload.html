@@ -54,6 +54,7 @@
 						<option value="{{subject.id}}" >{{subject}}</option>
 						{% endfor %}
 					</select>
+					<p class="help-text muted">Hold Control/Command key to select more than one subject</p>
 					</div>
 				</div>
 		    </div>
@@ -88,7 +89,7 @@
 				<div class="radio" style="margin-bottom: 10px;">
 					<label>
 						<input id="online" checked="true" type="radio" name="upload">
-						Select upload file from online recordings
+						Select upload file from my PD Squirrel recordings
 					</label>
 				</div>
 
@@ -114,7 +115,7 @@
 		    </div>
 
 				<div class="col-lg-12">
-					<p class="help-block">(Required) Select the audio file of your PD Session for upload. It should be in MP3 or WAV format.</p>
+					<p class="help-block">(Required) Select the audio file of your PD Session for upload. If from your computer, it must be in MP3 or WAV format.</p>
 				</div>
 		</div>
 				<div class="row">
@@ -122,13 +123,13 @@
 						<div class="checkbox" id="enable_comments" style="margin-bottom:10px; margin-top: 10px;">
 							<label>
 								<input type="checkbox" id="comment_chk" name="disable_comments" value="true" {% if not sesh.comments_disabled %}checked{% endif %}>
-								<b>Enable comments on your PD session</b>
+								<b>Enable comments on my PD session</b>
 							</label>
 						</div>
 						<div class="checkbox" id="enable_comment_notifications_div" style="margin-bottom:10px;">
 							<label>
 								<input id="notification_comment_chk" type="checkbox" name="allow_email_notification_on_comment" value="true" {% if sesh.allow_email_notification_on_comment %}checked{% endif %}>
-								Email me each time a user leaves a comment on your PD session
+								Email me each time a user leaves a comment on my PD session
 							</label>
 						</div>
 
@@ -141,7 +142,7 @@
 					<div class="control-group">
 					<label for="">Optional attachment(s)</label>
 					<input type="file" class="form-control file-input" onclick="anotherFile()" name="file-upload-0">
-					<p class="help-block">(Optonal) You may upload attachments to suppliment your PD Session, such as slides or other documents.</p>
+					<p class="help-block">(Optonal) You may upload attachments to supplement your PD Session, such as PDF files or other documents.</p>
 					</div>
 				</div>
 		    </div>

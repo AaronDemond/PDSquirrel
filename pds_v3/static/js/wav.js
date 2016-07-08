@@ -545,6 +545,7 @@ function disableLinks() {
 			start_set.disabled = false;
 			end_set.disabled = false;
 
+
 			trim.disabled = false;
 			preview.disabled = false;
 			rec_btn.disabled = false;
@@ -569,7 +570,7 @@ function disableLinks() {
         alert('Mic not available please ensure that your mic is plugged in');
         return;
       }
-			outputElement.innerHTML = '<p>Recording now...</p>';
+			outputElement.innerHTML = '<p>Recording in progress</p>';
 			$(outputElement).addClass('output-recording');
  			$(outputElement).removeClass('output-paused');
 
