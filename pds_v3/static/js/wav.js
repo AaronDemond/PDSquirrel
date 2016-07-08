@@ -569,10 +569,6 @@ function disableLinks() {
         alert('Mic not available please ensure that your mic is plugged in');
         return;
       }
-			outputElement.innerHTML = '<p>Recording now...</p>';
-			$(outputElement).addClass('output-recording');
- 			$(outputElement).removeClass('output-paused');
-
 			// Clear old data
 			(window.URL || window.webkitURL).revokeObjectURL(local_download_url);
 			view = null;
@@ -588,20 +584,26 @@ function disableLinks() {
         alert("You have reached the 20 minute maximum limit for the recorder");
         return;
       }
-      // Timeout to cap user at 20min
 
+      // Timeout to cap user at 20min
       if (time < 1440000)
         time_cap_timer = setTimeout(minute_warning, 1440000-time, time); // time till 19 minute
       else
         minute_warning(time);
       // set start time as length of recording
 			recorder_timer.set_time(time);
+
 			start();
 
 			var trim = document.getElementById('trim');
 			var preview = document.getElementById('preview');
 			var start_set = document.getElementById('start_set');
 			var end_set = document.getElementById('end_set');
+
+			// set satus box
+			outputElement.innerHTML = '<p>Recording now...</p>';
+			$(outputElement).addClass('output-recording');
+			$(outputElement).removeClass('output-paused');
 
 			start_set.disabled=true;
 			end_set.disabled=true;
