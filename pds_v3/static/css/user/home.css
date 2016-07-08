@@ -1,7 +1,8 @@
 
 #main-content {
-  min-height: auto;
   padding-top: 0px;
+  min-height: 283px;
+  padding-bottom: 50px;
 }
 
 
@@ -140,46 +141,76 @@
 	}
 }
 
-.profile{
+.title-row {
+  margin-top: 10px;
+}
+
+.content-row {
+  margin-bottom: 15px;
+}
+
+/* Important for Bootstrap override */
+#browse-by-subject button {
+  padding: 0px !important;
+  color: #7b9651 !important;
+  font-size: 18px !important;
+}
+
+form h4 {
+  display: inline-block;
+  color:#7b9651;
+}
+
+.subject-divider {
+   color: #c3b969;
+}
+
+.vertical-divider {
+  width: 90%;
+  margin-top: 35px;
+  margin-bottom: 10px;
+}
+
+.session small {
+  text-align: right;
+  width: 100%;
+  display: block;
+}
+
+.session{
 	margin-top: 25px;
 }
-.profile h1{
-	font-weight: normal;
-	font-size: 1.5em;
-	margin:10px 0 0 0;
-  float: none;
-}
-.profile h2{
-	font-size: 14px;
-	font-weight: lighter;
-	margin-top: 5px;
-}
-.profile .img-box{
+
+.session .img-box{
 	opacity: 1;
 	display: block;
 	position: relative;
 }
 
-.profile a h4 {
+.session a h4 {
   color: #333;
   font-size: 16px;
   margin-top: 2px;
   margin-bottom: 0px;
 }
 
-.profile a p {
+.session a p {
   color: #c3b969;
   margin-top: 0px;
   margin-bottom: 0px;
 }
 
+.presenter:hover {
+  color: #c3b969 !important;
+}
+
 @media screen and (max-width: 767px) {
-  .profile a h4{
+  .session a h4{
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
   }
-  .profile a p{
+  .session a p{
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
@@ -209,10 +240,6 @@
 .portrait {
    height: 200px;
    width: 140px;
-}
-
-.subject {
-  margin-bottom: 0px;
 }
 
 .subject_pic {
