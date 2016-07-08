@@ -426,7 +426,7 @@ def change_pass(request):
     send_mail('PD Squirrel password change', msg, 'noreply@pdsquirrel.ca', ['demondsoftware@gmail.com'], fail_silently=False)
     send_mail('PD Squirrel password change', msg, 'noreply@pdsquirrel.ca', ['cdemond@cwdlaw.ca'], fail_silently=False)
 
-    messages.success(request, 'Password change successfull, please sign in using your new password')
+    messages.success(request, 'Password change successful, please sign in using your new password')
     return HttpResponseRedirect('/browse/')
 
 
