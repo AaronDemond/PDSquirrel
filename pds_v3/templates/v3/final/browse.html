@@ -28,7 +28,7 @@
 			    </div>
 		    </div>
 	              <div class="row">
-                <div class="col-xs-12 col-md-9">
+                <div class="col-xs-12 col-sm-10">
                     <ul class="nav nav-tabs">
                         <li role="presentation" {% if type == 'search' %}class="active"{% endif %} id = "search-toggle"><a href="#">Search</a></li>
                         <li role="presentation" {% if type == 'browse' %}class="active"{% endif %} id="browse-toggle">
@@ -37,7 +37,7 @@
                 </div>
             </div>
             <div class="row {% if type == 'browse' %}hidden{% endif %}" id = "search-options">
-                <div class="col-xs-12 col-md-9">
+                <div class="col-xs-12 col-sm-10">
                     <div id = "search-container">
                         <div class="row">
                             <form action ="{% url 'browse' %}" method ="POST" />
@@ -59,7 +59,7 @@
                     </div>
                 </div>
             <div id="browse-options" class="row {% if type == 'search' %}hidden{% endif %}">
-                <div class="col-xs-12 col-md-9">
+                <div class="col-xs-12 col-sm-10">
                     <div id = "browse-container" >
                         <div class="row">
                             <form action="{% url 'browse' %}" method ="POST">
@@ -90,7 +90,7 @@
                 </div>
             </div>
             <div class="row" id="resultrow">
-                <div class="col-lg-6 col-md-8 col-xs-12">
+                <div class="col-lg-6 col-sm-9 col-md-8 col-xs-12">
 
 
 
