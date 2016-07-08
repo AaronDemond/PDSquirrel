@@ -586,8 +586,8 @@ function disableLinks() {
       }
 
       // Timeout to cap user at 20min
-      if (time < 1440000)
-        time_cap_timer = setTimeout(minute_warning, 1440000-time, time); // time till 19 minute
+      if (time < 1140000)         // (function, time to exe, paramter to function)
+        time_cap_timer = setTimeout(minute_warning, 1140000-time, time); // time till 19 minute
       else
         minute_warning(time);
       // set start time as length of recording
@@ -626,9 +626,10 @@ function disableLinks() {
     }
 
     function minute_warning(time) {
-      var cap_time_in=60000
-      if (time >= 1440000) {
-        cap_time_in = 60000 - (time - 1440000)
+      var cap_time_in = 60000;
+
+      if (time >= 1140000) {
+        cap_time_in = 60000 - (time - 1140000);
       }
       outputElement.innerHTML = 'WARNING your recording will automaticly stop at 20 minutes.';
       clearTimeout(time_cap_timer);
