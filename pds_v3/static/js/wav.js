@@ -545,6 +545,7 @@ function disableLinks() {
 			start_set.disabled = false;
 			end_set.disabled = false;
 
+
 			trim.disabled = false;
 			preview.disabled = false;
 			rec_btn.disabled = false;

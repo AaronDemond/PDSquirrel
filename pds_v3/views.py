@@ -317,13 +317,14 @@ def detail(request, pd_id):
             created_sessions = request.user.presenter.pdsession_set.all()
             owned_sessions = list(chain(created_sessions, owned_sessions))
 
-        if pd in owned_sessions:
-                own = 1
+        if pd in owned_sessions or request.user.is_superuser:
+            own = 1
+
+        if own == 0:
+            messages.info(request, 'During our initial beta release, only sessions you\'ve created can be listened to. This session will be available for purchase at a later date. Check back soon!')
 
         context['customer'] = stripe.Customer.retrieve(request.user.profile.stripe_id)
 
-    if request.user.is_superuser:
-        own = 1
 
     context['own'] = own
 
