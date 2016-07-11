@@ -71,15 +71,14 @@
 						  <div class="row pd-header">
 							  <span class="pd-name">{{pd.name}}</span>
 							  &nbsp;
-							  <span class="muted pd-date">{{pd.release_date|date}}</span>
+							  <span class="muted pd-date">Release date: {{pd.release_date|date}}</span>
 						  </div>
-						  <div class="row">
-							<div class="col-sm-4">
-							  <img src="/static/img/subject/{{ pd.subject.all.0.image_name }}" class="img-thumbnail subject_pic">
-							</div>
-							<div class="col-sm-8 pd-description">
+						  <div class="row pd-info-container">
+                <div class="subject-container">
+                  <img src="/static/img/subject/{{ pd.subject.all.0.image_name }}">
+                  <small class="muted">{{ pd.subject.all.0.name }}</small>
+                </div>
 							  <p>{{ pd.description|truncatechars:350 }}</p>
-							</div>
 						  </div>
 						</div>
 					  </a>
@@ -89,6 +88,7 @@
 			</div>
         </div>
     </div>
+
 	<div id="browse-footer" class="container" >
 		<div class="row">
 			<div class="col-xs-12 col-lg-8 col-lg-offset-1">
