@@ -308,8 +308,8 @@ def detail(request, pd_id):
     pd = PdSession.objects.get(pk=pd_id)
     comments = Comment.objects.filter(pd_id = pd_id, parent__isnull = True).order_by('-date')
     own = 0
-
     context = {'pd' : pd, 'comments': comments}
+    context['url'] = "pd/"+pd_id
 
     if request.user.is_authenticated():
         owned_sessions = [purchase.pdsession for purchase in request.user.profile.purchase_set.all()]
