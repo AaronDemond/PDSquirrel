@@ -206,9 +206,9 @@ def join(request):
             profile.activation_key = activation_key
             profile.save()
 # Please click on the following link and use your email address to activate your membership account: https://pdsquirrel.ca/user/activate/%s\n\nThanks,\nThe PD Squirrel admin team" % (str(activation_key) + "/"
-            msg = "Hello " + first_name + " " + last_name + ", and welcome to PD Squirrel!\n\n We are currently in a beta where we are working directly with presenters to get the best possible content on PD Squirrel.\n"
-            msg += " If you are one of the presenters in the beta a member of the PD Squirrel team will confirm this and send you an account activation link.\n"
-            msg += " If you are not in our presenter beta you'll receive an account activation email once we go live."
+            msg = "Hello " + first_name + " " + last_name + ", and welcome to PD Squirrel!\n\n We are currently in a beta working with presenters at this time.\n"
+            msg += " As soon as we are ready to go live, you will receive an account activation email from us.d"
+            msg += " You can then just click on the link to activate your account.\n\nThanks,\nThe PD Squirrel admin team"
             subject = 'PD Squirrel Account Creation'
             send_to = [profile.user.email, 'demondsoftware@gmail.com', 'cdemond@cwdlaw.ca']
 
