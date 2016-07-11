@@ -58,7 +58,7 @@
           <a class="no-style-link" href="{% url 'detail' cont.id %}">
             <h4>{{ cont.name }}</h4>
           </a>
-          <a class="presenter" href="{% url 'detail' cont.id %}">
+          <a class="presenter" href="{% url 'presenter-detail' cont.presenters.all.0.id %}">
             <p>
               {{ cont.presenters.all.0 }}{% if cont.presenters.all.0.credentials %},
                 {{cont.presenters.all.0.credentials}}
