@@ -26,6 +26,14 @@
     	                <input type="hidden" name="date-rng">
     	                <input type="submit" style="margin-top: 25px" class="btn btn-success" onclick="$('#analytics-report').removeClass('hidden')" value="Generate report">
     	            </div>
+                  <script type="text/javascript">
+                  //if (isFireFox)
+                    if (typeof InstallTrigger !== 'undefined') {
+                      var labels = document.getElementsByClassName('date-label');
+                      labels[0].innerHTML = "Start (yyyy-mm-dd)"
+                      labels[1].innerHTML = "End (yyyy-mm-dd)"
+                    }
+                  </script>
     	        </div>
     	    </form>
         </div>
@@ -33,12 +41,3 @@
 	<div id="result">
 	</div>
 </div>
-
-<script type="text/javascript">
-  var isFirefox = typeof InstallTrigger !== 'undefined';
-  if (isFirefox) {
-    var labels = document.getElementsByClassName('date-label');
-    labels[0].innerHTML = "Start (yyyy-mm-dd)"
-    labels[1].innerHTML = "End (yyyy-mm-dd)"
-  }
-</script>
