@@ -40,31 +40,13 @@ def handler500(request):
 
 #only root level url
 def landing(request):
-    content = []
 
-    civil = PdSession.objects.filter(name='Early settlement offers and the NS Civil Procedural Rules')
-    if civil.exists():
-        content.append(civil[0])
-
-    inter = PdSession.objects.filter(name='The test for interlocutory injunctions in Nova Scotia')
-
-    if inter.exists():
-        content.append(inter[0])
-
-    court = PdSession.objects.filter(name='Court\'s authority to rectify land title issues in Ontario')
-    if court.exists():
-        content.append(court[0])
-
-    cbca = PdSession.objects.filter(name='CBCA vs the Nova Scotia Companies Act')
-    if cbca.exists():
-        content.append(court[0])
-
-    i=0
-    while len(content) < 4:
-        content.append(PdSession.objects.order_by('upload_date')[i])
-        i += 1
-
+    # Newest 4 Sessions should appear on the home page
+    pd = PdSession.objects.order_by('-upload_date')
+    pd = list(pd)
+    content = pd[:4] 
     subjects = Subject.objects.all()
+
     context = {
         'content': content,
         'subjects': subjects

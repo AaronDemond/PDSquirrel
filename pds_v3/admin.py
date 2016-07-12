@@ -12,6 +12,7 @@ def make_presenter(modeladmin, request, queryset):
         appuser.is_presenter = True
         appuser.save()
         p = Presenter(user=appuser.user)
+        p.placeholder_type = 1
         p.save()
 
 

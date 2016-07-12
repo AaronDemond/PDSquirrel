@@ -1,7 +1,15 @@
 
 
-.pres-container {
-	margin-top: 20px;
+
+.credentials {
+    color: grey;
+    margin-top: 0px;
+}
+
+#pres-header {
+  padding-left: 15px;
+  padding-right: 15px;
+
 }
 
 #xs-header {
@@ -114,4 +122,21 @@ a:hover {
 
 li > a:hover {
   text-decoration: underline;
+}
+
+.subject-text {
+	position: relative;
+	bottom: 20px;
+	left: 5px;
+	font-size: 14px;
+	color: black !important;
+}
+
+h3 {
+	margin-top: 0px;
+}
+
+
+.pdListing {
+	margin-bottom: 10px;
 }

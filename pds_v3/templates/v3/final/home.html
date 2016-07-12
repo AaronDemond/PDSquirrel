@@ -53,33 +53,30 @@
               <img src="/static/img/subject/{{ cont.subject.all.0.image_name }}" class="img-responsive">
             </a>
           </div>
-          <small class="muted">{{ cont.subject.all.0.name }}</small>
-          <a class="no-style-link" href="{% url 'detail' cont.id %}">
-            <h4>{{ cont.name }}</h4>
-          </a>
-          <a class="presenter" href="{% url 'presenter-detail' cont.presenters.all.0.id %}">
-            <p>
-              {{ cont.presenters.all.0 }}{% if cont.presenters.all.0.credentials %},
-                {{cont.presenters.all.0.credentials}}
-              {% endif %}
-            </p>
 
-          </a>
+		  <small class="muted subject"><span class="highlighter">{{ cont.subject.all.0.name }}</span></small>
+		  <div class="content">
+			  <a class="no-style-link" href="{% url 'detail' cont.id %}">
+				<h4>{{ cont.name }}</h4>
+			  </a>
+			  <a class="presenter" href="{% url 'detail' cont.id %}">
+				<p>
+				  {{ cont.presenters.all.0 }}{% if cont.presenters.all.0.credentials %},
+					{{cont.presenters.all.0.credentials}}
+				  {% endif %}
+				</p>
+			  </a>
+		  </div>
         </div>
-
     {% endfor %}
-
   </div>
   <hr class="vertical-divider">
   <div class="row">
     <h3 class="text-center">
       Browse by Subject
     </h3>
-
   </div>
-
   <div class="row" style="margin-top: 10px">
-
     <div class="col-xs-12 text-center">
       <form id="browse-by-subject" action="{% url 'browse' %}" method="POST">
         <input type="hidden" name="search_type" value="browse">
@@ -92,8 +89,6 @@
         {% endfor %}
       </form>
     </div>
-
-
   </div>
 </div>
 {% endblock %}

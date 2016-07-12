@@ -1,5 +1,6 @@
 {% extends "v3/final/base/base.html" %}
 {% load staticfiles %}
+{% load pds_extras %}
 {% block header-metatags %}
         <title>{{ presenter }}</title>
         <meta name=”description” content='Learn more about the PDSquirrel presenter {{presenter}}'>
@@ -61,31 +62,48 @@
 					<p>{{bio}}</p>
 				</div>
             </div>
-			<div class="row">
-				<div class="col-xs-12">
-					<h4>Sessions by this presenter </h4>
-					<div class="list-group">
-					{% for pd in pd_list %}
-					  <a href="{% url 'detail' pd.id %}">
-						<div class="list-group-item">
-						  <div class="row pd-header">
-							  <span class="pd-name">{{pd.name}}</span>
-							  &nbsp;
-							  <span class="muted pd-date">Release date: {{pd.release_date|date}}</span>
-						  </div>
-						  <div class="row pd-info-container">
-                <div class="subject-container">
-                  <img src="/static/img/subject/{{ pd.subject.all.0.image_name }}">
-                  <small class="muted">{{ pd.subject.all.0.name }}</small>
-                </div>
-							  <p>{{ pd.description|truncatechars:350 }}</p>
-						  </div>
-						</div>
-					  </a>
-					{% endfor %}
-					</div>
+
+	<div class="row" id="resultrow">
+		<div class="col-lg-12">
+			{% if pd_list %}
+			<h4 class="text-center">Sessions by this presenter </h4>
+			<br>
+			
+			{% for pd in pd_list %}
+			<div id="pd-listing" class="row pdlisting">
+				<div class="col-xs-3">
+              		<img src="/static/img/subject/{{ pd.subject.all.0.image_name }}" class="img-responsive">
+					<p style="float:right">{{pd.subject.all.0}}</p>
+				</div>
+				<div class="col-xs-9">
+					<h3><a href="{% url 'detail' pd.id %}{% if query %}?_q={{query}}{% endif %}">{{pd.name}}</a></h3>
+					<p>
+						{% for b in pd.presenters.all %}
+						<a class="presenter-a" href = "{% url 'presenter-detail' b.id %}">{{ b }}{% if b.credentials and b.credentials.strip %}, {{b.credentials}}{% endif %}</a>
+						{% endfor %}
+						<br>
+						{{pd.description|truncatechars:155}}
+						<span class="pd-list-small-info">
+						<br>
+						<b>Subject area(s):</b>
+						{{pd.subject.all|join:", "}}
+						<b> Release Date: </b> {{pd.release_date|remove_time }}
+						<b> Duration: </b> {{pd.duration}}
+						</span>
+					</p>
+
 				</div>
 			</div>
+			{% endfor %}
+
+			{% else %}
+			<p>This presenter has no sessions.</p>
+			{% endif %}
+
+			<br />
+		</div>
+	</div>
+			
         </div>
     </div>
 
