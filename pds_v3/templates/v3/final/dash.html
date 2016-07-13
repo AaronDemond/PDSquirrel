@@ -50,45 +50,45 @@
                     {% if pd_list %}
 
                     {% if pd_list.paginator.num_pages > 1 %}
-<nav>
-  <ul class="pagination">
+                    <nav>
+                      <ul class="pagination">
 
-    {% if pd_list.has_previous %}
-    <li>
-      <a href="?page={{ pd_list.previous_page_number }}" aria-label="Previous">
-        <span aria-hidden="true">&laquo;</span>
-      </a>
-    </li>
-    {% else %}
-	<li class="disabled">
+                        {% if pd_list.has_previous %}
+                        <li>
+                          <a href="?page={{ pd_list.previous_page_number }}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                          </a>
+                        </li>
+                        {% else %}
+                        <li class="disabled">
+                          <a aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                          </a>
+                        </li>
+                        {% endif %}
+                        {% if range|length == 1 %}
+                        <li class="active" ><a>1</a></li>
+                        {% else %}
+                          {% for x in range %}
+                        <li {% if x == pd_list.number %} class="active" {% endif %}><a href="?page={{x}}">{{x}}</a></li>
+                          {% endfor %}
+                        {% endif %}
+                        {% if pd_list.has_next %}
+                        <li>
+                          <a href="?page={{ pd_list.next_page_number }}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                          </a>
+                        </li>
+                        {% else %}
+                        <li class="disabled">
 
-      <a href="" aria-label="Previous">
-        <span aria-hidden="true">&laquo;</span>
-      </a>
-    </li>
-    {% endif %}
-    {% if range %}
-	    {% for x in range %}
-	    <li {% if x == pd_list.number %} class="active" {% endif %}><a href="?page={{x}}">{{x}}</a></li>
-	    {% endfor %}
-    {% endif %}
-				{% if pd_list.has_next %}
-    <li>
-
-      <a href="?page={{ pd_list.next_page_number }}" aria-label="Next">
-        <span aria-hidden="true">&raquo;</span>
-      </a>
-    </li>
-    {% else %}
-<li>
-
-      <a href="" aria-label="Next">
-        <span aria-hidden="true">&raquo;</span>
-      </a>
-    </li>
-				{% endif %}
-  </ul>
-</nav>
+                          <a aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                          </a>
+                        </li>
+                        {% endif %}
+                      </ul>
+                    </nav>
 {% endif %}
 {% endif %}
                 {% else %}
