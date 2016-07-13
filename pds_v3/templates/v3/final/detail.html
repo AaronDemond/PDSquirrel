@@ -9,6 +9,12 @@
         <link rel="stylesheet" href="{% static 'css/user/detail.css' %}">
 {% endblock header-content %}
 {% block body %}
+<!-- In line CSS for bug where overflow-x auto breaks FF audio tag -->
+<style>
+  body {
+    overflow-x: auto;
+  }
+</style>
 
 <div id="main-content" class="container">
 	<div class="modal fade bs-example-modal-lg" tabindex="-1" id="payment-modal" role="dialog" aria-labelledby="myLargeModalLabel">
