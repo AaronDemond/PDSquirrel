@@ -95,7 +95,7 @@
                                 &nbsp;
                             </div>
                         </div>
-						<a class="preview-link" onclick="previewAudio({{sesh.id}}, this)">Preview ▾</a>
+						<a class="preview-link" onclick="previewAudio({{sesh.id}}, this)">Listen ▾</a>
                         <a class="" onclick="loadXMLDoc('{% url 'edit' sesh.id %}', '#page-content')">Edit</a>
 												{% if sesh.suspended == False %}
                         <a class="suspend-link" onclick="showRemove({{sesh.id}}, this)" >Remove ▾</a>
@@ -155,7 +155,9 @@
                         <div class="alert alert-info">
 					{% if sesh.suspended %}
 					<p>
-						This PD Session has been removed by you. It is no longer listed on PDsquirrel and cannot be purchased.
+						This PD Session has been removed by you. It is no longer listed on PD Squirrel and cannot be purchased.
+
+						However, if a PD Squirrel member has already taken this session it will remain in the PD library of that member.
 					</p>
 			    {% elif sesh.edited and sesh.approved and sesh.presenter_approved %}
 <p>
