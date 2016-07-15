@@ -40,12 +40,11 @@
                 <div class="col-xs-12 col-sm-10">
                     <div id = "search-container">
                         <div class="row">
-                            <form action ="{% url 'browse' %}" method ="POST" />
+                            <form action ="{% url 'browse' %}" method ="GET" />
                                 <input type="hidden" name="search_type" value="search">
                                 <div class="col-xs-12">
                                     <br />
                                     <div class="input-group">
-                                        {% csrf_token %}
 					<input type="text" class="form-control" name = "query" id = "search_string" value="{% if type == 'search' %}{{query}}{% endif %}" placeholder="Search for..">
                                         <span class="input-group-btn">
                                         <button class="btn btn-success browse-btn-fix" type="submit">Go!</button>
@@ -62,12 +61,11 @@
                 <div class="col-xs-12 col-sm-10">
                     <div id = "browse-container" >
                         <div class="row">
-                            <form action="{% url 'browse' %}" method ="POST">
+                            <form action="{% url 'browse' %}" method ="GET">
                             <input type="hidden" name="search_type" value="browse">
                             <div class="col-xs-12">
                                 <br />
                                 <div class="input-group">
-                                    {% csrf_token %}
                                     <select class="form-control" name="subject">
                                         {% if subject.id > 0 %}
                                         <option value = "{{subject.id}}"selected>{{subject.name}}</option>

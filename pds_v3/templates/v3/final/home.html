@@ -78,9 +78,8 @@
   </div>
   <div class="row" style="margin-top: 10px">
     <div class="col-xs-12 text-center">
-      <form id="browse-by-subject" action="{% url 'browse' %}" method="POST">
+      <form id="browse-by-subject" action="{% url 'browse' %}" method="GET">
         <input type="hidden" name="search_type" value="browse">
-        {% csrf_token %}
         {% for subject in subjects %}
           <button type="submit" name="subject" value="{{subject.id}}" class="btn btn-link">{{ subject }}</button>
           {% if not forloop.last %}
