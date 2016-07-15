@@ -46,7 +46,10 @@ a {
 html, body {
 	width: auto !important;
 	height: auto !important;
-	overflow-x: hidden !important;
+}
+
+body {
+  overflow-x: hidden;
 }
 
 .modal-content {
