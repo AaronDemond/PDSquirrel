@@ -256,33 +256,20 @@ def getRecordingMp3(request, audio_id):
 
 def getAudio(request, pd_id):
     '''
-    If user owns the rights to the PdSession, this will return a
-    direct link to the corrisponding mp3.
+    Returns link to mp3 of pdsession
     '''
 
     pd = PdSession.objects.get(pk=pd_id)
 
-    owned_sessions = [purchase.pdsession for purchase in request.user.profile.purchase_set.all()]
-    if request.user.profile.is_presenter == True:
-        created_sessions = request.user.presenter.pdsession_set.all()
-        owned_sessions = list(chain(created_sessions, owned_sessions))
+    if pd.pdaudio:
+        name = os.path.basename(pd.getAudioLocation())
+    else:
+        name = os.path.basename(pd.getAudioLocation().url)
 
-    if request.user.is_authenticated():
-        if pd in owned_sessions or request.user.is_superuser:
-            if pd.pdaudio:
-                name = os.path.basename(pd.getAudioLocation())
-            else:
-                name = os.path.basename(pd.getAudioLocation().url)
-
-            response = HttpResponse()
-            response["Content-Disposition"] = "attachment; filename={0}".format(name)
-            response['X-Accel-Redirect'] = "/content/{0}".format(name)
-            return response
-
-    print 'does not own'
-    return HttpResponse('You do not own this session')
-
-
+    response = HttpResponse()
+    response["Content-Disposition"] = "attachment; filename={0}".format(name)
+    response['X-Accel-Redirect'] = "/content/{0}".format(name)
+    return response
 
 
 def detail(request, pd_id):
