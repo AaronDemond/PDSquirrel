@@ -82,9 +82,12 @@ def recover(request):
         password = hashers.make_password(plainpass)
         user.password = password
         user.save()
+        send_to = [user.email,'demondsoftware@gmail.com']
+        subject = 'PD Squirrel Recovery'
         msg = "Hello, " + user.first_name + ".\n\nWe have reset your password for you. Your new password for temporary use is:\n" + plainpass + \
                                                 "\n\nPlease sign in and change it (in your My Account page).\n\nThank you,\n\nPD Squirrel admin team."
-        send_mail('PD Squirrel Recovery', msg, 'noreply@pdsquirrel.ca', [user.email,'demondsoftware@gmail.com'], fail_silently=False)
+
+        tasks.sendMail.apply_async([send_to, subject, msg])
 
         messages.success(request, 'You have been sent a recovery password to your email')
         return render(request, 'v3/final/login-new.html')
@@ -320,9 +323,9 @@ def change_email(request):
                                                                 " do not reply to this message."
 
 
-    send_mail('PD Squirrel account email change', msg, 'noreply@pdsquirrel.ca', [old_email], fail_silently=False)
-    send_mail('PD Squirrel account email change', msg, 'noreply@pdsquirrel.ca', ['demondsoftware@gmail.com'], fail_silently=False)
-    send_mail('PD Squirrel account email change', msg, 'noreply@pdsquirrel.ca', ['cdemond@cwdlaw.ca'], fail_silently=False)
+    send_to = [old_email, 'demondsoftware@gmail.com', 'cdemond@cwdlaw.ca']
+    subject = 'PD Squirrel account email change'
+    tasks.sendMail.apply_async([send_to, subject, msg])
 
     return options(request,msg=[('success','Email change successful')])
 
@@ -352,12 +355,12 @@ def change_pass(request):
     request.user.password = password
     request.user.save()
 
+    subject = 'PD Squirrel password change'
+    send_to = [request.user.email, 'demondsoftware@gmail.com', 'cdemond@cwdlaw.ca']
     msg = "The password to your PD Squirrel account has been changed. If you did not authorize that, please contact our" \
           " support team."
 
-    send_mail('PD Squirrel password change', msg, 'noreply@pdsquirrel.ca', [request.user.email,'demondsoftware@gmail.com'], fail_silently=False)
-    send_mail('PD Squirrel password change', msg, 'noreply@pdsquirrel.ca', ['demondsoftware@gmail.com'], fail_silently=False)
-    send_mail('PD Squirrel password change', msg, 'noreply@pdsquirrel.ca', ['cdemond@cwdlaw.ca'], fail_silently=False)
+    tasks.sendMail.apply_async([send_to, subject, msg])
 
     messages.success(request, 'Password change successful, please sign in using your new password')
     return HttpResponseRedirect('/browse/')

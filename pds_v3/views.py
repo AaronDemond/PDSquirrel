@@ -161,14 +161,6 @@ def preview(request,id):
 
     return render(request, 'v3/final/presenter-pages/final/preview.html', context)
 
-def email(request):
-    msg = "Please go to the following link to activate: http://pdsquirrel.ca:90/activate/" + str(request.user.id) + "/"
-    try:
-        send_mail('PD Squirrel Activation', msg, 'no-reply@pdsquirrel.ca',['demondsoftware@gmail.com'], fail_silently=False)
-    except:
-        return HttpResponse("email not sent")
-
-    return HttpResponse("Email sent")
 
 def getAttachment(request, a_id):
     '''
@@ -424,7 +416,7 @@ def support_msg(request):
         message = request.POST['message']
         subject = request.POST['subject']
 
-        send_mail('PDSquirrel support from  ' + name + ' subj: ' + subject , message + '\nreturn email: ' + email , 'support@pdsquirrel.ca', ['admin@pdsquirrel.ca'], fail_silently=False)
+        tasks.sendMail.apply_async([[email], subject, message])
 
         messages.success(request, 'Message sent. We will get back to you shortly')
         return render(request, 'v3/final/contact.html')

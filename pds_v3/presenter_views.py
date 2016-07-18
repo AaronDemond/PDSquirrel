@@ -354,9 +354,11 @@ def dash(request, msg=False):
 
                 new_session.presenters.add(Presenter.objects.get(user=request.user))
 
-
+                subject = 'new upload/release'
+                send_to = ['support@pdsquirrel.ca', 'admin@pdsquirrel.ca', 'cdemond@pdsquirrel.ca']
                 msg = request.user.username + ' has uploaded and released a new session'
-                send_mail('new upload/release' , msg , 'support@pdsquirrel.ca', ['admin@pdsquirrel.ca', 'cdemond@pdsquirrel.ca'], fail_silently=False)
+
+                tasks.sendMail.apply_async([send_to, subject, msg])
 
                 messages.add_message(request, messages.INFO, "Thank you for uploading your PD Session, titled '%s'." % new_session)
 
