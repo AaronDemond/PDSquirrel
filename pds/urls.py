@@ -24,6 +24,7 @@ urlpatterns = [
     url(r'^user/presenter/(?P<p_id>\d+)/$', views.presenter_detail, name="presenter-detail"),
     url(r'^user/login/$', user_views.login_user, name="login"),
     url(r'^user/logout/$', user_views.logout_user, name="logout"),
+    url(r'^user/recover/$', user_views.recover, name="recover"),
     url(r'^login/$', user_views.login_landing, name="login-landing"),
     url(r'^payment-process/$', payment_views.payment_process, name="payment-process"),
 
@@ -37,7 +38,6 @@ urlpatterns = [
     url(r'^presenter-terms/$', tmp_views.presenter_terms, name="presenter-terms"), # Not used or updated on site
 
     # User options
-    url(r'^user/recover/$', user_views.recover, name="recover"),
     url(r'^user/options/$', user_views.options, name="options"),
     url(r'^user/options/email$', user_views.change_email, name="change-email"),
     url(r'^user/options/pass$', user_views.change_pass, name="change-pass"),
