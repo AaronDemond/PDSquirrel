@@ -10,7 +10,7 @@
 			<p style="margin-left:10px">{{user.profile.address.street_address}}
 			<br>
 			{% if user.profile.address.po_box %}P.O. Box {{user.profile.address.po_box}}<br>{% endif %}{{user.profile.address.municipality}} {{user.profile.address.province}} {{user.profile.address.postal_code}}</p>
-		</div> {# address #}
+		</div>
         <div class="col-lg-6">
 			<h4 >Overview <small>(Cumulative to date)</small></h4>
 			<table class="table">
@@ -19,13 +19,6 @@
 
 					<td>{{listed_count}}</td>
 				</tr>
-        {% comment %}
-				<tr>
-					<td>Number of PD Sessions uploaded by you but not yet listed</td>
-					<td>{{pending_count}}</td>
-
-				</tr>
-        {% endcomment %}
 				<tr>
 					<td>Total member takes of all your PD Sessions
 					<a onclick = "showTakesInfo()" id="infoLink">(info ▾)</a></td>
