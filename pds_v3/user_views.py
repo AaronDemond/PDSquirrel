@@ -94,17 +94,6 @@ def recover(request):
 
 
 
-def clean_join(data):
-    username = data.POST["username"]
-    password = data.POST["password"]
-    return True
-
-
-
-def join_success(request):
-    return True
-
-
 def join(request):
     context = {'societies' : LawSociety.objects.all(), 'form' : CaptchaForm(), 'msg' : []}
 
@@ -253,76 +242,8 @@ def presenter(request):
     return render(request, 'v3/presenter.html', {'pd': pd})
 
 
-def presenter_edit_pd(request):
-    try:
-        pd_id = request.GET.get('pd_id', None)
-        pd = PdSession.objects.get(pk=pd_id)
-    except:
-        return HttpResponse("error getting pd object")
-    form = PdSessionForm(instance=pd)
-    return render(request, 'v3/presenter-edit-pd.html', {'form' : form})
-
 def become_presenter(request):
     return render(request, 'v3/final/become-presenter.html')
-
-
-def add_user_ajax(request):
-    username = request.POST["username"]
-    email = request.POST["email"]
-    password = request.POST["password"]
-    user = AppUser(user=User.objects.create_user(username, email, password))
-    user.save()
-
-
-def suspend_user(request,user_id):
-    user = AppUser.objects.get(pk=user_id)
-    user.active = 0
-    return True
-
-def activate_user(request, user_id):
-    user = AppUser.objects.get(pk=user_id)
-    user.active = 1
-    return True
-
-def auth_user(request):
-    username = request.POST["username"]
-    password = request.POST["password"]
-
-    result = authenticate(username=username, password=password)
-    if request is not None:
-        if result.active:
-            return HttpResponse("user is auth & active")
-        else:
-            return HttpResponse("user is auth & not active")
-    else:
-        return HttpResponse("request failed")
-
-
-def change_email(request):
-    old_email = request.user.email
-    email = request.POST.get('email', False)
-    email_confirm = request.POST.get('email_confirm', False)
-
-    if not email:
-        return options(request, msg=[('danger', 'Please enter an email')])
-    if email != email_confirm:
-        return options(request, msg=[('danger', 'please enter a matching email')])
-    if re.match('^\S*@\S*\.\S*', email) is None:
-        return options(request, msg=[('danger', 'Your email must be in a valid email form. Example: test@pdsquirrel.ca')])
-
-    request.user.email = email
-    request.user.username = email
-    request.user.save()
-
-    msg = "This Email is no longer linked with PD Squirrel. The username of your account has been changed too: " + str(email) + "\n Please" \
-                                                                " do not reply to this message."
-
-
-    send_mail('PD Squirrel account email change', msg, 'noreply@pdsquirrel.ca', [old_email], fail_silently=False)
-    send_mail('PD Squirrel account email change', msg, 'noreply@pdsquirrel.ca', ['demondsoftware@gmail.com'], fail_silently=False)
-    send_mail('PD Squirrel account email change', msg, 'noreply@pdsquirrel.ca', ['cdemond@cwdlaw.ca'], fail_silently=False)
-
-    return options(request,msg=[('success','Email change successful')])
 
 
 def change_membership(request):
@@ -379,7 +300,31 @@ def change_membership(request):
     return HttpResponseRedirect('/user/options/')
 
 
+def change_email(request):
+    old_email = request.user.email
+    email = request.POST.get('email', False)
+    email_confirm = request.POST.get('email_confirm', False)
 
+    if not email:
+        return options(request, msg=[('danger', 'Please enter an email')])
+    if email != email_confirm:
+        return options(request, msg=[('danger', 'please enter a matching email')])
+    if re.match('^\S*@\S*\.\S*', email) is None:
+        return options(request, msg=[('danger', 'Your email must be in a valid email form. Example: test@pdsquirrel.ca')])
+
+    request.user.email = email
+    request.user.username = email
+    request.user.save()
+
+    msg = "This Email is no longer linked with PD Squirrel. The username of your account has been changed too: " + str(email) + "\n Please" \
+                                                                " do not reply to this message."
+
+
+    send_mail('PD Squirrel account email change', msg, 'noreply@pdsquirrel.ca', [old_email], fail_silently=False)
+    send_mail('PD Squirrel account email change', msg, 'noreply@pdsquirrel.ca', ['demondsoftware@gmail.com'], fail_silently=False)
+    send_mail('PD Squirrel account email change', msg, 'noreply@pdsquirrel.ca', ['cdemond@cwdlaw.ca'], fail_silently=False)
+
+    return options(request,msg=[('success','Email change successful')])
 
 
 def change_pass(request):
@@ -426,6 +371,7 @@ def options(request, msg=False):
 
     return render(request, "v3/final/account-options.html", context)
 
+
 def purchase_report(request,):
     user = AppUser.objects.get(user=request.user)
     purchases = Purchase.objects.filter(user=user)
@@ -442,6 +388,7 @@ def purchase_report(request,):
             total = total + p.total
     context = {'purchases': purchases, 'total': ("%.2f" % total), 'total_tax':("%.2f" % tax_total), 'before_tax':("%.2f" % before_tax)}
     return render(request, 'v3/final/reports/purchases.html', context)
+
 
 def del_card(request):
     if request.POST:
@@ -464,6 +411,7 @@ def del_card(request):
                     messages.add_message(request, messages.SUCCESS, 'Card removal error')
 
     return HttpResponseRedirect('/user/options/')
+
 
 def default_payment(request):
     ''' Updates customers default payment method for monthly billing '''
