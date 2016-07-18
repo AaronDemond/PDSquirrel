@@ -27,16 +27,6 @@ def presenter_uploads(request):
     context = {'subjects' : subjects, 'recordings' : recordings}
     return render(request, 'v3/final/presenter-pages/final/upload.html', context)
 
-def getEditModel(request, id):
-    pd = PdSession.objects.get(pk=id)
-    context = {'sesh' : pd}
-
-    return render(request,'v3/final/presenter-pages/model-edit.html', context)
-
-
-def handle_uploaded_file(f):
-    destination = open('')
-
 
 def analytics_report(request):
 
@@ -52,8 +42,6 @@ def analytics_report(request):
     else:
         report_type = 'html'
 
-
-
     #datetime objects for range comparison
     try:
         start = dfi(start)
@@ -62,10 +50,6 @@ def analytics_report(request):
     except:
         context = {'type': None}
         return render_to_response('v3/final/presenter-pages/final/reports/analytics.html', context)
-
-
-
-
 
     #tally takes and earnings
     ppd = request.user.presenter.pdsession_set.filter(approved=True)
@@ -413,7 +397,6 @@ def edit(request, id):
     context = {'sesh' : pd, 'subjects' : Subject.objects.all()}
     if request.POST:
 
-
         #the following creates the edit
         if 'create-edit' in request.POST:
 
@@ -504,11 +487,6 @@ def edit(request, id):
             context['session_subjects'] = pd.subject.all()
 
         return render(request, 'v3/final/presenter-pages/final/edit.html' , context)
-
-
-def notice(request):
-    pass
-
 
 
 @csrf_exempt
