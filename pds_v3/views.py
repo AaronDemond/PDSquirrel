@@ -54,11 +54,6 @@ def landing(request):
     return render(request, 'v3/final/home.html', context)
 
 
-def membership_information(request):
-    return render(request, 'v3/final/membership-info.html')
-
-
-
 def browse(request):
 
     if request.GET:
@@ -148,9 +143,6 @@ def activate(request, id):
     return HttpResponse("activated")
 
 
-
-def debug(request):
-    return render(request, 'v3/debug-django.html')
 def fuseEdit(edit,pd):
     pd.name=edit.name
     pd.description=edit.description
@@ -198,13 +190,6 @@ def email(request):
 
 def learn(request):
     return HttpResponse("empty learning page")
-
-def cap_refresh(request):
-    form = CaptchaForm()
-    c = Context({'form':form})
-    t = Template("{{form.captcha}}")
-    page = t.render(c)
-    return HttpResponse(page)
 
 
 def getAttachment(request, a_id):

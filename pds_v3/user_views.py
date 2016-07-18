@@ -104,18 +104,6 @@ def clean_join(data):
 def join_success(request):
     return True
 
-def update(request):
-    type = request.POST["type"]
-    if type == 'email':
-        try:
-            email = request.POST["email"]
-            request.user.email = email
-            request.user.save()
-        except:
-            return HttpResponse("error updating email")
-
-
-
 
 def join(request):
     context = {'societies' : LawSociety.objects.all(), 'form' : CaptchaForm(), 'msg' : []}

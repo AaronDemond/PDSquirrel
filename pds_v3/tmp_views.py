@@ -5,6 +5,7 @@ from django.template import Template, Context
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.models import User
 from pds_v3.models import PdSession, AppUser, LawSociety, LawSocietyOverride, Purchase
+from pds_v3.forms import CaptchaForm
 
 """
 # Page merged into
@@ -33,24 +34,6 @@ def privacy(request):
 def become_presenter(request):
     return render(request, 'v3/final/become-presenter.html')
 
-
-
-
-
-from pds_v3.forms import CaptchaForm
-def cap(request):
-
-    if request.POST:
-        f = CaptchaForm(request.POST)
-
-
-        if f.is_valid():
-            return HttpResponse("True!!")
-        else:
-            return HttpResponse("False!!")
-    else:
-        context = {'form':CaptchaForm}
-        return render(request, 'v3/final/cap.html', context)
 
 def cap_ajax(request):
     form = CaptchaForm()

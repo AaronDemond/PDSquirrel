@@ -549,11 +549,3 @@ def record(request):
 
 
         return render(request, 'v3/final/presenter-pages/final/record.html', c)
-
-def editRecording(request, r_id=False):
-    pdaudio = PdAudio.objects.get(pk=r_id)
-    fname = pdaudio.getMp3Location()
-    f = open(fname, "rb")
-    lol = list(f)
-    c = {'pdaudio': pdaudio, 'f': f, 'lol': lol}
-    return render(request, 'v3/final/presenter-pages/final/edit-recording.html', c)
