@@ -137,42 +137,43 @@ def join(request):
         context["msg"] = []
         msg = []
         f = CaptchaForm(request.POST)
-
+        #context['msg'].append({'type' :'danger', 'body' : 'Please enter a last name.'})
         if terms == None:
-            context['msg'].append({'type' :'danger', 'body' : 'Please check the terms and conditions.'})
+            messages.error(request, 'Please check the terms and conditions.')
 
         elif not society:
-            context['msg'].append({'type' :'danger', 'body' : 'The Society you selected is not a valid Society.'})
+            messages.error(request, 'The Society you selected is not a valid Society.')
 
         elif not law_society_exists:
-            context['msg'].append({'type' :'danger', 'body' : 'The Society you selected is not a valid Society.'})
+            messages.error(request, 'The Society you selected is not a valid Society.')
 
         elif last_name.isspace() or not last_name:
-            context['msg'].append({'type' :'danger', 'body' : 'Please enter a last name.'})
+            messages.error(request, 'The Society you selected is not a valid Society.')
+
 
         elif first_name.isspace() or not first_name:
-            context['msg'].append({'type' :'danger', 'body' : 'Please enter a first name.'})
+            messages.error(request, 'Please enter a first name.')
 
         elif not f.is_valid():
-            context['msg'].append({'type' :'danger', 'body' : 'Incorrect captcha information.'})
+            messages.error(request, 'Incorrect captcha information.')
 
         elif User.objects.filter(username=request.POST['email']).exists():
-            context['msg'].append({'type' :'danger', 'body' : "A user with that email address is already registered."})
+            messages.error(request, 'A user with that email address is already registered.')
 
         elif not email:
-            context['msg'].append({'type' :'danger', 'body' :  'Please enter an email'})
+            messages.error(request, 'Please enter an email.')
 
         elif re.match('^\S*@\S*\.\S*', email) is None:
-            context['msg'].append({'type' :'danger', 'body' : "Your email format is invalid."})
+            messages.error(request, 'Your email format is invalid.')
 
         elif email != vemail:
-            context['msg'].append({'type' :'danger', 'body' : "Your email does not match."})
+            messages.error(request, 'Your email does not match.')
 
         elif password != vpassword:
-            context['msg'].append({'type' :'danger', 'body' : "Your password does not match."})
+            messages.error(request, 'Your password does not match.')
 
         elif len(password)<8:
-            context['msg'].append({'type' :'danger', 'body' :  'Please enter a password with a length of atleast 8 characters'})
+            messages.error(request, 'Please enter a password with a length of atleast 8 characters.')
 
         else:
             password = hashers.make_password(password)
