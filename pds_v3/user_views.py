@@ -134,7 +134,6 @@ def join(request):
 
         context["societies"] = LawSociety.objects.all()
         context["form"] = CaptchaForm()
-        context["msg"] = []
         msg = []
         f = CaptchaForm(request.POST)
         if terms == None:
@@ -308,26 +307,27 @@ def change_email(request):
     email = request.POST.get('email', False)
     email_confirm = request.POST.get('email_confirm', False)
 
+    # return options(request, msg=[('danger', 'Your email must be in a valid email form. Example: test@pdsquirrel.ca')])
+
     if not email:
-        return options(request, msg=[('danger', 'Please enter an email')])
-    if email != email_confirm:
-        return options(request, msg=[('danger', 'please enter a matching email')])
-    if re.match('^\S*@\S*\.\S*', email) is None:
-        return options(request, msg=[('danger', 'Your email must be in a valid email form. Example: test@pdsquirrel.ca')])
+        messages.error(request, 'Please enter an email')
+    elif email != email_confirm:
+        messages.error(request, 'please enter a matching email')
+    elif re.match('^\S*@\S*\.\S*', email) is None:
+        messages.error(request, 'Your email must be in a valid email form. Example: test@pdsquirrel.ca')
+    else:
+        request.user.email = email
+        request.user.username = email
+        request.user.save()
 
-    request.user.email = email
-    request.user.username = email
-    request.user.save()
+        msg = "This Email is no longer linked with PD Squirrel. The username of your account has been changed too: " + str(email) + "\n Please" \
+                                                                    " do not reply to this message."
 
-    msg = "This Email is no longer linked with PD Squirrel. The username of your account has been changed too: " + str(email) + "\n Please" \
-                                                                " do not reply to this message."
+        send_to = [old_email, 'demondsoftware@gmail.com', 'cdemond@cwdlaw.ca']
+        subject = 'PD Squirrel account email change'
+        tasks.sendMail.apply_async([send_to, subject, msg])
 
-
-    send_to = [old_email, 'demondsoftware@gmail.com', 'cdemond@cwdlaw.ca']
-    subject = 'PD Squirrel account email change'
-    tasks.sendMail.apply_async([send_to, subject, msg])
-
-    return options(request,msg=[('success','Email change successful')])
+    return render(request, 'v3/final/account-options.html')
 
 
 def change_pass(request):

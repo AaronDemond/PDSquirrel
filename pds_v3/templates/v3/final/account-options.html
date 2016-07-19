@@ -74,7 +74,7 @@ payments from our PD Squirrel members. None of your sensitive information is sto
 				{% for msg in messages %}
 					<div class="alert alert-{{msg.tags}} msg" role="alert">
 						<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-						{{ msg }}
+						{{ msg }} (This message came from the right message system)
 					</div>
 				{% endfor %}
 				{% endif %}
@@ -82,7 +82,7 @@ payments from our PD Squirrel members. None of your sensitive information is sto
           {% for msg in msgs %}
           <div class="alert alert-{{msg.0}} msg" role="alert">
             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-            {{ msg.1 }}
+            {{ msg.1 }} (not good msg system)
           </div>
 
           {% endfor %}
