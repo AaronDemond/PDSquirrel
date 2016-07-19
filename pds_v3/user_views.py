@@ -339,31 +339,32 @@ def change_pass(request):
     auth_result =  authenticate(username=username, password=password_old)
 
     if auth_result is None:
-        return options(request,msg=[('danger','Incorrect password. Authentication failed.')])
+        messages.error(request, 'Incorrect password. Authentication failed.')
 
-    if not password:
-        return options(request, msg=[('danger', 'Please enter a new password')])
+    elif not password:
+        messages.error(request, 'Please enter a new password')
 
-    if password != double_check_password:
-        return options(request,msg=[('danger','New passwords must match.')])
+    elif password != double_check_password:
+        messages.error(request, 'New passwords must match.')
 
-    if len(password)<8:
-        return options(request,msg=[('danger','Password must be over 8 characters long.')])
+    elif len(password)<8:
+        messages.error(request, 'Password must be over 8 characters long.')
+    else:
+        password = hashers.make_password(password)
+        request.user.password = password
+        request.user.save()
 
+        subject = 'PD Squirrel password change'
+        send_to = [request.user.email, 'demondsoftware@gmail.com', 'cdemond@cwdlaw.ca']
+        msg = "The password to your PD Squirrel account has been changed. If you did not authorize that, please contact our" \
+              " support team."
 
-    password = hashers.make_password(password)
-    request.user.password = password
-    request.user.save()
+        tasks.sendMail.apply_async([send_to, subject, msg])
+        messages.success(request, 'Password change successful, please sign in using your new password')
+        
+        return HttpResponseRedirect('/browse/')
 
-    subject = 'PD Squirrel password change'
-    send_to = [request.user.email, 'demondsoftware@gmail.com', 'cdemond@cwdlaw.ca']
-    msg = "The password to your PD Squirrel account has been changed. If you did not authorize that, please contact our" \
-          " support team."
-
-    tasks.sendMail.apply_async([send_to, subject, msg])
-
-    messages.success(request, 'Password change successful, please sign in using your new password')
-    return HttpResponseRedirect('/browse/')
+    return render(request, 'v3/final/account-options.html')
 
 
 def options(request, msg=False):
