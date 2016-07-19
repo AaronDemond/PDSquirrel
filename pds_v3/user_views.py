@@ -137,7 +137,6 @@ def join(request):
         context["msg"] = []
         msg = []
         f = CaptchaForm(request.POST)
-        #context['msg'].append({'type' :'danger', 'body' : 'Please enter a last name.'})
         if terms == None:
             messages.error(request, 'Please check the terms and conditions.')
 
@@ -195,12 +194,12 @@ def join(request):
 
             tasks.sendMail.apply_async([send_to, subject, msg])
 
-            context['msg'].append({'type' : 'success', 'body' : 'Thank you. We have sent a welcome email to you. You may close this page.'})
+            messages.success(request, 'Thank you for joining PD Squirrel. We have sent a welcome email to you.')
             logout(request)
             customer = stripe.Customer.create(email=email)
             profile.stripe_id = customer.id
             profile.save()
-            return render(request, 'v3/final/join-success.html', context)
+            return HttpResponseRedirect('/browse/')
 
     return render(request, 'v3/final/join.html', context)
 
