@@ -442,6 +442,5 @@ def add_card(request):
         except:
             messages.error(request, 'Error adding card')
             return render(request, 'v3/final/account-options.html')
-            #return options(request, msg=[('danger','Error adding card')])
     else:
         return HttpResponseRedirect('/user/options/')
