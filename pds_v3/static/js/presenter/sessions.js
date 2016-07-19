@@ -40,7 +40,7 @@ function hidePreview() {
 	// removes all preview contents from page and
 	// puts link at proper state
 
-	$('.preview-link').text('Preview ▾');
+	$('.preview-link').text('Listen ▾');
 	$(".preview-bar").each(function() {
 			$(this).empty();
 	});
@@ -76,17 +76,17 @@ function previewAudio(id, preview_link) {
 	// Change arrow to closed state on all other links
 	$(".preview-link").each(function() {
 		if ( !$(this).is($(preview_link)) ) {
-			$(this).text('Preview ▾');
-		} 
+			$(this).text('Listen ▾');
+		}
 	});
 
-	// Toggle state of arrow in clicked preview button 
-	if ($(preview_link).text() == 'Preview ▾' ) {
-		$(preview_link).text('Preview ▴');
+	// Toggle state of arrow in clicked preview button
+	if ($(preview_link).text() == 'Listen ▾' ) {
+		$(preview_link).text('Listen ▴');
 		$(row_id).append(html);
 
 	} else {
-		$(preview_link).text('Preview ▾');
+		$(preview_link).text('Listen ▾');
 		$(row_id).empty();
 
 	}
@@ -124,4 +124,3 @@ function showSuspendCancel(id, suslink) {
     $(suslink).text('Cancel removal ▴');
     $(row_id).toggleClass("hidden");
 }
-
