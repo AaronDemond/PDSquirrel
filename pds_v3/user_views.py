@@ -134,7 +134,6 @@ def join(request):
 
         context["societies"] = LawSociety.objects.all()
         context["form"] = CaptchaForm()
-        msg = []
         f = CaptchaForm(request.POST)
         if terms == None:
             messages.error(request, 'Please check the terms and conditions.')
@@ -307,8 +306,6 @@ def change_email(request):
     email = request.POST.get('email', False)
     email_confirm = request.POST.get('email_confirm', False)
 
-    # return options(request, msg=[('danger', 'Your email must be in a valid email form. Example: test@pdsquirrel.ca')])
-
     if not email:
         messages.error(request, 'Please enter an email')
     elif email != email_confirm:
@@ -361,7 +358,7 @@ def change_pass(request):
 
         tasks.sendMail.apply_async([send_to, subject, msg])
         messages.success(request, 'Password change successful, please sign in using your new password')
-        
+
         return HttpResponseRedirect('/browse/')
 
     return render(request, 'v3/final/account-options.html')
@@ -443,6 +440,8 @@ def add_card(request):
             return HttpResponseRedirect('/user/options/')
 
         except:
-            return options(request, msg=[('danger','Error adding card')])
+            messages.error(request, 'Error adding card')
+            return render(request, 'v3/final/account-options.html')
+            #return options(request, msg=[('danger','Error adding card')])
     else:
         return HttpResponseRedirect('/user/options/')
