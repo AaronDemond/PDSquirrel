@@ -60,8 +60,8 @@ def membership_information(request):
 
 
 def browse(request):
-
-    if request.GET:
+    search_type = request.GET.get('search_type', None)
+    if search_type == 'browse' or search_type == 'search':
         query = request.GET.get('query', None)
         subject = request.GET.get('subject', None)
         if subject != None:
@@ -71,9 +71,6 @@ def browse(request):
                 sub_name = Subject.objects.get(pk=subject)
         else:
             sub_name = None
-
-
-        search_type = request.GET.get('search_type', None)
 
         if search_type == 'search':
             users_queried = User.objects.filter(first_name__icontains=query)
