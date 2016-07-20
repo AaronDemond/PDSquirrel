@@ -42,7 +42,7 @@ def handler500(request):
 def landing(request):
 
     # Newest 4 Sessions should appear on the home page
-    pd = PdSession.objects.order_by('-upload_date')
+    pd = PdSession.objects.filter(approved=True, suspended=False, archived=False).order_by('-upload_date')
     pd = list(pd)
     content = pd[:4]
     subjects = Subject.objects.all()
