@@ -323,22 +323,19 @@ def dash(request, msg=False):
                 else:
                     audio_file = request.FILES.get('audio_file', False)
 
-
                     counter = 0
                     if audio_file == False:
                         messages.add_message(request, messages.ERROR, 'Please upload a file')
                         return HttpResponseRedirect('/user/presenter/dash/?direct_to=upload')
 
-
-                    new_session = PdSession(name=pd_name,description=pd_description, audio_file=audio_file, approved=False)
-                    new_session.save()
-
                     _name = audio_file.name.lower()
+
                     if not (_name.endswith('.mp3') or _name.endswith('.wav')):
                         messages.add_message(request, messages.ERROR, 'Please upload an MP3 or a WAV file')
                         return HttpResponseRedirect('/user/presenter/dash/?direct_to=upload')
 
-
+                    new_session = PdSession(name=pd_name,description=pd_description, audio_file=audio_file, approved=False, presenter_approved=True, comments_disabled=disable_comments, allow_email_notification_on_comment = allow_email_notification_on_comment)
+                    new_session.save()
 
                     # get an MP3 object (mutagen lib)
                     if audio_file.name.lower().endswith(('.mp3')):
