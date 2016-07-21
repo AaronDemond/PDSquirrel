@@ -13,14 +13,7 @@
     <div class="row">
         <div class="pres-container col-xs-12 col-sm-10 col-sm-offset-1">
         	<div class="row">
-				<div id="xs-header" class="col-xs-12 hidden-sm hidden-md hidden-lg">
-					<h2 class="name">{{ presenter }}</h2>
-					{% if presenter.credentials %}
-					<h4 class="credentials">{{presenter.credentials}}</h4>
-					{% endif %}
-					<hr>
-				</div>
-				<div class="col-xs-4 col-sm-3">
+				<div class="col-xs-12 col-sm-3" id="img-container">
 					<img
 					{# if no img uploaded by user, pull one of two placeholders #}
 					{# tested: no #}
@@ -34,12 +27,12 @@
 						{% endif %}
 					{% endif %}
 					 id="presenter-img" alt=""/>
-					<br>
-					<ul id="presenter-info">
+					<ul id="presenter-info" class="hidden-xs">
+						<br>
+						
 						<li>
 							<b>{{presenter.law_firm}}</b>
 						</li>
-
 						{% if presenter.public_email %}
 						<li>{{ presenter.public_email }}</li>
 						{% endif %}
@@ -48,18 +41,39 @@
 						<li><a target="_blank" href="http://{{presenter.url}}">{{presenter.url}}</a></li>
 						{% endif %}
 					</ul>
+					
 				</div>
                 <div class="col-xs-7 col-sm-9 info-container hidden-xs">
 		    		<br>
 					<div id ="pres-header">
-						<h2 class="name">{{ presenter }}</h2>
-						<h4 class="credentials">{% if presenter.credentials %}{{presenter.credentials}}{%endif%}</h4>
+						<h2 class="name">{{ presenter }}{% if presenter.credentials %}, {{presenter.credentials}}</h2>
+						{% endif %}
 					</div>
 					<div id="pres-body" class="hidden-xs">
 						<p>{{bio}}</p>
 					</div>
                 </div>
-				<div class="col-xs-12 hidden-md hidden-sm hidden-lg">
+				<div class="col-xs-12 hidden-sm hidden-md hidden-lg mobile-credentials mobile-info-container">
+					<h3 id="mobile-name">{{ presenter }}{% if presenter.credentials %}, {{presenter.credentials}}{% endif %}</h3>
+						<ul id="mobile-info">
+							<li></li>
+							{% if presenter.law_firm %}
+							<li>
+								{{presenter.law_firm}} {% if presenter.public_email or presenter.url %} <span id="divider">|</span> {% endif %}
+							</li>
+							{% endif %}
+							{% if presenter.public_email %}
+
+							<li> {{ presenter.public_email }} {% if presenter.url %} <span id="divider">|</span> {% endif %}</li>
+							{% endif %}
+
+							{% if presenter.url %}
+							<li><a target="_blank" href="http://{{presenter.url}}">{{presenter.url}}</a></li>
+							{% endif %}
+						</ul>
+					
+				</div>
+				<div class="col-xs-12 hidden-md hidden-sm hidden-lg" id="mobile-bio">
 					<p>{{bio}}</p>
 				</div>
             </div>
@@ -67,16 +81,18 @@
 	<div class="row" id="resultrow">
 		<div class="col-lg-12">
 			{% if pd_list %}
-			<h4 class="text-center">Sessions by this presenter </h4>
-			<br>
+			<hr>
+			
+			<h4>Sessions by this presenter </h4>
+			<hr>
 
 			{% for pd in pd_list %}
 			<div id="pd-listing" class="row pdlisting">
-				<div class="col-sm-2 col-xs-3">
+				<div class="col-sm-2 hidden-xs">
               		<img src="/static/img/subject/{{ pd.subject.all.0.image_name }}" class="img-responsive">
 					<p align="right" class="muted" style="color: grey">{{pd.subject.all.0}}</p>
 				</div>
-				<div class="col-sm-10 col-xs-9">
+				<div class="col-sm-10 col-xs-12">
 					<h3><a href="{% url 'detail' pd.id %}{% if query %}?_q={{query}}{% endif %}">{{pd.name}}</a></h3>
 					<p>
 						{{pd.description|truncatechars:155}}
