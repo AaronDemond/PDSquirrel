@@ -317,6 +317,8 @@ def change_email(request):
         request.user.username = email
         request.user.save()
 
+        messages.success(request, 'Email change successful')
+
         msg = "This Email is no longer linked with PD Squirrel. The username of your account has been changed too: " + str(email) + "\n Please" \
                                                                     " do not reply to this message."
 
