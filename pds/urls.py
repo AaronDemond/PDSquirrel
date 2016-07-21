@@ -1,6 +1,6 @@
 from django.conf.urls import include, url, handler404, handler500, handler403, handler400
 from django.contrib import admin
-from pds_v3 import views, user_views, presenter_views, tmp_views, payment_views
+from pds_v3.views import views, user_views, presenter_views, tmp_views, payment_views
 
 urlpatterns = [
     # main pages

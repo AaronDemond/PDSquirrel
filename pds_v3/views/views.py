@@ -13,7 +13,7 @@ from django.db import IntegrityError
 from django.template import Context, Template, RequestContext
 import pdb #pdb.set_trace()
 import json
-import pds_v3.tasks
+from pds_v3 import tasks
 from pds_v3.forms import CaptchaForm
 import stripe
 

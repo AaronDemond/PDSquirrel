@@ -9,7 +9,7 @@ from django.contrib import messages
 from pds_v3.forms import CaptchaForm
 from pds_v3.forms import PdSessionForm
 import datetime
-import pds_v3.tasks
+from pds_v3 import tasks
 
 
 import json, uuid, random, string, stripe, urllib, re
