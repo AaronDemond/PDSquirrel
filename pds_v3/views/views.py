@@ -19,22 +19,22 @@ import stripe
 
 
 def handler404(request):
-    response = render_to_response('v3/final/404.html', {}, context_instance=RequestContext(request))
+    response = render_to_response('v3/final/error/404.html', {}, context_instance=RequestContext(request))
     response.status_code = 404
     return response
 
 def handler400(request):
-    response = render_to_response('v3/final/400.html', {}, context_instance=RequestContext(request))
+    response = render_to_response('v3/final/error/400.html', {}, context_instance=RequestContext(request))
     response.status_code = 400
     return response
 
 def handler403(request):
-    response = render_to_response('v3/final/403.html', {}, context_instance=RequestContext(request))
+    response = render_to_response('v3/final/error/403.html', {}, context_instance=RequestContext(request))
     response.status_code = 403
     return response
 
 def handler500(request):
-    response = render_to_response('v3/final/500.html', {}, context_instance=RequestContext(request))
+    response = render_to_response('v3/final/error/500.html', {}, context_instance=RequestContext(request))
     response.status_code = 500
     return response
 
