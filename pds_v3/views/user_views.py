@@ -6,10 +6,10 @@ from django.contrib.auth.models import User
 from pds_v3.models import PdSession, AppUser, LawSociety, LawSocietyOverride, Purchase
 from django.core.mail import send_mail
 from django.contrib import messages
-from .forms import CaptchaForm
+from pds_v3.forms import CaptchaForm
 from pds_v3.forms import PdSessionForm
 import datetime
-import tasks
+import pds_v3.tasks
 
 
 import json, uuid, random, string, stripe, urllib, re

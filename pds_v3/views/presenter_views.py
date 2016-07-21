@@ -4,14 +4,13 @@ from django.core import serializers
 from django.core.files import File
 import os
 import subprocess
-import tasks
+import pds_v3.tasks
 from django.core.files.base import File as DjangoFile
 from django.views.decorators.csrf import csrf_exempt
 from pds_v3.my_functions import date_from_input as dfi
 from django.contrib import messages
 from pds_v3.models import PdSession,Presenter, AppUser, LawSociety, \
 LawSocietyOverride, Purchase, Subject, PdSessionEdit, PdAttachment, PdAudio
-from pds_v3.views import fuseEdit
 
 from django.core.exceptions import ObjectDoesNotExist
 from mutagen.mp3 import MP3
@@ -19,7 +18,7 @@ import datetime
 
 
 from django.forms.models import modelform_factory
-from forms import PdSessionForm
+from pds_v3.forms import PdSessionForm
 
 
 def presenter_uploads(request):
