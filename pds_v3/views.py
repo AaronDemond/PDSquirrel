@@ -38,11 +38,11 @@ def handler500(request):
     response.status_code = 500
     return response
 
-# only root level url
+#only root level url
 def landing(request):
 
     # Newest 4 Sessions should appear on the home page
-    pd = PdSession.objects.order_by('-upload_date')
+    pd = PdSession.objects.filter(approved=True, suspended=False, archived=False).order_by('-upload_date')
     pd = list(pd)
     content = pd[:4]
     subjects = Subject.objects.all()
@@ -54,9 +54,14 @@ def landing(request):
     return render(request, 'v3/final/home.html', context)
 
 
-def browse(request):
+def membership_information(request):
+    return render(request, 'v3/final/membership-info.html')
 
-    if request.GET:
+
+
+def browse(request):
+    search_type = request.GET.get('search_type', None)
+    if search_type == 'browse' or search_type == 'search':
         query = request.GET.get('query', None)
         subject = request.GET.get('subject', None)
         if subject != None:
@@ -66,9 +71,6 @@ def browse(request):
                 sub_name = Subject.objects.get(pk=subject)
         else:
             sub_name = None
-
-
-        search_type = request.GET.get('search_type', None)
 
         if search_type == 'search':
             users_queried = User.objects.filter(first_name__icontains=query)
@@ -132,6 +134,9 @@ def browse(request):
     return render(request, 'v3/final/browse.html' , {'pd_list' : pd, 'range' : page_range, 'subjects' : Subject.objects.all(), 'type' : search_type, 'subject' : sub_name, 'query' : query})
 
 
+def place_holder(request):
+    return HttpResponse('placeholder')
+
 def activate(request, id):
     user_id = id - 9
     user = AppUser.objects.get(pk=user_id)
@@ -139,6 +144,24 @@ def activate(request, id):
     user.save()
     return HttpResponse("activated")
 
+
+
+def debug(request):
+    return render(request, 'v3/debug-django.html')
+def fuseEdit(edit,pd):
+    pd.name=edit.name
+    pd.description=edit.description
+
+    for attachment in edit.attachments.all():
+        pd.attachments.add(attachment)
+
+    if edit.audio_file:
+        pd.audio_file = edit.audio_file
+
+    pd.subject.clear()
+    for subject in edit.subjects.all():
+        pd.subject.add(subject)
+    return pd
 
 def preview(request,id):
     session = PdSession.objects.get(pk=id)
@@ -160,6 +183,25 @@ def preview(request,id):
         session.description = edit.description
 
     return render(request, 'v3/final/presenter-pages/final/preview.html', context)
+
+def email(request):
+    msg = "Please go to the following link to activate: http://pdsquirrel.ca:90/activate/" + str(request.user.id) + "/"
+    try:
+        send_mail('PD Squirrel Activation', msg, 'no-reply@pdsquirrel.ca',['demondsoftware@gmail.com'], fail_silently=False)
+    except:
+        return HttpResponse("email not sent")
+
+    return HttpResponse("Email sent")
+
+def learn(request):
+    return HttpResponse("empty learning page")
+
+def cap_refresh(request):
+    form = CaptchaForm()
+    c = Context({'form':form})
+    t = Template("{{form.captcha}}")
+    page = t.render(c)
+    return HttpResponse(page)
 
 
 def getAttachment(request, a_id):
@@ -260,26 +302,6 @@ def detail(request, pd_id):
 
 
 
-def accred(request, pd_id, s_id=1):
-    pd = PdSession.objects.get(pk=pd_id)
-    societies = LawSociety.objects.all()
-    context = { 'pd': pd, 'societies': societies}
-
-    #means no society passed in url, use user society. if not logged, use def of 0.
-    if request.user.is_authenticated():
-        context['society_default'] = request.user.profile.society.all()[0]
-        context['society_chosen'] = LawSociety.objects.get(pk=s_id)
-        result = getSocietyPdInfo(pd_id, s_id)
-
-    else:
-        result = getSocietyPdInfo(pd_id, s_id)
-        context['society_chosen'] = LawSociety.objects.get(pk=s_id)
-
-    context['eligibility'] = result['eligibility']
-    context['overview'] = result['overview']
-
-
-    return render(request, 'v3/final/accred.html', context)
 
 #should return a dict containing society name, eligibility, and overview based on given PD.
 def getSocietyPdInfo(pd_id,society_id):
@@ -306,6 +328,32 @@ def getSocietyPdInfo(pd_id,society_id):
     result['overview'] = given_society.overview
     result['name'] = given_society.name
     return result
+
+
+
+
+def accred(request, pd_id, s_id=1):
+    pd = PdSession.objects.get(pk=pd_id)
+    societies = LawSociety.objects.all()
+    context = { 'pd': pd, 'societies': societies}
+
+    #means no society passed in url, use user society. if not logged, use def of 0.
+    if request.user.is_authenticated():
+        context['society_default'] = request.user.profile.society.all()[0]
+        context['society_chosen'] = LawSociety.objects.get(pk=s_id)
+        result = getSocietyPdInfo(pd_id, s_id)
+
+    else:
+        result = getSocietyPdInfo(pd_id, s_id)
+        context['society_chosen'] = LawSociety.objects.get(pk=s_id)
+
+    context['eligibility'] = result['eligibility']
+    context['overview'] = result['overview']
+
+
+    return render(request, 'v3/final/accred.html', context)
+
+
 
 
 from pds_v3 import models
@@ -397,6 +445,11 @@ def comment(request):
                 }
         return render(request, 'v3/final/ajax/comment-reply.html', context)
 
+    #return HttpResponse('Success')
+
+
+
+
 
 #takes a file input in the form request.FILES['input-name'] and uploads ti to the abs path specified.
 #not sure about priveliges.
@@ -408,6 +461,21 @@ def handle_uploaded_file(f):
         dest.write(chunk)
     dest.close()
 
+def upload(request):
+    if request.POST:
+        form = UploadFileForm(request.POST, request.FILES)
+        if form.is_valid():
+            handle_uploaded_file(request.FILES['audio_file'])
+            return HttpResponse("SUCCESS")
+        else:
+            return HttpResponse(form.errors)
+    else:
+        return render(request, 'v3/final/upload.html')
+
+
+def download_example(request):
+    return HttpResponse
+
 
 def support_msg(request):
     if request.POST:
@@ -416,7 +484,10 @@ def support_msg(request):
         message = request.POST['message']
         subject = request.POST['subject']
 
-        tasks.sendMail.apply_async([[email], subject, message])
+        #email = EmailMessage('Testing Email instance','body test message', 'support@pdsquirrel.ca',['admin@pdsquirrel.ca'],
+                #['demondsoftware@gmail.com'])
+        send_mail('PDSquirrel support from  ' + name + ' subj: ' + subject , message + '\nreturn email: ' + email , 'support@pdsquirrel.ca', ['admin@pdsquirrel.ca'], fail_silently=False)
+
 
         messages.success(request, 'Message sent. We will get back to you shortly')
         return render(request, 'v3/final/contact.html')
@@ -474,21 +545,6 @@ def upload_admin(request, pd_id=False):
 
     #if not an admin
     return HttpResponse('Invalid Credentials')
-
-def fuseEdit(edit,pd):
-    pd.name=edit.name
-    pd.description=edit.description
-
-    for attachment in edit.attachments.all():
-        pd.attachments.add(attachment)
-
-    if edit.audio_file:
-        pd.audio_file = edit.audio_file
-
-    pd.subject.clear()
-    for subject in edit.subjects.all():
-        pd.subject.add(subject)
-    return pd
 
 def accounting_admin(request):
     return render(request, 'v3/final/myadmin/accounting.html')
