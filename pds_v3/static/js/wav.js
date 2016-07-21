@@ -2,7 +2,6 @@ function previewAudio(id, preview_link) {
 	/* fills preview container with audio and toggles
 	 * button arrow text */
 
-
 	// id of the row to insert audio
 	var row_id = "#preview-" + id;
 
@@ -642,6 +641,10 @@ function disableLinks() {
 
     // Trims selection by editing the channel data, to nearest 2048 byte buffer
     function trimSelection(){
+
+		// Add warning to navigation
+		saved = false;
+		disableLinks();
 
 		// Clear old data
 		(window.URL || window.webkitURL).revokeObjectURL(local_download_url);

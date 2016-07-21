@@ -164,7 +164,7 @@
 					{{ rec.getDuration }}
 				</td>
 		    <td>
-				<a class="btn btn-default preview-link" onclick="previewAudio({{rec.id}}, this)">Listen ⏵</a>
+				<button class="btn btn-default preview-link" onclick="previewAudio({{rec.id}}, this)">Listen ⏵</button>
 				<button class="btn btn-default" onclick="showData('/wav/{{rec.pk}}', '{{rec}}', '{{rec.pk}}')">Edit</button>
 				<button class="btn btn-default del-btn" onclick="delAudio('{{rec.id}}')">Delete</button>
 				{#<button class="btn btn-default" onclick="showData('/{{rec.audio.name}}', '{{rec}}')">Edit</button> #}
