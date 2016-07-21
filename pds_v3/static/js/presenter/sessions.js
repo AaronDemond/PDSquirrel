@@ -61,9 +61,9 @@ function previewAudio(id, preview_link) {
 	// Formatted audio template to insert
 	var html = `
 		<div class="col-lg-12 preview-col">
-		<video id="player" class="video-js vjs-default-skin" controls preload="auto" width="100%" height="20" poster="" data-setup="{}">
+		<audio id="player" style="width: 100%"controls>
 			<source src="/audio/${id}" type='audio/mpeg'>
-			</video>
+			</audio>
 
 		</div>
 			`;
