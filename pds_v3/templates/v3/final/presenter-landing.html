@@ -15,9 +15,10 @@
         	<div class="row">
 				<div id="xs-header" class="col-xs-12 hidden-sm hidden-md hidden-lg">
 					<h2 class="name">{{ presenter }}</h2>
-					<h4 class="credentials">{% if presenter.credentials %}{{presenter.credentials}}{%endif%}</h4>
+					{% if presenter.credentials %}
+					<h4 class="credentials">{{presenter.credentials}}</h4>
+					{% endif %}
 					<hr>
-
 				</div>
 				<div class="col-xs-4 col-sm-3">
 					<img
@@ -71,24 +72,17 @@
 
 			{% for pd in pd_list %}
 			<div id="pd-listing" class="row pdlisting">
-				<div class="col-xs-3">
+				<div class="col-sm-2 col-xs-3">
               		<img src="/static/img/subject/{{ pd.subject.all.0.image_name }}" class="img-responsive">
-					<p style="float:right">{{pd.subject.all.0}}</p>
+					<p align="right" class="muted" style="color: grey">{{pd.subject.all.0}}</p>
 				</div>
-				<div class="col-xs-9">
+				<div class="col-sm-10 col-xs-9">
 					<h3><a href="{% url 'detail' pd.id %}{% if query %}?_q={{query}}{% endif %}">{{pd.name}}</a></h3>
 					<p>
-						{% for b in pd.presenters.all %}
-						<a class="presenter-a" href = "{% url 'presenter-detail' b.id %}">{{ b }}{% if b.credentials and b.credentials.strip %}, {{b.credentials}}{% endif %}</a>
-						{% endfor %}
-						<br>
 						{{pd.description|truncatechars:155}}
 						<span class="pd-list-small-info">
 						<br>
-						<b>Subject area(s):</b>
-						{{pd.subject.all|join:", "}}
-						<b> Release Date: </b> {{pd.release_date|remove_time }}
-						<b> Duration: </b> {{pd.duration}}
+						<b> Released on </b> {{pd.release_date|remove_time }}
 						</span>
 					</p>
 
