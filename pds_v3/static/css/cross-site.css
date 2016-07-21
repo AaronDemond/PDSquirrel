@@ -93,9 +93,6 @@ body {
   background-color: white;
   padding-top: 20px;
   padding-bottom: 20px;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  border-radius: 5px;
 }
 
 .muted {
