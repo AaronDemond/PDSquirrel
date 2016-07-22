@@ -49,7 +49,13 @@ class Presenter(models.Model):
     male_placeholder = '/static/presenter_pics/speaker-placeholder-male.png'
 
     def image_name(self):
-        return os.path.basename(self.image.name)
+        if self.image:
+            return os.path.basename(self.image.name)
+        else:
+            if self.placeholder_type == 0:
+                return 'Female-Placeholder1.jpg'
+            else:
+                return 'speaker-placeholder-male.png'
 
     def __str__(self):
         return self.user.first_name + ' ' + self.user.last_name

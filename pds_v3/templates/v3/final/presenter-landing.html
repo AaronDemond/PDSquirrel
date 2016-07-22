@@ -17,15 +17,7 @@
 					<img
 					{# if no img uploaded by user, pull one of two placeholders #}
 					{# tested: no #}
-					{% if presenter.image %}
 					src="/static/presenter_pics/{{presenter.image_name}}"
-					{% else %}
-						{% if presenter.placeholder_type == 0 %}
-							src="{{presenter.female_placeholder}}"
-						{% elif presenter.placeholder_type == 1 %}
-							src="{{presenter.male_placeholder}}"
-						{% endif %}
-					{% endif %}
 					 id="presenter-img" alt=""/>
 					<ul id="presenter-info" class="hidden-xs">
 						<br>
