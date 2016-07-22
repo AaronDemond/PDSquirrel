@@ -29,12 +29,12 @@ urlpatterns = [
     url(r'^payment-process/$', payment_views.payment_process, name="payment-process"),
 
     # Footer links
-    url(r'^about/$', tmp_views.learn, name="learn"),
+    url(r'^about/$', tmp_views.about, name="learn"),
     url(r'^contact/$', tmp_views.contact, name="contact-us"),
     url(r'^support/$', tmp_views.support_msg, name="support"),
     url(r'^terms/$', tmp_views.terms, name="terms"),
     url(r'^privacy/$', tmp_views.privacy, name="privacy"),
-    url(r'^become-a-presenter/$', user_views.become_presenter, name="presenter-info"),
+    url(r'^become-a-presenter/$', tmp_views.become_presenter, name="presenter-info"),
 
     # User options
     url(r'^user/options/$', user_views.options, name="options"),

@@ -10,12 +10,8 @@ from pds_v3.models import PdSession, AppUser, LawSociety, LawSocietyOverride, Pu
 from pds_v3.forms import CaptchaForm
 from pds_v3 import tasks
 
-"""
-# Page merged into
+
 def about(request):
-    return render(request, 'v3/final/about.html')
-"""
-def learn(request):
     return render(request, 'v3/final/learn.html')
 
 def terms(request):
@@ -23,8 +19,10 @@ def terms(request):
 
 def privacy(request):
     return render(request, 'v3/final/privacy.html')
+
 def become_presenter(request):
     return render(request, 'v3/final/become-presenter.html')
+
 
 def contact(request):
 

@@ -238,10 +238,6 @@ def reports(request):
     return render(request, 'v3/final/reports.html')
 
 
-def become_presenter(request):
-    return render(request, 'v3/final/become-presenter.html')
-
-
 def change_membership(request):
     if request.POST:
         appuser = request.user.profile
