@@ -2,16 +2,15 @@ function previewAudio(id, preview_link) {
 	/* fills preview container with audio and toggles
 	 * button arrow text */
 
-
 	// id of the row to insert audio
 	var row_id = "#preview-" + id;
 
 	// Formatted audio template to insert
 	var html = `
 		<div class="col-lg-12 preview-col">
-		<video id="player" style="margin-top:20px" class="video-js vjs-default-skin" controls preload="auto" width="100%" height="20" poster="" data-setup="{}">
+		<audio id="player" style="margin-top:2px; width: 400px;" controls>
 			<source src="/recording/${id}" type='audio/mpeg'>
-			</video>
+			</audio>
 
 		</div>
 			`;
@@ -642,6 +641,10 @@ function disableLinks() {
 
     // Trims selection by editing the channel data, to nearest 2048 byte buffer
     function trimSelection(){
+
+		// Add warning to navigation
+		saved = false;
+		disableLinks();
 
 		// Clear old data
 		(window.URL || window.webkitURL).revokeObjectURL(local_download_url);
