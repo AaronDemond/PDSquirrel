@@ -27,8 +27,6 @@ def contact(request):
 def terms(request):
     return render(request, 'v3/final/terms.html')
 
-def presenter_terms(request):
-    return render(request, 'v3/final/terms-presenter.html')
 def privacy(request):
     return render(request, 'v3/final/privacy.html')
 def become_presenter(request):

@@ -5,27 +5,27 @@ from pds_v3.views import views, user_views, presenter_views, tmp_views, payment_
 urlpatterns = [
     # main pages
     url(r'^$', views.landing, name="home"),
-    url(r'^pd/$', views.browse, name="browse"),
+    url(r'^login/$', user_views.login_landing, name="login-landing"),
     url(r'^browse/$', views.browse, name="browse"),
     url(r'^user/join/$', user_views.join, name="join"),
     url(r'^cap_ref/$', tmp_views.cap_ajax, name='cap-ref'),
 
-    # Detail page related views
+    # Browse page related views
     url(r'^pd/(?P<pd_id>\d+)/$', views.detail, name="detail"),
     url(r'^pd/session/comment/$', views.comment, name="comment"),
     url(r'^pd/session/comment/delete/$', views.delete_comment, name="delete_comment"),
     url(r'^pd/accred/(?P<pd_id>\d+)/(?P<s_id>\d+)/$', views.accred, name="accred"),
     url(r'^pd/accred/(?P<pd_id>\d+)/$', views.accred, name="accred"),
+    url(r'^user/presenter/(?P<p_id>\d+)/$', views.presenter_detail, name="presenter-detail"),
 
     # User views
     url(r'^user/dash/$', user_views.dash, name="dash"),
+    url(r'^user/activate/(?P<link_id>[a-zA-Z0-9]+)/$', user_views.activate, name="activate"),
     url(r'^user/reports/$', user_views.reports, name="reports"),
     url(r'^user/reports/purchase/$', user_views.purchase_report, name="purchase-report"),
-    url(r'^user/presenter/(?P<p_id>\d+)/$', views.presenter_detail, name="presenter-detail"),
     url(r'^user/login/$', user_views.login_user, name="login"),
     url(r'^user/logout/$', user_views.logout_user, name="logout"),
     url(r'^user/recover/$', user_views.recover, name="recover"),
-    url(r'^login/$', user_views.login_landing, name="login-landing"),
     url(r'^payment-process/$', payment_views.payment_process, name="payment-process"),
 
     # Footer links
@@ -35,19 +35,17 @@ urlpatterns = [
     url(r'^terms/$', tmp_views.terms, name="terms"),
     url(r'^privacy/$', tmp_views.privacy, name="privacy"),
     url(r'^become-a-presenter/$', user_views.become_presenter, name="presenter-info"),
-    url(r'^presenter-terms/$', tmp_views.presenter_terms, name="presenter-terms"), # Not used or updated on site
 
     # User options
     url(r'^user/options/$', user_views.options, name="options"),
     url(r'^user/options/email$', user_views.change_email, name="change-email"),
     url(r'^user/options/pass$', user_views.change_pass, name="change-pass"),
-    url(r'^user/activate/(?P<link_id>[a-zA-Z0-9]+)/$', user_views.activate, name="activate"),
     url(r'^user/options/membership$', user_views.change_membership, name="change-membership"),
     url(r'^user/options/newcard/$', user_views.add_card, name="newcard"),
     url(r'^user/options/delcard/$', user_views.del_card, name="delcard"),
     url(r'^user/options/u_card/$', user_views.default_payment, name="update-payment"),
 
-    # presenter
+    # presenter hub
     url(r'^user/presenter/dash/$', presenter_views.dash, name="presenter-dash"),
     url(r'^preview/(?P<id>\d+)/$', views.preview, name="preview-session"),
     url(r'^record/$', presenter_views.record, name="record"),
