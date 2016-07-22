@@ -9,21 +9,6 @@ from simplemathcaptcha.fields import MathCaptchaField
 __author__ = 'Aaron'
 import stripe
 
-def change_membership(request):
-    if request.POST:
-        membership_type = request.POST['type']
-        appuser = request.user.profile
-        if membership_type == '0':
-            appuser.is_premium = False
-        elif membership_type == '1':
-            appuser.is_premium = True
-            appuser.date_premium = datetime.datetime.now()
-
-        appuser.save()
-        return HttpResponse('success')
-    else:
-        return HttpResponse('Invlid request')
-
 '''
 return card - either saved / new card
 
@@ -36,7 +21,7 @@ def payment_process(request):
     ''' Handles the ajax form on the detail.html page '''
 
     if request.POST:
-     
+
         # Gather variables, retreive customer instance.
         pd_id = int(request.POST['pd_id'])
         pd = PdSession.objects.get(pk=pd_id)
@@ -49,7 +34,7 @@ def payment_process(request):
             if pd == x.pdsession:
                 return HttpResponse("pd owned.")
 
-        # Initial purchase form post. If using a new card, token comes from stripe. 
+        # Initial purchase form post. If using a new card, token comes from stripe.
         # Otherwise, token is a saved source from a customer instance
         if 'new_card' in request.POST:
             token = stripe.Token.retrieve(request.POST['stripeToken'])
@@ -63,7 +48,7 @@ def payment_process(request):
                     source = s
             context = {'source' : source, 'pd' : pd }
             return render(request, 'v3/final/purchase-confirmation.html', context)
-            
+
 
         # Second form post. token_id is the token generated from stripe if they are using
         # a new card, otherwise source_id is used from a saved card. A user has the option
