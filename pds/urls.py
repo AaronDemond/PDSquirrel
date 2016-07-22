@@ -31,7 +31,7 @@ urlpatterns = [
     # Footer links
     url(r'^about/$', tmp_views.learn, name="learn"),
     url(r'^contact/$', tmp_views.contact, name="contact-us"),
-    url(r'^support/$', views.support_msg, name="support"),
+    url(r'^support/$', tmp_views.support_msg, name="support"),
     url(r'^terms/$', tmp_views.terms, name="terms"),
     url(r'^privacy/$', tmp_views.privacy, name="privacy"),
     url(r'^become-a-presenter/$', user_views.become_presenter, name="presenter-info"),
@@ -47,7 +47,7 @@ urlpatterns = [
 
     # presenter hub
     url(r'^user/presenter/dash/$', presenter_views.dash, name="presenter-dash"),
-    url(r'^preview/(?P<id>\d+)/$', views.preview, name="preview-session"),
+    url(r'^preview/(?P<id>\d+)/$', presenter_views.preview, name="preview-session"),
     url(r'^record/$', presenter_views.record, name="record"),
     url(r'^edit/(?P<id>\d+)/$', presenter_views.edit, name="edit"),
     url(r'^upload/$', presenter_views.presenter_uploads, name="upload"),

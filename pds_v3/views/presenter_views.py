@@ -21,6 +21,28 @@ from django.forms.models import modelform_factory
 from pds_v3.forms import PdSessionForm
 
 
+def preview(request,id):
+    session = PdSession.objects.get(pk=id)
+    presenter = Presenter.objects.filter(user=request.user)[0]
+
+
+    if session in presenter.pdsession_set.all():
+        context = {'pd': session, 'preview' : True, 'presenter' : presenter}
+    else:
+        return HttpResponse('auth error')
+    if 'l' in request.GET:
+        return render(request, 'v3/final/presenter-pages/final/preview.html', context)
+
+
+    if session.edited == True:
+        edit = session.edits.order_by('-date')[0]
+        context['edit'] = edit
+        session.name = edit.name
+        session.description = edit.description
+
+    return render(request, 'v3/final/presenter-pages/final/preview.html', context)
+
+
 def presenter_uploads(request):
     subjects = Subject.objects.all()
     recordings = PdAudio.objects.filter(appuser = request.user.profile, used = False, hidden = False)

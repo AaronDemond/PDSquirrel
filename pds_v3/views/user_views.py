@@ -238,11 +238,6 @@ def reports(request):
     return render(request, 'v3/final/reports.html')
 
 
-def presenter(request):
-    pd = PdSession.objects.filter(presenters=request.user)
-    return render(request, 'v3/presenter.html', {'pd': pd})
-
-
 def become_presenter(request):
     return render(request, 'v3/final/become-presenter.html')
 
