@@ -1,0 +1,87 @@
+{% extends "v3/final/base/base.html" %}
+{% load staticfiles %}
+{% load pds_extras %}
+{% block header-metatags %}
+        <title>PD Squirrel Presenters</title>
+        <meta name=”description” content='Browse professional development talks, offered by lawyers, for lawyers'>
+{% endblock header-metatags %}
+{% block header-content %}
+        <link rel="stylesheet" href="{% static 'css/user/browse.css' %}">
+{% endblock header-content %}
+{% block body %}
+
+<style>
+#pres-image {
+	width: 150px;
+
+}
+
+.person {
+	margin-bottom: 20px !important;
+}
+
+.people-container {
+	margin-left: 20px;
+}
+
+.subject-divider {
+	color: grey;
+}
+.selected {
+	font-weight: bold;
+}
+#main-content {
+	background: url('/static/img/banners/books.jpg') top center no-repeat;
+	background-size: contain;
+}
+.highlighted {
+	background-color: white;
+		text-align: center;
+}
+</style>
+
+<div id="main-content" class="container">
+	<div class="row" style="padding-top:170px">
+		<div class="col-lg-10 col-lg-offset-1 highlighted">
+			<h2 class="highlighted">Meet our Presenters</h2>
+			<p class="highlighted">Click on a presenters name to view their biograpghy. You can filter by Law society</p>
+		</div>
+	</div>
+	<div class="row" style="margin-top: 30px">
+		<div class="col-xs-12 text-center">
+		  <form action="{% url 'people' %}" method="GET">
+			<input type="hidden" name="by-society" value="1">
+
+			{% if selected == 0 %}
+			  <button type="submit" name="society" value="0" class="btn btn-link selected">All presenters</button>
+			  {% else %}
+			  <button type="submit" name="society" value="0" class="btn btn-link">All presenters</button>
+			  {% endif %}
+			{% for society in societies %}
+				{% if selected == society.id %}
+			  <button type="submit" name="society" value="{{society.id}}" class="btn btn-link selected">{{ society }}</button>
+			  	{% else %}
+			  <button type="submit" name="society" value="{{society.id}}" class="btn btn-link">{{ society }}</button>
+			  	{% endif %}
+			  {% if not forloop.last %}
+			  <span class="subject-divider">|</span>
+			  {% endif %}
+			{% endfor %}
+		  </form>
+		</div>
+	</div>
+	<div class="row people-container">
+		{% for presenter in people %}
+		<div class="col-lg-3 col-md-4 col-xs-6 person" style="height: 250px">
+			<img src="/static/presenter_pics/{{presenter.image_name}}"
+		   		id="pres-image" alt="">
+			<h4><a href="{% url 'presenter-detail' presenter.id %}">{{presenter}}</a></h4>
+			<h5>{{presenter.law_firm}}</h5>
+		</div>
+		{% endfor %}
+	</div>
+</div>
+{% endblock %}
+{% block footer-content %}
+<script src="{% static 'js/user/browse.js' %}"></script>
+{% endblock footer-content %}

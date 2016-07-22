@@ -58,6 +58,20 @@ def membership_information(request):
     return render(request, 'v3/final/membership-info.html')
 
 
+def people(request):
+    s = int(request.GET.get('society', 0))
+    if s == 0:
+        people = Presenter.objects.all()
+    else:
+        people = [x for x in Presenter.objects.all() if x.user.profile.society.all()[0].pk == s]
+        print people
+    context = {
+            'people' : people,
+            'societies' : LawSociety.objects.all(),
+            'selected' : s
+    }
+
+    return render(request, 'v3/final/people.html' , context)
 
 def browse(request):
     search_type = request.GET.get('search_type', None)

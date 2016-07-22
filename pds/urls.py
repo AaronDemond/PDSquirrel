@@ -8,6 +8,7 @@ urlpatterns = [
     url(r'^$', views.landing, name="home"),
     #Browse/Search Page
     url(r'^pd/$', views.browse, name="browse"),
+    url(r'^people/$', views.people, name="people"),
     url(r'^pd/(?P<pd_id>\d+)/$', views.detail, name="detail"),
     url(r'^pd/session/comment/$', views.comment, name="comment"),
     url(r'^pd/session/comment/delete/$', views.delete_comment, name="delete_comment"),
