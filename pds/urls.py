@@ -35,6 +35,7 @@ urlpatterns = [
     url(r'^terms/$', tmp_views.terms, name="terms"),
     url(r'^privacy/$', tmp_views.privacy, name="privacy"),
     url(r'^become-a-presenter/$', tmp_views.become_presenter, name="presenter-info"),
+    url(r'^terms/$', tmp_views.terms, name="presenter-terms"),
 
     # User options
     url(r'^user/options/$', user_views.options, name="options"),
