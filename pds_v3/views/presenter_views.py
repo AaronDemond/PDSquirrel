@@ -7,7 +7,6 @@ import subprocess
 from pds_v3 import tasks
 from django.core.files.base import File as DjangoFile
 from django.views.decorators.csrf import csrf_exempt
-from pds_v3.my_functions import date_from_input as dfi
 from django.contrib import messages
 from pds_v3.models import PdSession,Presenter, AppUser, LawSociety, \
 LawSocietyOverride, Purchase, Subject, PdSessionEdit, PdAttachment, PdAudio
@@ -511,6 +510,15 @@ def edit(request, id):
             context['session_subjects'] = pd.subject.all()
 
         return render(request, 'v3/final/presenter-pages/final/edit.html' , context)
+
+
+# date from input
+def dfi(user_input,return_dict=False):
+    date = str(user_input)
+    day = int(date[8:10])
+    month = int(date[5:7])
+    year = int(date[:4])
+    return datetime.date(year,month,day)
 
 
 @csrf_exempt

@@ -1,5 +1,4 @@
 from django.shortcuts import render, HttpResponse, HttpResponseRedirect, render_to_response
-from pds_v3.forms import UploadFileForm
 import os
 from itertools import chain
 import datetime
