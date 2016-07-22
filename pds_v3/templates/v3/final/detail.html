@@ -232,7 +232,7 @@
 					<table class="table">
 						<tr>
 							<td>
-								<a href = "/pd{% url 'accred' pd.id %}{{request.user.profile.society.all.0.id}}" target="_blank">CPD eligibility for your law society</a></td>
+								<a href = "{% url 'accred' pd.id %}{{request.user.profile.society.all.0.id}}" target="_blank">CPD eligibility for your law society</a></td>
 							</td>
 						</tr>
 					</table>

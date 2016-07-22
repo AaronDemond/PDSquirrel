@@ -78,15 +78,6 @@ payments from our PD Squirrel members. None of your sensitive information is sto
 					</div>
 				{% endfor %}
 				{% endif %}
-          {% if msgs %}
-          {% for msg in msgs %}
-          <div class="alert alert-{{msg.0}} msg" role="alert">
-            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-            {{ msg.1 }}
-          </div>
-
-          {% endfor %}
-          {% endif %}
         </div>
       </div>
 

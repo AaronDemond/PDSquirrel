@@ -1,5 +1,4 @@
 from django.shortcuts import render, HttpResponse, HttpResponseRedirect, render_to_response
-from .forms import UploadFileForm
 import os
 from itertools import chain
 import datetime
@@ -13,30 +12,10 @@ from django.db import IntegrityError
 from django.template import Context, Template, RequestContext
 import pdb #pdb.set_trace()
 import json
-import tasks
+from pds_v3 import tasks
 from pds_v3.forms import CaptchaForm
 import stripe
 
-
-def handler404(request):
-    response = render_to_response('v3/final/404.html', {}, context_instance=RequestContext(request))
-    response.status_code = 404
-    return response
-
-def handler400(request):
-    response = render_to_response('v3/final/400.html', {}, context_instance=RequestContext(request))
-    response.status_code = 400
-    return response
-
-def handler403(request):
-    response = render_to_response('v3/final/403.html', {}, context_instance=RequestContext(request))
-    response.status_code = 403
-    return response
-
-def handler500(request):
-    response = render_to_response('v3/final/500.html', {}, context_instance=RequestContext(request))
-    response.status_code = 500
-    return response
 
 #only root level url
 def landing(request):
@@ -52,11 +31,6 @@ def landing(request):
         'subjects': subjects
     }
     return render(request, 'v3/final/home.html', context)
-
-
-def membership_information(request):
-    return render(request, 'v3/final/membership-info.html')
-
 
 
 def browse(request):
@@ -134,20 +108,6 @@ def browse(request):
     return render(request, 'v3/final/browse.html' , {'pd_list' : pd, 'range' : page_range, 'subjects' : Subject.objects.all(), 'type' : search_type, 'subject' : sub_name, 'query' : query})
 
 
-def place_holder(request):
-    return HttpResponse('placeholder')
-
-def activate(request, id):
-    user_id = id - 9
-    user = AppUser.objects.get(pk=user_id)
-    user.is_active = 1
-    user.save()
-    return HttpResponse("activated")
-
-
-
-def debug(request):
-    return render(request, 'v3/debug-django.html')
 def fuseEdit(edit,pd):
     pd.name=edit.name
     pd.description=edit.description
@@ -162,46 +122,6 @@ def fuseEdit(edit,pd):
     for subject in edit.subjects.all():
         pd.subject.add(subject)
     return pd
-
-def preview(request,id):
-    session = PdSession.objects.get(pk=id)
-    presenter = Presenter.objects.filter(user=request.user)[0]
-
-
-    if session in presenter.pdsession_set.all():
-        context = {'pd': session, 'preview' : True, 'presenter' : presenter}
-    else:
-        return HttpResponse('auth error')
-    if 'l' in request.GET:
-        return render(request, 'v3/final/presenter-pages/final/preview.html', context)
-
-
-    if session.edited == True:
-        edit = session.edits.order_by('-date')[0]
-        context['edit'] = edit
-        session.name = edit.name
-        session.description = edit.description
-
-    return render(request, 'v3/final/presenter-pages/final/preview.html', context)
-
-def email(request):
-    msg = "Please go to the following link to activate: http://pdsquirrel.ca:90/activate/" + str(request.user.id) + "/"
-    try:
-        send_mail('PD Squirrel Activation', msg, 'no-reply@pdsquirrel.ca',['demondsoftware@gmail.com'], fail_silently=False)
-    except:
-        return HttpResponse("email not sent")
-
-    return HttpResponse("Email sent")
-
-def learn(request):
-    return HttpResponse("empty learning page")
-
-def cap_refresh(request):
-    form = CaptchaForm()
-    c = Context({'form':form})
-    t = Template("{{form.captcha}}")
-    page = t.render(c)
-    return HttpResponse(page)
 
 
 def getAttachment(request, a_id):
@@ -298,8 +218,6 @@ def detail(request, pd_id):
         return HttpResponse("This session has been removed. Only users who have purchased the rights may access it.");
 
     return render(request, 'v3/final/detail.html', context)
-
-
 
 
 
@@ -445,57 +363,6 @@ def comment(request):
                 }
         return render(request, 'v3/final/ajax/comment-reply.html', context)
 
-    #return HttpResponse('Success')
-
-
-
-
-
-#takes a file input in the form request.FILES['input-name'] and uploads ti to the abs path specified.
-#not sure about priveliges.
-def handle_uploaded_file(f):
-    path = f.name
-    name = f.name
-    dest = open('/root/nginx/pds/' + name, 'w')
-    for chunk in f.chunks():
-        dest.write(chunk)
-    dest.close()
-
-def upload(request):
-    if request.POST:
-        form = UploadFileForm(request.POST, request.FILES)
-        if form.is_valid():
-            handle_uploaded_file(request.FILES['audio_file'])
-            return HttpResponse("SUCCESS")
-        else:
-            return HttpResponse(form.errors)
-    else:
-        return render(request, 'v3/final/upload.html')
-
-
-def download_example(request):
-    return HttpResponse
-
-
-def support_msg(request):
-    if request.POST:
-        email = request.POST['user_email']
-        name = request.POST['name']
-        message = request.POST['message']
-        subject = request.POST['subject']
-
-        #email = EmailMessage('Testing Email instance','body test message', 'support@pdsquirrel.ca',['admin@pdsquirrel.ca'],
-                #['demondsoftware@gmail.com'])
-        send_mail('PDSquirrel support from  ' + name + ' subj: ' + subject , message + '\nreturn email: ' + email , 'support@pdsquirrel.ca', ['admin@pdsquirrel.ca'], fail_silently=False)
-
-
-        messages.success(request, 'Message sent. We will get back to you shortly')
-        return render(request, 'v3/final/contact.html')
-
-    else:
-        return HttpResponseRedirect('/contact/')
-
-
 
 
 def upload_admin(request, pd_id=False):
@@ -548,3 +415,25 @@ def upload_admin(request, pd_id=False):
 
 def accounting_admin(request):
     return render(request, 'v3/final/myadmin/accounting.html')
+
+# Error pages
+
+def handler404(request):
+    response = render_to_response('v3/final/error/404.html', {}, context_instance=RequestContext(request))
+    response.status_code = 404
+    return response
+
+def handler400(request):
+    response = render_to_response('v3/final/error/400.html', {}, context_instance=RequestContext(request))
+    response.status_code = 400
+    return response
+
+def handler403(request):
+    response = render_to_response('v3/final/error/403.html', {}, context_instance=RequestContext(request))
+    response.status_code = 403
+    return response
+
+def handler500(request):
+    response = render_to_response('v3/final/error/500.html', {}, context_instance=RequestContext(request))
+    response.status_code = 500
+    return response
