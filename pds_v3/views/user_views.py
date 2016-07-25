@@ -184,15 +184,9 @@ def join(request):
             profile.activation_key = activation_key
             profile.save()
 # Please click on the following link and use your email address to activate your membership account: https://pdsquirrel.ca/user/activate/%s\n\nThanks,\nThe PD Squirrel admin team" % (str(activation_key) + "/"
-<<<<<<< HEAD:pds_v3/user_views.py
             msg = "Hello " + first_name + " " + last_name + ", and welcome to PD Squirrel!\n\nWe are currently in a beta working with presenters at this time.\n\n"
             msg += "As soon as we are ready to go live, you will receive an account activation email from us."
             msg += " You can then click on the link to activate your account.\n\nThanks,\nThe PD Squirrel admin team"
-=======
-            msg = "Hello " + first_name + " " + last_name + ", and welcome to PD Squirrel!\n\n We are currently in a beta working with presenters at this time.\n"
-            msg += " As soon as we are ready to go live, you will receive an account activation email from us."
-            msg += " You can then just click on the link to activate your account.\n\nThanks,\nThe PD Squirrel admin team"
->>>>>>> server_side_clean_up:pds_v3/views/user_views.py
             subject = 'PD Squirrel Account Creation'
             send_to = [profile.user.email]
             tasks.sendMail.apply_async([send_to, subject, msg])
