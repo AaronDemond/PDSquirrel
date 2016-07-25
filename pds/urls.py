@@ -26,14 +26,13 @@ urlpatterns = [
     url(r'^user/update/$', user_views.update, name="user-update"),
     url(r'^user/logout/$', user_views.logout_user, name="logout"),
     url(r'^login/$', user_views.login_landing, name="login-landing"),
-    url(r'^debug/', views.debug, name="debug"),
     url(r'^payment-process/$', payment_views.payment_process, name="payment-process"),
     url(r'^accred/(?P<pd_id>\d+)/$', views.accred, name="accred"),
     # url(r'^about/$', tmp_views.about, name="about"), merged into learn. function commented out
     url(r'^learn/$', tmp_views.learn, name="learn"),
     url(r'^contact/$', tmp_views.contact, name="contact-us"),
     url(r'^terms/$', tmp_views.terms, name="terms"),
-    url(r'^presenter-terms/$', tmp_views.presenter_terms, name="presenter-terms"),
+    url(r'^presenter-terms/$', views.presenter_terms, name="presenter-terms"),
     url(r'^cap/$', tmp_views.cap, name="cap"),
     url(r'^privacy/$', tmp_views.privacy, name="privacy"),
     url(r'^become-a-presenter/$', user_views.become_presenter, name="presenter-info"),
@@ -44,14 +43,12 @@ urlpatterns = [
     url(r'^user/options/newcard/$', user_views.add_card, name="newcard"),
     url(r'^user/options/delcard/$', user_views.del_card, name="delcard"),
     url(r'^user/options/u_card/$', user_views.default_payment, name="update-payment"),
-    url(r'^ajax/cap_ref/$', views.cap_refresh, name='ajax-captcha'),
     url(r'^cap_ref/$', tmp_views.cap_ajax, name='cap-ref'),
 
     url(r'^upload-admin/$', views.upload_admin, name="upload-admin"),
     url(r'^upload-admin/(?P<pd_id>\d+)/$', views.upload_admin, name="upload-admin"),
 
     url(r'^accounting/$', views.accounting_admin, name="accounting"),
-    url(r'^memberships/$', views.membership_information, name="memberships"),
 
 
     #presenter urls
