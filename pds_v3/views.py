@@ -550,4 +550,4 @@ def accounting_admin(request):
     return render(request, 'v3/final/myadmin/accounting.html')
 
 def presenter_terms(request):
-    return render(request, 'v3/final/myadmin/presenter-terms.html')
+    return render(request, 'v3/final/presenter-terms.html')
