@@ -5,26 +5,7 @@
         <meta name=”description” content='Find out how to become a presenter with PDSquirrel'>
 {% endblock header-metatags %}
 {% block body %}
-<!-- load small css -->
-<noscript id="deferred-styles">
-  <link rel="stylesheet" type="text/css" href="/static/css/shared/inforow.css">
-  <link rel="stylesheet" type="text/css" href="/static/css/user/become-presenter.css">
-</noscript>
-<script>
-  var loadDeferredStyles = function() {
-    var addStylesNode = document.getElementById("deferred-styles");
-    var replacement = document.createElement("div");
-    replacement.innerHTML = addStylesNode.textContent;
-    document.body.appendChild(replacement)
-    addStylesNode.parentElement.removeChild(addStylesNode);
-  };
-  var raf = requestAnimationFrame || mozRequestAnimationFrame ||
-      webkitRequestAnimationFrame || msRequestAnimationFrame;
-  if (raf) raf(function() { window.setTimeout(loadDeferredStyles, 0); });
-  else window.addEventListener('load', loadDeferredStyles);
-</script>
-<!-- end small css load -->
-
+{% include "v3/final/add-ons/deferred-css.html" with css1='user/become-presenter' css2='shared/inforow' %}
 <div class="container" id="main-content">
 
     <div class="row">
