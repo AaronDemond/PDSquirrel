@@ -89,15 +89,15 @@ payments from our PD Squirrel members. None of your sensitive information is sto
           <h3 class="account-header">My Account<small></small></h3>
 					<table class="table">
             <tr>
-                <td class='col1'>Name</td>
+                <td class='muted'>Name</td>
                 <td>{{user.first_name}} {{user.last_name}}</td>
             </tr>
             <tr>
-                <td class='col1'>Email</td>
+                <td class='muted'>Email</td>
                 <td>{{user.email}}</td>
             </tr>
             <tr>
-                <td class='col1'>Law society</td>
+                <td class='muted'>Law society</td>
                 <td>
 
                         {{ user.profile.society.all | join:", " }}
@@ -105,11 +105,11 @@ payments from our PD Squirrel members. None of your sensitive information is sto
                 </td>
             </tr>
             <tr>
-                <td class='col1'>Date joined PDS</td>
+                <td class='muted'>Date joined PDS</td>
                 <td>{{user.profile.date_joined|remove_time}}</td>
             </tr>
             <tr>
-                <td class='col1'>My cards <a onclick="showPaymentInfo()">(more information)</a>
+                <td class='muted'>My cards <a onclick="showPaymentInfo()">(more information)</a>
 					<br>
 					How we process payments <a onclick="showStripeInformation()">(more)</a>
 				</td>
@@ -173,7 +173,7 @@ payments from our PD Squirrel members. None of your sensitive information is sto
             <h3 class="account-header">My Membership<small></small></h3>
               <table class="table">
                 <tr>
-                    <td class="col1">Membership type <a onclick="showMembershipTypeInfo()">(more)</a></td>
+                    <td class="muted">Membership type <a onclick="showMembershipTypeInfo()">(more)</a></td>
                     <td><b>{% if user.profile.is_premium %}Premium{% else %}Standard{% endif %}</b></td>
                 </tr>
 		            <tr id="membership-type-info" class="hidden">
@@ -218,25 +218,25 @@ payments from our PD Squirrel members. None of your sensitive information is sto
               {% if user.profile.is_premium %}
               {% if customer.subscriptions.total_count > 0 %}
               <tr>
-                  <td class="col1">Current monthly cycle ends </td>
+                  <td class="muted">Current monthly cycle ends </td>
                   <td>{{ customer.subscriptions.data.0.current_period_end|unix_time_convert}}</td>
               </tr>
 
               <tr>
-                  <td class="col1">Next billing date</td>
+                  <td class="muted">Next billing date</td>
                   <td>
                       ${{ customer.subscriptions.data.0.plan.amount|format_cents }} will be billed on
                       {{ customer.subscriptions.data.0.current_period_end|add_day}} for the next monthly cycle.
                   </td>
               </tr>
               <tr>
-                  <td class="col1">Session credits remaining <a onclick="showCreditInfo()">(more)</a></td>
+                  <td class="muted">Session credits remaining <a onclick="showCreditInfo()">(more)</a></td>
                   <td>{{ user.profile.remaining_pd }}</td>
               </tr>
               {% endif %}
               {% else %}
               <tr>
-                  <td class="col1">Session credits remaining <a onclick="showCreditInfo()">(more)</a> </td>
+                  <td class="muted">Session credits remaining <a onclick="showCreditInfo()">(more)</a> </td>
                   <td>{{ user.profile.remaining_pd }}</td>
               </tr>
               {% endif %}
@@ -262,7 +262,7 @@ payments from our PD Squirrel members. None of your sensitive information is sto
     				    </td>
       				</tr>
               <tr>
-                <td class="col1">{% if user.profile.is_premium %}Downgrade membership {% else %}
+                <td class="muted">{% if user.profile.is_premium %}Downgrade membership {% else %}
                     Upgrade membership to Premium {% endif %}<a onclick="showChangeMembership()">(more)</a>
                 </td>
                 <td>
@@ -403,7 +403,7 @@ payments from our PD Squirrel members. None of your sensitive information is sto
                   <form action="{% url 'change-email' %}" method="POST">
                       {% csrf_token %}
                       <tr>
-                          <td class="col1">Change email</td>
+                          <td class="muted">Change email</td>
                       </tr>
                       <tr>
                           <td>
@@ -428,7 +428,7 @@ payments from our PD Squirrel members. None of your sensitive information is sto
                           </td>
                       </tr>
                       <tr>
-                        <td class="col1">Change password</td>
+                        <td class="muted">Change password</td>
                       </tr>
                     </form>
                     <form action="{% url 'change-pass' %}" method = "POST" >
