@@ -34,34 +34,38 @@ span not required
 <button name="js-info-X">...</button>
 </div>
 */
+info_box_activate();
 
-$("[name^='js-info-']").filter('a').click(function() {
-	var $curr = $(this);
-	var curr_name = $curr.attr('name');
-	var $info_box = $('[name="'+curr_name+'"]').filter('div');
-	var $arrow = $curr.children('span');
+function info_box_activate() {
+	$("[name^='js-info-']").filter('a').click(function() {
+		var $curr = $(this);
+		var curr_name = $curr.attr('name');
+		var $info_box = $('[name="'+curr_name+'"]').filter('div');
+		var $arrow = $curr.children('span');
+		console.log("test");
+		if ( $info_box.hasClass('hidden') ) { // if hidden -> display
 
-	if ( $info_box.hasClass('hidden') ) { // if hidden -> display
+			$info_box.removeClass('hidden'); // Display info box
+			var $all_other_info = $("[name^='js-info-']"); // all other info elements
+			$all_other_info.filter('div').not($info_box).addClass('hidden'); // hide all other info boxes
+			$all_other_info.filter('a').children('span').html('&#9662'); // flip all other info arrows
+			$arrow.html('&#9652');
 
-		$info_box.removeClass('hidden'); // Display info box
-		var $all_other_info = $("[name^='js-info-']"); // all other info elements
-		$all_other_info.filter('div').not($info_box).addClass('hidden'); // hide all other info boxes
-		$all_other_info.filter('a').children('span').html('&#9662'); // flip all other info arrows
-		$arrow.html('&#9652');
+		} else { // if visible -> hide
 
-	} else { // if visible -> hide
+			$info_box.addClass('hidden');
+			$arrow.html('&#9662');
+		}
+	});
+
+	// cancel / close button
+	$("[name^='js-info-']").filter('button').click(function() {
+		var $curr = $(this);
+		var curr_name = $curr.attr('name');
+		var $info_box = $('[name="'+curr_name+'"]').filter('div');
+		$('[name="'+curr_name+'"]').filter('a').children('span').html('&#9662'); // flip arrow
 
 		$info_box.addClass('hidden');
-		$arrow.html('&#9662');
-	}
-});
+	});
 
-// cancel / close button
-$("[name^='js-info-']").filter('button').click(function() {
-	var $curr = $(this);
-	var curr_name = $curr.attr('name');
-	var $info_box = $('[name="'+curr_name+'"]').filter('div');
-	$('[name="'+curr_name+'"]').filter('a').children('span').html('&#9662'); // flip arrow
-
-	$info_box.addClass('hidden');
-})
+}
