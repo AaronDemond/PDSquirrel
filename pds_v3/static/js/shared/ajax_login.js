@@ -28,6 +28,7 @@ $(document).ready(function(){
 /*
 span not required
 
+example:
 <a name="js-info-X">(info <span>&blacktriangledown;</span>)</a>
 <div name="js-info-X" class="hidden">
 ...
@@ -42,7 +43,6 @@ function info_box_activate() {
 		var curr_name = $curr.attr('name');
 		var $info_box = $('[name="'+curr_name+'"]').filter('div');
 		var $arrow = $curr.children('span');
-		console.log("test");
 		if ( $info_box.hasClass('hidden') ) { // if hidden -> display
 
 			$info_box.removeClass('hidden'); // Display info box
