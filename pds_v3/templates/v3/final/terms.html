@@ -4,11 +4,8 @@
         <title>PD Squirrel Terms &amp; Conditions</title>
         <meta name=”description” content='PDSquirrels terms &amp; conditions'>
 {% endblock header-metatags %}
-{% block header-content %}
-        <link rel="stylesheet" href="{% static 'css/user/terms.css' %}">
-{% endblock header-content %}
 {% block body %}
-
+{% include "v3/final/add-ons/deferred-css.html" with css1='user/terms' %}
 
 <div class="container" id="main-content">
     <div class="row">

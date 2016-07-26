@@ -4,10 +4,8 @@
         <title>Join PD Squirrel</title>
         <meta name=”description” content='Join PD Squirrel today to find all the profressional development you will need'>
 {% endblock header-metatags %}
-{% block header-content %}
-        <link rel="stylesheet" href="{% static 'css/user/join.css' %}">
-{% endblock header-content %}
 {% block body %}
+{% include "v3/final/add-ons/deferred-css.html" with css1='user/join' %}
 <div id="main-content" class="container">
 
             {% csrf_token %}
