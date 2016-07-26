@@ -8,6 +8,12 @@ td {
   padding: 0px;
 }
 
+.hide-info-td {
+	padding: 0px !important;
+	border: none !important;
+	height: 0px;
+}
+
 .no-indent {
   margin-left: 0px;
 }
