@@ -125,9 +125,12 @@
                     {% block bottom-nav-links %}
                     <li><a href="{% url 'learn' %}">About</a></li>
                     <li><a href="{% url 'contact-us' %}">Contact Us</a></li>
+                    <li><a href="{% url 'presenter-info' %}">Become a Presenter</a></li>
                     <li><a href="{% url 'terms' %}">Terms &amp; Conditions</a></li>
                     <li><a href="{% url 'privacy' %}">Privacy</a></li>
-                    <li><a href="{% url 'presenter-info' %}">Become a Presenter</a></li>
+					{% if request.user.profile.is_presenter %}
+					<li>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <b>|</b> <a href="{% url 'presenter-terms' %}">Presenter Terms &amp; Conditions</a></li>
+					{% endif %}
                     {% endblock bottom-nav-links %}
                 </ul>
             </div>

@@ -534,14 +534,22 @@ def record(request):
         upload = request.FILES['data']
         name = request.POST['name']
         pdaudio_id = request.POST.get('pdaudio_id', False)
+        create_new = False
 
         if pdaudio_id:
             audio_to_overwrite = PdAudio.objects.get(pk=pdaudio_id)
-            audio_to_overwrite.audio = upload
-            audio_to_overwrite.save()
-            audio_to_overwrite.convertToMp3()
-            resp = serializers.serialize("json", [audio_to_overwrite]);
+            if audio_to_overwrite.name == str(name):
+                audio_to_overwrite.audio = upload
+                audio_to_overwrite.save()
+                audio_to_overwrite.convertToMp3()
+                resp = serializers.serialize("json", [audio_to_overwrite]);
+            else:
+                create_new = True
         else:
+            create_new = True
+
+
+        if create_new == True:
             pda = PdAudio(name=name, audio=upload, appuser=au)
             pda.save()
             pda.convertToMp3()

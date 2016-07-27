@@ -416,7 +416,6 @@ def upload_admin(request, pd_id=False):
 def accounting_admin(request):
     return render(request, 'v3/final/myadmin/accounting.html')
 
-# Error pages
 
 def handler404(request):
     response = render_to_response('v3/final/error/404.html', {}, context_instance=RequestContext(request))
@@ -437,3 +436,6 @@ def handler500(request):
     response = render_to_response('v3/final/error/500.html', {}, context_instance=RequestContext(request))
     response.status_code = 500
     return response
+
+def presenter_terms(request):
+    return render(request, 'v3/final/presenter-terms.html')
