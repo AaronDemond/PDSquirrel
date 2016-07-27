@@ -65,7 +65,7 @@ function enableLinks() {
 
 	onbeforeunload = null;
 
-	var links = $("a").not('#infoLink, .download, .listen, .del-btn, .dropdown-toggle, #dl');
+	var links = $("a").not('.status-link, .download, .listen, .del-btn, .dropdown-toggle, #dl');
 	var target_div = '#page-content';
 
 	for (var j=0; j<links.length; j++) {
