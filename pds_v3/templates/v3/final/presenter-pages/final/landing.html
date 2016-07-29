@@ -1,7 +1,4 @@
 {% load staticfiles %}
-
-<script src="{% static 'js/presenter/landing.js' %}"></script>
-
 {% load pds_extras %}
 <div id="page-content">
     <div class="row">
@@ -10,7 +7,7 @@
 			<p style="margin-left:10px">{{user.profile.address.street_address}}
 			<br>
 			{% if user.profile.address.po_box %}P.O. Box {{user.profile.address.po_box}}<br>{% endif %}{{user.profile.address.municipality}} {{user.profile.address.province}} {{user.profile.address.postal_code}}</p>
-		</div> {# address #}
+		</div>
         <div class="col-lg-6">
 			<h4 >Overview <small>(Cumulative to date)</small></h4>
 			<table class="table">
@@ -19,29 +16,27 @@
 
 					<td>{{listed_count}}</td>
 				</tr>
-        {% comment %}
 				<tr>
-					<td>Number of PD Sessions uploaded by you but not yet listed</td>
-					<td>{{pending_count}}</td>
-
-				</tr>
-        {% endcomment %}
-				<tr>
-					<td>Total member takes of all your PD Sessions
-					<a onclick = "showTakesInfo()" id="infoLink">(info ▾)</a></td>
+					<td>
+            Total member takes of all your PD Sessions
+			      <a name="js-info-take">(info <span>&blacktriangledown;</span>)</a>
+          </td>
 					<td>{{takes_count}}</td>
 				</tr>
 			</table>
-			<div class="alert alert-info hidden" id="takeInfo">
+			<div name="js-info-take" class="alert alert-info hidden" >
 				<p>
 					One 'take' is the taking of a particular PD Session from the Site by a PD Squirrel member, by way of a single purchase (if the member is a Standard member) or by using a member credit (if a Premium member).
 				</p>
 				<div class="row">
 					<div class="col-xs-12">
-						<button class="btn btn-default pull-right" onclick="showTakesInfo()">Close</button>
+						<button name="js-info-take" class="btn btn-default pull-right">Close</button>
 					</div>
 				</div>
 			</div>
 		</div>
     </div>
 </div>
+<script>
+info_box_activate(); // Reload info box for ajax 
+</script>

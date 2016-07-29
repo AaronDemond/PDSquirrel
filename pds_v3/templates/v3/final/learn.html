@@ -5,10 +5,8 @@
         <title>About PD Squirrel</title>
         <meta name=”description” content='At PD Squirrel we provide continuing professional development.'>
 {% endblock header-metatags %}
-{% block header-content %}
-        <link rel="stylesheet" href="{% static 'css/user/learn.css' %}">
-{% endblock header-content %}
 {% block body %}
+{% include "v3/final/add-ons/deferred-css.html" with css1='user/learn' css2='shared/inforow' %}
 
 <div class="container" id="main-content">
     <div class="row">
@@ -68,7 +66,7 @@
 					<p><b>Browse</b> our selection of PD sessions.<br /> We work with leading professionals from across Canada to bring the best PD directly to you.</p>
 		        </div>
 		        <div class="col-sm-7 col-xs-12">
-			    <img class="plack right-plack" src="{% static 'img/learn/browse.png' %}"  alt="Browse">
+			    <img class="plack pull-right" src="{% static 'img/learn/browse.png' %}"  alt="Browse">
 		        </div>
 		    </div>
 		    <div class="row info-row hidden-xs info-row-color-2"> <!-- Choose row -->
@@ -92,14 +90,14 @@
 				  </p>
 		        </div>
 		        <div class="col-sm-7 col-xs-12" style="">
-		          <img class="plack right-plack"  src="{% static 'img/learn/watch.png' %}" alt="Listen">
+		          <img class="plack pull-right"  src="{% static 'img/learn/watch.png' %}" alt="Listen">
 		        </div>
 		    </div>
  <div class="row">
 		        <div class="col-lg-12">
               <hr>
 			    <p>
-				This site is owned and operated by PD Squirrel Inc., a Canadian company founded by Charles W. Demond, LL.B, CPA. 
+				This site is owned and operated by PD Squirrel Inc., a Canadian company founded by Charles W. Demond, LL.B, CPA.
 				Charles has practiced corporate, tax and estate law for more than fifteen years.
 			    </p>
 
