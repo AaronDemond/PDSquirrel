@@ -41,7 +41,7 @@
 .site-description-container {
   position: absolute;
   font-size: 2.5vw;
-  margin-left: 33.5%;
+  margin-left: 38%;
   margin-top: 5%;
 }
 
@@ -99,11 +99,7 @@
     margin-left: 30px;
   }
 }
-/*
-.site-description-container div {
-  margin-left: 0px !important;  overrides above css
-}
-*/
+
 @media all and (max-width: 682px) {
 
   .mobile { /* Override hidden class */
