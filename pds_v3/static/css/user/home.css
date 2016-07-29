@@ -108,6 +108,7 @@
 
   .mobile { /* Override hidden class */
     display: block !important;
+    padding-right: 25px;
   }
 
   .lg-screen {
