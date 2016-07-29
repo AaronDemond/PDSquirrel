@@ -23,19 +23,20 @@ function previewAudio(id, preview_link) {
 	// Change arrow to closed state on all other links
 	$(".preview-link").each(function() {
 		if ( !$(this).is($(preview_link)) ) {
-			$(this).text('Listen ⏵');
+			$(this).text('Listen ');
+			$(this).append('&#9656;'); //right arrow
 		}
 	});
 
 	// Toggle state of arrow in clicked preview button
 	if ($(preview_link).text() == 'Listen ⏵' ) {
 		$(row_id).append(html);
-		$(preview_link).text('Listen ⏴');
-
+		$(preview_link).text('Listen '); //left arrow
+		$(preview_link).append('&#9666;');
 
 	} else {
-		$(preview_link).text('Listen ⏵');
-		$(preview_link).text('Listen ⏵');
+		$(preview_link).text('Listen '); //right arrow
+		$(preview_link).append('&#9656;');
 		$(row_id).empty();
 
 	}

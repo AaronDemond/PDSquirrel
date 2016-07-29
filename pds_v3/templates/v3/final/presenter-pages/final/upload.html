@@ -1,6 +1,4 @@
 {% load staticfiles %}
-<link rel="stylesheet" href="{% static 'css/presenter/presenter-hub.css' %}">
-<link rel="stylesheet" href="{% static 'css/presenter/upload.css' %}">
 <script src="{% static 'js/presenter/upload.js' %}"></script>
 <script src="{% static 'js/presenter/form_helpers.js' %}"></script>
 
@@ -126,7 +124,7 @@
 						</label>
 					</div>
 
-					<input disabled="true" id="upload_input" type="file" class="form-control file-input" name="audio_file">
+					<input disabled="true" id="upload_input" type="file" class="form-control" name="audio_file">
 				</div>
 		    </div>
 
@@ -157,7 +155,7 @@
 				<div id="file-upload-container">
 					<div class="control-group">
 					<label for="">Optional attachment(s)</label>
-					<input type="file" class="form-control file-input" onclick="anotherFile()" name="file-upload-0">
+					<input type="file" class="form-control" onclick="anotherFile()" name="file-upload-0">
 					<p class="help-block">(Optonal) You may upload attachments to supplement your PD Session, such as PDF files or other documents.</p>
 					</div>
 				</div>
@@ -179,7 +177,7 @@
 		</div>
         </form>
     </fieldset>
-	<div class="main hidden" id="loader">
+	<div class="main hidden" id="upload-loader">
 		<div class="small1">
 			<div class="small ball smallball1"></div>
 			<div class="small ball smallball2"></div>

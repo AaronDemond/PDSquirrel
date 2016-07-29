@@ -1,3 +1,18 @@
+
+/* Presenter hub navbar */
+.nav-tabs { border-bottom: 2px solid #DDD; }
+    .nav-tabs > li.active > a, .nav-tabs > li.active > a:focus, .nav-tabs > li.active > a:hover { border-width: 0; }
+    .nav-tabs > li > a { border: none; color: #666; }
+        .nav-tabs > li.active > a, .nav-tabs > li > a:hover { border: none; color: #4285F4 !important; background: transparent; }
+        .nav-tabs > li > a::after { content: ""; background: #4285F4; height: 2px; position: absolute; width: 100%; left: 0px; bottom: -1px; transition: all 250ms ease 0s; transform: scale(0); }
+    .nav-tabs > li.active > a::after, .nav-tabs > li:hover > a::after { transform: scale(1); }
+.tab-nav > li > a::after { background: #21527d none repeat scroll 0% 0%; color: #fff; }
+
+.presenter-nav-container {
+    margin-bottom: 20px;
+}
+
+/* Across Presenter hub */
 label {
   font-weight: bold;
   color: #478857; }
@@ -5,13 +20,150 @@ label {
 .submit-fix {
   margin-top: 10px; }
 
-  input {
-	  height: auto;
-  }
+/* Bootstrap override */
+input[type="file"] {
+  height: auto !important;
+}
 
 
 #enable_comment_notifications_div {
 	margin-left: 15px;
 	padding-top: 0px;
 }
-/*# sourceMappingURL=presenter-hub.css.map */
+
+/* Record */
+.timebox {
+	padding-bottom: 3px;
+	width: 70px;
+	height: 34px;
+}
+.record-label {
+    color: rgb(113, 113, 113);
+		padding-left: 0px !important;
+		padding-right: 0px !important;
+	}
+
+.input-group-style {
+	padding: 0px;
+}
+
+#output {
+	padding: 20px;
+	padding-top: 25px;
+	font-weight: bold;
+	font-size: 17px;
+	text-align: center
+
+}
+.output-paused {
+	background-color: #d9edf7;
+}
+.output-recording {
+	background-color: #f2dede;
+}
+
+ #record-loader {
+	margin-top: 100px;
+ }
+
+ /* Upload */
+.control-group {
+	margin-bottom: 20px;
+}
+.ctrl-group-tight {
+	margin-bottom: 0px;
+}
+
+#upload-loader {
+	position: relative;
+	bottom: 400px;
+}
+
+/* Sessions */
+.preview-col {
+	height: 50px;
+}
+
+.preview-col video {
+	margin-top: 20px;
+}
+.actions button, .actions a {
+	float: left;
+	margin-right: 5px;
+	margin-top:15px;
+	background-color: lightblue;
+	background-color: #EFEFEF;
+	color: #797979;
+	float: left;
+	margin-right: 5px;
+	margin-top: 15px;
+	background-color: lightblue;
+	background-color: #FFFFFF;
+	color: #000000;
+	background-image: linear-gradient(to bottom,#FFFFFF 0,#B7B7B7 100%);
+	border: aliceblue;
+	border-radius: 2px;
+	border: 1px solid grey;
+	padding: 0 5;
+	float: left;
+	margin-right: 5px;
+	margin-top: 15px;
+	background-color: lightblue;
+	background-color: #EFEFEF;
+	color: #797979;
+	float: left;
+	margin-right: 5px;
+	margin-top: 10px;
+	background-color: lightblue;
+	background-color: #FFFFFF;
+	color: #000000;
+	background-image: linear-gradient(to bottom,#FFFFFF 0,#F5F5F5 100%);
+	border: aliceblue;
+	border-radius: 2px;
+	border: 1px solid grey;
+	padding: 0 5;
+}
+.release {
+	background-color: green;
+}
+.actions input {
+	margin-left: 0px;
+}
+
+.status p {
+	margin-left: 10px;
+}
+.pres_btn {
+	padding: 0 5;
+	margin-right: 5px;
+	position: relative;
+	top: 10;
+	right: 0;
+	border: 1px solid black;
+}
+#approve-btn {
+	padding: 0 5;
+	position: relative;
+	top: 10;
+	right: 0;
+	border: 1px solid black;
+}
+.pd-upload h4 {
+	margin-top: 10px;
+	margin-bottom: 0;
+}
+.status-brown {
+	color: brown;
+}
+
+.progress {
+	height: 10px;
+}
+
+#c-form {
+	float:left;
+}
+
+.session {
+	padding-bottom: 20px !important;
+}

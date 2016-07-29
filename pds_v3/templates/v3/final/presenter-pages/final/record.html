@@ -2,8 +2,7 @@
 
 {# NOTE: if this page is not working, re dump this script at bottom: #}
 <script src="/static/js/wav.js"></script> {# recorder script #}
-<link rel="stylesheet" href="{% static 'css/presenter/record.css' %}">
-<div class="main col-lg-10 col-lg-offset-1 hidden" id="loader">
+<div class="main col-lg-10 col-lg-offset-1 hidden" id="record-loader">
 		<div class="small1">
 			<div class="small ball smallball1"></div>
 			<div class="small ball smallball2"></div>
@@ -57,7 +56,7 @@
     </div>
     <div class="row">
 		<div class="col-lg-6">
-			<label for="name">Recording name</label>
+			<label class="record-label" for="name">Recording name</label>
 			<input type="text" placeholder="Enter a name for your session recording" class="form-control" id="name">
 		</div>
 		<div class="col-lg-12">
@@ -66,7 +65,7 @@
     </div>
     <div class="row">
 			<div class="col-xs-6">
-				<label>Controls</label>
+				<label class="record-label">Controls</label>
 				<br>
 				<button onclick="recordToggle()" class="btn btn-danger" id = "record_button">Record</button>
 				<button onclick = "pauseClick()" class="btn btn-default" id = "pause_button">Pause</button>
@@ -76,7 +75,7 @@
 				<div style="margin-top: 20px;">Total length of recording: <span id='timer'>00:00</span></div>
 			</div>
 			<div class="col-xs-6">
-				<label>Status</label>
+				<label class="record-label">Status</label>
 				<div id="output" class="output-paused">
 					<p class="text-center">Off</p>
 				</div>
@@ -87,7 +86,7 @@
 			<div class="col-lg-12">
 
 				<hr>
-				<label style="margin-bottom: 15px">Trim Function <small><a id="trimbtn" name="js-info-trim" class="status-link">(info <span>&blacktriangledown;</span>)</a></small></label>
+				<label class="record-label" style="margin-bottom: 15px">Trim Function <small><a id="trimbtn" name="js-info-trim" class="status-link">(info <span>&blacktriangledown;</span>)</a></small></label>
 				<div class="row hidden" name="js-info-trim">
 					<div class="alert alert-info">
 						<p>
@@ -101,7 +100,7 @@
 				</div>
 				<form class="form-inline" role="form" onsubmit="return false;">
 					<div class="form-group">
-						<label>Start Time</label>
+						<label class="record-label">Start Time</label>
 						<div class="input-group">
 							<input class="timebox form-control" type="text" value = '0' id="start-mark" maxlength="7" size="7">
 							<span class="input-group-addon">s</span>
@@ -111,7 +110,7 @@
 						</div>
 					</div>
 					<div class="form-group" >
-						<label id="end-label"><span class="hidden-xs">&nbsp;</span>End Time</label>
+						<label id="end-label" class="record-label"><span class="hidden-xs">&nbsp;</span>End Time</label>
 						<div class="input-group">
 							<input class="timebox form-control" type="text" value='0' id="end-mark" maxlength="7" size="7">
 							<span class="input-group-addon">s</span>
@@ -163,7 +162,7 @@
 					{{ rec.getDuration }}
 				</td>
 		    <td>
-				<button class="btn btn-default preview-link" onclick="previewAudio({{rec.id}}, this)">Listen ⏵</button>
+				<button class="btn btn-default preview-link" onclick="previewAudio({{rec.id}}, this)">Listen &#9205;</button>
 				<button class="btn btn-default" onclick="showData('/wav/{{rec.pk}}', '{{rec}}', '{{rec.pk}}')">Edit</button>
 				<button class="btn btn-default del-btn" onclick="delAudio('{{rec.id}}')">Delete</button>
 				{#<button class="btn btn-default" onclick="showData('/{{rec.audio.name}}', '{{rec}}')">Edit</button> #}
