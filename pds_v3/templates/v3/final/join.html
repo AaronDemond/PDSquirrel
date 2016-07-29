@@ -4,24 +4,23 @@
         <title>Join PD Squirrel</title>
         <meta name=”description” content='Join PD Squirrel today to find all the profressional development you will need'>
 {% endblock header-metatags %}
+{% block header-content %}
+        <link rel="stylesheet" href="{% static 'css/user/join.css' %}">
+{% endblock header-content %}
 {% block body %}
-{% include "v3/final/add-ons/deferred-css.html" with css1='user/join' %}
 <div id="main-content" class="container">
 
             {% csrf_token %}
             <div class="row">
-              <div class="col-xs-12">
-      					<div class="msg-container">
-      						{% if messages %}
-      						{% for msg in messages %}
-      							<div class="alert alert-{{msg.tags}} msg" role="alert">
-      								<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-      								{{msg}}
-      							</div>
-      						{% endfor %}
-      						{% endif %}
-      					</div>
-      				</div>
+                    <!--spits out messages from msg dict (type, body, title) -->
+                    {% for m in msg %}
+                        <div class="col-xs-12">
+                            <div class="alert alert-{{m.type}}" role="alert">
+															<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                            	{{m.body|safe}}
+                            </div>
+                        </div>
+                    {% endfor %}
 	{% if user.is_authenticated %}
 	    <div class="col-xs-12" id="auth-problem">
                             <div class="alert alert-info" id = "page-alerts" role="alert">

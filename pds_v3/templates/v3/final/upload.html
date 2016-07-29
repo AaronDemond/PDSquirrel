@@ -1,0 +1,10 @@
+{% extends "v3/final/base/base.html" %}
+{% load staticfiles %}
+{% block body %}
+<form action="{% url 'upload' %}" enctype="multipart/form-data" method="POST">
+    {% csrf_token %}
+    <input type="file" name="audio_file">
+    <input type="text" name="title">
+    <input type="submit">
+</form>
+{% endblock %}

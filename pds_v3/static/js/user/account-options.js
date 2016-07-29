@@ -36,7 +36,6 @@ function stripeResponseHandler(status, response) {
     $form.get(0).submit();
   }
 };
-
 function makeEmailVisible(){
 $('#email-confirm-td').removeClass("hidden");
 $('#email').removeAttr("disabled");
@@ -53,8 +52,6 @@ function makePassVisible(){
   $('#type').val("password");
 }
 
-
-// Not used
   function makeVisible(id){
   $('#save-btn').removeAttr("");
   $('#save-btn').removeClass("hidden");
@@ -88,6 +85,65 @@ $(".delform").submit(function() {
   var c = confirm("Are you sure you want to remove this card?");
   return c;
 });
+
+function showPaymentInfo() {
+  $('#change-default').addClass('hidden');
+  $("#btnholder").empty();
+  $('#credit-info').addClass('hidden');
+  $('#change-membership').addClass('hidden');
+  $('#membership-type-info').addClass('hidden');
+  $('#payment-info').toggleClass('hidden');
+  $('#stripe-info').addClass('hidden');
+}
+
+function showStripeInformation() {
+  $('#change-default').addClass('hidden');
+  $("#btnholder").empty();
+  $('#credit-info').addClass('hidden');
+  $('#change-membership').addClass('hidden');
+  $('#membership-type-info').addClass('hidden');
+  $('#payment-info').addClass('hidden');
+  $('#stripe-info').toggleClass('hidden');
+
+
+}
+function showChangeDefault() {
+  $('#change-membership').addClass('hidden');
+  $('#membership-type-info').addClass('hidden');
+  $('#payment-info').addClass('hidden');
+  $('#credit-info').addClass('hidden');
+  $('#change-default').toggleClass('hidden');
+  $('#stripe-info').addClass('hidden');
+
+}
+function showCreditInfo() {
+  $('#change-default').addClass('hidden');
+  $("#btnholder").empty();
+  $('#change-membership').addClass('hidden');
+  $('#membership-type-info').addClass('hidden');
+  $('#payment-info').addClass('hidden');
+  $('#credit-info').toggleClass('hidden');
+  $('#stripe-info').addClass('hidden');
+}
+function showChangeMembership() {
+  $('#change-default').addClass('hidden');
+  $("#btnholder").empty();
+  $('#payment-info').addClass('hidden');
+  $('#membership-type-info').addClass('hidden');
+  $('#credit-info').addClass('hidden');
+  $('#change-membership').toggleClass('hidden');
+  $('#stripe-info').addClass('hidden');
+}
+function showMembershipTypeInfo() {
+  $('#change-default').addClass('hidden');
+  $("#btnholder").empty();
+  $('#payment-info').addClass('hidden');
+  $('#credit-info').addClass('hidden');
+  $('#change-membership').addClass('hidden');
+  $('#membership-type-info').toggleClass('hidden');
+  $('#stripe-info').addClass('hidden');
+
+}
 
 $(".memsubmit").click(function() {
   $("#btnholder").empty();

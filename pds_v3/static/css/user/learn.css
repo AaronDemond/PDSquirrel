@@ -5,8 +5,29 @@
     width: 400px;
 }
 
+.info-row {
+	padding-bottom: 15px;
+	padding-top: 15px;
+	margin-left: 10px;
+	margin-right: 10px;
+	margin-bottom: 50px;
+
+}
+
+.info-row-color-1 {
+	background-color: white;
+}
+.info-row-color-2 {
+	background-color: aliceblue;
+}
+
 .my-page-header {
   margin-top: 0px;
+
+}
+
+.right-plack {
+  float: right;
 }
 
 table {

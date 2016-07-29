@@ -1,0 +1,65 @@
+
+.navbar-bottom {
+    height: 270px;
+    border-top: 1px solid #d8d7d7;
+}
+
+.my-footer {
+  margin-top: 50px;
+  background-color: #444444;
+}
+
+.my-footer a {
+  color: #a3a3a3 !important;
+  white-space: nowrap;
+}
+
+#squirrel-inc {
+  padding:20px;
+  padding-bottom:0;
+  padding-left:10px;
+  color: rgb(255,255,255);
+}
+
+#bottom-nav-links {
+    padding: 0;
+    margin: 0;
+    padding-top: 0.7em;
+    padding-left: 5px;
+    font-size: 0.9em;
+    list-style-type: none;
+}
+
+#bottom-nav-links li {
+    list-style-type: none;
+    display: inline;
+}
+
+#seal_container {
+  margin-top: 25px;
+}
+
+#SSL {
+  margin: 0px;
+  width: 135px;
+  border: none;
+  border-spacing: 0px;
+  border-collapse: separate;
+}
+
+#seal {
+  width: 135px;
+  padding: 2;
+  text-align: center;
+  vertical-align: top;
+}
+
+#certificate {
+  color:#000000;
+  text-decoration:none;
+  font:bold 7px verdana,sans-serif;
+  letter-spacing:.5px;
+  text-align:center;
+  margin:0px;
+  padding:0px;
+}

@@ -4,12 +4,13 @@ from django.core import serializers
 from django.core.files import File
 import os
 import subprocess
-from pds_v3 import tasks
 from django.core.files.base import File as DjangoFile
 from django.views.decorators.csrf import csrf_exempt
+from pds_v3.my_functions import date_from_input as dfi
 from django.contrib import messages
 from pds_v3.models import PdSession,Presenter, AppUser, LawSociety, \
 LawSocietyOverride, Purchase, Subject, PdSessionEdit, PdAttachment, PdAudio
+from pds_v3.views import fuseEdit
 
 from django.core.exceptions import ObjectDoesNotExist
 from mutagen.mp3 import MP3
@@ -17,29 +18,7 @@ import datetime
 
 
 from django.forms.models import modelform_factory
-from pds_v3.forms import PdSessionForm
-
-
-def preview(request,id):
-    session = PdSession.objects.get(pk=id)
-    presenter = Presenter.objects.filter(user=request.user)[0]
-
-
-    if session in presenter.pdsession_set.all():
-        context = {'pd': session, 'preview' : True, 'presenter' : presenter}
-    else:
-        return HttpResponse('auth error')
-    if 'l' in request.GET:
-        return render(request, 'v3/final/presenter-pages/final/preview.html', context)
-
-
-    if session.edited == True:
-        edit = session.edits.order_by('-date')[0]
-        context['edit'] = edit
-        session.name = edit.name
-        session.description = edit.description
-
-    return render(request, 'v3/final/presenter-pages/final/preview.html', context)
+from forms import PdSessionForm
 
 
 def presenter_uploads(request):
@@ -47,6 +26,16 @@ def presenter_uploads(request):
     recordings = PdAudio.objects.filter(appuser = request.user.profile, used = False, hidden = False)
     context = {'subjects' : subjects, 'recordings' : recordings}
     return render(request, 'v3/final/presenter-pages/final/upload.html', context)
+
+def getEditModel(request, id):
+    pd = PdSession.objects.get(pk=id)
+    context = {'sesh' : pd}
+
+    return render(request,'v3/final/presenter-pages/model-edit.html', context)
+
+
+def handle_uploaded_file(f):
+    destination = open('')
 
 
 def analytics_report(request):
@@ -63,6 +52,8 @@ def analytics_report(request):
     else:
         report_type = 'html'
 
+
+
     #datetime objects for range comparison
     try:
         start = dfi(start)
@@ -71,6 +62,10 @@ def analytics_report(request):
     except:
         context = {'type': None}
         return render_to_response('v3/final/presenter-pages/final/reports/analytics.html', context)
+
+
+
+
 
     #tally takes and earnings
     ppd = request.user.presenter.pdsession_set.filter(approved=True)
@@ -372,11 +367,9 @@ def dash(request, msg=False):
 
                 new_session.presenters.add(Presenter.objects.get(user=request.user))
 
-                subject = 'new upload/release'
-                send_to = ['support@pdsquirrel.ca', 'admin@pdsquirrel.ca', 'cdemond@pdsquirrel.ca']
-                msg = request.user.username + ' has uploaded and released a new session'
 
-                tasks.sendMail.apply_async([send_to, subject, msg])
+                msg = request.user.username + ' has uploaded and released a new session'
+                send_mail('new upload/release' , msg , 'support@pdsquirrel.ca', ['admin@pdsquirrel.ca', 'cdemond@pdsquirrel.ca'], fail_silently=False)
 
                 messages.add_message(request, messages.INFO, "Thank you for uploading your PD Session, titled '%s'." % new_session)
 
@@ -416,6 +409,7 @@ def edit(request, id):
     pd = PdSession.objects.get(pk=id)
     context = {'sesh' : pd, 'subjects' : Subject.objects.all()}
     if request.POST:
+
 
         #the following creates the edit
         if 'create-edit' in request.POST:
@@ -509,13 +503,9 @@ def edit(request, id):
         return render(request, 'v3/final/presenter-pages/final/edit.html' , context)
 
 
-# date from input
-def dfi(user_input,return_dict=False):
-    date = str(user_input)
-    day = int(date[8:10])
-    month = int(date[5:7])
-    year = int(date[:4])
-    return datetime.date(year,month,day)
+def notice(request):
+    pass
+
 
 
 @csrf_exempt
@@ -564,3 +554,11 @@ def record(request):
 
 
         return render(request, 'v3/final/presenter-pages/final/record.html', c)
+
+def editRecording(request, r_id=False):
+    pdaudio = PdAudio.objects.get(pk=r_id)
+    fname = pdaudio.getMp3Location()
+    f = open(fname, "rb")
+    lol = list(f)
+    c = {'pdaudio': pdaudio, 'f': f, 'lol': lol}
+    return render(request, 'v3/final/presenter-pages/final/edit-recording.html', c)

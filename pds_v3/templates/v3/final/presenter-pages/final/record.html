@@ -1,6 +1,7 @@
 {% load staticfiles %}
 
 {# NOTE: if this page is not working, re dump this script at bottom: #}
+<script src="{% static 'js/presenter/record.js' %}"></script>
 <script src="/static/js/wav.js"></script> {# recorder script #}
 <link rel="stylesheet" href="{% static 'css/presenter/record.css' %}">
 <div class="main col-lg-10 col-lg-offset-1 hidden" id="loader">
@@ -22,12 +23,12 @@
 	</div>
 <div class="col-lg-9 col-lg-offset-1" id="container">
 
-	<h4>Record a session <small><a name="js-info-record" class="status-link" id="infoLink">(info <span>&blacktriangledown;</span>)</a></small></h4>
+	<h4>Record a session <small><a class="status-link" onclick="showInfo(this)" id="infoLink">(info ▾)</a></small></h4>
 	<hr>
     <div class="row">
         <div class="col-lg-9 col-lg-offset-1"></div>
 	</div>
-    <div class="row hidden" name="js-info-record">
+    <div class="row hidden" id="info-row">
 		<div class="alert alert-info">
 			<p>
 				Record a PD session (to a maximum of 20 minutes) directly from this page with just your PC and a USB microphone. Our recorder is
@@ -51,7 +52,7 @@
 				allow this page to use the microphone, but this is not necessary.
 			</p>
 			<div class="row">
-				<div class="col-lg-12"><button class="btn btn-default pull-right" name="js-info-record">Close</button></div>
+				<div class="col-lg-12"><button class="btn btn-default pull-right" onclick="closeInfo()">Close</button></div>
 			</div>
 		</div>
     </div>
@@ -87,15 +88,15 @@
 			<div class="col-lg-12">
 
 				<hr>
-				<label style="margin-bottom: 15px">Trim Function <small><a id="trimbtn" name="js-info-trim" class="status-link">(info <span>&blacktriangledown;</span>)</a></small></label>
-				<div class="row hidden" name="js-info-trim">
+				<label style="margin-bottom: 15px">Trim Function <small><a id="trimbtn" class="status-link" onclick="showTrimInfo(this)">(info ▾)</a></small></label>
+				<div class="row hidden" id="triminfo">
 					<div class="alert alert-info">
 						<p>
 						Use the trim function to permanently delete portions of your recording. First, identify the part to be deleted by selecting the start and end time. Do this by clicking the Set button while listening or type in the times.
 						Next, click Preview to listen and make sure it is what you wish to delete. Finally, click Trim to delete the selected portion. The trimmed portion cannot be recovered.
 						</p>
 						<div class="row">
-							<div class="col-lg-12"><button name="js-info-trim" class="btn btn-default pull-right">Close</button></div>
+							<div class="col-lg-12"><button class="btn btn-default pull-right" onclick="closeTrim()">Close</button></div>
 						</div>
 					</div>
 				</div>
@@ -187,6 +188,3 @@
     </div>
 
 </div>
-<script>
-info_box_activate(); // Reload info box for ajax
-</script>

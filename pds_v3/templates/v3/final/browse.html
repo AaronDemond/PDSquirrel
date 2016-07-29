@@ -5,8 +5,10 @@
         <title>PD Squirrel Browse</title>
         <meta name=”description” content='Browse professional development talks, offered by lawyers, for lawyers'>
 {% endblock header-metatags %}
+{% block header-content %}
+        <link rel="stylesheet" href="{% static 'css/user/browse.css' %}">
+{% endblock header-content %}
 {% block body %}
-{% include "v3/final/add-ons/deferred-css.html" with css1='user/browse' %}
 
 <div id="main-content" class="container" >
     <div class="row">

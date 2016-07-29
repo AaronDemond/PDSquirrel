@@ -8,12 +8,6 @@ td {
   padding: 0px;
 }
 
-.hide-info-td {
-	padding: 0px !important;
-	border: none !important;
-	height: 0px;
-}
-
 .no-indent {
   margin-left: 0px;
 }
@@ -40,7 +34,9 @@ h3 {
   margin-top: 20px;
   background-color: white;
 }
-
+.col1 {
+  color: grey;
+}
 #error-container {
   padding-left: 0;
   margin-top:20px
@@ -90,3 +86,8 @@ h3 {
     margin-left: 5px;
   }
 }
+
+.alert {
+	padding-bottom: 0px !important;
+}
+

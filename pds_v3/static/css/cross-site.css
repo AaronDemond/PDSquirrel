@@ -1,0 +1,118 @@
+
+body {
+    background-color: rgb(246,246,246);
+}
+
+.hidden {
+    display: none;
+}
+
+#browse-container {
+    height: 120px;
+
+}
+
+#search-container {
+    height: 120px;
+
+}
+
+
+h1 {
+    font-size: 1.4em;
+    float:left;
+}
+
+img {
+    overflow: hidden;
+}
+
+#main-content {
+    min-height: 800px;
+}
+
+a {
+  cursor: pointer;
+}
+
+.pd-list-small-info {
+    font-size: 0.8em;
+}
+
+.browse-btn-fix {
+	height: 34px;
+}
+
+html, body {
+	width: auto !important;
+	height: auto !important;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+.modal-content {
+    padding:10px;
+}
+
+.payment-errors {
+    color: red;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    font-weight: bold;
+}
+#payment-form {
+    width: 100%;
+}
+
+
+#pd-listing h3 {
+  font-size: 18px !important;
+  margin-bottom: 0 !important; }
+#pd-listing p {
+  margin: 0;
+  padding: 0;
+  color: #545454;
+  line-height: 1.4; }
+
+
+.btn-default {
+  height: 34px !important; }
+
+.pd-list-small-info {
+  color: grey;
+  font-style: italic; }
+
+
+#main-content {
+  min-height: 850px;
+  border-radius: 0px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  background-color: white;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.muted {
+  color: grey;
+
+ }
+
+.removal-bar, .cancel-removal-bar {
+  background-color: aliceblue;
+  padding-top: 10;
+  border-top: 1px solid #DDDDDD;
+  position: relative;
+  top: 10px; }
+
+.pd-upload {
+  padding-bottom: 0px; }
+
+.submit-fix {
+  margin-top: 10px; }
+
+label {
+  color: #717171 !important;
+}

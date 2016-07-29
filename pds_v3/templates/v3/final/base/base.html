@@ -123,6 +123,7 @@
             <div class="col-sm-7 col-sm-offset-1 col-xs-12">
                 <ul id="bottom-nav-links" class="list-inline">
                     {% block bottom-nav-links %}
+                    {# merged into learn to be removed <li><a href="{% url 'about' %}">About Us</a></li> #}
                     <li><a href="{% url 'learn' %}">About</a></li>
                     <li><a href="{% url 'contact-us' %}">Contact Us</a></li>
                     <li><a href="{% url 'presenter-info' %}">Become a Presenter</a></li>

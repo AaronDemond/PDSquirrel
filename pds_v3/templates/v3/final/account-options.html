@@ -78,6 +78,15 @@ payments from our PD Squirrel members. None of your sensitive information is sto
 					</div>
 				{% endfor %}
 				{% endif %}
+          {% if msgs %}
+          {% for msg in msgs %}
+          <div class="alert alert-{{msg.0}} msg" role="alert">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            {{ msg.1 }}
+          </div>
+
+          {% endfor %}
+          {% endif %}
         </div>
       </div>
 
@@ -89,15 +98,15 @@ payments from our PD Squirrel members. None of your sensitive information is sto
           <h3 class="account-header">My Account<small></small></h3>
 					<table class="table">
             <tr>
-                <td class='muted'>Name</td>
+                <td class='col1'>Name</td>
                 <td>{{user.first_name}} {{user.last_name}}</td>
             </tr>
             <tr>
-                <td class='muted'>Email</td>
+                <td class='col1'>Email</td>
                 <td>{{user.email}}</td>
             </tr>
             <tr>
-                <td class='muted'>Law society</td>
+                <td class='col1'>Law society</td>
                 <td>
 
                         {{ user.profile.society.all | join:", " }}
@@ -105,13 +114,13 @@ payments from our PD Squirrel members. None of your sensitive information is sto
                 </td>
             </tr>
             <tr>
-                <td class='muted'>Date joined PDS</td>
+                <td class='col1'>Date joined PDS</td>
                 <td>{{user.profile.date_joined|remove_time}}</td>
             </tr>
             <tr>
-                <td class='muted'>My cards <a name="js-info-add-card">(more information <span>&blacktriangledown;</span>)</a>
+                <td class='col1'>My cards <a onclick="showPaymentInfo()">(more information)</a>
 					<br>
-					How we process payments <a name="js-info-stripe">(more <span>&blacktriangledown;</span>)</a>
+					How we process payments <a onclick="showStripeInformation()">(more)</a>
 				</td>
                 <td id="card-cell">
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Add Card</button>
@@ -135,7 +144,7 @@ payments from our PD Squirrel members. None of your sensitive information is sto
             </table>
 
             <!-- More Information -->
-<div name="js-info-stripe" class="alert alert-info hidden" id="stripe-info">
+<div class="alert alert-info hidden" id="stripe-info">
   <p>
     We use the services of Stripe Payments Canada, Ltd., with which we have a merchant agreement, to receive and process payments from our PD Squirrel members. None of your credit card information is stored on our servers, except only the four last digits for your reference purposes only. Instead we receive from Stripe only an electronic token which we use to charge the appropriate payment to your card. Learn more about Stripe by clicking <a target="_blank" href="https://stripe.com/ca">here.</a>
   </p>
@@ -143,20 +152,20 @@ payments from our PD Squirrel members. None of your sensitive information is sto
                 <div class="row">
                     <div class="col-xs-12">
                         <p class="pull-right">
-                            <button id="showPayment" class="btn btn-default" name="js-info-stripe" >Close</button>
+                            <button id="showPayment" class="btn btn-default" onclick="showStripeInformation()" >Close</button>
                         </p>
                     </div>
                 </div>
             </div>
 
-						<div name="js-info-add-card" class="alert alert-info hidden " id="payment-info">
+						<div class="alert alert-info hidden" id="payment-info">
 
 								<p>Click the 'Add Card' button to add a credit card to your account. The linked card can then be used to easily become a Premium member, or purchase individual PD sessions. You can remove or change a card at any point, by clicking the 'Remove Card' button that appears once a card has been added.</p>
 
                 <div class="row">
                     <div class="col-xs-12">
                         <p class="pull-right">
-                            <button id="showPayment" class="btn btn-default" name="js-info-add-card">Close</button>
+                            <button id="showPayment" class="btn btn-default" onclick="showPaymentInfo()" >Close</button>
                         </p>
                     </div>
                 </div>
@@ -164,6 +173,7 @@ payments from our PD Squirrel members. None of your sensitive information is sto
             <!-- End More Information -->
 				  </div>
         </div>
+
         <!-- My Membership -->
 
         <div class="row">
@@ -172,13 +182,13 @@ payments from our PD Squirrel members. None of your sensitive information is sto
             <h3 class="account-header">My Membership<small></small></h3>
               <table class="table">
                 <tr>
-                    <td class="muted">Membership type <a name="js-info-membership">(more <span>&blacktriangledown;</span>)</a></td>
+                    <td class="col1">Membership type <a onclick="showMembershipTypeInfo()">(more)</a></td>
                     <td><b>{% if user.profile.is_premium %}Premium{% else %}Standard{% endif %}</b></td>
                 </tr>
-		            <tr>
-			              <td colspan="2" class="hide-info-td">
+		            <tr id="membership-type-info" class="hidden">
+			              <td colspan="2">
                       <div class="col-xs-12" >
-                          <div name="js-info-membership" class="alert alert-info hidden" >
+                          <div class="alert alert-info" >
 					                  <p>
                               <b>Premium PD Squirrel membership</b> – For a monthly fee of $29.99 (GST/HST included), you are entitled to
                               take any 6 PD sessions during the month – you choose the sessions.  The monthly fee is billed directly to
@@ -205,7 +215,7 @@ payments from our PD Squirrel members. None of your sensitive information is sto
                             <div class="row">
                               <div class="col-xs-12">
                                 <p class="pull-right">
-                                  <button name="js-info-membership" class="btn btn-default">Close</button>
+                                  <button onclick="showMembershipTypeInfo()" class="btn btn-default">Close</button>
                                 </p>
                               </div>
                             </div>
@@ -217,32 +227,32 @@ payments from our PD Squirrel members. None of your sensitive information is sto
               {% if user.profile.is_premium %}
               {% if customer.subscriptions.total_count > 0 %}
               <tr>
-                  <td class="muted">Current monthly cycle ends </td>
+                  <td class="col1">Current monthly cycle ends </td>
                   <td>{{ customer.subscriptions.data.0.current_period_end|unix_time_convert}}</td>
               </tr>
 
               <tr>
-                  <td class="muted">Next billing date</td>
+                  <td class="col1">Next billing date</td>
                   <td>
                       ${{ customer.subscriptions.data.0.plan.amount|format_cents }} will be billed on
                       {{ customer.subscriptions.data.0.current_period_end|add_day}} for the next monthly cycle.
                   </td>
               </tr>
               <tr>
-                  <td class="muted">Session credits remaining <a name="js-info-credits">(more <span>&blacktriangledown;</span>)</a></td>
+                  <td class="col1">Session credits remaining <a onclick="showCreditInfo()">(more)</a></td>
                   <td>{{ user.profile.remaining_pd }}</td>
               </tr>
               {% endif %}
               {% else %}
               <tr>
-                  <td class="muted">Session credits remaining <a name="js-info-credits">(more <span>&blacktriangledown;</span>)</a> </td>
+                  <td class="col1">Session credits remaining <a onclick="showCreditInfo()">(more)</a> </td>
                   <td>{{ user.profile.remaining_pd }}</td>
               </tr>
               {% endif %}
 
       				<tr>
-    				    <td colspan="2" class="hide-info-td">
-        					<div name="js-info-credits" class="alert alert-info hidden">
+    				    <td colspan="2" class="hidden" id="credit-info">
+        					<div class="alert alert-info">
       					    <p>
           						<b>Session credits</b> - means the number of PD sessions you may take from the PD Squirrel site at this time,
           						without any further payment.  Every PD Squirrel members gets one free credit upon joining.  Standard
@@ -253,7 +263,7 @@ payments from our PD Squirrel members. None of your sensitive information is sto
         					    <div class="row">
             						<div class="col-xs-12">
           						    <p class="pull-right">
-							             <button id="showCredit" class="btn btn-default" name="js-info-credits">Close</button>
+							             <button id="showCredit" class="btn btn-default" onclick="showCreditInfo()">Close</button>
           						    </p>
             						</div>
         					    </div>
@@ -261,14 +271,13 @@ payments from our PD Squirrel members. None of your sensitive information is sto
     				    </td>
       				</tr>
               <tr>
-                <td class="muted">{% if user.profile.is_premium %}Downgrade membership {% else %}
-                    Upgrade membership to Premium {% endif %}
-                    <!--<a name="js-info-change-membership" onclick="showChangeMembership()">(more <span>&blacktriangledown;</span>)</a>-->
+                <td class="col1">{% if user.profile.is_premium %}Downgrade membership {% else %}
+                    Upgrade membership to Premium {% endif %}<a onclick="showChangeMembership()">(more)</a>
                 </td>
                 <td>
-                  <a class="btn btn-primary" name="js-info-change-membership">Change Membership</a>
+                  <button class="btn btn-primary" onclick="showChangeMembership()">Change Membership</button>
                 	{% if user.profile.is_premium %}
-                	<a class="btn btn-primary" name="js-info-change-default">Change Payment Method</a>
+                	<button class="btn btn-primary" onclick="showChangeDefault()">Change Payment Method</button>
                 	{% endif %}
                 </td>
               </tr>
@@ -278,7 +287,7 @@ payments from our PD Squirrel members. None of your sensitive information is sto
 
          <!-- Change Payment Method -->
 
-  					<div name="js-info-change-default" class="row hidden">
+  					<div id="change-default" class="row hidden">
   						<div class="col-lg-10 col-lg-offset-1">
   							<div id="change-default-sub-container" class="alert alert-info">
   								<form action="{% url 'update-payment' %}" method="POST">
@@ -293,7 +302,7 @@ payments from our PD Squirrel members. None of your sensitive information is sto
                                       </form>
   								<p>Current default: {{ customer.sources.data.0.brand }} **** **** **** {{ customer.sources.data.0.last4 }}</p>
   								<p class="pull-right">
-  									<button class="btn btn-default" name="js-info-change-default">Cancel</button>
+  									<button class="btn btn-default" onclick="showChangeDefault()">Cancel</button>
   								</p>
   							</div>
   						</div>
@@ -301,7 +310,7 @@ payments from our PD Squirrel members. None of your sensitive information is sto
 
             <!-- Change Membership -->
 
-            <div class="row hidden" name="js-info-change-membership">
+            <div class="row hidden" id="change-membership">
                 <div class="col-lg-10 col-lg-offset-1">
                     <div class="alert alert-info">
             					{% if user.profile.is_premium %}
@@ -382,7 +391,7 @@ payments from our PD Squirrel members. None of your sensitive information is sto
 									{% endif %} {# end if user premium #}
 
                       <p class="pull-right">
-                          <button name="js-info-change-membership" class="btn btn-default">Cancel</button>
+                          <button onclick="showChangeMembership()" class="btn btn-default">Cancel</button>
                       </p>
 
             					<div id="btnholder">
@@ -403,7 +412,7 @@ payments from our PD Squirrel members. None of your sensitive information is sto
                   <form action="{% url 'change-email' %}" method="POST">
                       {% csrf_token %}
                       <tr>
-                          <td class="muted">Change email</td>
+                          <td class="col1">Change email</td>
                       </tr>
                       <tr>
                           <td>
@@ -428,7 +437,7 @@ payments from our PD Squirrel members. None of your sensitive information is sto
                           </td>
                       </tr>
                       <tr>
-                        <td class="muted">Change password</td>
+                        <td class="col1">Change password</td>
                       </tr>
                     </form>
                     <form action="{% url 'change-pass' %}" method = "POST" >

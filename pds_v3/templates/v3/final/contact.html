@@ -4,8 +4,10 @@
         <title>PD Squirrel Contact</title>
         <meta name=”description” content='Contact PDSquirrel'>
 {% endblock header-metatags %}
+{% block header-content %}
+        <link rel="stylesheet" href="{% static 'css/user/contact.css' %}">
+{% endblock header-content %}
 {% block body %}
-{% include "v3/final/add-ons/deferred-css.html" with css1='user/contact' %}
 
 <div class="container" id="main-content" >
 
