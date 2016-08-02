@@ -116,9 +116,6 @@ a {
 html, body {
 	width: auto !important;
 	height: auto !important;
-}
-
-body {
   overflow-x: hidden;
 }
 
