@@ -31,6 +31,12 @@ input[type="file"] {
 	padding-top: 0px;
 }
 
+/* Personal */
+.tighten-form {
+  margin: 0px !important; /* Overwrite bootstrap */
+}
+
+
 /* Record */
 .timebox {
 	padding-bottom: 3px;
