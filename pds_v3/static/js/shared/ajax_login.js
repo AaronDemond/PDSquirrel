@@ -34,6 +34,10 @@ example:
 ...
 <button name="js-info-X">...</button>
 </div>
+
+<script>
+info_box_activate(); // Reload info box for ajax
+</script>
 */
 info_box_activate();
 
