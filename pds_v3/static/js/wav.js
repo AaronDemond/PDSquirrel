@@ -782,7 +782,7 @@ function disableLinks() {
 				console.log(this_audio[0]); // fields_obj, model_str, pk_id
 				pda_obj = this_audio[0]
 				context.close();
-				$('#loader').empty();
+				$('#loader').addClass('hidden');
 				alert("Save Successful, your file can now be uploaded as a session on the upload tab.");
 				onbeforeunload = null;
 				window.location.replace("/user/presenter/dash/?direct_to=recorder");
