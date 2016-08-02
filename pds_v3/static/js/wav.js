@@ -29,16 +29,15 @@ function previewAudio(id, preview_link) {
 	});
 
 	// Toggle state of arrow in clicked preview button
-	if ($(preview_link).text() == 'Listen ⏵' ) {
+	var $arrow = $(preview_link).children('span');
+	var arrowcode = $arrow.text().charCodeAt(0);
+	if (arrowcode == 9656 ) {
 		$(row_id).append(html);
-		$(preview_link).text('Listen '); //left arrow
-		$(preview_link).append('&#9666;');
+		$arrow.html('&#9666;'); //left arrow
 
 	} else {
-		$(preview_link).text('Listen '); //right arrow
-		$(preview_link).append('&#9656;');
 		$(row_id).empty();
-
+		$arrow.html('&#9656;'); //right arrow
 	}
 
 }
