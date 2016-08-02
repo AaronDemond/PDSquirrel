@@ -31,6 +31,10 @@ input[type="file"] {
 	padding-top: 0px;
 }
 
+#loader {
+ top: 100px;
+}
+
 /* Personal */
 .tighten-form {
   margin: 0px !important; /* Overwrite bootstrap */
@@ -68,21 +72,12 @@ input[type="file"] {
 	background-color: #f2dede;
 }
 
- #record-loader {
-	margin-top: 100px;
- }
-
  /* Upload */
 .control-group {
 	margin-bottom: 20px;
 }
 .ctrl-group-tight {
 	margin-bottom: 0px;
-}
-
-#upload-loader {
-	position: relative;
-	bottom: 400px;
 }
 
 /* Sessions */

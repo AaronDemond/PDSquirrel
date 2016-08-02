@@ -1,14 +1,4 @@
-<div class="row">
-	<div class="col-lg-9 col-lg-offset-1">
-		<div class="msg-container">
-			{% if messages %}
-			{% for msg in messages %}
-			<div class="alert alert-{{msg.tags}} msg" role="alert">{{msg}}<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a></div>
-			{% endfor %}
-			{% endif %}
-		</div>
-	</div>
-</div>
+
 <div class="row">
 	<div class="col-lg-9 col-lg-offset-1">
 			<a onclick="loadXMLDoc('/user/presenter/dash/?mysessions', '#page-content')">Back to my Sessions</a>
