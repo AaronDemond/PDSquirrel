@@ -284,7 +284,7 @@ def presenter_detail(request, p_id):
 
     name = presenter
     context = {'name': name, 'bio': presenter.bio, 'img': '/static/img/placeholder.png ', 'presenter': presenter}
-
+    context['url'] = "user/presenter/"+p_id
     pd_list = presenter.pdsession_set.filter(suspended=False, approved=True)
 
     if pd_list:
