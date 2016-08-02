@@ -184,6 +184,11 @@ label {
   color: #717171 !important;
 }
 
+#email-icon {
+  padding:1.2px;
+  margin-right:5px;
+  float:left;
+}
 
 /* Loader */
 
