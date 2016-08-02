@@ -75,7 +75,7 @@
 						<div class="control-group">
 							<p class="help-block">Select attachments to mark them for deletion. Select multiple by holding ctrl / command. </p>
 
-							<select multiple id="" name="files_to_delete">
+							<select multiple id="file_select" name="files_to_delete">
 							{% for attachment in sesh.attachments.all %}
 								<option value="{{ attachment.id }}">
 								{{ attachment.attachment }}
@@ -161,7 +161,6 @@
 		</form>
 	</div>
 </div>
-<script src="{% static 'js/presenter/edit.js' %}"></script>
 <script src="{% static 'js/presenter/form_helpers.js' %}"></script>
 <script>
 info_box_activate(); // Reload info box for ajax
