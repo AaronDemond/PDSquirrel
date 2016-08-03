@@ -294,7 +294,8 @@ function disableLinks() {
 		});
     } else {
       mic_available = false;
-		  alert('getUserMedia not supported in this browser.');
+			console.log('getUserMedia not supported in this browser.');
+		  alert('The record tab does not work in your browser, please conside using chrome or firefox');
     }
 
 	 function showData(url, audio_clip_name, pdaudio_id){
@@ -788,7 +789,7 @@ function disableLinks() {
 			},
 			error: function(data) {
 				alert("Error uploading audio file. We recommend you download this file using the link below, otherwise it will be lost.");
-
+				$('#loader').addClass('hidden');
 				// Display download link to wav
 				page_content.innerHTML ='<div class="col-lg-10 col-lg-offset-1" ><a href="' +
 				   	local_download_url + '" download="' +
