@@ -23,8 +23,7 @@ function previewAudio(id, preview_link) {
 	// Change arrow to closed state on all other links
 	$(".preview-link").each(function() {
 		if ( !$(this).is($(preview_link)) ) {
-			$(this).text('Listen ');
-			$(this).append('&#9656;'); //right arrow
+			$(this).children('span').html('&#9656;');
 		}
 	});
 
