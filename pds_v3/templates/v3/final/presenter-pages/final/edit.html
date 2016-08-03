@@ -1,16 +1,5 @@
 {% load staticfiles %}
-	<link rel="stylesheet" href="{% static 'css/presenter/presenter-hub.css' %}">
-
 <div class="row">
-	<div class="col-xs-9 col-lg-offset-1">
-		<div class="msg-container">
-			{% if messages %}
-			{% for msg in messages %}
-			<div class="alert alert-{{msg.tags}} msg" role="alert">{{msg}}<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a></div>
-			{% endfor %}
-			{% endif %}
-		</div>
-	</div>
 	<div class="col-lg-9 col-lg-offset-1">
 		<div class="row">
 			<div class="col-xs-10">
@@ -86,7 +75,7 @@
 						<div class="control-group">
 							<p class="help-block">Select attachments to mark them for deletion. Select multiple by holding ctrl / command. </p>
 
-							<select multiple id="" name="files_to_delete">
+							<select multiple id="file_select" name="files_to_delete">
 							{% for attachment in sesh.attachments.all %}
 								<option value="{{ attachment.id }}">
 								{{ attachment.attachment }}
@@ -125,7 +114,7 @@
 						<div id="file-upload-container">
 							<div class="control-group">
 								<label for="">Optional attachment(s)</label>
-								<input type="file" class="form-control file-input" onclick="anotherFile()" name="file-upload-0">
+								<input type="file" class="form-control" onclick="anotherFile()" name="file-upload-0">
 								<p class="help-block">
 									You may upload attachments
 									to supplement your PD Session, such as PDF files or other documents.
@@ -172,7 +161,6 @@
 		</form>
 	</div>
 </div>
-<script src="{% static 'js/presenter/edit.js' %}"></script>
 <script src="{% static 'js/presenter/form_helpers.js' %}"></script>
 <script>
 info_box_activate(); // Reload info box for ajax

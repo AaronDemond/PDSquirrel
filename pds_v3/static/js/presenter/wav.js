@@ -23,21 +23,20 @@ function previewAudio(id, preview_link) {
 	// Change arrow to closed state on all other links
 	$(".preview-link").each(function() {
 		if ( !$(this).is($(preview_link)) ) {
-			$(this).text('Listen ⏵');
+			$(this).children('span').html('&#9656;');
 		}
 	});
 
 	// Toggle state of arrow in clicked preview button
-	if ($(preview_link).text() == 'Listen ⏵' ) {
+	var $arrow = $(preview_link).children('span');
+	var arrowcode = $arrow.text().charCodeAt(0);
+	if (arrowcode == 9656 ) {
 		$(row_id).append(html);
-		$(preview_link).text('Listen ⏴');
-
+		$arrow.html('&#9666;'); //left arrow
 
 	} else {
-		$(preview_link).text('Listen ⏵');
-		$(preview_link).text('Listen ⏵');
 		$(row_id).empty();
-
+		$arrow.html('&#9656;'); //right arrow
 	}
 
 }
@@ -295,7 +294,8 @@ function disableLinks() {
 		});
     } else {
       mic_available = false;
-		  alert('getUserMedia not supported in this browser.');
+			console.log('getUserMedia not supported in this browser.');
+		  alert('The record tab does not work in your browser, please conside using chrome or firefox');
     }
 
 	 function showData(url, audio_clip_name, pdaudio_id){
@@ -791,7 +791,7 @@ function disableLinks() {
 			},
 			error: function(data) {
 				alert("Error uploading audio file. We recommend you download this file using the link below, otherwise it will be lost.");
-
+				$('#loader').addClass('hidden');
 				// Display download link to wav
 				page_content.innerHTML ='<div class="col-lg-10 col-lg-offset-1" ><a href="' +
 				   	local_download_url + '" download="' +
