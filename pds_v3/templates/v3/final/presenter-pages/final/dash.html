@@ -70,19 +70,13 @@
 </div>
 {% endblock %}
 {% block footer-content %}
-<script src="{% static 'js/myscript.js' %}"></script>
+<script src="{% static 'js/shared/loadxmldoc.js' %}"></script>
 <script>
-
 
 /*
 	This function uses variables from the template language,
 	so we can't move it to static. This is fine for now.
 */
-
-	$('button').click(function() {
-	     $('button').removeClass('active');
-	     $(this).addClass('active');
-	});
 
 	if ("{{direct_to}}" == "sessions") {
 	    loadXMLDoc('/user/presenter/dash/?mysessions', '#page-content');
@@ -126,5 +120,17 @@
 	    $("li").removeClass("active");
 	    $("#dash-link").addClass("active");
 	}
+
+	$(document).ready(function() {
+		$('#pres-hub-nav li').click(function() {
+		$("#pres-hub-nav li").removeClass('active');
+		$(this).addClass('active');
+			});
+	});
+
+	$('button').click(function() {
+			 $('button').removeClass('active');
+			 $(this).addClass('active');
+	});
 </script>
 {% endblock footer-content %}
