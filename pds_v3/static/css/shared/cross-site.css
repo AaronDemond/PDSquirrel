@@ -77,6 +77,13 @@ body {
     display: none;
 }
 
+.no-style-link {
+  color: inherit;
+}
+.no-style-link:hover {
+  color: inherit;
+}
+
 #browse-container {
     height: 120px;
 

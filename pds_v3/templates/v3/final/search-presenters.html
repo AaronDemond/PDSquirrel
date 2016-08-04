@@ -55,12 +55,10 @@
   padding-right: 10px;
 }
 
-.subject-divider {
-	color: grey;
-}
 .selected {
 	font-weight: bold;
 }
+
 </style>
 
 <div id="main-content" class="container">
@@ -88,7 +86,7 @@
 			  <button type="submit" name="society" value="{{society.id}}" class="btn btn-link">{{ society }}</button>
 			  	{% endif %}
 			  {% if not forloop.last %}
-			  <span class="subject-divider">|</span>
+			  <span class="muted">|</span>
 			  {% endif %}
 			{% endfor %}
 		  </form>
@@ -101,8 +99,10 @@
         <div class="person">
           <div class="thumbnail_container">
             <div class="thumbnail">
+              <a href="{% url 'presenter-detail' presenter.id %}" class="no-style-link">
               <img src="/static/presenter_pics/{{presenter.image_name}}"
         		   	 alt="">
+               </a>
             </div>
           </div>
           <div class="presenter-info">
