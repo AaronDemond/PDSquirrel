@@ -1,0 +1,121 @@
+{% extends "v3/final/base/base.html" %}
+{% load staticfiles %}
+{% load pds_extras %}
+{% block header-metatags %}
+        <title>PD Squirrel Presenters</title>
+        <meta name=”description” content='Browse professional development talks, offered by lawyers, for lawyers'>
+{% endblock header-metatags %}
+{% block header-content %}
+        <link rel="stylesheet" href="{% static 'css/user/browse.css' %}">
+{% endblock header-content %}
+{% block body %}
+
+<style>
+.pres-image {
+	width: 150px;
+
+}
+
+
+.thumbnail_container {
+   position: relative;
+   width: 100%;
+   padding-bottom: 100%;
+  margin-bottom:10px;
+}
+
+.thumbnail {
+    position:absolute;
+    width:100%;
+    height:100%;
+}
+.thumbnail img {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    max-height:100%;
+    max-width:100%;
+}
+.presenter-info {
+  height: 75px;
+}
+
+.person {
+	margin-bottom: 20px !important;
+  border: 1px solid #ddd;
+  background-color: #eee;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.subject-divider {
+	color: grey;
+}
+.selected {
+	font-weight: bold;
+}
+</style>
+
+<div id="main-content" class="container">
+	<div class="row" style="">
+		<div class="col-lg-10 col-lg-offset-1 text-center">
+			<h2>Meet our Presenters</h2>
+			<p>Click on a presenters name to view their biograpghy</p>
+		</div>
+	</div>
+	<div class="row" style="margin-top: 30px">
+		<div class="col-xs-12 text-center">
+      <h4>Filter by Society</h4>
+		  <form action="{% url 'search-presenters' %}" method="GET">
+			<input type="hidden" name="by-society" value="1">
+
+			{% if selected == 0 %}
+			  <button type="submit" name="society" value="0" class="btn btn-link selected">All presenters</button>
+			  {% else %}
+			  <button type="submit" name="society" value="0" class="btn btn-link">All presenters</button>
+			  {% endif %}
+			{% for society in societies %}
+				{% if selected == society.id %}
+			  <button type="submit" name="society" value="{{society.id}}" class="btn btn-link selected">{{ society }}</button>
+			  	{% else %}
+			  <button type="submit" name="society" value="{{society.id}}" class="btn btn-link">{{ society }}</button>
+			  	{% endif %}
+			  {% if not forloop.last %}
+			  <span class="subject-divider">|</span>
+			  {% endif %}
+			{% endfor %}
+		  </form>
+		</div>
+	</div>
+  <div class="container-fluid">
+    <div class="row">
+  		{% for presenter in people %}
+  		<div class="col-md-3 col-sm-4 col-xs-6">
+        <div class="person">
+          <div class="thumbnail_container">
+            <div class="thumbnail">
+              <img src="/static/presenter_pics/{{presenter.image_name}}"
+        		   	 alt="">
+            </div>
+          </div>
+          <div class="presenter-info">
+            <h4><a href="{% url 'presenter-detail' presenter.id %}">{{presenter}}</a></h4>
+            <h5>{{presenter.credentials}}</h5>
+            <h5>{{presenter.law_firm}}</h5>
+
+          </div>
+        </div>
+
+      </div>
+  		{% endfor %}
+  	</div>
+  </div>
+
+</div>
+{% endblock %}
+{% block footer-content %}
+<script src="{% static 'js/user/browse.js' %}"></script>
+{% endblock footer-content %}

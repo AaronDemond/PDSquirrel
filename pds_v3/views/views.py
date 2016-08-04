@@ -108,6 +108,21 @@ def browse(request):
     return render(request, 'v3/final/browse.html' , {'pd_list' : pd, 'range' : page_range, 'subjects' : Subject.objects.all(), 'type' : search_type, 'subject' : sub_name, 'query' : query})
 
 
+def search_presenters(request):
+    s = int(request.GET.get('society', 0))
+    if s == 0:
+        people = Presenter.objects.all()
+    else:
+        people = [x for x in Presenter.objects.all() if x.user.profile.society.all()[0].pk == s]
+        print people
+    context = {
+            'people' : people,
+            'societies' : LawSociety.objects.all(),
+            'selected' : s
+    }
+
+    return render(request, 'v3/final/search-presenters.html' , context)
+
 def fuseEdit(edit,pd):
     pd.name=edit.name
     pd.description=edit.description

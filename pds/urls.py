@@ -9,7 +9,7 @@ urlpatterns = [
     url(r'^browse/$', views.browse, name="browse"),
     url(r'^user/join/$', user_views.join, name="join"),
     url(r'^cap_ref/$', tmp_views.cap_ajax, name='cap-ref'),
-    url(r'^meet-the-presenters/$', views.meet_the_presenters, name='meet-the-presenters')
+    url(r'^meet-the-presenters/$', views.search_presenters, name='search-presenters'),
 
     # Browse page related views
     url(r'^pd/(?P<pd_id>\d+)/$', views.detail, name="detail"),
