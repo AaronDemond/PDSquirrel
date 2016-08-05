@@ -3,121 +3,29 @@
 {% load pds_extras %}
 {% block header-metatags %}
         <title>PD Squirrel Presenters</title>
-        <meta name=”description” content='Browse professional development talks, offered by lawyers, for lawyers'>
+        <meta name=”description” content='Find and search for presenters on PD Squirrel'>
 {% endblock header-metatags %}
 {% block header-content %}
-        <link rel="stylesheet" href="{% static 'css/user/browse.css' %}">
+        <link rel="stylesheet" href="{% static 'css/user/meet-our-presenters.css' %}">
 {% endblock header-content %}
 {% block body %}
 
-<style>
-.pres-image {
-	width: 150px;
-}
-
-.thumbnail_container {
-  position: relative;
-  width: 100%;
-  padding-bottom: 100%;
-  margin-bottom:10px;
-  margin-top: 5px;
-}
-
-.thumbnail {
-    position:absolute;
-    width:100%;
-    height:100%;
-    background-color: transparent;
-    border: none;
-    box-shadow: none;
-}
-.thumbnail img {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    margin: auto;
-    max-height:100%;
-    max-width:100%;
-}
-.presenter-info {
-  height: 75px;
-}
-
-.person {
-	margin-bottom: 20px !important;
-  border: 1px solid #ddd;
-  background-color: #eee;
-  padding-left: 10px;
-  padding-right: 10px;
-}
-
-.selected {
-	font-weight: bold;
-}
-
-.banner {
-  width: 100%;
-
-  opacity: 0.5;
-}
-
-.banner-container {
-  background-color: black;
-}
-
-.title {
-  position: absolute;
-  padding-top: 15%;
-  width: 100%;
-  z-index: 99;
-  left: 0;
-  color: white;
-}
-.title h2, .title p {
-  width: 100%;
-}
-.title h2 {
-  font-size: 4vw;
-}
-.title p {
-  font-size: 1.5vw;
-}
-.search-container {
-  margin-bottom: 15px;
-}
-
-@media all and (max-width: 1000px) {
-  .title {
-    padding-top: 10%;
-  }
-  .title h2 {
-    font-size: 5vw;
-  }
-  .title p {
-    font-size: 2.5vw;
-  }
-}
-
-</style>
-
-<div id="main-content" class="container" style="padding-top:0px;">
+<div id="main-content" class="container">
   <div class="row">
-    <div class="col-xs-12">
+    <div class="col-xs-12 no-padding">
       <div class="title-container text-center title">
         <h2>Meet our Presenters</h2>
         <p>Click on a presenters name to view their biograpghy</p>
       </div>
     </div>
-    <div class="col-xs-12" style="padding:0px;">
+    <div class="col-xs-12 no-padding">
       <div class="banner-container">
         <img class="banner img-responsive" src="/static/img/presenterbanner.jpg" alt="" />
       </div>
     </div>
 
 	</div>
-	<div class="row" style="margin-top: 20px">
+	<div class="row space-top">
 
 		<div class="col-xs-12 text-center">
       <h4>Filter by Society</h4>
@@ -182,6 +90,3 @@
 
 </div>
 {% endblock %}
-{% block footer-content %}
-<script src="{% static 'js/user/browse.js' %}"></script>
-{% endblock footer-content %}
