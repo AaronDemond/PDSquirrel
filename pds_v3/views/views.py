@@ -114,14 +114,13 @@ def meet_our_presenters(request):
         people = Presenter.objects.all()
     else:
         people = [x for x in Presenter.objects.all() if x.user.profile.society.all()[0].pk == s]
-        print people
     context = {
             'people' : people,
             'societies' : LawSociety.objects.all(),
             'selected' : s
     }
 
-    return render(request, 'v3/final/search-presenters.html' , context)
+    return render(request, 'v3/final/meet-our-presenters.html' , context)
 
 def fuseEdit(edit,pd):
     pd.name=edit.name
