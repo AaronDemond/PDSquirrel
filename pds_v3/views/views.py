@@ -108,7 +108,7 @@ def browse(request):
     return render(request, 'v3/final/browse.html' , {'pd_list' : pd, 'range' : page_range, 'subjects' : Subject.objects.all(), 'type' : search_type, 'subject' : sub_name, 'query' : query})
 
 
-def search_presenters(request):
+def meet_our_presenters(request):
     s = int(request.GET.get('society', 0))
     if s == 0:
         people = Presenter.objects.all()
