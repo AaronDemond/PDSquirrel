@@ -97,6 +97,9 @@
 .title p {
   font-size: 2vh;
 }
+.search-container {
+  margin-bottom: 15px;
+}
 
 </style>
 
@@ -115,7 +118,8 @@
     </div>
 
 	</div>
-	<div class="row" style="margin-top: 30px">
+	<div class="row" style="margin-top: 20px">
+    <!--
 		<div class="col-xs-12 text-center">
       <h4>Filter by Society</h4>
 		  <form action="{% url 'search-presenters' %}" method="GET">
@@ -138,6 +142,16 @@
 			{% endfor %}
 		  </form>
 		</div>
+  -->
+    <div class="col-xs-10 col-xs-offset-1 text-center">
+      <h4>Search for a presenter</h4>
+      <div class="input-group search-container">
+<input type="text" class="form-control" name = "query" id = "search_string" value="{% if type == 'search' %}{{query}}{% endif %}" placeholder="Search for..">
+          <span class="input-group-btn">
+          <button class="btn btn-success browse-btn-fix" type="submit">Go!</button>
+          </span>
+      </div>
+    </div>
 	</div>
   <div class="container-fluid">
     <div class="row">
