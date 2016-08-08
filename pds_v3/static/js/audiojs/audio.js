@@ -270,6 +270,9 @@
       // Return a new `audiojs` instance.
       var audio = new container[audiojsInstance](element, s);
 
+      // set initial volume to relfect that of the css value
+      audio.element.volume=0.5;
+
       // If css has been passed in, dynamically inject it into the `<head>`.
       if (s.css) this.helpers.injectCss(audio, s.css);
 
@@ -342,8 +345,6 @@
         var relativeLeft = e.clientX - leftPos(this);
         percent.style.width = relativeLeft + '%';
         audio.setVolume(relativeLeft/100);
-        console.log(relativeLeft);
-        //audio.skipTo(relativeLeft / scrubber.offsetWidth);
       });
 
       // _If flash is being used, then the following handlers don't need to be registered._
