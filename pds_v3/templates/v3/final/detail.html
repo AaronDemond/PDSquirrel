@@ -129,15 +129,17 @@
 
 					</div>
 					<div class="col-lg-12 audio_player">
-					<video id="player" class="video-js vjs-default-skin" controls preload="auto" width="85%" height="20" poster="" data-setup="{}">
-						{% if own == 1 %}
-						<source src="{% url 'audio' pd.id %}" type='audio/mpeg'>
-						{% endif %}
-					<p class="vjs-no-js">To view this video please enable JavaScript
-					<a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
-					</video>
-
-					</div>
+            <!--
+    					<video id="player" class="video-js vjs-default-skin" controls preload="auto" width="85%" height="20" poster="" data-setup="{}">
+    						{% if own == 1 %}
+    						<source src="{% url 'audio' pd.id %}" type='audio/mpeg'>
+    						{% endif %}
+    					<p class="vjs-no-js">To view this video please enable JavaScript
+    					<a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
+    					</video>
+            -->
+            <audio src="{% url 'audio' pd.id %}" preload="auto"></audio>
+          </div>
 				</div>
 			</div>
 			<div class="row">
@@ -370,6 +372,12 @@
 {% endblock %}
 
 {% block footer-content %}
+<script src="{% static 'js/audiojs/audio.js' %}"></script>
+<script>
+  audiojs.events.ready(function() {
+    audiojs.createAll();
+  });
+</script>
 <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
 <script type="text/javascript" src="{% static 'js/user/detail.js' %}"></script>
 {% endblock footer-content %}
