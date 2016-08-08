@@ -45,23 +45,32 @@
 			<div class="col-sm-6">
 				<div class="form-group">
 					<label for="credentials">Your designation(s)</label>
-					<input type="text"class="form-control" name="credentials" value="{{presenter.credentials}}">
+					<input type="text" class="form-control" name="credentials" value="{{presenter.credentials}}">
 				</div>
 				<div class="form-group">
-					<label for="public_email">Law or accounting firm</label>
-					<input type="text"class="form-control" name="law_firm" value="{{presenter.law_firm}}">
+					<label for="public_email">Law or accounting firm</label><small class="muted"> (Required for your presenter page to appear)</small>
+					<input type="text" class="form-control" name="law_firm" value="{{presenter.law_firm}}">
 				</div>
+        <div class="form-group">
+          <label for="city">City</label><small class="muted"> (Required for your presenter page to appear)</small>
+          <input type="text" name="city" value="{{presenter.city}}" class="form-control">
+        </div>
+
 			</div>
 
 			<div class="col-sm-6">
 				<div class="form-group">
 					<label for="public_email">Email</label>
-					<input type="text"class="form-control" name="public_email" value="{{presenter.public_email}}">
+					<input type="text" class="form-control" name="public_email" value="{{presenter.public_email}}">
 				</div>
 				<div class="form-group">
 					<label for="url">Firm's website address</label>
-					<input type="text"class="form-control" name="url" value="{{presenter.url}}">
+					<input type="text" class="form-control" name="url" value="{{presenter.url}}">
 				</div>
+        <div class="form-group">
+          <label for="province">Province</label><small class="muted"> (Required for your presenter page to appear)</small>
+          <input type="text" name="province" value="{{presenter.province}}" class="form-control">
+        </div>
 
 			</div>
 		</div>
