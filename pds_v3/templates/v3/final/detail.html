@@ -117,7 +117,7 @@
 					{% endfor %}
 
 				</div>
-				<div class="col-sm-10 col-xs-12 audio_container">
+				<div class="col-sm-10 col-xs-12 title_container">
 					<div class="col-lg-12 pres_header">
 						<h4 class="pres_link">
 						{% for x in pd.presenters.all %}
@@ -128,21 +128,10 @@
 						</h4>
 
 					</div>
-					<div class="col-lg-12 audio_player">
-            <!--
-    					<video id="player" class="video-js vjs-default-skin" controls preload="auto" width="85%" height="20" poster="" data-setup="{}">
-                {% if own == 1 %}
-    						<source src="{% url 'audio' pd.id %}" type='audio/mpeg'>
-                {% endif %}
-    					<p class="vjs-no-js">To view this video please enable JavaScript
-    					<a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
-    					</video>
-            -->
-          </div>
 				</div>
 			</div>
-      <div class="row" style="margin-top: 20px;">
-        <div class="col-xs-12 col-md-6 col-sm-10 col-sm-offset-1">
+      <div class="row audio_row">
+        <div class="col-xs-12 col-md-6 col-sm-10 col-sm-offset-1 audio_col">
           {% if own == 1 %}
           <audio src="{% url 'audio' pd.id %}" preload="auto"></audio>
           {% endif %}

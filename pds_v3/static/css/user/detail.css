@@ -9,35 +9,25 @@
 
 .play-pause {
 	line-height: 16.8px !important;
-	width: 40px !important;
+	width: 38px !important;
+}
+.audio_row {
+	margin-top: 20px;
 }
 
 .pres_header {
 	overflow: auto;
-}
-#player {
-	margin-left: 10px;
-	margin-bottom: 15px;
-	display: block;
 }
 
 @media screen and (max-width: 992px) {
 	.pres_link {
 		margin-left: 30px;
 	}
-	#player {
-		margin-left: 25px;
-	}
-
 }
 
 @media screen and (max-width: 767px) {
 	.pres_link {
 		margin-left: 0px;
-	}
-	#player {
-		margin-left: 0px;
-		margin-bottom: 20px;
 	}
 	.pres_header {
 		padding-left: 0px !important;
@@ -152,5 +142,47 @@ h4 {
 @-moz-document url-prefix() {
 	.cancel-comment-btn {
 		height: 24px !important;
+	}
+}
+
+@media screen and (max-width: 635px) {
+	.audiojs .volume {
+		width: 50px;
+	}
+	.audiojs .volume .percent {
+		width: 25px;
+	}
+	.audiojs .mute {
+		font-size: 16px;
+		padding-left: 2px;
+		padding-right: 2px;
+	}
+	.audiojs {
+		width: 425px;
+	}
+	.audiojs .time {
+		padding: 0px 6px 0px 6px;
+		margin: 0px;
+	}
+	.audiojs .scrubber {
+		width: 200px;
+		margin-left: 5px;
+		margin-right: 5px;
+	}
+}
+
+@media screen and (max-width: 460px) {
+	.audiojs .play-pause {
+		width: 33px !important;
+		padding: 4px 3px;
+	}
+	.audiojs {
+		width: 375px;
+	}
+	.audiojs .scrubber {
+		width: 160px;
+	}
+	.audio_col {
+		padding: 5px;
 	}
 }

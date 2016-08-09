@@ -345,8 +345,9 @@
 
       container[audiojs].events.addListener(volume, 'click', function(e) {
         var relativeLeft = e.clientX - leftPos(this);
-        percent.style.width = relativeLeft + '%';
-        audio.setVolume(relativeLeft/100);
+        var volume_ratio = relativeLeft/volume.offsetWidth;
+        percent.style.width = Math.floor(volume_ratio * 100) + '%';
+        audio.setVolume(volume_ratio);
       });
 
       container[audiojs].events.addListener(mute, 'click', function(e) {
