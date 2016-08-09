@@ -1,3 +1,8 @@
+html {
+	min-width: 400px;
+	overflow-x: scroll !important;
+}
+
 .pres_link {
 	float: left;
 	margin-left: 15px;
@@ -181,8 +186,5 @@ h4 {
 	}
 	.audiojs .scrubber {
 		width: 160px;
-	}
-	.audio_col {
-		padding: 5px;
 	}
 }
