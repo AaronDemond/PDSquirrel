@@ -78,7 +78,7 @@
           <div class="time"> \
             <em class="played">00:00</em>/<strong class="duration">00:00</strong> \
           </div> \
-          <div class="glyphicon glyphicon-volume-down"></div>\
+          <div class="mute glyphicon glyphicon-volume-down"></div>\
           <div class="volume"> \
             <div class="percent"></div> \
           </div> \
@@ -87,6 +87,7 @@
         scrubberClass: 'scrubber',
         volumeClass: 'volume',
         percentClass: 'percent',
+        muteClass: 'mute',
         progressClass: 'progress',
         loaderClass: 'loaded',
         timeClass: 'time',
@@ -101,7 +102,7 @@
       css: '\
         .audiojs .volume { position: relative; margin-top: 11px; float: left; width: 100px; height: 14px; background: #222; overflow: hidden;} \
         .audiojs .volume .percent { background: #7B9651; position: absolute; width: 50px; height: 14px; z-index: 1;} \
-        .audiojs .glyphicon-volume-down {position: relative; float: left; font-size: 20px; color: white; line-height: 34px; padding: 0px 4px 0px 6px;}\
+        .audiojs .mute {position: relative; float: left; font-size: 20px; color: white; line-height: 34px; padding: 0px 4px 0px 6px;}\
         .audiojs audio { position: absolute; left: -1px; } \
         .audiojs { width: 590px; height: 36px; background: #404040; overflow: hidden; font-family: monospace; font-size: 12px; \
           background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #444), color-stop(0.5, #555), color-stop(0.51, #444), color-stop(1, #444)); \
@@ -324,6 +325,7 @@
           scrubber = getByClass(player.scrubberClass, wrapper),
           volume = getByClass(player.volumeClass, wrapper),
           percent = getByClass(player.percentClass, wrapper),
+          mute = getByClass(player.muteClass, wrapper),
           leftPos = function(elem) {
             var curleft = 0;
             if (elem.offsetParent) {
@@ -345,6 +347,22 @@
         var relativeLeft = e.clientX - leftPos(this);
         percent.style.width = relativeLeft + '%';
         audio.setVolume(relativeLeft/100);
+      });
+
+      container[audiojs].events.addListener(mute, 'click', function(e) {
+        if (audio.element.volume > 0) {
+          percent.style.width = '0%';
+          audio.setVolume(0);
+          container[audiojs].helpers.addClass(mute, 'glyphicon-volume-off');
+          container[audiojs].helpers.removeClass(mute, 'glyphicon-volume-down');
+
+        } else {
+          percent.style.width = '50%';
+          audio.setVolume(0.5);
+          container[audiojs].helpers.removeClass(mute, 'glyphicon-volume-off');
+          container[audiojs].helpers.addClass(mute, 'glyphicon-volume-down');
+
+        }
       });
 
       // _If flash is being used, then the following handlers don't need to be registered._
