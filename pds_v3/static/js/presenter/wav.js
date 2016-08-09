@@ -728,7 +728,8 @@ function disableLinks() {
         var blob = new Blob ( [ view ], { type : 'audio/wav' } );
         var url = (window.URL || window.webkitURL).createObjectURL(blob);
 		local_download_url = url;
-        $('#player').attr("src" , url);
+				a[0].load(url);
+				//$('#player').attr("src" , url);
         $('#dl').attr("href", url);
     }
 
@@ -745,7 +746,8 @@ function disableLinks() {
 
 		// Delivers blob url to audio player as src. This is probably where mobile breaks.
     	$('#player').attr("src" , url);
-    	$('#dl').attr("href", url);
+			//a[0].load(url);
+			$('#dl').attr("href", url);
         outputElement.innerHTML = 'Upload and saving...';
 
 		// Build form data obj with wavblob, upload flag, and name text.

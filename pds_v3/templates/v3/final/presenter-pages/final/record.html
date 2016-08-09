@@ -130,7 +130,7 @@
 
 <div class="row">
   <div class="col-lg-12">
-		<audio controls style="width: 100%" id ="player"></audio>
+		<audio controls src="/audio_files/empty.mp3" preload="auto" id="player" style="display: none;"></audio>
   </div>
 </div>
     <div class="row">
@@ -177,6 +177,15 @@
     </div>
 
 </div>
+<script src="{% static 'js/audiojs/audio.js' %}"></script>
+<script>
+	var a;
+  audiojs.events.ready(function() {
+    a = audiojs.createAll();
+  });
+	console.log("A");
+	console.log(a);
+</script>
 <script>
 info_box_activate(); // Reload info box for ajax
 </script>

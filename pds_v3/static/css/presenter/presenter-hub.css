@@ -72,6 +72,11 @@ input[type="file"] {
 	background-color: #f2dede;
 }
 
+.play-pause {
+	line-height: 16.8px !important;
+	width: 38px !important;
+}
+
  /* Upload */
 .control-group {
 	margin-bottom: 20px;
