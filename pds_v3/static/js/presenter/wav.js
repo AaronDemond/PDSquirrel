@@ -453,7 +453,8 @@ function disableLinks() {
 
 				// Clear data
 				audio_player.pause();
-				audio_player.src = '';
+				a[0].load('/audio_files/empty.mp3');
+				//audio_player.src = '';
 				reset();
 				leftchannel = [];
 				rightchannel = [];
@@ -745,8 +746,8 @@ function disableLinks() {
 		var audio_table = document.getElementById('clips_table');
 
 		// Delivers blob url to audio player as src. This is probably where mobile breaks.
-    	$('#player').attr("src" , url);
-			//a[0].load(url);
+    	//$('#player').attr("src" , url);
+			a[0].load(url);
 			$('#dl').attr("href", url);
         outputElement.innerHTML = 'Upload and saving...';
 
