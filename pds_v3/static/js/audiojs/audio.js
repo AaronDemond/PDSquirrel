@@ -346,6 +346,13 @@
       container[audiojs].events.addListener(volume, 'click', function(e) {
         var relativeLeft = e.clientX - leftPos(this);
         var volume_ratio = relativeLeft/volume.offsetWidth;
+        if (volume_ratio == 0) {
+          container[audiojs].helpers.addClass(mute, 'glyphicon-volume-off');
+          container[audiojs].helpers.removeClass(mute, 'glyphicon-volume-down');
+        } else {
+          container[audiojs].helpers.removeClass(mute, 'glyphicon-volume-off');
+          container[audiojs].helpers.addClass(mute, 'glyphicon-volume-down');
+        }
         percent.style.width = Math.floor(volume_ratio * 100) + '%';
         audio.setVolume(volume_ratio);
       });
