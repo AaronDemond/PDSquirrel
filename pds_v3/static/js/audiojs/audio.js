@@ -346,6 +346,12 @@
       container[audiojs].events.addListener(volume, 'click', function(e) {
         var relativeLeft = e.clientX - leftPos(this);
         var volume_ratio = relativeLeft/volume.offsetWidth;
+
+        if (volume_ratio < 0)
+          volume_ratio = 0;
+        else if (volume_ratio > 1)
+          volume_ratio = 1;
+
         if (volume_ratio == 0) {
           container[audiojs].helpers.addClass(mute, 'glyphicon-volume-off');
           container[audiojs].helpers.removeClass(mute, 'glyphicon-volume-down');
