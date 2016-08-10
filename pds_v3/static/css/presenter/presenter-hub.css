@@ -42,6 +42,10 @@ input[type="file"] {
 
 
 /* Record */
+html {
+	min-width: 410px;
+	overflow-x: scroll !important;
+}
 .timebox {
 	padding-bottom: 3px;
 	width: 70px;
@@ -75,6 +79,45 @@ input[type="file"] {
 .play-pause {
 	line-height: 16.8px !important;
 	width: 38px !important;
+}
+
+@media screen and (max-width: 640px) {
+	.audiojs .volume {
+		width: 50px;
+	}
+	.audiojs .volume .percent {
+		width: 25px;
+	}
+	.audiojs .mute {
+		font-size: 16px;
+		padding-left: 2px;
+		padding-right: 2px;
+	}
+	.audiojs {
+		width: 425px;
+	}
+	.audiojs .time {
+		padding: 0px 6px 0px 6px;
+		margin: 0px;
+	}
+	.audiojs .scrubber {
+		width: 200px;
+		margin-left: 5px;
+		margin-right: 5px;
+	}
+}
+
+@media screen and (max-width: 465px) {
+	.audiojs .play-pause {
+		width: 33px !important;
+		padding: 4px 3px;
+	}
+	.audiojs {
+		width: 375px;
+	}
+	.audiojs .scrubber {
+		width: 160px;
+	}
 }
 
  /* Upload */
