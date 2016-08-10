@@ -81,6 +81,17 @@ html {
 	width: 38px !important;
 }
 
+.recording_row:nth-child(odd) {
+  background-color: #eee;
+}
+.recording_row {
+  border-top: solid 1px #ccc;
+  padding: 5px;
+}
+.text-col {
+  line-height: 33.5px;
+}
+
 @media screen and (max-width: 640px) {
 	.audiojs .volume {
 		width: 50px;

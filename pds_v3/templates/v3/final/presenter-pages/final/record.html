@@ -145,30 +145,26 @@
 		<hr>
 	    <h4>My Recordings</h4>
 	    {% if audio_recordings %}
-	    <table id="clips_table" class="table table-striped">
 		{% for rec in audio_recordings %}
-		<tr id ="rec-{{rec.id}}">
-		    <td class="recording_name">{{rec}}</td>
-				<td>
-					{{ rec.getDuration }}
-				</td>
-		    <td>
-				<button class="btn btn-default preview-link" onclick="previewAudio({{rec.id}}, this)">Listen <span>&#9656;</span></button>
-				<button class="btn btn-default" onclick="showData('/wav/{{rec.pk}}', '{{rec}}', '{{rec.pk}}')">Edit</button>
-				<button class="btn btn-default del-btn" onclick="delAudio('{{rec.id}}')">Delete</button>
-				{#<button class="btn btn-default" onclick="showData('/{{rec.audio.name}}', '{{rec}}')">Edit</button> #}
-		    </td>
-			<td>
-				<div class="row">
-					<div class="col-xs-12 preview-bar" id="preview-{{rec.id}}">
-					</div>
+
+			<div id ="rec-{{rec.id}}" class="row recording_row">
+				<div class="col-xs-4 recording_name text-col">
+					{{rec}}
 				</div>
+				<div class="col-xs-3 text-col">
+					{{ rec.getDuration }}
+				</div>
+				<div class="col-xs-5">
+					<button class="btn btn-default preview-link" onclick="previewAudio({{rec.id}}, this)">Listen <span>&#9656;</span></button>
+					<button class="btn btn-default" onclick="showData('/wav/{{rec.pk}}', '{{rec}}', '{{rec.pk}}')">Edit</button>
+					<button class="btn btn-default del-btn" onclick="delAudio('{{rec.id}}')">Delete</button>
+					{#<button class="btn btn-default" onclick="showData('/{{rec.audio.name}}', '{{rec}}')">Edit</button> #}
+				</div>
+				<div class="col-xs-12 preview-bar" id="preview-{{rec.id}}" style="padding: 0px; margin-top: 10px;">
+				</div>
+			</div>
 
-			</td>
-
-	        </tr>
 		{% endfor %}
-	  </table>
 	    {% else %}
 	    <p>You have no recordings. click Record above to get started.</p>
 	    {% endif %}

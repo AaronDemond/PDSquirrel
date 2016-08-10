@@ -8,10 +8,7 @@ function previewAudio(id, preview_link) {
 	// Formatted audio template to insert
 	var html = `
 		<div class="col-lg-12 preview-col">
-		<audio id="player" style="margin-top:2px; width: 400px;" controls>
-			<source src="/recording/${id}" type='audio/mpeg'>
-			</audio>
-
+		   <audio id="listen_player" src="/recording/${id}" style="display: none;" controls></audio>
 		</div>
 			`;
 
@@ -32,6 +29,8 @@ function previewAudio(id, preview_link) {
 	var arrowcode = $arrow.text().charCodeAt(0);
 	if (arrowcode == 9656 ) {
 		$(row_id).append(html);
+		var listen_player = document.getElementById("listen_player");
+		audiojs.create(listen_player);
 		$arrow.html('&#9666;'); //left arrow
 
 	} else {
