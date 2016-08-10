@@ -7,13 +7,10 @@
 .audio_player {
 	margin-left: 20px;
 }
-/*
-.play-pause {
-	line-height: 16.8px !important;
-	width: 38px !important;
-}*/
+
 .audio_row {
 	margin-top: 20px;
+	margin-bottom: 30px;
 }
 
 .pres_header {
