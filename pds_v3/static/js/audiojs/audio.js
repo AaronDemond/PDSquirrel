@@ -100,26 +100,26 @@
       },
       // The css used by the default player. This is is dynamically injected into a `<style>` tag in the top of the head.
       css: '\
-        .audiojs .volume { position: relative; margin-top: 11px; float: left; width: 100px; height: 14px; background: #222; overflow: hidden;} \
+        .audiojs .volume { position: relative; margin-top: 11px; float: left; width: 12%; height: 14px; background: #222; overflow: hidden;} \
         .audiojs .volume .percent { background: #7B9651; position: absolute; width: 50px; height: 14px; z-index: 1;} \
-        .audiojs .mute {position: relative; float: left; font-size: 20px; color: white; line-height: 34px; padding: 0px 4px 0px 6px;}\
+        .audiojs .mute {position: relative; float: left; font-size: 20px; color: white; line-height: 34px; padding: 0px 4px 0px 1%;}\
         .audiojs audio { position: absolute; left: -1px; } \
-        .audiojs { width: 590px; height: 36px; background: #404040; overflow: hidden; font-family: monospace; font-size: 12px; \
+        .audiojs { width: 100%; height: 36px; background: #404040; overflow: hidden; font-family: monospace; font-size: 12px; \
           background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #444), color-stop(0.5, #555), color-stop(0.51, #444), color-stop(1, #444)); \
           background-image: -moz-linear-gradient(center top, #444 0%, #555 50%, #444 51%, #444 100%); \
           -webkit-box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.3); -moz-box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.3); \
           -o-box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.3); box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.3); } \
-        .audiojs .play-pause { width: 25px; height: 40px; padding: 4px 6px; margin: 0px; float: left; overflow: hidden; border-right: 1px solid #000; } \
+        .audiojs .play-pause { width: 35px; height: 40px; padding: 4px 0.5%; margin: 0px; float: left; overflow: hidden; border-right: 1px solid #000; } \
         .audiojs p { display: none; width: 25px; height: 40px; margin: 0px; cursor: pointer; } \
         .audiojs .play { display: block; } \
-        .audiojs .scrubber { position: relative; float: left; width: 280px; background: #5a5a5a; height: 14px; margin: 10px; border-top: 1px solid #3f3f3f; border-left: 0px; border-bottom: 0px; overflow: hidden; } \
+        .audiojs .scrubber { position: relative; float: left; width: 64%; background: #5a5a5a; height: 14px; margin: 10px 1%; border-top: 1px solid #3f3f3f; border-left: 0px; border-bottom: 0px; overflow: hidden; } \
         .audiojs .progress { position: absolute; top: 0px; left: 0px; height: 14px; width: 0px; background: #ccc; z-index: 1; \
           background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #ccc), color-stop(0.5, #ddd), color-stop(0.51, #ccc), color-stop(1, #ccc)); \
           background-image: -moz-linear-gradient(center top, #ccc 0%, #ddd 50%, #ccc 51%, #ccc 100%); } \
         .audiojs .loaded { position: absolute; top: 0px; left: 0px; height: 14px; width: 0px; background: #000; \
           background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #222), color-stop(0.5, #333), color-stop(0.51, #222), color-stop(1, #222)); \
           background-image: -moz-linear-gradient(center top, #222 0%, #333 50%, #222 51%, #222 100%); } \
-        .audiojs .time { float: left; height: 36px; line-height: 36px; margin: 0px 0px 0px 6px; padding: 0px 6px 0px 12px; border-left: 1px solid #000; color: #ddd; text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.5); } \
+        .audiojs .time { float: left; width: 90px; height: 36px; line-height: 36px; margin: 0px 0px 0px 6px; padding: 0px 0.5%; border-left: 1px solid #000; color: #ddd; text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.5); } \
         .audiojs .time em { padding: 0px 2px 0px 0px; color: #f9f9f9; font-style: normal; } \
         .audiojs .time strong { padding: 0px 0px 0px 2px; font-weight: normal; } \
         .audiojs .error-message { float: left; display: none; margin: 0px 10px; height: 36px; width: 400px; overflow: hidden; line-height: 36px; white-space: nowrap; color: #fff; \
@@ -361,6 +361,7 @@
         }
         percent.style.width = Math.floor(volume_ratio * 100) + '%';
         audio.setVolume(volume_ratio);
+        console.log(volume_ratio);
       });
 
       container[audiojs].events.addListener(mute, 'click', function(e) {
