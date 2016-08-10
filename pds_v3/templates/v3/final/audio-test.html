@@ -1,0 +1,19 @@
+{% extends "v3/final/base/base.html" %}
+{% load staticfiles %}
+{% load pds_extras %}
+{% block header-metatags %}
+        <title>PD Squirrel Browse</title>
+        <meta name=”description” content='Browse professional development talks, offered by lawyers, for lawyers'>
+{% endblock header-metatags %}
+{% block body %}
+{% include "v3/final/add-ons/deferred-css.html" with css1='user/browse' %}
+
+<div id="main-content" class="container" >
+
+<audio controls src="/songs/all_the_way_up.mp3"></audio>
+
+</div>
+{% endblock %}
+{% block footer-content %}
+<script src="{% static 'js/user/browse.js' %}"></script>
+{% endblock footer-content %}

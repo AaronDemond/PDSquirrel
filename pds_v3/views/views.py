@@ -439,3 +439,6 @@ def handler500(request):
 
 def presenter_terms(request):
     return render(request, 'v3/final/presenter-terms.html')
+
+def audio_test(request):
+    return render(request, 'v3/final/audio-test.html')

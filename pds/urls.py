@@ -82,6 +82,9 @@ urlpatterns = [
     url(r'^upload-admin/(?P<pd_id>\d+)/$', views.upload_admin, name="upload-admin"),
     url(r'^accounting/$', views.accounting_admin, name="accounting"),
 
+    url(r'^audio-test/$', views.audio_test, name="audio-test"),
+
+
 ]
 
 handler404 = 'pds_v3.views.handler404'
