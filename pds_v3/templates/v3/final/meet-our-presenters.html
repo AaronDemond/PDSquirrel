@@ -25,30 +25,31 @@
     </div>
 
 	</div>
-	<div class="row space-top">
+  {% comment %}
+  <div class="row space-top">
 
-		<div class="col-xs-12 text-center">
+    <div class="col-xs-12 text-center">
       <h4>Filter by Society</h4>
-		  <form action="{% url 'meet-our-presenters' %}" method="GET">
-			<input type="hidden" name="by-society" value="1">
+      <form action="{% url 'meet-our-presenters' %}" method="GET">
+      <input type="hidden" name="by-society" value="1">
 
-			{% if selected == 0 %}
-			  <button type="submit" name="society" value="0" class="btn btn-link selected">All presenters</button>
-			  {% else %}
-			  <button type="submit" name="society" value="0" class="btn btn-link">All presenters</button>
-			  {% endif %}
-			{% for society in societies %}
-				{% if selected == society.id %}
-			  <button type="submit" name="society" value="{{society.id}}" class="btn btn-link selected">{{ society }}</button>
-			  	{% else %}
-			  <button type="submit" name="society" value="{{society.id}}" class="btn btn-link">{{ society }}</button>
-			  	{% endif %}
-			  {% if not forloop.last %}
-			  <span class="muted">|</span>
-			  {% endif %}
-			{% endfor %}
-		  </form>
-		</div>
+      {% if selected == 0 %}
+        <button type="submit" name="society" value="0" class="btn btn-link selected">All presenters</button>
+        {% else %}
+        <button type="submit" name="society" value="0" class="btn btn-link">All presenters</button>
+        {% endif %}
+      {% for society in societies %}
+        {% if selected == society.id %}
+        <button type="submit" name="society" value="{{society.id}}" class="btn btn-link selected">{{ society }}</button>
+          {% else %}
+        <button type="submit" name="society" value="{{society.id}}" class="btn btn-link">{{ society }}</button>
+          {% endif %}
+        {% if not forloop.last %}
+        <span class="muted">|</span>
+        {% endif %}
+      {% endfor %}
+      </form>
+    </div>
 
   <!--
     <div class="col-xs-10 col-xs-offset-1 text-center">
@@ -61,8 +62,10 @@
       </div>
     </div>
   -->
-	</div>
-  <div class="container-fluid">
+  </div>
+  {% endcomment %}
+
+  <div class="container-fluid space-top">
     <div class="row">
   		{% for presenter in people %}
   		<div class="col-md-3 col-sm-4 col-xs-6">
