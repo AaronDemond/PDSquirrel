@@ -292,9 +292,12 @@ from pds_v3 import models
 def presenter_detail(request, p_id):
     presenter = models.Presenter.objects.get(id=p_id)
 
-    if presenter.bio == '' and presenter.bio == '' and presenter.law_firm == '' and presenter.city == '' and presenter.province == '':
+    if presenter.bio == '' or presenter.bio == '' or presenter.law_firm == '' or presenter.city == '' or presenter.province == '':
         messages.info(request, 'This presenter has not completed their Biography page yet, check again soon.')
-        return HttpResponseRedirect('/browse/')
+        if request.GET.get('pres', False):
+            return HttpResponseRedirect('/meet-our-presenters/')
+        else:
+            return HttpResponseRedirect('/browse/')
 
     name = presenter
     context = {'name': name, 'bio': presenter.bio, 'img': '/static/img/placeholder.png ', 'presenter': presenter}

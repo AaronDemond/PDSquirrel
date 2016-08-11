@@ -25,6 +25,20 @@
     </div>
 
 	</div>
+  <div class="row space-top">
+    <div class="col-xs-12">
+      <div class="msg-container">
+        {% if messages %}
+        {% for msg in messages %}
+          <div class="alert alert-{{msg.tags}} msg" role="alert">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            {{msg}}
+          </div>
+        {% endfor %}
+        {% endif %}
+      </div>
+    </div>
+  </div> {# msg row #}
   {% comment %}
   <div class="row space-top">
 
@@ -72,14 +86,14 @@
         <div class="person">
           <div class="thumbnail_container">
             <div class="thumbnail">
-              <a href="{% url 'presenter-detail' presenter.id %}" class="no-style-link">
+              <a href="{% url 'presenter-detail' presenter.id %}?pres=1" class="no-style-link">
               <img src="/static/presenter_pics/{{presenter.image_name}}"
         		   	 alt="">
                </a>
             </div>
           </div>
           <div class="presenter-info">
-            <h4><a href="{% url 'presenter-detail' presenter.id %}">{{presenter}}</a></h4>
+            <h4><a href="{% url 'presenter-detail' presenter.id %}?pres=1">{{presenter}}</a></h4>
             <h5>{{presenter.credentials}}</h5>
             <h5>{{presenter.law_firm}}</h5>
 
