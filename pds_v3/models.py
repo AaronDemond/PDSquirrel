@@ -41,6 +41,8 @@ class Presenter(models.Model):
     law_firm = models.CharField(null=True,blank=True, max_length=100)
     public_email = models.CharField(null=True,blank=True,max_length=200)
     url = models.CharField(null=True,blank=True,max_length=200)
+    province = models.CharField(null=True,blank=True,max_length=50)
+    city = models.CharField(null=True,blank=True,max_length=50)
 
     # Allows user to set their placeholder img. 0=female, 1=male.
     placeholder_type = models.IntegerField(blank=True, null=True)

@@ -209,6 +209,9 @@ def dash(request, msg=False):
                 presenter.bio = request.POST['bio'].lstrip()
                 presenter.public_email = request.POST['public_email']
                 presenter.url = request.POST['url']
+                presenter.province = request.POST['province']
+                presenter.city = request.POST['city']
+
                 if 'clear_photo' in request.POST:
                     presenter.image = None
                     presenter.placeholder_type = 1;
@@ -393,6 +396,7 @@ def dash(request, msg=False):
 
             elif 'myaccount' in request.GET:
                 context['presenter'] = presenter
+                context['provinces'] = ['Nova Scotia', 'New Brunswick', 'Prince Edward Island', 'Newfoundland and Labrador', 'Quebec', 'Ontairio', 'Manitoba', 'Saskatchewan', 'Alberta', 'British Columbia', 'Yukon', 'Northwest Territories', 'Nunavut']
                 return render(request, 'v3/final/presenter-pages/final/account.html', context)
 
             elif 'landing' in request.GET:
