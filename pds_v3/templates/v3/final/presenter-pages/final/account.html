@@ -2,14 +2,25 @@
 
 <div class="row">
     <div class="col-lg-9 col-lg-offset-1">
-    {% if presenter.bio %}
+    {% if presenter.bio and presenter.law_firm and presenter.city and presenter.province %}
     <h4>Update your presenter page
 		<small><a href="{%url 'presenter-detail' presenter.id %}" target="_blank">(click here to see your existing page)</a></small>
 	</h4>
+    <hr>
     {% else %}
     <h4>Use this page to upload your bio <small>You can always make changes in the future.</small></h4>
-    {% endif %}
     <hr>
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="alert alert-info">
+          <p>
+            The bio, law firm, city and province fields are required for your presenter page to be viewed on PD Squirrel.
+          </p>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
     <form action="{% url 'presenter-dash' %}" method="POST" enctype="multipart/form-data" >
 	{% csrf_token %}
 	<input type="hidden" name="edit-pres-public" value="1">
@@ -17,7 +28,7 @@
 			<div class="row" style="margin-bottom: 15px;">
 				<div class="col-lg-12">
 					<div class="control-group">
-						<label for="bio">Bio</label><small class="muted"> (Required for your presenter page to appear)</small>
+						<label for="bio">Bio</label>
 						<textarea class="form-control" name="bio" cols="30" rows="5">{{presenter.bio}}</textarea>
 					</div>
 
@@ -48,11 +59,11 @@
 					<input type="text" class="form-control" name="credentials" value="{{presenter.credentials}}">
 				</div>
 				<div class="form-group">
-					<label for="public_email">Law or accounting firm</label><small class="muted"> (Required for your presenter page to appear)</small>
+					<label for="public_email">Law or accounting firm</label>
 					<input type="text" class="form-control" name="law_firm" value="{{presenter.law_firm}}">
 				</div>
         <div class="form-group">
-          <label for="city">City</label><small class="muted"> (Required for your presenter page to appear)</small>
+          <label for="city">City</label>
           <input type="text" name="city" value="{{presenter.city}}" class="form-control">
         </div>
 
@@ -68,7 +79,7 @@
 					<input type="text" class="form-control" name="url" value="{{presenter.url}}">
 				</div>
         <div class="form-group">
-          <label for="province">Province</label><small class="muted"> (Required for your presenter page to appear)</small>
+          <label for="province">Province</label>
           <input type="text" name="province" value="{{presenter.province}}" class="form-control">
         </div>
 
