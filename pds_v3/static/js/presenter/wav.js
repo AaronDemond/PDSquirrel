@@ -8,7 +8,7 @@ function previewAudio(id, preview_link) {
 	// Formatted audio template to insert
 	var html = `
 		<div class="col-lg-12 preview-col">
-		<audio id="player" style="margin-top:2px; width: 400px;" controls>
+		<audio id="player" style="margin-top:2px; width: 100%;" controls>
 			<source src="/recording/${id}" type='audio/mpeg'>
 			</audio>
 
@@ -23,20 +23,20 @@ function previewAudio(id, preview_link) {
 	// Change arrow to closed state on all other links
 	$(".preview-link").each(function() {
 		if ( !$(this).is($(preview_link)) ) {
-			$(this).children('span').html('&#9656;');
+			$(this).children('span').html('&#9662;'); //down arrow
 		}
 	});
 
 	// Toggle state of arrow in clicked preview button
 	var $arrow = $(preview_link).children('span');
 	var arrowcode = $arrow.text().charCodeAt(0);
-	if (arrowcode == 9656 ) {
+	if (arrowcode == 9662 ) { //down arrow
 		$(row_id).append(html);
-		$arrow.html('&#9666;'); //left arrow
+		$arrow.html('&#9652;'); //up arrow
 
 	} else {
 		$(row_id).empty();
-		$arrow.html('&#9656;'); //right arrow
+		$arrow.html('&#9662;'); //down arrow
 	}
 
 }
