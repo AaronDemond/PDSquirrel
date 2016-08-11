@@ -6,7 +6,7 @@
 .pres_header {
 	overflow: auto;
 }
-#player {
+.player {
 	margin-left: 10px;
 	margin-bottom: 15px;
 	display: block;
@@ -16,7 +16,7 @@
 	.pres_link {
 		margin-left: 30px;
 	}
-	#player {
+	.player {
 		margin-left: 25px;
 	}
 
@@ -26,7 +26,7 @@
 	.pres_link {
 		margin-left: 0px;
 	}
-	#player {
+	.player {
 		margin-left: 0px;
 		margin-bottom: 20px;
 	}

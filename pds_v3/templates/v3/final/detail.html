@@ -129,13 +129,17 @@
 
 					</div>
 					<div class="col-lg-12 audio_player">
-					<video id="player" class="video-js vjs-default-skin" controls preload="auto" width="85%" height="20" poster="" data-setup="{}">
+					<audio id="player" class="player video-js vjs-default-skin" controls preload="auto" height="20" poster="" data-setup="{}" style="width: 85%;">
 						{% if own == 1 %}
 						<source src="{% url 'audio' pd.id %}" type='audio/mpeg'>
-						{% endif %}
-					<p class="vjs-no-js">To view this video please enable JavaScript
-					<a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
-					</video>
+              <object class="player" width="85%" height="30" type="application/x-shockwave-flash" data="/static/js/flash/flashmediaelement.swf">
+                <param name="movie" value="/static/js/flash/flashmediaelement.swf" />
+                <param name="flashvars" value="controls=true&isvideo=false&file={% url 'audio' pd.id %}" />
+              </object>
+            {% endif %}
+  					<p class="vjs-no-js">To view this video please enable JavaScript
+  					<a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
+          </audio>
 
 					</div>
 				</div>
@@ -229,7 +233,10 @@
 							</td>
 						</tr>
 					</table>
+          {% comment %}
           {% include "v3/final/add-ons/social-media.html" with url=url %}
+
+          {% endcomment %}
 				</div>
 				</div>
 
