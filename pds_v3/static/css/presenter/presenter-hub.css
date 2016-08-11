@@ -72,6 +72,18 @@ input[type="file"] {
 	background-color: #f2dede;
 }
 
+.recording_row:nth-child(odd) {
+  background-color: #eee;
+}
+.recording_row {
+  border-top: solid 1px #ccc;
+  padding: 5px;
+  margin: 0px;
+}
+.text-col {
+  line-height: 33.5px;
+}
+
  /* Upload */
 .control-group {
 	margin-bottom: 20px;
