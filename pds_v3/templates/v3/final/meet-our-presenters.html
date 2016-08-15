@@ -96,6 +96,8 @@
             <h4><a href="{% url 'presenter-detail' presenter.id %}?pres=1">{{presenter}}</a></h4>
             <h5>{{presenter.credentials}}</h5>
             <h5>{{presenter.law_firm}}</h5>
+            <h5>{% if presenter.public_address.city %}{{presenter.public_address.city}}{% endif %}</h5>
+            <h5>{% if presenter.public_address.province %}{{presenter.public_address.province}}{% endif %}</h5>
 
           </div>
         </div>
