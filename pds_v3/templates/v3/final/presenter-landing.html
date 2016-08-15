@@ -40,13 +40,18 @@
 						<h2 class="name">{{ presenter }}{% if presenter.credentials %}, {{presenter.credentials}}</h2>
 						{% endif %}
 					</div>
+          <div id="pres-location">
+            <h3 class="location muted">{% if presenter.public_address.city %}{{presenter.public_address.city}}{% endif %}{% if presenter.public_address.province %}, {{presenter.public_address.province.initial}}{% endif %}</h3>
+          </div>
 					<div id="pres-body" class="hidden-xs">
 						<p>{{bio}}</p>
 					</div>
                 </div>
 				<div class="col-xs-12 hidden-sm hidden-md hidden-lg mobile-credentials mobile-info-container">
 					<h3 id="mobile-name">{{ presenter }}{% if presenter.credentials %}, {{presenter.credentials}}{% endif %}</h3>
-						<ul id="mobile-info">
+          
+          <h4 id="mobile-location" class="text-center muted">{% if presenter.public_address.city %}{{presenter.public_address.city}}{% endif %}{% if presenter.public_address.province %}, {{presenter.public_address.province.initial}}{% endif %}</h4>
+            <ul id="mobile-info">
 							<li></li>
 							{% if presenter.law_firm %}
 							<li>
