@@ -5,7 +5,7 @@ import datetime
 from django.contrib import messages
 from django.core.mail import send_mail
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from pds_v3.models import PdSession, AppUser, LawSociety, LawSocietyOverride, Purchase, Subject, Presenter, PdAttachment, Comment, PdAudio
+from pds_v3.models import PdSession, AppUser, Province, LawSociety, LawSocietyOverride, Purchase, Subject, Presenter, PdAttachment, Comment, PdAudio
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.models import User
 from django.db import IntegrityError
@@ -109,14 +109,15 @@ def browse(request):
 
 
 def meet_our_presenters(request):
-    s = int(request.GET.get('society', 0))
+    s = int(request.GET.get('province', 0))
     if s == 0:
         people = Presenter.objects.all()
     else:
-        people = [x for x in Presenter.objects.all() if x.user.profile.society.all()[0].pk == s]
+        people = Presenter.objects.all().filter(public_address__province=s)
+        #people = [x for x in Presenter.objects.all() if x.user.profile.society.all()[0].pk == s]
     context = {
             'people' : people,
-            'societies' : LawSociety.objects.all(),
+            'provinces' : Province.objects.all(),
             'selected' : s
     }
 

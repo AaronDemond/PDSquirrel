@@ -43,20 +43,20 @@
   <div class="row space-top">
 
     <div class="col-xs-12 text-center">
-      <h4>Filter by Society</h4>
+      <h4>Filter by Province</h4>
       <form action="{% url 'meet-our-presenters' %}" method="GET">
-      <input type="hidden" name="by-society" value="1">
+      <input type="hidden" name="by-province" value="1">
 
       {% if selected == 0 %}
-        <button type="submit" name="society" value="0" class="btn btn-link selected">All presenters</button>
+        <button type="submit" name="province" value="0" class="btn btn-link selected">All provinces</button>
         {% else %}
-        <button type="submit" name="society" value="0" class="btn btn-link">All presenters</button>
+        <button type="submit" name="province" value="0" class="btn btn-link">All provinces</button>
         {% endif %}
-      {% for society in societies %}
-        {% if selected == society.id %}
-        <button type="submit" name="society" value="{{society.id}}" class="btn btn-link selected">{{ society }}</button>
+      {% for province in provinces %}
+        {% if selected == province.id %}
+        <button type="submit" name="province" value="{{province.id}}" class="btn btn-link selected">{{ province }}</button>
           {% else %}
-        <button type="submit" name="society" value="{{society.id}}" class="btn btn-link">{{ society }}</button>
+        <button type="submit" name="province" value="{{province.id}}" class="btn btn-link">{{ province }}</button>
           {% endif %}
         {% if not forloop.last %}
         <span class="muted">|</span>
