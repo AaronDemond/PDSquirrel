@@ -1,6 +1,6 @@
 from django.contrib import admin
 from pds_v3.models import PdSession, AppUser, LawSociety, \
-LawSocietyOverride, Purchase, Subject, Province, PdSessionEdit, Notice, PdAttachment, Address, PdAudio, Comment, Presenter
+LawSocietyOverride, Purchase, Subject, PdSessionEdit, Notice, PdAttachment, Address, PdAudio, Comment, Presenter
 from pds_v3 import models
 import tasks
 
@@ -23,7 +23,7 @@ def send_activation(modeladmin, request, queryset):
         subject = 'PD Squirrel Activation'
         send_to = [appuser.user.email, 'demondsoftware@gmail.com', 'cdemond@cwdlaw.ca']
         tasks.sendMail.apply_async([send_to, subject, msg])
-
+        
 
 @admin.register(AppUser)
 class AppUserAdmin(admin.ModelAdmin):
@@ -31,7 +31,7 @@ class AppUserAdmin(admin.ModelAdmin):
     actions = [send_activation, make_presenter]
 
 
-admin.site.register(Province)
+
 admin.site.register(PdSession)
 admin.site.register(PdAudio)
 admin.site.register(Address)

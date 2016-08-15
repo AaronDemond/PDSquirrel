@@ -123,8 +123,7 @@
 						{% for x in pd.presenters.all %}
 						<a href="{% url 'presenter-detail' x.id %}"> {{x}}{% if x.credentials %}, {{x.credentials}} <br>{%endif%}
 						</a>
-            <p id="pres_location" class="muted">{% if x.public_address.city %}{{x.public_address.city}}{% endif %}{% if x.public_address.province %}, {{x.public_address.province.initial}}{% endif %}</p>
-						<p id="pres_firm" class="muted">{{x.law_firm}}</p>
+						<p id="pres_firm">{{x.law_firm}}</p>
 						{% endfor %}
 						</h4>
 

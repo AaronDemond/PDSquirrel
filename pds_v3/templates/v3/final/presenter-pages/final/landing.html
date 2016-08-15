@@ -4,12 +4,9 @@
     <div class="row">
         <div class="col-lg-3 col-lg-offset-1">
 			<h4>{{user.first_name}} {{user.last_name}}{% if user.presenter.credentials %}, {{user.presenter.credentials}}{% endif %}</h4>
-			<p style="margin-left:10px">
+			<p style="margin-left:10px">{{user.profile.address.street_address}}
 			<br>
-      {% comment %}
-      {{user.profile.address.street_address}}
-      {% if user.profile.address.po_box %}P.O. Box {{user.profile.address.po_box}}<br>{% endif %}{{user.profile.address.municipality}} {{user.profile.address.province}} {{user.profile.address.postal_code}}</p>
-      {% endcomment %}
+			{% if user.profile.address.po_box %}P.O. Box {{user.profile.address.po_box}}<br>{% endif %}{{user.profile.address.municipality}} {{user.profile.address.province}} {{user.profile.address.postal_code}}</p>
 		</div>
         <div class="col-lg-6">
 			<h4 >Overview <small>(Cumulative to date)</small></h4>
@@ -41,5 +38,5 @@
     </div>
 </div>
 <script>
-info_box_activate(); // Reload info box for ajax
+info_box_activate(); // Reload info box for ajax 
 </script>
