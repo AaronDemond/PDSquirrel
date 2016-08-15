@@ -1,5 +1,15 @@
 {% load staticfiles %}
-
+{% if not presenter.bio or not presenter.law_firm or not presenter.public_address.city or not presenter.public_address.province %}
+<div class="row">
+  <div class="col-xs-12">
+    <div class="alert alert-info">
+      <p>
+        The bio, law firm, city and province fields are required for your presenter page to be viewed on PD Squirrel.
+      </p>
+    </div>
+  </div>
+</div>
+{% endif %}
 <div class="row">
     <div class="col-lg-9 col-lg-offset-1">
     {% if presenter.bio and presenter.law_firm and presenter.public_address.city and presenter.public_address.province %}
@@ -10,15 +20,6 @@
     {% else %}
     <h4>Use this page to upload your bio <small>You can always make changes in the future.</small></h4>
     <hr>
-    <div class="row">
-      <div class="col-xs-12">
-        <div class="alert alert-info">
-          <p>
-            The bio, law firm, city and province fields are required for your presenter page to be viewed on PD Squirrel.
-          </p>
-        </div>
-      </div>
-    </div>
     {% endif %}
 
     <form action="{% url 'presenter-dash' %}" method="POST" enctype="multipart/form-data" >
@@ -85,6 +86,7 @@
             {% for province in provinces %}
 						<option value="{{province.id}}" >{{province}}</option>
 						{% endfor %}
+            <option value=""></option>
 					</select>
           <!--
           <input type="text" name="province" value="{{presenter.province}}" class="form-control">

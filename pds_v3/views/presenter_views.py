@@ -213,14 +213,20 @@ def dash(request, msg=False):
                 if 'city' in request.POST or 'province' in request.POST:
                     city = request.POST.get('city', '')
                     province_id = request.POST.get('province', False)
+                    print province_id
                     if province_id and province_id != '':
                         province = Province.objects.get(id=int(province_id))
 
                     if presenter.public_address:
+
                         address_id = presenter.public_address.id
                         address = Address.objects.get(id=address_id)
                         address.city = city
-                        address.province = province
+                        if province_id == '': # if user has address but no province given remove province
+                            address.province = None
+                            #address.province.save()
+                        else:
+                            address.province = province
                     else:
                         address = Address.objects.create(city=city)
                         address.province = province

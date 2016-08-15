@@ -114,7 +114,6 @@ def meet_our_presenters(request):
         people = Presenter.objects.all()
     else:
         people = Presenter.objects.all().filter(public_address__province=s)
-        #people = [x for x in Presenter.objects.all() if x.user.profile.society.all()[0].pk == s]
     context = {
             'people' : people,
             'provinces' : Province.objects.all(),
