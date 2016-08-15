@@ -2,7 +2,7 @@
 
 <div class="row">
     <div class="col-lg-9 col-lg-offset-1">
-    {% if presenter.bio and presenter.law_firm and presenter.city and presenter.province %}
+    {% if presenter.bio and presenter.law_firm and presenter.public_address.city and presenter.public_address.province %}
     <h4>Update your presenter page
 		<small><a href="{%url 'presenter-detail' presenter.id %}" target="_blank">(click here to see your existing page)</a></small>
 	</h4>
@@ -64,7 +64,7 @@
 				</div>
         <div class="form-group">
           <label for="city">City</label>
-          <input type="text" class="form-control" name="city" value="{% if presenter.city %}{{presenter.city}}{% endif %}" >
+          <input type="text" class="form-control" name="city" value="{% if presenter.public_address.city %}{{presenter.public_address.city}}{% endif %}" >
         </div>
 
 			</div>
@@ -81,9 +81,9 @@
         <div class="form-group">
           <label for="province">Province</label>
           <select class="form-control" name="province">
-            <option value="{% if presenter.province %}{{presenter.province}}{% endif %}">{% if presenter.province %}{{presenter.province}}{% endif %}</option>
+            <option value="{% if presenter.public_address.province %}{{presenter.public_address.province.id}}{% endif %}">{% if presenter.public_address.province %}{{presenter.public_address.province}}{% endif %}</option>
             {% for province in provinces %}
-						<option value="{{province}}" >{{province}}</option>
+						<option value="{{province.id}}" >{{province}}</option>
 						{% endfor %}
 					</select>
           <!--
