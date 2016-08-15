@@ -6,16 +6,28 @@ import contextlib
 import os
 from django.contrib.auth.models import User
 
+
+class Province(models.Model):
+    name = models.CharField(max_length=30, blank=True, null=True)
+    initial = models.CharField(max_length=5, blank=True, null=True)
+
+    def __str__(self):
+        return self.name
+
 class Address(models.Model):
     street_address = models.CharField(max_length=255, blank=True, null=True)
     street_address_2 = models.CharField(max_length=255, blank=True, null=True)
     po_box = models.CharField(max_length=10, blank=True, null=True)
     municipality = models.CharField(max_length = 255, blank=True, null=True)
-    province = models.CharField(max_length=10, blank=True, null=True)
+    province = models.ForeignKey(Province, blank=True, null=True, on_delete=models.SET_NULL)
     postal_code = models.CharField(max_length=100, blank=True, null=True)
+    city = models.CharField(null=True,blank=True,max_length=50)
 
     def __str__(self):
-        return self.street_address
+        if self.city:
+            return self.city
+        else:
+            return ''
 
 #default law societies
 class LawSociety(models.Model):
@@ -41,6 +53,9 @@ class Presenter(models.Model):
     law_firm = models.CharField(null=True,blank=True, max_length=100)
     public_email = models.CharField(null=True,blank=True,max_length=200)
     url = models.CharField(null=True,blank=True,max_length=200)
+    public_address = models.OneToOneField(Address, blank=True, null=True, related_name="public_address", on_delete=models.SET_NULL)
+    private_address = models.OneToOneField(Address, blank=True, null=True, related_name="private_address", on_delete=models.SET_NULL)
+
 
     # Allows user to set their placeholder img. 0=female, 1=male.
     placeholder_type = models.IntegerField(blank=True, null=True)
@@ -78,7 +93,6 @@ class Presenter(models.Model):
 class AppUser(models.Model):
     user = models.OneToOneField(User, related_name="profile")
     activation_key = models.CharField(max_length=100, blank=True, null=True)
-    address = models.ForeignKey(Address, blank=True, null=True)
     date_joined = models.DateTimeField(auto_now_add=True)
     society = models.ManyToManyField(LawSociety,blank=True)
     terms = models.BooleanField(blank=True)

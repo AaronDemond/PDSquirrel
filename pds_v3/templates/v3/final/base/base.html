@@ -30,6 +30,7 @@
 
 			    {% endif %}
                 <li><a href="{% url 'browse' %}">Browse</a></li>
+                <li><a href="{% url 'meet-our-presenters' %}">Meet Our Presenters</a></li>
 
 			    {% if request.user.profile.is_presenter == True %}
 			    <li><a href="{% url 'presenter-dash' %}">Presenter Hub</a></li>
