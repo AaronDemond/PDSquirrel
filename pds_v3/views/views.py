@@ -292,7 +292,7 @@ from pds_v3 import models
 def presenter_detail(request, p_id):
     presenter = models.Presenter.objects.get(id=p_id)
 
-    if presenter.bio == '' or presenter.bio == '' or presenter.law_firm == '' or presenter.city == '' or presenter.province == '':
+    if not presenter.bio or not presenter.law_firm or not presenter.public_address.city or not presenter.public_address.province:
         messages.info(request, 'This presenter has not completed their Biography page yet, check again soon.')
         if request.GET.get('pres', False):
             return HttpResponseRedirect('/meet-our-presenters/')
