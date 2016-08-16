@@ -53,7 +53,7 @@
 				<!-- Error Messages -->
 				<div class="row">
 						<div class="col-lg-9 col-lg-offset-1">
-							<div class="msg-container">
+							<div id="error-msgs" class="msg-container">
 							    {% if messages %}
 							    {% for msg in messages %}
 								<div class="alert alert-{{msg.tags}} msg" role="alert">{{msg}}<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a></div>
@@ -121,16 +121,10 @@
 	    $("#dash-link").addClass("active");
 	}
 
-	$(document).ready(function() {
 		$('#pres-hub-nav li').click(function() {
-		$("#pres-hub-nav li").removeClass('active');
-		$(this).addClass('active');
+				$("#pres-hub-nav li").removeClass('active');
+				$(this).addClass('active');
+				$('.close').click();
 			});
-	});
-
-	$('button').click(function() {
-			 $('button').removeClass('active');
-			 $(this).addClass('active');
-	});
 </script>
 {% endblock footer-content %}
