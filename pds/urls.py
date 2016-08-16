@@ -31,18 +31,13 @@ urlpatterns = [
 
     # Footer links
     url(r'^about/$', tmp_views.about, name="learn"),
-    url(r'^login/$', user_views.login_landing, name="login-landing"),
-    url(r'^payment-process/$', payment_views.payment_process, name="payment-process"),
-    url(r'^accred/(?P<pd_id>\d+)/$', views.accred, name="accred"),
-    # url(r'^about/$', tmp_views.about, name="about"), merged into learn. function commented out
-    url(r'^about/$', tmp_views.about, name="learn"),
     url(r'^contact/$', tmp_views.contact, name="contact-us"),
     url(r'^support/$', tmp_views.support_msg, name="support"),
     url(r'^terms/$', tmp_views.terms, name="terms"),
-    url(r'^presenter-terms/$', views.presenter_terms, name="presenter-terms"),
     url(r'^privacy/$', tmp_views.privacy, name="privacy"),
     url(r'^become-a-presenter/$', tmp_views.become_presenter, name="presenter-info"),
     url(r'^terms/$', tmp_views.terms, name="presenter-terms"),
+    url(r'^presenter-terms/$', views.presenter_terms, name="presenter-terms"),
 
     # User options
     url(r'^user/options/$', user_views.options, name="options"),
@@ -54,16 +49,6 @@ urlpatterns = [
     url(r'^user/options/u_card/$', user_views.default_payment, name="update-payment"),
 
     # presenter hub
-    url(r'^cap_ref/$', tmp_views.cap_ajax, name='cap-ref'),
-
-    url(r'^upload-admin/$', views.upload_admin, name="upload-admin"),
-    url(r'^upload-admin/(?P<pd_id>\d+)/$', views.upload_admin, name="upload-admin"),
-
-    url(r'^accounting/$', views.accounting_admin, name="accounting"),
-
-
-    #presenter urls
-    #Home page for presenter
     url(r'^user/presenter/dash/$', presenter_views.dash, name="presenter-dash"),
     url(r'^preview/(?P<id>\d+)/$', presenter_views.preview, name="preview-session"),
     url(r'^record/$', presenter_views.record, name="record"),
