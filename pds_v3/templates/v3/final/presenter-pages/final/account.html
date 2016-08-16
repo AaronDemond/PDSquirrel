@@ -1,15 +1,27 @@
 {% load staticfiles %}
-
+{% if not presenter.bio or not presenter.law_firm or not presenter.public_address.city or not presenter.public_address.province %}
+<div class="row">
+  <div class="col-xs-12">
+    <div class="alert alert-info">
+      <p>
+        The bio, law firm, city and province fields are required for your presenter page to be viewed on PD Squirrel.
+      </p>
+    </div>
+  </div>
+</div>
+{% endif %}
 <div class="row">
     <div class="col-lg-9 col-lg-offset-1">
-    {% if presenter.bio %}
+    {% if presenter.bio and presenter.law_firm and presenter.public_address.city and presenter.public_address.province %}
     <h4>Update your presenter page
 		<small><a href="{%url 'presenter-detail' presenter.id %}" target="_blank">(click here to see your existing page)</a></small>
 	</h4>
+    <hr>
     {% else %}
     <h4>Use this page to upload your bio <small>You can always make changes in the future.</small></h4>
-    {% endif %}
     <hr>
+    {% endif %}
+
     <form action="{% url 'presenter-dash' %}" method="POST" enctype="multipart/form-data" >
 	{% csrf_token %}
 	<input type="hidden" name="edit-pres-public" value="1">
@@ -17,7 +29,7 @@
 			<div class="row" style="margin-bottom: 15px;">
 				<div class="col-lg-12">
 					<div class="control-group">
-						<label for="bio">Bio</label><small class="muted"> (Required for your presenter page to appear)</small>
+						<label for="bio">Bio</label>
 						<textarea class="form-control" name="bio" cols="30" rows="5">{{presenter.bio}}</textarea>
 					</div>
 
@@ -45,23 +57,41 @@
 			<div class="col-sm-6">
 				<div class="form-group">
 					<label for="credentials">Your designation(s)</label>
-					<input type="text"class="form-control" name="credentials" value="{{presenter.credentials}}">
+					<input type="text" class="form-control" name="credentials" value="{{presenter.credentials}}">
 				</div>
 				<div class="form-group">
 					<label for="public_email">Law or accounting firm</label>
-					<input type="text"class="form-control" name="law_firm" value="{{presenter.law_firm}}">
+					<input type="text" class="form-control" name="law_firm" value="{{presenter.law_firm}}">
 				</div>
+        <div class="form-group">
+          <label for="city">City</label>
+          <input type="text" class="form-control" name="city" value="{% if presenter.public_address.city %}{{presenter.public_address.city}}{% endif %}" >
+        </div>
+
 			</div>
 
 			<div class="col-sm-6">
 				<div class="form-group">
 					<label for="public_email">Email</label>
-					<input type="text"class="form-control" name="public_email" value="{{presenter.public_email}}">
+					<input type="text" class="form-control" name="public_email" value="{{presenter.public_email}}">
 				</div>
 				<div class="form-group">
 					<label for="url">Firm's website address</label>
-					<input type="text"class="form-control" name="url" value="{{presenter.url}}">
+					<input type="text" class="form-control" name="url" value="{{presenter.url}}">
 				</div>
+        <div class="form-group">
+          <label for="province">Province</label>
+          <select class="form-control" name="province">
+            <option value="{% if presenter.public_address.province %}{{presenter.public_address.province.id}}{% endif %}">{% if presenter.public_address.province %}{{presenter.public_address.province}}{% endif %}</option>
+            {% for province in provinces %}
+						<option value="{{province.id}}" >{{province}}</option>
+						{% endfor %}
+            <option value=""></option>
+					</select>
+          <!--
+          <input type="text" name="province" value="{{presenter.province}}" class="form-control">
+        -->
+        </div>
 
 			</div>
 		</div>

@@ -8,7 +8,7 @@ from pds_v3 import tasks
 from django.core.files.base import File as DjangoFile
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
-from pds_v3.models import PdSession,Presenter, AppUser, LawSociety, \
+from pds_v3.models import PdSession,Presenter, AppUser, LawSociety, Province, Address, \
 LawSocietyOverride, Purchase, Subject, PdSessionEdit, PdAttachment, PdAudio
 
 from django.core.exceptions import ObjectDoesNotExist
@@ -209,6 +209,31 @@ def dash(request, msg=False):
                 presenter.bio = request.POST['bio'].lstrip()
                 presenter.public_email = request.POST['public_email']
                 presenter.url = request.POST['url']
+
+                if 'city' in request.POST or 'province' in request.POST:
+                    city = request.POST.get('city', '')
+                    province_id = request.POST.get('province', False)
+                    print province_id
+                    if province_id and province_id != '':
+                        province = Province.objects.get(id=int(province_id))
+
+                    if presenter.public_address:
+
+                        address_id = presenter.public_address.id
+                        address = Address.objects.get(id=address_id)
+                        address.city = city
+                        if province_id == '': # if user has address but no province given remove province
+                            address.province = None
+                            #address.province.save()
+                        else:
+                            address.province = province
+                    else:
+                        address = Address.objects.create(city=city)
+                        address.province = province
+
+                    address.save()
+                    presenter.public_address = address
+
                 if 'clear_photo' in request.POST:
                     presenter.image = None
                     presenter.placeholder_type = 1;
@@ -393,6 +418,7 @@ def dash(request, msg=False):
 
             elif 'myaccount' in request.GET:
                 context['presenter'] = presenter
+                context['provinces'] = Province.objects.all()
                 return render(request, 'v3/final/presenter-pages/final/account.html', context)
 
             elif 'landing' in request.GET:

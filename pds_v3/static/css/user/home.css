@@ -281,10 +281,3 @@ form h4 {
   -o-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;
 }
-
-.no-style-link {
-  color: inherit;
-}
-.no-style-link:hover {
-  color: inherit;
-}

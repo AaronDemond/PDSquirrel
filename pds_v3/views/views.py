@@ -5,7 +5,7 @@ import datetime
 from django.contrib import messages
 from django.core.mail import send_mail
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from pds_v3.models import PdSession, AppUser, LawSociety, LawSocietyOverride, Purchase, Subject, Presenter, PdAttachment, Comment, PdAudio
+from pds_v3.models import PdSession, AppUser, Province, LawSociety, LawSocietyOverride, Purchase, Subject, Presenter, PdAttachment, Comment, PdAudio
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.models import User
 from django.db import IntegrityError
@@ -107,6 +107,20 @@ def browse(request):
 
     return render(request, 'v3/final/browse.html' , {'pd_list' : pd, 'range' : page_range, 'subjects' : Subject.objects.all(), 'type' : search_type, 'subject' : sub_name, 'query' : query})
 
+
+def meet_our_presenters(request):
+    s = int(request.GET.get('province', 0))
+    if s == 0:
+        people = Presenter.objects.all()
+    else:
+        people = Presenter.objects.all().filter(public_address__province=s)
+    context = {
+            'people' : people,
+            'provinces' : Province.objects.all(),
+            'selected' : s
+    }
+
+    return render(request, 'v3/final/meet-our-presenters.html' , context)
 
 def fuseEdit(edit,pd):
     pd.name=edit.name
@@ -278,9 +292,12 @@ from pds_v3 import models
 def presenter_detail(request, p_id):
     presenter = models.Presenter.objects.get(id=p_id)
 
-    if presenter.bio == '':
+    if not presenter.bio or not presenter.law_firm or not presenter.public_address.city or not presenter.public_address.province:
         messages.info(request, 'This presenter has not completed their Biography page yet, check again soon.')
-        return HttpResponseRedirect('/browse/')
+        if request.GET.get('pres', False):
+            return HttpResponseRedirect('/meet-our-presenters/')
+        else:
+            return HttpResponseRedirect('/browse/')
 
     name = presenter
     context = {'name': name, 'bio': presenter.bio, 'img': '/static/img/placeholder.png ', 'presenter': presenter}
