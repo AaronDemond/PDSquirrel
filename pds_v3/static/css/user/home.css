@@ -99,23 +99,20 @@
     margin-left: 30px;
   }
 }
-<<<<<<< Updated upstream
-=======
 
 @media all and (max-width: 682px) {
-
   .mobile { /* Override hidden class */
     display: block !important;
     padding-right: 25px;
   }
->>>>>>> Stashed changes
-
-@media all and (max-width: 682px) {
   .site-description-container div {
     margin-left: 0px !important;  /*overrides above css*/
   }
   .site-description-container {
     margin-left: 51%;
+  }
+  .lg-screen {
+    display: none;
   }
 }
 
