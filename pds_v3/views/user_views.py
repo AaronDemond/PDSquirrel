@@ -36,7 +36,7 @@ def activate(request, link_id):
     except:
         messages.error(request, 'Account not found. Please check the link for errors.')
 
-    return HttpResponseRedirect('/login/')
+    return render(request, 'v3/final/login-new.html')
 
 def login_user(request):
     username = request.POST['username']
