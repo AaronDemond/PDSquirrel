@@ -503,7 +503,7 @@ def edit(request, id):
                 subject = Subject.objects.get(pk=subject_id)
                 pd.subject.add(subject)
                 edit.subjects.add(subject)
-            
+
             pd.edited = True
             edit.save()
             pd.edits.add(edit)
