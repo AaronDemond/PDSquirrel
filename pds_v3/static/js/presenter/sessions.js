@@ -59,14 +59,11 @@ function previewAudio(id, preview_link) {
 	var row_id = "#preview-" + id;
 
 	// Formatted audio template to insert
-	var html = `
-		<div class="col-lg-12 preview-col">
-		<audio id="player" style="width: 100%"controls>
-			<source src="/audio/${id}" type='audio/mpeg'>
-			</audio>
-
-		</div>
-			`;
+	var html = '<div class="col-lg-12 preview-col"> \
+		<audio id="player" style="width: 100%"controls> \
+			<source src="/audio/'+id+'" type="audio/mpeg"> \
+			</audio> \
+		</div>';
 
 	// Clear audio elements from page
 	$(".preview-bar").each(function() {
