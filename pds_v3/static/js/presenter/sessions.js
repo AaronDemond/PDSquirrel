@@ -30,7 +30,7 @@ function showStatus(id, infolink) {
 	}
 
     hideStatus();
-    row_id = "#status-" + id;
+    var row_id = "#status-" + id;
     $(infolink).text('(info ▴)');
     $(row_id).toggleClass("hidden");
 
@@ -100,7 +100,7 @@ function showRemove(id, suslink) {
 		return;
 	}
     hideSuspend();
-    row_id = "#remove-" + id;
+    var row_id = "#remove-" + id;
     $(row_id).toggleClass("hidden");
     $(suslink).text('Remove ▴');
 
@@ -117,7 +117,7 @@ function showSuspendCancel(id, suslink) {
 	}
 
     hideCancelBar();
-    row_id = "#remove-cancel-" + id;
+    var row_id = "#remove-cancel-" + id;
     $(suslink).text('Cancel removal ▴');
     $(row_id).toggleClass("hidden");
 }
