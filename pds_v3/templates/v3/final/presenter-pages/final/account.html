@@ -1,7 +1,7 @@
 {% load staticfiles %}
 {% if not presenter.bio or not presenter.law_firm or not presenter.public_address.city or not presenter.public_address.province %}
 <div class="row">
-  <div class="col-xs-12">
+  <div class="col-lg-9 col-lg-offset-1">
     <div class="alert alert-info">
       <p>
         The bio, law firm, city and province fields are required for your presenter page to be viewed on PD Squirrel.
@@ -30,7 +30,7 @@
 				<div class="col-lg-12">
 					<div class="control-group">
 						<label for="bio">Bio</label>
-						<textarea class="form-control" name="bio" cols="30" rows="5">{{presenter.bio}}</textarea>
+						<textarea class="form-control" name="bio" cols="30" rows="5">{% if presenter.bio %}{{presenter.bio}}{% endif %}</textarea>
 					</div>
 
 				</div>
@@ -57,11 +57,11 @@
 			<div class="col-sm-6">
 				<div class="form-group">
 					<label for="credentials">Your designation(s)</label>
-					<input type="text" class="form-control" name="credentials" value="{{presenter.credentials}}">
+					<input type="text" class="form-control" name="credentials" value="{% if presenter.credentials %}{{presenter.credentials}}{% endif %}">
 				</div>
 				<div class="form-group">
 					<label for="public_email">Law or accounting firm</label>
-					<input type="text" class="form-control" name="law_firm" value="{{presenter.law_firm}}">
+					<input type="text" class="form-control" name="law_firm" value="{% if presenter.law_firm %}{{presenter.law_firm}}{% endif %}">
 				</div>
         <div class="form-group">
           <label for="city">City</label>
@@ -73,11 +73,11 @@
 			<div class="col-sm-6">
 				<div class="form-group">
 					<label for="public_email">Email</label>
-					<input type="text" class="form-control" name="public_email" value="{{presenter.public_email}}">
+					<input type="text" class="form-control" name="public_email" value="{% if presenter.public_email %}{{presenter.public_email}}{% endif %}">
 				</div>
 				<div class="form-group">
 					<label for="url">Firm's website address</label>
-					<input type="text" class="form-control" name="url" value="{{presenter.url}}">
+					<input type="text" class="form-control" name="url" value="{% if presenter.url %}{{presenter.url}}{% endif %}">
 				</div>
         <div class="form-group">
           <label for="province">Province</label>
@@ -88,9 +88,6 @@
 						{% endfor %}
             <option value=""></option>
 					</select>
-          <!--
-          <input type="text" name="province" value="{{presenter.province}}" class="form-control">
-        -->
         </div>
 
 			</div>
