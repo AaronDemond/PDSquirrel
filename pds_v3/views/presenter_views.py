@@ -229,7 +229,8 @@ def dash(request, msg=False):
                             address.province = province
                     else:
                         address = Address.objects.create(city=city)
-                        address.province = province
+                        if province_id:
+                            address.province = province
 
                     address.save()
                     presenter.public_address = address

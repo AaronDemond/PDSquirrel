@@ -26,8 +26,10 @@ class Address(models.Model):
     def __str__(self):
         if self.city:
             return self.city
+        elif self.province:
+            return self.province.name
         else:
-            return ''
+            return 'No city or province selected'
 
 #default law societies
 class LawSociety(models.Model):
