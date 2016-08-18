@@ -16,9 +16,14 @@
     document.body.appendChild(replacement)
     addStylesNode.parentElement.removeChild(addStylesNode);
   };
-  var raf = typeof requestAnimationFrame !== 'undefined' || typeof mozRequestAnimationFrame !== 'undefined' ||
-      typeof webkitRequestAnimationFrame !== 'undefined' || typeof msRequestAnimationFrame !== 'undefined';
+  var raf = requestAnimationFrame ||  mozRequestAnimationFrame ||
+      webkitRequestAnimationFrame || msRequestAnimationFrame;
   if (raf) raf(function() { window.setTimeout(loadDeferredStyles, 0); });
   else window.addEventListener('load', loadDeferredStyles);
 </script>
+<!--[if lte IE 9]>
+<script>
+  window.addEventListener('load', loadDeferredStyles);
+</script>
+<![endif]>
 <!-- end small css load -->
