@@ -18,12 +18,14 @@
   };
   var raf = requestAnimationFrame ||  mozRequestAnimationFrame ||
       webkitRequestAnimationFrame || msRequestAnimationFrame;
-  if (raf) raf(function() { window.setTimeout(loadDeferredStyles, 0); });
+  if (typeof raf !== 'undefined' && raf) raf(function() { window.setTimeout(loadDeferredStyles, 0); });
   else window.addEventListener('load', loadDeferredStyles);
 </script>
+<!--
 <!--[if lte IE 9]>
 <script>
   window.addEventListener('load', loadDeferredStyles);
 </script>
 <![endif]>
+-->
 <!-- end small css load -->
