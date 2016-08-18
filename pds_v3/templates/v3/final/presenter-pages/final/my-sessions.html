@@ -61,7 +61,7 @@
                                 &nbsp;
                             </div>
                         </div>
-						<a class="preview-link" onclick="previewAudio({{sesh.id}}, this)">Listen ▾</a>
+						            <a class="preview-link" onclick="previewAudio({{sesh.id}}, this)">Listen ▾</a>
                         <a class="" onclick="loadXMLDoc('{% url 'edit' sesh.id %}', '#page-content')">Edit</a>
 												{% if sesh.suspended == False %}
                         <a class="suspend-link" onclick="showRemove({{sesh.id}}, this)" >Remove ▾</a>
