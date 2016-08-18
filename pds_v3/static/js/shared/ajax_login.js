@@ -29,7 +29,7 @@ $(document).ready(function(){
 span not required
 
 example:
-<a name="js-info-X">(info <span>&blacktriangledown;</span>)</a>
+<a name="js-info-X">(info <span>&#9662;</span>)</a>
 <div name="js-info-X" class="hidden">
 ...
 <button name="js-info-X">...</button>
@@ -42,7 +42,8 @@ info_box_activate(); // Reload info box for ajax
 info_box_activate();
 
 function info_box_activate() {
-	$("[name^='js-info-']").filter('a').click(function() {
+	var js_info = $("[name^='js-info-']");
+	js_info.filter('a').click(function() {
 		var $curr = $(this);
 		var curr_name = $curr.attr('name');
 		var $info_box = $('[name="'+curr_name+'"]').filter('div');
@@ -52,22 +53,22 @@ function info_box_activate() {
 			$info_box.removeClass('hidden'); // Display info box
 			var $all_other_info = $("[name^='js-info-']"); // all other info elements
 			$all_other_info.filter('div').not($info_box).addClass('hidden'); // hide all other info boxes
-			$all_other_info.filter('a').children('span').html('&#9662'); // flip all other info arrows
-			$arrow.html('&#9652');
+			$all_other_info.filter('a').children('span').html('&#9662;'); // flip all other info arrows
+			$arrow.html('&#9652;');
 
 		} else { // if visible -> hide
 
 			$info_box.addClass('hidden');
-			$arrow.html('&#9662');
+			$arrow.html('&#9662;');
 		}
 	});
 
 	// cancel / close button
-	$("[name^='js-info-']").filter('button').click(function() {
+	js_info.filter('button').click(function() {
 		var $curr = $(this);
 		var curr_name = $curr.attr('name');
 		var $info_box = $('[name="'+curr_name+'"]').filter('div');
-		$('[name="'+curr_name+'"]').filter('a').children('span').html('&#9662'); // flip arrow
+		$('[name="'+curr_name+'"]').filter('a').children('span').html('&#9662;'); // flip arrow
 
 		$info_box.addClass('hidden');
 	});

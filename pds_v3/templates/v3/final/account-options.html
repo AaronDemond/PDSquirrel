@@ -109,9 +109,9 @@ payments from our PD Squirrel members. None of your sensitive information is sto
                 <td>{{user.profile.date_joined|remove_time}}</td>
             </tr>
             <tr>
-                <td class='muted'>My cards <a name="js-info-add-card">(more information <span>&blacktriangledown;</span>)</a>
+                <td class='muted'>My cards <a name="js-info-add-card">(more information <span>&#9662;</span>)</a>
 					<br>
-					How we process payments <a name="js-info-stripe">(more <span>&blacktriangledown;</span>)</a>
+					How we process payments <a name="js-info-stripe">(more <span>&#9662;</span>)</a>
 				</td>
                 <td id="card-cell">
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Add Card</button>
@@ -172,7 +172,7 @@ payments from our PD Squirrel members. None of your sensitive information is sto
             <h3 class="account-header">My Membership<small></small></h3>
               <table class="table">
                 <tr>
-                    <td class="muted">Membership type <a name="js-info-membership">(more <span>&blacktriangledown;</span>)</a></td>
+                    <td class="muted">Membership type <a name="js-info-membership">(more <span>&#9662;</span>)</a></td>
                     <td><b>{% if user.profile.is_premium %}Premium{% else %}Standard{% endif %}</b></td>
                 </tr>
 		            <tr>
@@ -229,13 +229,13 @@ payments from our PD Squirrel members. None of your sensitive information is sto
                   </td>
               </tr>
               <tr>
-                  <td class="muted">Session credits remaining <a name="js-info-credits">(more <span>&blacktriangledown;</span>)</a></td>
+                  <td class="muted">Session credits remaining <a name="js-info-credits">(more <span>&#9662;</span>)</a></td>
                   <td>{{ user.profile.remaining_pd }}</td>
               </tr>
               {% endif %}
               {% else %}
               <tr>
-                  <td class="muted">Session credits remaining <a name="js-info-credits">(more <span>&blacktriangledown;</span>)</a> </td>
+                  <td class="muted">Session credits remaining <a name="js-info-credits">(more <span>&#9662;</span>)</a> </td>
                   <td>{{ user.profile.remaining_pd }}</td>
               </tr>
               {% endif %}
@@ -263,7 +263,7 @@ payments from our PD Squirrel members. None of your sensitive information is sto
               <tr>
                 <td class="muted">{% if user.profile.is_premium %}Downgrade membership {% else %}
                     Upgrade membership to Premium {% endif %}
-                    <!--<a name="js-info-change-membership" onclick="showChangeMembership()">(more <span>&blacktriangledown;</span>)</a>-->
+                    <!--<a name="js-info-change-membership" onclick="showChangeMembership()">(more <span>&#9662;</span>)</a>-->
                 </td>
                 <td>
                   <a class="btn btn-primary" name="js-info-change-membership">Change Membership</a>
