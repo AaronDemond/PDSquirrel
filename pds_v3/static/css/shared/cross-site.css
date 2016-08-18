@@ -88,10 +88,6 @@ body {
   color: inherit;
 }
 
-#browse-container {
-    height: 120px;
-
-}
 
 h1 {
     font-size: 1.4em;
@@ -139,14 +135,17 @@ html, body {
 }
 
 
-#pd-listing h3 {
+.pdlisting h3 {
   font-size: 18px !important;
-  margin-bottom: 0 !important; }
-#pd-listing p {
+  margin-bottom: 0 !important;
+}
+
+.pdlisting p {
   margin: 0;
   padding: 0;
   color: #545454;
-  line-height: 1.4; }
+  line-height: 1.4;
+}
 
 
 .btn-default {

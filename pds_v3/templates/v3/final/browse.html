@@ -97,7 +97,7 @@
                     {% if pd_list %}
                     <hr />
                     {% for pd in pd_list %}
-                    <div id="pd-listing" class="row pdlisting">
+                    <div class="row pdlisting">
 
                         <div class="col-xs-12">
 			    <h3><a href="{% url 'detail' pd.id %}{% if query %}?_q={{query}}{% endif %}">{{pd.name}}</a></h3>
