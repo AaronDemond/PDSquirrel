@@ -10,5 +10,8 @@ function loadXMLDoc(url,div, direct_to) {
 	if (typeof context !== 'undefined' && context.state === "running" ) {
 			context.close();
 	}
+	if ( typeof window.history.pushState !== 'undefined')
     window.history.pushState("state", direct_to, "?direct_to=" + direct_to);
+	else
+		$(this).addClass('active');
 }
