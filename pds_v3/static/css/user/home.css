@@ -20,6 +20,10 @@
   float: left;
 }
 
+#search-icon {
+  line-height: 1.5 !important;
+}
+
 .search-container {
   padding-right: 75px;
 }
