@@ -96,7 +96,7 @@
             <h4 class="text-center"><a href="{% url 'presenter-detail' presenter.id %}?pres=1">{{presenter}}</a></h4>
             <h5 class="muted text-center credentials">{% if presenter.credentials %}{{presenter.credentials}}{% endif %}</h5>
 
-            <h5>{% if presenter.public_address.city %}{{presenter.public_address.city}}{% endif %}{% if presenter.public_address.province %}, {{presenter.public_address.province.initial}}{% endif %}</h5>
+            <h5>{% if presenter.public_address.city %}{{presenter.public_address.city}}{% endif %}{% if presenter.public_address.province %}{% if presenter.public_address.city %}, {% endif %}{{presenter.public_address.province.initial}}{% endif %}</h5>
             <h5>{% if presenter.law_firm %}{{presenter.law_firm}}{% endif %}</h5>
           </div>
         </div>
