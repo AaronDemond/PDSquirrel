@@ -111,7 +111,7 @@ def browse(request):
 def meet_our_presenters(request):
     s = int(request.GET.get('province', 0))
     if s == 0:
-        people = Presenter.objects.all()
+        people = Presenter.objects.filter(user__is_staff=False)
     else:
         people = Presenter.objects.all().filter(public_address__province=s)
     context = {
