@@ -72,12 +72,15 @@ def randomword(length):
 def recover(request):
     if request.POST:
         email = request.POST["email"]
+        vemail = request.POST["vemail"]
         try:
             user = User.objects.get(username = email)
         except:
             messages.warning(request, 'That email is not associated with an account, please try again.')
             return render(request, 'v3/final/recover.html')
-
+        if email != vemail:
+            messages.error(request, "The email addresses you entered do not match.")
+            return render(request, 'v3/final/recover.html')
         plainpass = randomword(10)
         password = hashers.make_password(plainpass)
         user.password = password
