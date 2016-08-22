@@ -1,44 +1,42 @@
 {% load staticfiles %}
 {% load pds_extras %}
-<div id="page-content">
-    <div class="row">
-        <div class="col-lg-3 col-lg-offset-1">
-			<h4>{{user.first_name}} {{user.last_name}}{% if user.presenter.credentials %}, {{user.presenter.credentials}}{% endif %}</h4>
-			<p style="margin-left:10px">
-			<br>
-      {% comment %}
-      {{user.profile.address.street_address}}
-      {% if user.profile.address.po_box %}P.O. Box {{user.profile.address.po_box}}<br>{% endif %}{{user.profile.address.municipality}} {{user.profile.address.province}} {{user.profile.address.postal_code}}</p>
-      {% endcomment %}
-		</div>
-        <div class="col-lg-6">
-			<h4 >Overview <small>(Cumulative to date)</small></h4>
-			<table class="table">
-				<tr>
-					<td>Number of PD Sessions you have listed on PD Squirrel</td>
+<div class="row">
+    <div class="col-lg-3 col-lg-offset-1">
+	<h4>{{user.first_name}} {{user.last_name}}{% if user.presenter.credentials %}, {{user.presenter.credentials}}{% endif %}</h4>
+	<p style="margin-left:10px">
+	<br>
+  {% comment %}
+  {{user.profile.address.street_address}}
+  {% if user.profile.address.po_box %}P.O. Box {{user.profile.address.po_box}}<br>{% endif %}{{user.profile.address.municipality}} {{user.profile.address.province}} {{user.profile.address.postal_code}}</p>
+  {% endcomment %}
+</div>
+    <div class="col-lg-6">
+	<h4 >Overview <small>(Cumulative to date)</small></h4>
+	<table class="table">
+		<tr>
+			<td>Number of PD Sessions you have listed on PD Squirrel</td>
 
-					<td>{{listed_count}}</td>
-				</tr>
-				<tr>
-					<td>
-            Total member takes of all your PD Sessions
-			      <a name="js-info-take">(info <span>&#9662;</span>)</a>
-          </td>
-					<td>{{takes_count}}</td>
-				</tr>
-			</table>
-			<div name="js-info-take" class="alert alert-info hidden" >
-				<p>
-					One 'take' is the taking of a particular PD Session from the Site by a PD Squirrel member, by way of a single purchase (if the member is a Standard member) or by using a member credit (if a Premium member).
-				</p>
-				<div class="row">
-					<div class="col-xs-12">
-						<button name="js-info-take" class="btn btn-default pull-right">Close</button>
-					</div>
-				</div>
+			<td>{{listed_count}}</td>
+		</tr>
+		<tr>
+			<td>
+        Total member takes of all your PD Sessions
+	      <a name="js-info-take">(info <span>&#9662;</span>)</a>
+      </td>
+			<td>{{takes_count}}</td>
+		</tr>
+	</table>
+	<div name="js-info-take" class="alert alert-info hidden" >
+		<p>
+			One 'take' is the taking of a particular PD Session from the Site by a PD Squirrel member, by way of a single purchase (if the member is a Standard member) or by using a member credit (if a Premium member).
+		</p>
+		<div class="row">
+			<div class="col-xs-12">
+				<button name="js-info-take" class="btn btn-default pull-right">Close</button>
 			</div>
 		</div>
-    </div>
+	</div>
+</div>
 </div>
 <script>
 info_box_activate(); // Reload info box for ajax

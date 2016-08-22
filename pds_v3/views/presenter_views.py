@@ -149,6 +149,12 @@ def dash(request, msg=False):
         if presenter is not None:
             context['pd'] = PdSession.objects.filter(presenters=presenter).order_by('-upload_date', 'name')
             earnings = 0
+
+        if 'recorder_broken' in request.GET:
+            messages.add_message(request, messages.ERROR,
+                    'Your browser does not support our recorder feature.')
+            return HttpResponseRedirect('/user/presenter/dash/?direct_to=upload')
+
         if request.POST:
 
             if 'date-rng' in request.POST:
