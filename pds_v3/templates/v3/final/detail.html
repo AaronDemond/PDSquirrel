@@ -295,6 +295,13 @@
                   <div class="row comment-body">
                     {{ comment.message }}
                   </div>
+                  {% if comment.user.user == request.user  %}
+                  <div class="row edit-section hidden">
+                    <textarea name="edit-message" rows="2" class="form-control reply-textarea">{{ comment.message }}</textarea>
+                    <button name="edit-btn-{{ comment.id }}" type="button" class="btn-small btn-primary submit-comment-btn" __parent="{{ comment.id }}" value="{{ comment.id }}">Submit Edit</button>
+                    <button type="button" class="btn-small btn-default cancel-edit-btn" value="0">Cancel</button>
+                  </div>
+                  {% endif %}
                   <div class="row comment-footer">
                     {% if own == 1 or pd.presenters.all.0.user == request.user %}
                     <button type="button" class="btn btn-link muted toggle-reply" >reply</button>
@@ -302,13 +309,16 @@
                     {% if comment.user.user == request.user or pd.presenters.all.0.user == request.user %}
                     <button type="button" class="btn btn-link muted delete" value="{{ comment.id }}">delete</button>
                     {% endif %}
+                    {% if comment.user.user == request.user  %}
+                    <button type="button" class="btn btn-link muted toggle-edit" value="{{ comment.id }}">edit</button>
+                    {% endif %}
                   </div>
                   <div class="row comment-reply hidden">
                     <div id="comment-reply-{{ comment.id }}" class="form-group">
                       <textarea name="reply-message" rows="2" class="form-control reply-textarea"></textarea>
-					  <button name="reply-btn-{{ comment.id }}" type="button" class="btn-small btn-primary submit-comment-btn" __parent="{{ comment.id }}" value="{{ comment.id }}">Reply</button>
+			                <button name="reply-btn-{{ comment.id }}" type="button" class="btn-small btn-primary submit-comment-btn" __parent="{{ comment.id }}" value="{{ comment.id }}">Reply</button>
 
-						<button type="button" class="btn-small btn-default cancel-comment-btn" value="0">Cancel</button>
+			                <button type="button" class="btn-small btn-default cancel-comment-btn" value="0">Cancel</button>
                     </div>
                   </div>
                 </div>
@@ -331,12 +341,22 @@
                   <div class="row comment-body">
                     {{ reply.message }}
                   </div>
+                  {% if reply.user.user == request.user  %}
+                  <div class="row edit-section hidden">
+                    <textarea name="edit-message" rows="2" class="form-control reply-textarea">{{ comment.message }}</textarea>
+                    <button name="edit-btn-{{ comment.id }}" type="button" class="btn-small btn-primary submit-comment-btn" __parent="{{ comment.id }}" value="{{ comment.id }}">Submit Edit</button>
+                    <button type="button" class="btn-small btn-default cancel-edit-btn" value="0">Cancel</button>
+                  </div>
+                  {% endif %}
                   <div class="row comment-footer">
                     {% if own == 1 or pd.presenters.all.0.user == request.user %}
                     <button type="button" class="btn btn-link muted toggle-reply">reply</button>
                     {% endif %}
                     {% if reply.user.user == request.user  or pd.presenters.all.0.user == request.user %}
 					<button type="button" id="del-{{reply.id}}" class="btn btn-link muted delete" value="{{ reply.id }}">delete</button>
+                    {% endif %}
+                    {% if reply.user.user == request.user  %}
+                    <button type="button" class="btn btn-link muted toggle-edit" value="{{ comment.id }}">edit</button>
                     {% endif %}
                   </div>
                   <div class="row comment-reply hidden">

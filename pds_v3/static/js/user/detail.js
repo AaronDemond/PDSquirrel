@@ -225,3 +225,36 @@ $(document).on("click", "button[name^='reply-btn']", function() {
       });
   }
 });
+
+/* Toggle Edit Comment Section */
+$(document).on("click", ".toggle-edit", function() {
+  var $comment_footer = $(this).parent('.comment-footer');
+
+  var $edit_section = $comment_footer.siblings('.edit-section');
+  var $comment_body = $comment_footer.siblings('.comment-body');
+
+  $edit_section.removeClass('hidden');
+  $comment_footer.addClass('hidden');
+  $comment_body.addClass('hidden');
+
+  var $edit_section_all = $('.edit-section').not($edit_section);
+  var $comment_footer_all = $('.comment-footer').not($comment_footer);
+  var $comment_body_all = $('.comment-body').not($comment_body);
+  $edit_section_all.addClass('hidden');
+  $comment_footer_all.removeClass('hidden');
+  $comment_body_all.removeClass('hidden');
+
+});
+
+/* Cancel a comment edit */
+$(document).on("click", ".cancel-edit-btn", function() {
+  console.log("test");
+  var $edit_section = $(this).parent('.edit-section');
+
+  var $comment_footer = $edit_section.siblings('.comment-footer');
+  var $comment_body = $edit_section.siblings('.comment-body');
+
+  $edit_section.addClass('hidden');
+  $comment_footer.removeClass('hidden');
+  $comment_body.removeClass('hidden');
+});

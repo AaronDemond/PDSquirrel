@@ -123,19 +123,19 @@ h4 {
 }
 
 
-.toggle-reply, .delete {
+.toggle-reply, .delete, .toggle-edit {
   padding-left: 0px;
   padding-top: 0px;
   padding-right: 0px;
   margin-right: 6px;
 }
 
-.submit-comment-btn, .cancel-comment-btn {
+.submit-comment-btn, .cancel-comment-btn, .cancel-edit-btn {
 	margin-top: 5px;
 	float: right;
 }
 
-.cancel-comment-btn {
+.cancel-comment-btn, .cancel-edit-btn {
 	margin-right: 5px;
 	height: 26px !important;
 }

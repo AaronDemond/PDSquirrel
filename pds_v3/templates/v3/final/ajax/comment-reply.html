@@ -19,11 +19,17 @@
                   <div class="row comment-body">
                     {{ comment.message }}
                   </div>
+									<div class="row edit-section hidden">
+                    <textarea name="edit-message" rows="2" class="form-control reply-textarea">{{ comment.message }}</textarea>
+                    <button name="edit-btn-{{ comment.id }}" type="button" class="btn-small btn-primary submit-comment-btn" __parent="{{ comment.id }}" value="{{ comment.id }}">Submit Edit</button>
+                    <button type="button" class="btn-small btn-default cancel-edit-btn" value="0">Cancel</button>
+                  </div>
                   <div class="row comment-footer">
                     <button type="button" class="btn btn-link muted toggle-reply">reply</button>
 					{# Always show delete because it is always owned by poster #}
                     <button type="button" class="btn btn-link muted delete" value="{{ comment.id }}">delete</button>
-                  </div>
+										<button type="button" class="btn btn-link muted toggle-edit" value="{{ comment.id }}">edit</button>
+									</div>
                   <div class="row comment-reply hidden">
                     <div id="thread-reply-{{ comment.id }}" class="form-group">
 						{% if comment.parent %}
@@ -45,4 +51,3 @@
 <div id="comment-{{comment.id}}-replies">
 </div>
 {% endif %}
-
