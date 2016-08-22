@@ -22,7 +22,7 @@
 									<div class="row edit-section hidden">
 										<div id="comment-edit-{{ comment.id }}" class="form-group">
 											<textarea name="edit-message" rows="2" class="form-control edit-textarea">{{ comment.message }}</textarea>
-	                    <button name="edit-btn-{{ comment.id }}" type="button" class="btn-small btn-primary submit-edit-btn" __parent="{{ comment.id }}" value="{{ reply.id }}">Submit Edit</button>
+	                    <button name="edit-btn-{{ comment.id }}" type="button" class="btn-small btn-primary submit-edit-btn" __parent="{{ comment.id }}" value="{{ comment.id }}">Submit Edit</button>
 	                    <button type="button" class="btn-small btn-default cancel-edit-btn" value="0">Cancel</button>
 										</div>
                   </div>
