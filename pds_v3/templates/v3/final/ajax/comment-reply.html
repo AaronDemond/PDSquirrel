@@ -20,11 +20,13 @@
                     {{ comment.message }}
                   </div>
 									<div class="row edit-section hidden">
-                    <textarea name="edit-message" rows="2" class="form-control reply-textarea">{{ comment.message }}</textarea>
-                    <button name="edit-btn-{{ comment.id }}" type="button" class="btn-small btn-primary submit-comment-btn" __parent="{{ comment.id }}" value="{{ comment.id }}">Submit Edit</button>
-                    <button type="button" class="btn-small btn-default cancel-edit-btn" value="0">Cancel</button>
+										<div id="comment-edit-{{ comment.id }}" class="form-group">
+											<textarea name="edit-message" rows="2" class="form-control edit-textarea">{{ comment.message }}</textarea>
+	                    <button name="edit-btn-{{ comment.id }}" type="button" class="btn-small btn-primary submit-edit-btn" __parent="{{ comment.id }}" value="{{ reply.id }}">Submit Edit</button>
+	                    <button type="button" class="btn-small btn-default cancel-edit-btn" value="0">Cancel</button>
+										</div>
                   </div>
-                  <div class="row comment-footer">
+                	<div class="row comment-footer">
                     <button type="button" class="btn btn-link muted toggle-reply">reply</button>
 					{# Always show delete because it is always owned by poster #}
                     <button type="button" class="btn btn-link muted delete" value="{{ comment.id }}">delete</button>

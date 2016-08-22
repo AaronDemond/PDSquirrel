@@ -130,7 +130,7 @@ h4 {
   margin-right: 6px;
 }
 
-.submit-comment-btn, .cancel-comment-btn, .cancel-edit-btn {
+.submit-comment-btn, .cancel-comment-btn, .cancel-edit-btn, .submit-edit-btn {
 	margin-top: 5px;
 	float: right;
 }
@@ -146,7 +146,7 @@ h4 {
 
 /* Firefox override on comments buttons because they are different sizes */
 @-moz-document url-prefix() {
-	.cancel-comment-btn {
+	.cancel-comment-btn, .cancel-edit-btn {
 		height: 24px !important;
 	}
 }

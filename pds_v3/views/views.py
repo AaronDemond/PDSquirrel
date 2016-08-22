@@ -337,13 +337,25 @@ def delete_comment(request):
             comment.delete()
     return HttpResponse('Success')
 
+def edit_comment(request):
+    if request.POST and request.user.is_authenticated:
+
+        comment_id = int(request.POST['comment_id'])
+        message = request.POST.get('msg', "").lstrip().rstrip()
+        comment = Comment.objects.get(pk=comment_id)
+
+        if request.user == comment.user.user and message:
+            comment.message = message
+            comment.save()
+
+    return HttpResponse('Success')
+
 
 def comment(request):
     if request.POST and request.user.is_authenticated:
         pd_id = int(request.POST['pd_id'])
         reply_id = int(request.POST['reply_id'])
         parent_id = int(request.POST['reply_id'])
-        print parent_id
         message = request.POST['msg']
         user = request.user.profile
         pd = PdSession.objects.get(pk=pd_id)
