@@ -483,6 +483,16 @@ payments from our PD Squirrel members. None of your sensitive information is sto
 </div>
 {% endblock body %}
 {% block footer-content %}
+<script>
+console.log($('input[placeholder]').not('input[type=password]'));
+if (!Modernizr.input.placeholder) {
+  $.getScript("{% static 'js/shared/placeholder_polyfill.js' %}", function() {
+    $('input[placeholder]').not('input[type=password]').each(function() {
+      $(this).placeHolder();
+    });
+  });
+}
+</script>
 <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
 <script src="{% static 'js/user/account-options.js' %}"></script>
 {% endblock footer-content %}

@@ -1,3 +1,4 @@
+// known bugs: inputs of type password display only dots. if form is submitted with a poly fill value it will submit the value. Bugs up join page validator.
 (function( $ ) {
   $.fn.placeHolder = function() {
       var input = this;
@@ -33,7 +34,3 @@
       });
    };
 })( jQuery );
-
-function addPlaceHolder(curr) {
-  $(curr).placeHolder();
-}

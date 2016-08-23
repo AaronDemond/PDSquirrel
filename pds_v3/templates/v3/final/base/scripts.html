@@ -11,8 +11,9 @@
 
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
-
         <link rel="stylesheet" href="{% static 'css/shared/cross-site.css' %}">
+
+        <script src="{% static 'js/shared/modernizr.js' %}"></script>
 
         {% endblock headerscripts %}
         {% block header-content %}
@@ -24,7 +25,6 @@
     {% endblock %}
             <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
             <script src="{% static 'js/shared/ajax_login.js' %}"></script>
-            <script src="{% static 'js/shared/modernizr.js' %}"></script>
     {% block footer-content %}
     {% endblock footer-content %}
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
