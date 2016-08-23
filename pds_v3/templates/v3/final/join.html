@@ -178,6 +178,17 @@
 
 {% endblock %}
 {% block footer-content %}
+
+<script>
+if (!Modernizr.input.placeholder) {
+  $.getScript("{% static 'js/shared/placeholder_polyfill.js' %}", function() {
+    $('input[type=text]').not("#id_captcha_0").each(function() {
+      $(this).placeHolder();
+    });
+  });
+}
+</script>
+
 <script src='https://www.google.com/recaptcha/api.js'></script>
 <script src="{% static 'js/user/join.js' %}"></script>
 {% endblock footer-content %}
