@@ -129,7 +129,7 @@
 						</h4>
 
 					</div>
-					<div class="col-lg-12 audio_player">
+					<div id="audio_player" class="col-lg-12 audio_player">
 					<audio id="player" class="player video-js vjs-default-skin" controls preload="auto" height="20" poster="" data-setup="{}" style="width: 85%;">
 						{% if own == 1 %}
 						<source src="{% url 'audio' pd.id %}" type='audio/mpeg'>
@@ -138,8 +138,19 @@
                 <param name="flashvars" value="controls=true&isvideo=false&file={% url 'audio' pd.id %}" />
               </object>
             {% endif %}
-  					<p class="vjs-no-js">To view this video please enable JavaScript
-  					<a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
+            <script>
+
+
+            if (!Modernizr.audio && Modernizr.flash) {
+              var p = document.createElement('p');
+              var contact_link = "<a href='{% url 'contact-us' %}'>contact us</a>"
+              var no_audio_msg = "Your browser does not support flash or an audio player please use a different browser or "+contact_link+" if you are unable to";
+              p.innerHTML = no_audio_msg;
+              
+              var audio_player = document.getElementById('audio_player');
+              audio_player.appendChild(p);
+            }
+            </script>
           </audio>
 
 					</div>
