@@ -484,12 +484,15 @@ payments from our PD Squirrel members. None of your sensitive information is sto
 {% endblock body %}
 {% block footer-content %}
 <script>
-console.log($('input[placeholder]').not('input[type=password]'));
 if (!Modernizr.input.placeholder) {
-  $.getScript("{% static 'js/shared/placeholder_polyfill.js' %}", function() {
-    $('input[placeholder]').not('input[type=password]').each(function() {
-      $(this).placeHolder();
-    });
+  $('input[placeholder]').each(function() {
+    var $curr = $(this);
+    var placeholder_val = $curr.attr('placeholder');
+    if ($curr.attr('type') == "password") {
+      $curr.attr('type', 'text');
+    }
+    $curr.addClass("muted");
+    $curr.val(placeholder_val);
   });
 }
 </script>

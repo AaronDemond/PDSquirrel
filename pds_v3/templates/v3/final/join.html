@@ -181,10 +181,11 @@
 
 <script>
 if (!Modernizr.input.placeholder) {
-  $.getScript("{% static 'js/shared/placeholder_polyfill.js' %}", function() {
-    $('input[type=text]').not("#id_captcha_0").each(function() {
-      $(this).placeHolder();
-    });
+  $('input[placeholder]').not('input[type=password]').each(function() {
+    var $curr = $(this);
+    var placeholder_val = $curr.attr('placeholder');
+    $curr.addClass("muted");
+    $curr.val(placeholder_val);
   });
 }
 </script>
