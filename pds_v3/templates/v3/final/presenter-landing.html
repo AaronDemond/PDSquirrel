@@ -44,7 +44,7 @@
             <h3 class="location muted">{% if presenter.public_address.city %}{{presenter.public_address.city}}{% endif %}{% if presenter.public_address.province %}{% if presenter.public_address.city %}, {% endif %} {{presenter.public_address.province.initial}}{% endif %}</h3>
           </div>
 					<div id="pres-body" class="hidden-xs">
-						<p>{{bio}}</p>
+						<p>{{bio|linebreaksbr}}</p>
 					</div>
                 </div>
 				<div class="col-xs-12 hidden-sm hidden-md hidden-lg mobile-credentials mobile-info-container">
@@ -70,7 +70,7 @@
 
 				</div>
 				<div class="col-xs-12 hidden-md hidden-sm hidden-lg" id="mobile-bio">
-					<p>{{bio}}</p>
+					<p>{{bio|linebreaksbr}}</p>
 				</div>
           <div class="col-xs-12">
             {% include "v3/final/add-ons/social-media.html" with url=url %}
