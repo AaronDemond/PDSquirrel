@@ -28,3 +28,17 @@ To start the website from a server reboot, run the following commands.
 
 ```
 
+## Updating
+
+To update changes, pull from github and restart uwsgi. 
+To migrate the database, make sure to use python2.7 like so:
+
+```bash
+
+	cd ~/root/nginx/PDSquirrel
+	python2.7 manage.py makemigrations
+	python2.7 manage.py migrate
+
+```
+
+
