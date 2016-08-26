@@ -38,12 +38,17 @@ def days_since_join(value):
 #[display_text](url)
 @stringfilter
 def add_links_to_bio(value):
-    return re.sub(r"\[(.*)\]\((.*)\)", r'<a href="\2">\1</a>', value)
+    return re.sub(r"\[([\w :/.$\-_.+!*'(),]*)\]\(([\w:/.$\-_.+!*',]*)\)", r'<a target="_blank" href="\2">\1</a>', value)
+
+@stringfilter
+def no_links(value):
+    return re.sub(r"\[([\w :/.$\-_.+!*'(),]*)\]\(([\w:/.$\-_.+!*',]*)\)", r'\1', value)
 
 def cutlel(value, arg):
     """Removes all values of arg from the given string"""
     return value.replace(arg, '')
 
+register.filter('no_links', no_links)
 register.filter('add_links_to_bio', add_links_to_bio)
 register.filter('remove_time', remove_time)
 register.filter('show_cents', show_cents)

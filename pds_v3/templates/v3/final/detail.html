@@ -146,7 +146,7 @@
               var contact_link = "<a href='{% url 'contact-us' %}'>contact us</a>"
               var no_audio_msg = "Your browser does not support flash or an audio player please use a different browser or "+contact_link+" if you are unable to";
               p.innerHTML = no_audio_msg;
-              
+
               var audio_player = document.getElementById('audio_player');
               audio_player.appendChild(p);
             }
@@ -172,8 +172,8 @@
 
 				<div class="col-xs-12 col-md-6 col-sm-10 col-sm-offset-1">
 					<h4>Description</h4>
-					<p id="pd-description-small">{{pd.description|truncatewords:"35"}}</p>
-					<p id="pd-description-full" class="hidden">{{pd.description}}</p>
+          <p id="pd-description-small">{{pd.description|truncatewords:"35"|add_links_to_bio|safe|linebreaksbr}}</p>
+					<p id="pd-description-full" class="hidden">{{pd.description|add_links_to_bio|safe|linebreaksbr}}</p>
 					{% if pd.getDescriptionWordCount > 35 %}
 					<a id="more-btn" class="pull-right" onclick="showDescription()">Show More</a>
 					{% endif %}

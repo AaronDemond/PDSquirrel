@@ -106,7 +106,7 @@
 				<a class="presenter-a" href = "{% url 'presenter-detail' b.id %}">{{ b }}{% if b.credentials and b.credentials.strip %}, {{b.credentials}}{% endif %}</a>
                                 {% endfor %}
 				<br>
-				{{pd.description|truncatechars:155}}
+				{{pd.description|no_links|truncatechars:155}}
                             <span class="pd-list-small-info">
 				<br>
                                 <b>Subject area(s):</b>
