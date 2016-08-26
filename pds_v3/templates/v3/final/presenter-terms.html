@@ -4,11 +4,8 @@
         <title>PD Squirrel Terms &amp; Conditions</title>
         <meta name=”description” content='PDSquirrels terms &amp; conditions'>
 {% endblock header-metatags %}
-{% block header-content %}
-        <link rel="stylesheet" href="{% static 'css/user/terms.css' %}">
-		
-{% endblock header-content %}
 {% block body %}
+{% include "v3/final/add-ons/deferred-css.html" with css1='user/terms' %}
 
 
 <div class="container" id="main-content">
@@ -50,7 +47,7 @@
 	<li><b>Site use terms &amp; conditions also apply</b>.  At all times that you are a Presenter you are also a Member and therefore, for greater certainty, you are subject also to the <a href="{% url 'terms' %}">Site use terms &amp; conditions</a>.
 	</li>
 	<br>
-	
+
 	<p><b><u>Part B – Status as a Presenter</u></b></p>
 	<li>
 <b>Invitations and requests to become a Presenter</b>. We may at any time and from time to time, at our sole discretion, invite any Member or Members to become a Presenter and we may give that Member access to the Presenter Hub for such purpose. We will consider a request from any Member to become a Presenter, but the decision to invite and give access to the Presenter Hub shall always be at our discretion.  There is no limit on the number of Members we may decide to invite as Presenters, and for greater certainty, no limit on the number of Members from the same or similar practice areas, backgrounds or perspectives, who we may invite as Presenters. If we decide to not invite the requesting Member to become a Presenter, we will communicate that decision to the requesting Member upon which we may, but are not obliged to, provide our reason therefor.  You and we acknowledge and agree that any decision regarding whether or not to invite and give access to any particular Member to become a Presenter is solely and absolutely our decision, is discretionary in nature and is final and not subject to any objection or appeal.
@@ -65,7 +62,7 @@
 <b>Our discretion to remove a Presenter</b>.  At any time, we may remove you as a Presenter on the Site if, in our reasonable discretion, we believe you are not in compliance with these Presenter terms &amp; conditions (or we have recently become aware of such non-compliance on any occasion in the past), provided that at all times the survival provisions of these Presenter terms &amp; conditions at section 30 shall continue to apply to you, regardless of your status as a Presenter.  If this section applies to any Presenter, we will notify that Presenter before or upon removing him or her as a Presenter on the Site.  In addition to the foregoing, we retain the right at all times to remove Presenters in circumstances where, in our sole discretion, such removal is in the overall interest of the Site, our business or the value we seek to provide to Members collectively, such as, by way of example, if the Presenter dies, or in circumstances where a Presenter has not delivered to us PD Sessions for an unreasonably long period of time and the existing PD Sessions by that Presenter are in our view stale-dated.
 	</li>
 	<br>
-	
+
 <p><b><u>Part C – Use of Presenter Hub and delivery of PD Sessions</u></b></p>
 <li>
 <b>Presenter Hub</b>.  Within and as part of the Site we will maintain a Presenter Hub.  The Presenter Hub will consist of at least of an upload facility to enable you to electronically deliver any PD Session to us, input boxes for your presenter bio information and analytical information including your earnings.  At all times during which you are a Presenter, we will permit your electronic access to the Presenter Hub, subject to these Presenter terms &amp; conditions.  You may only use the Presenter Hub for the purposes of creating, uploading, delivering and managing PD Sessions for us, and to manage and update your Presenter page and other information as applicable to the Site or for us.
@@ -121,11 +118,11 @@
 </li>
 
 <li>
-<b>Removal of a PD Session from the Site</b>.  Subject to section 17, you may, at any time and at your sole discretion, remove from the Site any PD Session which has been delivered by you to us.  We may remove a PD Session from the Site at any time if we have reason to believe you are or have been in breach of these Presenter terms &amp; conditions, or if we believe the content of the PD Session warrants removal having regard for the overall success of the Site and value to Members or for any other reason in our sole and absolute discretion.  For greater certainty, nothing herein requires us to review or verify the accuracy, content, appropriateness or value of any PD Session. 
+<b>Removal of a PD Session from the Site</b>.  Subject to section 17, you may, at any time and at your sole discretion, remove from the Site any PD Session which has been delivered by you to us.  We may remove a PD Session from the Site at any time if we have reason to believe you are or have been in breach of these Presenter terms &amp; conditions, or if we believe the content of the PD Session warrants removal having regard for the overall success of the Site and value to Members or for any other reason in our sole and absolute discretion.  For greater certainty, nothing herein requires us to review or verify the accuracy, content, appropriateness or value of any PD Session.
 </li>
 
 <li>
-<b>Limitation on removal of PD Sessions</b>.  You cannot remove a PD Session which has been delivered by you to us and has subsequently been purchased by a Member and placed in the Member’s PD library or similar area on the Site for that Member’s future use.  You may request in writing that we remove such a PD Session, and we will consider any such request, but the decision whether to so remove it is ours alone in our sole discretion.   
+<b>Limitation on removal of PD Sessions</b>.  You cannot remove a PD Session which has been delivered by you to us and has subsequently been purchased by a Member and placed in the Member’s PD library or similar area on the Site for that Member’s future use.  You may request in writing that we remove such a PD Session, and we will consider any such request, but the decision whether to so remove it is ours alone in our sole discretion.
 </li>
 
 <li>
@@ -160,7 +157,7 @@
 </li>
 
 <li>
-<b>Net Revenue</b>.  For the purposes of this Part D of these Presenter terms &amp; conditions, Net Revenue means the sum total of the revenue we have actually received (and which has not been refunded for any bona fide reason such as a mistaken charge or payment processing error) from all Members and is attributable to the particular PD Session by having been (i) in the case of Members having Standard memberships, specifically received from such Members for the purchase of the said Limited Use Licenses granted by us for the particular PD Session and (ii) in the case of Members having Premium memberships, a portion of that revenue received from Members as monthly membership amounts to the extent reasonably attributable to the taking by such Members of the particular PD Session, all such amounts being net of harmonized sales taxes and provincial taxes as applicable and net of payment processing fees paid by us to any third party such as Stripe Canada Inc. 
+<b>Net Revenue</b>.  For the purposes of this Part D of these Presenter terms &amp; conditions, Net Revenue means the sum total of the revenue we have actually received (and which has not been refunded for any bona fide reason such as a mistaken charge or payment processing error) from all Members and is attributable to the particular PD Session by having been (i) in the case of Members having Standard memberships, specifically received from such Members for the purchase of the said Limited Use Licenses granted by us for the particular PD Session and (ii) in the case of Members having Premium memberships, a portion of that revenue received from Members as monthly membership amounts to the extent reasonably attributable to the taking by such Members of the particular PD Session, all such amounts being net of harmonized sales taxes and provincial taxes as applicable and net of payment processing fees paid by us to any third party such as Stripe Canada Inc.
 </li>
 
 <li>
@@ -168,7 +165,7 @@
 </li>
 
 <li>
-<b>Taxes</b>.  You are responsible to inform us if you are an HST or GST registrant and if we are required to add applicable tax on our payment of Royalties to you, and if so, you shall provide us with your Canada Revenue Agency HST or GST registrant number as applicable.  
+<b>Taxes</b>.  You are responsible to inform us if you are an HST or GST registrant and if we are required to add applicable tax on our payment of Royalties to you, and if so, you shall provide us with your Canada Revenue Agency HST or GST registrant number as applicable.
 </li>
 
 <li>
@@ -179,7 +176,7 @@
 <p><b><u>Part E – Dispute resolution</u></b></p>
 
 <li>
-<b>Arbitration</b> – Any dispute, difference or question arising between you and us concerning the construction, meaning or effect of these Presenter terms &amp; conditions or any part hereof shall be submitted to, and settled by, a single arbitrator chosen without delay by mutual written agreement among us and so appointed by the parties, failing such mutual agreement, to be appointed by a judge of the Nova Scotia Supreme Court pursuant to the Nova Scotia Commercial Arbitration Act, as amended, or similar legislation, and any decision or award of such arbitrator appointed pursuant to the provisions of this Agreement or the said Act shall be final and binding upon the parties hereto. The decision of the arbitrator may be converted into a judgment upon the application of the successful party.  The place of arbitration shall be Halifax, Nova Scotia, Canada. 
+<b>Arbitration</b> – Any dispute, difference or question arising between you and us concerning the construction, meaning or effect of these Presenter terms &amp; conditions or any part hereof shall be submitted to, and settled by, a single arbitrator chosen without delay by mutual written agreement among us and so appointed by the parties, failing such mutual agreement, to be appointed by a judge of the Nova Scotia Supreme Court pursuant to the Nova Scotia Commercial Arbitration Act, as amended, or similar legislation, and any decision or award of such arbitrator appointed pursuant to the provisions of this Agreement or the said Act shall be final and binding upon the parties hereto. The decision of the arbitrator may be converted into a judgment upon the application of the successful party.  The place of arbitration shall be Halifax, Nova Scotia, Canada.
 </li>
 <br>
 
@@ -190,7 +187,7 @@
 </li>
 
 <li>
-You may assign not any royalty rights you have pursuant to these Presenter terms &amp; conditions without our prior written consent.  
+You may assign not any royalty rights you have pursuant to these Presenter terms &amp; conditions without our prior written consent.
 </li>
 
 <li>
@@ -198,7 +195,7 @@ These Presenter terms &amp; conditions are binding upon and shall enure for the 
 </li>
 
 <li>
-The headings of the sections of these Presenter terms &amp; conditions are inserted for convenience only and do not constitute part of the said terms &amp; conditions. 
+The headings of the sections of these Presenter terms &amp; conditions are inserted for convenience only and do not constitute part of the said terms &amp; conditions.
 </li>
 
 <li>
@@ -211,6 +208,6 @@ These Presenter terms &amp; conditions shall be construed and governed by the la
 
     		    </div>
                 </div>
-		
+
 </div>
 {% endblock %}
