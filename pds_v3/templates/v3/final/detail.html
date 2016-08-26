@@ -245,10 +245,9 @@
 							</td>
 						</tr>
 					</table>
-          {% comment %}
+
           {% include "v3/final/add-ons/social-media.html" with url=url %}
 
-          {% endcomment %}
 				</div>
 				</div>
 
@@ -330,7 +329,6 @@
                     <div id="comment-reply-{{ comment.id }}" class="form-group">
                       <textarea name="reply-message" rows="2" class="form-control reply-textarea"></textarea>
 			                <button name="reply-btn-{{ comment.id }}" type="button" class="btn-small btn-primary submit-comment-btn" __parent="{{ comment.id }}" value="{{ comment.id }}">Reply</button>
-
 			                <button type="button" class="btn-small btn-default cancel-comment-btn" value="0">Cancel</button>
                     </div>
                   </div>
