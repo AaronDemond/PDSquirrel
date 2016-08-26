@@ -1,6 +1,7 @@
 from django import template
 register = template.Library()
-import datetime
+import datetime, re
+from django.template.defaultfilters import stringfilter
 
 def add_day(value):
     date = datetime.datetime.fromtimestamp(int(value))
@@ -34,17 +35,16 @@ def days_since_join(value):
     date_joined = value
     return date_joined.days()
 
-
-
-
-
-
+#[display_text](url)
+@stringfilter
+def add_links_to_bio(value):
+    return re.sub(r"\[(.*)\]\((.*)\)", r'<a href="\2">\1</a>', value)
 
 def cutlel(value, arg):
     """Removes all values of arg from the given string"""
     return value.replace(arg, '')
 
-
+register.filter('add_links_to_bio', add_links_to_bio)
 register.filter('remove_time', remove_time)
 register.filter('show_cents', show_cents)
 register.filter('unix_time_convert', unixtimeconvert)
